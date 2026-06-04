@@ -1,0 +1,51 @@
+{
+    "name": "kashf-server",
+    "version": "1.0.0",
+    "description": "AI-powered electricity management platform backend that helps Egyptian households monitor electricity consumption, avoid costly Sheriha billing tier jumps, and receive personalized energy-saving recommendations through smart meter and bill scanning.",
+    "keywords": [
+        "electricity-management",
+        "energy-monitoring",
+        "smart-meter",
+        "electricity-billing",
+        "sheriha-tracking",
+        "ai-powered",
+        "ocr",
+        "gemini-api",
+        "pwa",
+        "progressive-web-app",
+        "react",
+        "vite",
+        "nodejs",
+        "express",
+        "mongodb",
+        "dashboard",
+        "analytics",
+        "energy-efficiency",
+        "egypt",
+        "egyptian-electricity",
+        "bill-scanner",
+        "consumption-tracking",
+        "admin-dashboard",
+        "user-dashboard",
+        "mobile-first",
+        "sustainability"
+    ],
+    "license": "ISC",
+    "author": "Kashf Team",
+    "type": "module",
+    "main": "server.js",
+    "scripts": {
+        "dev": "nodemon server.js",
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "cors": "^2.8.6",
+        "dotenv": "^17.4.2",
+        "express": "^5.2.1",
+        "joi": "^18.2.1",
+        "mongoose": "^9.6.3"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.14"
+    }
+}
