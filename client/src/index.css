@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+    --color-kashf-blue: #4387f4;
+    --color-kashf-light-blue: #80b1ff;
+    --color-kashf-bg: #0d0d0d;
+    --color-kashf-surface: #111118;
+    --color-kashf-border: #1f1f2e;
+    --color-kashf-muted: #1a1a2e;
+}
+
+@layer base {
+    body {
+        @apply m-0 min-h-screen p-0 antialiased;
+        font-family: "Alexandria", sans-serif;
+    }
+}

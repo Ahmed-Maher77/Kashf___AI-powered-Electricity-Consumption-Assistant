@@ -1,12 +1,13 @@
-import "./App.css";
+import { RouterProvider } from "react-router-dom";
+import AppSplash from "./components/AppSplash/AppSplash";
+import { router } from "./routes/router";
 
 const App = () => {
     return (
-        <div className="App">
-            <h1>Welcome to Kashf</h1>
-            <p>Your platform for sustainable development projects.</p>
-        </div>
+        <AppSplash>
+            <RouterProvider router={router} />
+        </AppSplash>
     );
-}
+};
 
 export default App;
