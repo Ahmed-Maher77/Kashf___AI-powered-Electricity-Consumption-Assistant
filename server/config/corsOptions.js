@@ -1,17 +1,22 @@
-const allowedOrigins = ["https://kashf-ai-electricity-assistant.vercel.app"];
+const allowedOrigins = [
+    // Production client
+    "https://kashf-ai-electricity-assistant.vercel.app",
+    // Local development
+    "http://localhost:5173",  // Vite dev server
+    "http://localhost:4173",  // Vite preview
+];
+
 const corsOptions = {
     origin: (origin, callback) => {
-        if (process.env.NODE_ENV === "development") {
+        // Allow no-origin requests (curl, Postman, server-to-server)
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error("Access denied! Not allowed by CORS"));
-            }
+            callback(new Error(`CORS: origin "${origin}" is not allowed`));
         }
     },
-    credentials: true, // Allow cookies/authorization headers
+    credentials: true, // Allow cookies / Authorization headers
 };
 
 export default corsOptions;
+
