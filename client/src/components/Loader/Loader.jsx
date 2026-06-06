@@ -1,6 +1,8 @@
 import "./Loader.css";
 
 const Loader = ({ fullscreen = true }) => {
+    const uniqueId = Math.random().toString(36).substr(2, 9);
+    
     return (
         <div
             className={
@@ -11,18 +13,21 @@ const Loader = ({ fullscreen = true }) => {
         >
             <svg
                 id="cloud"
+                className="loader-svg"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 100 100"
+                width="100"
+                height="100"
             >
                 <defs>
-                    <filter id="roundness">
+                    <filter id={`roundness-${uniqueId}`}>
                         <feGaussianBlur
                             in="SourceGraphic"
                             stdDeviation="1.5"
                         ></feGaussianBlur>
                         <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 20 -10"></feColorMatrix>
                     </filter>
-                    <mask id="shapes">
+                    <mask id={`shapes-${uniqueId}`}>
                         <g fill="white">
                             <polygon points="50 37.5 80 75 20 75 50 37.5"></polygon>
                             <circle cx="20" cy="60" r="15"></circle>
@@ -34,9 +39,9 @@ const Loader = ({ fullscreen = true }) => {
                             </g>
                         </g>
                     </mask>
-                    <mask id="clipping" clipPathUnits="userSpaceOnUse">
-                        <g id="lines" filter="url(#roundness)">
-                            <g mask="url(#shapes)" stroke="white">
+                    <mask id={`clipping-${uniqueId}`} clipPathUnits="userSpaceOnUse">
+                        <g id={`lines-${uniqueId}`} filter={`url(#roundness-${uniqueId})`}>
+                            <g mask={`url(#shapes-${uniqueId})`} stroke="white">
                                 <line
                                     x1="-50"
                                     y1="-40"
@@ -114,7 +119,7 @@ const Loader = ({ fullscreen = true }) => {
                     height="100"
                     rx="0"
                     ry="0"
-                    mask="url(#clipping)"
+                    mask={`url(#clipping-${uniqueId})`}
                 ></rect>
                 <g>
                     <path d="M33.52,68.12 C35.02,62.8 39.03,58.52 44.24,56.69 C49.26,54.93 54.68,55.61 59.04,58.4 C59.04,58.4 56.24,60.53 56.24,60.53 C55.45,61.13 55.68,62.37 56.63,62.64 C56.63,62.64 67.21,65.66 67.21,65.66 C67.98,65.88 68.75,65.3 68.74,64.5 C68.74,64.5 68.68,53.5 68.68,53.5 C68.67,52.51 67.54,51.95 66.75,52.55 C66.75,52.55 64.04,54.61 64.04,54.61 C57.88,49.79 49.73,48.4 42.25,51.03 C35.2,53.51 29.78,59.29 27.74,66.49 C27.29,68.08 28.22,69.74 29.81,70.19 C30.09,70.27 30.36,70.31 30.63,70.31 C31.94,70.31 33.14,69.44 33.52,68.12Z"></path>

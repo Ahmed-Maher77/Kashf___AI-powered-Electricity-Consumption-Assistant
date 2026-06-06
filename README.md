@@ -9,6 +9,10 @@ The application allows users to scan electricity meters or upload electricity bi
 
 ---
 
+🌐 **Live Demo:** [https://kashf-smart-electricity-assistant.netlify.app](https://kashf-smart-electricity-assistant.netlify.app/)
+
+---
+
 ## 🚀 Key Features
 
 ### 📸 Smart Meter & Bill Scanning
