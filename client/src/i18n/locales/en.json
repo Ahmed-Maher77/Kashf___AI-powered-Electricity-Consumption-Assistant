@@ -490,5 +490,74 @@
         "sharedAccess": "Shared access",
         "extHistory": "Extended consumption history",
         "prioritySupport": "Priority support"
+    },
+    "about": {
+        "hero": {
+            "badge": "Behind Kashf",
+            "title": "Helping Families Take Control of Their",
+            "titleAccent": "Electricity Bills",
+            "desc": "Kashf was built to solve a growing challenge facing Egyptian households: unexpected electricity bill increases caused by crossing into higher Sheriha tiers. Our mission is to make electricity consumption simple, transparent, and actionable.",
+            "scrollHint": "Scroll to explore"
+        },
+        "story": {
+            "badge": "Our Story",
+            "title": "Built for",
+            "titleAccent": "Egyptian Families",
+            "body1": "In Egypt, many families only discover they exceeded their electricity tier after receiving an expensive monthly bill. The tiered Sheriha system means crossing a threshold by even 1 kWh can dramatically increase costs.",
+            "body2": "Kashf was created to provide proactive insights, helping users understand their consumption before costly surprises happen. Our AI-powered platform analyzes usage patterns, predicts tier crossings, and delivers personalized recommendations.",
+            "body3": "We\u2019re focused on the Egyptian market, understanding local tariff structures, consumption patterns, and household needs. Our mission is simple: empower families with transparency and control.",
+            "timeline": {
+                "t1": { "year": "2025", "label": "The Problem", "desc": "Egyptian families face unpredictable electricity bills" },
+                "t2": { "year": "2026", "label": "The Solution", "desc": "Kashf is born with AI-powered insights" },
+                "t3": { "year": "Today", "label": "The Impact", "desc": "Thousands of households saving money" }
+            }
+        },
+        "values": {
+            "badge": "What Drives Us",
+            "title": "Four principles",
+            "titleAccent": "that shape every decision",
+            "subtitle": "Our compass for building a product Egyptians trust with their energy and money.",
+            "v1": { "title": "Accuracy First", "desc": "We obsess over OCR precision and prediction quality. Every decimal point matters when it affects your bill." },
+            "v2": { "title": "Built for Egypt", "desc": "Kashf is designed around Egypt\u2019s tariff structure, spoken Arabic, and real household usage patterns." },
+            "v3": { "title": "Community-Driven", "desc": "Every feature starts with real feedback from Egyptian families who use Kashf daily." },
+            "v4": { "title": "Speed & Simplicity", "desc": "Scan your meter in seconds. See your forecast instantly. No spreadsheets, no complexity." }
+        },
+        "team": {
+            "badge": "The Team",
+            "title": "The people",
+            "titleAccent": "behind Kashf",
+            "subtitle": "A small, dedicated team of Egyptians passionate about energy transparency and smart technology.",
+            "members": {
+                "maher":   { "name": "Ahmed Maher Algohary", "title": "Software Engineer | Web Designer & Developer" },
+                "rashad":  { "name": "Mohamed Rashad", "title": "Software Engineer | Mobile App Developer" },
+                "essam":   { "name": "Ahmed Essam", "title": "Software Engineer | Backend Developer" },
+                "awadallah": { "name": "Mohamed Awadallah", "title": "Software Engineer | Mobile App Developer" },
+                "yasser": { "name": "Yasser Eid", "title": "Software Engineer | Mobile App Developer" }
+            }
+        },
+        "faq": {
+            "badge": "FAQ",
+            "title": "Frequently Asked",
+            "titleAccent": "Questions",
+            "subtitle": "Everything you need to know before getting started with Kashf.",
+            "contact": "Still have questions? Email us at",
+            "email": "inquiry@kashf.com",
+            "items": {
+                "q1": { "q": "What is Kashf?", "a": "Kashf is an AI-powered electricity consumption assistant built for Egyptian households. It reads your meter, tracks your Sheriha tier in real time, forecasts your bill, and gives personalized Arabic-language recommendations to help you save money every month." },
+                "q2": { "q": "Is Kashf free to use?", "a": "Yes \u2014 Kashf is completely free during the beta period. No credit card required. Once we exit beta, a generous free tier will always remain available." },
+                "q3": { "q": "How does the meter scanning work?", "a": "You simply point your phone camera at your electricity meter. Kashf\u2019s OCR engine reads the digits in real time and stores the reading securely. No special hardware needed \u2014 any modern smartphone works." },
+                "q4": { "q": "What are Sheriha tiers?", "a": "Egypt\u2019s electricity pricing is divided into consumption tiers (\u0634\u0631\u0627\u0626\u062d). The more kWh you use, the higher your price per unit. Crossing into a higher tier mid-month can cost hundreds of extra pounds. Kashf tracks your exact position and warns you before you cross." },
+                "q5": { "q": "Does it work offline?", "a": "Yes. Kashf is a Progressive Web App (PWA) with offline-first architecture. You can log readings and view your dashboard without an internet connection. Data syncs automatically when you reconnect." },
+                "q6": { "q": "Is my data private and secure?", "a": "Absolutely. Your data is encrypted in transit and at rest. We never sell or share your consumption data with third parties. You can delete your account and all data at any time." },
+                "q7": { "q": "Can I install it without an app store?", "a": "Yes. Visit kashf.app in your browser, tap \u2018Add to Home Screen\u2019, and Kashf installs just like a native app \u2014 on iOS, Android, Windows, and macOS \u2014 with no app store required." }
+            }
+        },
+        "cta": {
+            "title": "Start Monitoring",
+            "titleAccent": "Smarter",
+            "desc": "Join thousands of users taking control of their electricity consumption.",
+            "primary": "Get Started",
+            "secondary": "Contact Us"
+        }
     }
 }

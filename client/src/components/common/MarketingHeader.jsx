@@ -10,7 +10,6 @@ const SECTION_IDS = [
     "stats",
     "meter-section",
     "features",
-    "problem",
     "how-it-works",
     "pwa",
     "testimonials",
@@ -74,8 +73,8 @@ const MarketingHeader = () => {
     const navItems = [
         { to: "/", label: t("marketingNav.home"), end: true, sectionId: "hero" },
         { to: "/#features", label: t("marketingNav.features"), end: false, sectionId: "features" },
-        { to: "/#problem", label: t("marketingNav.problem"), end: false, sectionId: "problem" },
         { to: "/#how-it-works", label: t("marketingNav.howItWorks"), end: false, sectionId: "how-it-works" },
+        { to: "/about", label: t("marketingNav.about"), end: true },
         { to: "/#pricing", label: t("marketingNav.pricing"), end: false, sectionId: "pricing" },
     ];
 
