@@ -1,6 +1,7 @@
 const allowedOrigins = [
     // Production client
     "https://kashf-ai-electricity-assistant.vercel.app",
+    "https://kashf-smart-electricity-assistant.netlify.app/",
     // Local development
     "http://localhost:5173",  // Vite dev server
     "http://localhost:4173",  // Vite preview
