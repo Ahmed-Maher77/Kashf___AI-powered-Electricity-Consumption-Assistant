@@ -2,8 +2,8 @@
 @import "tailwindcss";
 
 @theme {
-    --color-kashf-blue: #4387f4;
-    --color-kashf-light-blue: #80b1ff;
+    --color-kashf-blue: #00d9ff;
+    --color-kashf-light-blue: #66ecff;
     --color-kashf-bg: #0d0d0d;
     --color-kashf-surface: #111118;
     --color-kashf-border: #1f1f2e;

@@ -11,4 +11,7 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss()
   ],
+  optimizeDeps: {
+    include: ['react-redux', '@reduxjs/toolkit', 'react', 'react-dom', 'js-cookie'],
+  },
 })
