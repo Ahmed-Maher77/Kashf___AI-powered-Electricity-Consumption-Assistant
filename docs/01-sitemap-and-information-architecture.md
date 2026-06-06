@@ -2,7 +2,7 @@
 
 **Product:** Kashf — AI-powered electricity consumption monitoring for Egyptian users  
 **Roles:** User, Admin  
-**Last updated:** June 2025
+**Last updated:** June 2026
 
 ---
 
@@ -33,6 +33,8 @@
 | Route | Page |
 |-------|------|
 | `/` | Welcome |
+| `/login` | Login |
+| `/register` | Register |
 | `/scan` | Scan Meter |
 | `/processing` | Processing |
 | `/dashboard` | User Dashboard |
@@ -387,31 +389,38 @@
 
 **Route:** `/about`
 
-**Purpose:** Build trust: mission, how AI/OCR works, and privacy commitments for Egyptian users.
+**Purpose:** Build trust and communicate mission, team, values, and answer common questions. Public page linked from Welcome and footer.
 
-**Target User:** All users; often linked from Welcome and footer.
+**Target User:** All users (authenticated or not).
 
 **Main Sections:**
-- Project mission
-- How AI works
-- Privacy policy
+- Hero (full-viewport, animated scroll indicator)
+- Our Story (2-column: story text + colored milestone timeline)
+- What Drives Us (4 values cards)
+- The Team (photo, name, title, LinkedIn)
+- FAQ (animated accordion, 7 questions)
+- CTA (Get Started + Contact Us)
 
-**Components:**
-- `MissionStatement`
-- `AIExplainerDiagram`
-- `PrivacyPolicySection`
-- `ContactOrSupportLink`
+**Components (implemented — `src/components/about/`):**
+- `AboutHero`
+- `AboutStory` (with `TimelineItem`)
+- `AboutValues` (with `ValueCard`)
+- `AboutTeam` (with `TeamCard`, inline `LinkedinIcon` SVG)
+- `AboutFAQ` (with `FAQItem` accordion)
+- `AboutCTA`
+
+**i18n:** All strings in `about.*` namespace (en.json + ar.json). RTL layout applied via Tailwind logical properties.
 
 **Actions:**
-- Navigate back to `/` or `/scan`
-- Open external policy PDF (optional)
+- Scroll indicator → smooth scroll to story section
+- FAQ accordion → expand/collapse
+- "Get Started" → `/register`
+- "Contact Us" → `mailto:hello@kashf.app`
+- LinkedIn cards → open in new tab
 
-**Displayed Data:**
-- Static content: mission, OCR + Gemini pipeline overview, data retention and image handling
+**Empty States:** N/A (static content).
 
-**Empty States:** N/A.
-
-**Error States:** Content load failure → cached static fallback
+**Error States:** i18next falls back to English if locale file fails to load.
 
 ---
 

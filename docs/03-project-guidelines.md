@@ -2,7 +2,7 @@
 
 Team reference for consistent backend and frontend development. Follow these conventions on every PR.
 
-**Related docs:** [Sitemap & IA](./01-sitemap-and-information-architecture.md) · [Backend services](./02-backend-services-and-middlewares.md)
+**Related docs:** [Sitemap & IA](./01-sitemap-and-information-architecture.md) · [Backend services](./02-backend-services-and-middlewares.md) · [System Flows](./SYSTEM_OPERATIONS_AND_USER_FLOWS.md) · [Deployment](./VERCEL_DEPLOYMENT.md)
 
 ---
 
@@ -59,39 +59,50 @@ Kashf/
 
 Create `server/.env` locally (never commit — already in `.gitignore`). Share values securely with the team (not in chat screenshots).
 
-### Required today
+### Required (server)
 
 ```env
-# Server port (optional — defaults to 3000)
+# Server port (optional — defaults to 3000; ignored on Vercel)
 PORT=3000
 
 # MongoDB connection string
 MONGO_URI=mongodb://127.0.0.1:27017/kashf
+
+# JWT
+JWT_SECRET=your-long-random-secret
+JWT_REFRESH_SECRET=your-different-long-random-secret
+JWT_ACCESS_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=7d
+
+# Cloudinary (image uploads)
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+# CORS — comma-separated list of allowed client origins
+# In production, set on Vercel dashboard
+ALLOWED_ORIGIN=http://localhost:5173
 ```
 
-### Frontend (when calling API)
+### Required (client)
 
 ```env
-# client/.env — add when API integration starts
+# Full URL including https://
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
 ### Planned (add when feature is implemented)
 
 ```env
-# Auth — JWT
-JWT_SECRET=your-long-random-secret
-JWT_EXPIRES_IN=7d
-
-# AI — Gemini (admin / OCR / tips)
+# AI — Gemini
 GEMINI_API_KEY=
 
-# CORS — production
-CLIENT_ORIGIN=http://localhost:5173
+# Stripe (payments)
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
 
-# Uploads (optional)
+# Upload limits
 MAX_FILE_SIZE_MB=5
-UPLOAD_DIR=./uploads
 ```
 
 ### Rules
@@ -343,7 +354,9 @@ Then controllers may `throw new AppError(...)` without try/catch.
 
 ### CORS
 
-Configured in `server/config/corsOptions.js`. For production, uncomment and maintain `allowedOrigins`; do not leave `callback(null, true)` for all origins in deployed environments.
+Configured in `server/config/corsOptions.js`. The `allowedOrigins` array is the active whitelist (localhost + production Vercel/Netlify URLs). Add any new deployment URL to the array and redeploy.
+
+See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for full CORS and deployment guidance.
 
 ---
 
