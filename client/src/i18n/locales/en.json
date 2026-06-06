@@ -92,6 +92,90 @@
         "meterSectionSubtitle": "Experience the real-time feedback of Kashf's virtual utility meter. Watch your consumption zones and plan ahead to stay in control.",
         "coreCapabilities": "Core Capabilities"
     },
+    "howItWorks": {
+        "badge": "How It Works",
+        "title": "Four steps.",
+        "titleAccent": "Smarter every month.",
+        "subtitle": "From meter reading to money saved — Kashf handles everything automatically.",
+        "steps": {
+            "scan": { "title": "Scan the Meter", "desc": "Point your camera at the electricity meter. Kashf reads the digits instantly via OCR." },
+            "analyze": { "title": "Analyze Consumption", "desc": "AI analyzes the reading against your history and Egyptian tariff tiers in real time." },
+            "track": { "title": "Track Your Tier", "desc": "Current tier, remaining kWh, cost forecast, and next threshold — all on one screen." },
+            "save": { "title": "Save Money", "desc": "Follow personalized AI recommendations and receive alerts before crossing the next tier." }
+        }
+    },
+    "problem": {
+        "badge": "The Problem",
+        "title": "Why Egyptians dread their",
+        "titleAccent": "electricity bill",
+        "subtitle": "Crossing just one tier costs hundreds of pounds. Kashf makes sure it never happens.",
+        "billLabel": "Electricity Bill — June 2026",
+        "without": {
+            "title": "Without Kashf",
+            "1": "Bill arrived — 847 EGP instead of the expected 350 EGP",
+            "2": "Jumped to Tier 5 mid-month with zero warning",
+            "3": "AC, water heater, and appliances all running simultaneously",
+            "4": "No visibility into daily usage, no forecast, no way out",
+            "billNote": "Tier 5 applied — 0.72 EGP/kWh on last 300 kWh"
+        },
+        "with": {
+            "title": "With Kashf",
+            "1": "Real-time tier tracking shows you're at 287 kWh, 63 left to Tier 5",
+            "2": "48-hour forecast: 'You'll cross at this rate within 2.5 days'",
+            "3": "AI sent an alert: Reduce AC by 1.5 hrs for 3 days",
+            "4": "End-of-month bill: 412 EGP instead of 847 EGP — saved 435 EGP",
+            "billNote": "Stayed in Tier 3 — saved 435 EGP this month"
+        },
+        "banner": "Kashf user average savings",
+        "bannerAmount": "380 EGP per month",
+        "bannerSuffix": "by staying ahead of tier thresholds."
+    },
+    "ai": {
+        "badge": "AI Energy Assistant",
+        "title": "Personalized tips in",
+        "titleAccent": "Egyptian Arabic",
+        "desc": "Kashf's AI analyzes your consumption profile and gives you actionable steps in Egyptian Arabic — not generic advice, but recommendations based on your home's actual behavior.",
+        "feat1": "Per-appliance recommendations",
+        "feat2": "Usage timing optimization",
+        "feat3": "Seasonal adjustment insights",
+        "feat4": "Arabic-first conversational UI",
+        "online": "Online",
+        "inputPlaceholder": "Ask Kashf about your bill...",
+        "quick1": "Save more",
+        "quick2": "More suggestions",
+        "quick3": "Another question",
+        "chat": {
+            "msg1": "Moving to the next tier will cost you 187 EGP extra. Reducing AC by 2 hours a day saves 64 EGP.",
+            "msg2": "What's better — change the AC temperature or reduce run time?",
+            "msg3": "Raising the temp to 26°C is better — saves more and you won't notice a big difference. Try it tonight!"
+        }
+    },
+    "pwa": {
+        "badge": "Installable Web App",
+        "title": "Install it.",
+        "titleAccent": "No App Store needed.",
+        "desc": "Kashf is a Progressive Web App — install it directly from your browser on any phone or computer. Works offline, sends notifications, and feels like a native app.",
+        "feat1": "Offline-first architecture",
+        "feat2": "Push notification alerts",
+        "feat3": "Automatic background sync",
+        "feat4": "iOS, Android, Windows & macOS support",
+        "tierAlert": "Tier Alert",
+        "untilTier": "until Tier 5",
+        "addToHome": "Add to Home Screen",
+        "installDesc": "Install Kashf for the best experience",
+        "install": "Install"
+    },
+    "cta": {
+        "badge": "Free Beta Access — Limited Time",
+        "title": "Take control of your",
+        "titleAccent": "electricity bill",
+        "desc": "Join over 2,400 Egyptian households using Kashf to track consumption, avoid tier jumps, and save hundreds of pounds every month.",
+        "button": "Start Monitoring for Free",
+        "finePrint": "No credit card. No App Store. Works on any device.",
+        "stat1": { "num": "2,400+", "label": "Egyptian households" },
+        "stat2": { "num": "380 EGP", "label": "Avg. monthly savings" },
+        "stat3": { "num": "100%", "label": "Free during beta" }
+    },
     "features": {
         "smartMeter": "Smart Meter Scanning",
         "smartMeterDesc": "OCR-powered instant meter reading via your phone camera",
@@ -351,5 +435,57 @@
                 "Security settings"
             ]
         }
+    },
+    "pricing": {
+        "eyebrow": "Simple Pricing",
+        "headline": "Start Saving on Your",
+        "headlineAccent": "Electricity Bill Today",
+        "subline": "Everything you need to monitor consumption, avoid costly Sheriha jumps, and receive AI-powered recommendations.",
+        "month": "month",
+        "free": "Free",
+        "badge": {
+            "popular": "Most Popular"
+        },
+        "footnote": "No credit card required · Cancel anytime ·",
+        "faqLink": "Read the FAQ",
+        "plan": {
+            "free": {
+                "title": "Free",
+                "desc": "Perfect for getting started"
+            },
+            "plus": {
+                "title": "Plus",
+                "desc": "For households that want complete control"
+            },
+            "family": {
+                "title": "Family",
+                "desc": "For multiple properties and households"
+            }
+        },
+        "cta": {
+            "free": "Get Started",
+            "plus": "Start Free Trial",
+            "family": "Choose Family"
+        }
+    },
+    "feat": {
+        "meterScan": "Meter scanning",
+        "consumTrack": "Consumption tracking",
+        "sheriha": "Sheriha monitoring",
+        "dashboard": "Basic dashboard",
+        "history": "Monthly history",
+        "everythingFree": "Everything in Free",
+        "aiRecs": "AI-powered recommendations",
+        "billForecast": "Bill forecasting",
+        "earlyAlerts": "Early Sheriha alerts",
+        "analytics": "Advanced analytics",
+        "push": "Push notifications",
+        "pwa": "Installable PWA",
+        "everythingPlus": "Everything in Plus",
+        "multiMeter": "Multiple meter management",
+        "familyReports": "Family usage reports",
+        "sharedAccess": "Shared access",
+        "extHistory": "Extended consumption history",
+        "prioritySupport": "Priority support"
     }
 }

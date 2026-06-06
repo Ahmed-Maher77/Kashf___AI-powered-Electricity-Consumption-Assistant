@@ -7,6 +7,10 @@ import MeterSection from "../../components/welcome/MeterSection";
 import FeaturesSection from "../../components/welcome/FeaturesSection";
 import HowItWorksSection from "../../components/welcome/HowItWorksSection";
 import PricingSection from "../../components/welcome/PricingSection";
+import TheProblemSection from "../../components/welcome/ProblemSection";
+import AIAssistantSection from "../../components/welcome/AIAssistantSection";
+import PWASection from "../../components/welcome/PWASection";
+import CTASection from "../../components/welcome/CTASection";
 
 const WelcomePage = () => {
     const location = useLocation();
@@ -21,14 +25,19 @@ const WelcomePage = () => {
     }, [location.hash]);
 
     return (
-        <main className="mx-auto max-w-6xl px-6 py-10 pb-16">
+        <main className="py-10 pb-16">
+        {/* <main className="mx-auto max-w-6xl px-6 py-10 pb-16"> */}
             <HeroSection />
             <StatsSection />
             <MeterSection />
             <FeaturesSection />
+            <TheProblemSection />
             <HowItWorksSection />
+            <AIAssistantSection />
+            <PWASection />
             <TestimonialsSection />
             <PricingSection />
+            <CTASection />
         </main>
     );
 };

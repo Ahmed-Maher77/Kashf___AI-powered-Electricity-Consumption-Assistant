@@ -45,15 +45,15 @@ const FeaturesSection = () => {
     ];
 
     return (
-        <section id="features" className="mb-16 scroll-mt-24 py-16 md:py-24">
+        <section id="features" className="mb-10 scroll-mt-24 py-16 md:py-24">
             <div className="max-w-6xl mx-auto px-4">
                 <div className="text-center mb-16">
-                    <h2 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-extrabold text-neutral-100 tracking-tight">
+                    <h2 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-extrabold text-neutral-100 tracking-tight line-height-15">
                         {t("welcome.coreCapabilities", {
                             defaultValue: "Core Capabilities",
                         })}
                     </h2>
-                    <p className="max-w-3xl mx-auto text-sm md:text-base text-neutral-400 leading-relaxed">
+                    <p className="max-w-3xl mx-auto text-sm md:text-base text-neutral-400 leading-relaxed pb-2">
                         {t("welcome.featuresText")}
                     </p>
                 </div>
