@@ -23,8 +23,8 @@ const StatsSection = () => {
     ];
 
     return (
-        <section className="py-16 md:py-24 border-t border-kashf-border">
-            <div className="max-w-6xl mx-auto px-4">
+        <section id="stats" className="py-16 md:py-24 border-t border-kashf-border">
+            <div className="max-w-6xl mx-auto px-5 sm:px-8">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                     {stats.map((stat, index) => (
                         <div

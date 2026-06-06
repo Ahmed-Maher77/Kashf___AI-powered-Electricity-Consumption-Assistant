@@ -60,9 +60,12 @@
         "aria": "Home page navigation",
         "home": "Home",
         "features": "Features",
+        "problem": "The Problem",
         "howItWorks": "How It Works",
+        "aiAssistant": "AI Assistant",
         "about": "About",
         "pricing": "Pricing",
+        "cta": "Get Started",
         "joinKashf": "Join Kashf",
         "goToDashboard": "Go to dashboard"
     },

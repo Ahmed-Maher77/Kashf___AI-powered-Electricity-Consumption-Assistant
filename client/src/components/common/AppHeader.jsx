@@ -67,7 +67,7 @@ const AppHeader = () => {
             <BrandLogo />
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-4 sm:gap-6">
+            <div className="hidden lg:flex items-center gap-4 sm:gap-6">
                 <nav
                     className="flex gap-x-4 gap-y-2"
                     aria-label={t("nav.mainAria")}
@@ -83,7 +83,7 @@ const AppHeader = () => {
             </div>
 
             {/* Mobile Actions (Burger Button) */}
-            <div className="flex md:hidden items-center gap-3">
+            <div className="flex lg:hidden items-center gap-3">
                 <LanguageSwitcher />
                 <button
                     type="button"
@@ -99,7 +99,7 @@ const AppHeader = () => {
 
             {/* Mobile Drawer Backdrop */}
             <div
-                className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-xs transition-opacity duration-300 md:hidden ${
+                className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-xs transition-opacity duration-300 lg:hidden ${
                     isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                 }`}
                 onClick={() => setIsSidebarOpen(false)}
@@ -107,7 +107,7 @@ const AppHeader = () => {
 
             {/* Mobile Drawer Sidebar */}
             <aside
-                className={`fixed inset-y-0 end-0 z-50 w-72 max-w-[85vw] bg-kashf-surface p-6 shadow-xl border-s border-kashf-border transition-transform duration-300 md:hidden flex flex-col gap-6 ${
+                className={`fixed inset-y-0 end-0 z-50 w-72 max-w-[85vw] bg-kashf-surface p-6 shadow-xl border-s border-kashf-border transition-transform duration-300 lg:hidden flex flex-col gap-6 ${
                     isSidebarOpen ? "translate-x-0" : isRtl ? "-translate-x-full" : "translate-x-full"
                 }`}
             >

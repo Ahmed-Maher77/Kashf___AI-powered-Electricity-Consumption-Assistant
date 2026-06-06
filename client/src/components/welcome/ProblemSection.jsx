@@ -1,4 +1,36 @@
 import { useTranslation } from "react-i18next";
+import SectionBadge from "./ui/SectionBadge";
+import SectionHeading from "./ui/SectionHeading";
+
+
+const ComparisonCard = ({ borderColor, bgColor, emoji, title, items, checkIcon, checkColor, billLabel, billNote, billNoteColor, amount, amountColor }) => (
+    <div className={`rounded-2xl border ${borderColor} ${bgColor} p-6 sm:p-8 flex flex-col gap-6`}>
+        <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl">{emoji}</div>
+            <h3 className="text-neutral-100 font-bold text-lg">{title}</h3>
+        </div>
+
+        <ul className="flex flex-col gap-3">
+            {items.map((item, i) => (
+                <li key={i} className="flex items-start gap-3 text-sm text-neutral-300 leading-relaxed">
+                    <span className={`mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${checkColor} font-bold`}>
+                        {checkIcon}
+                    </span>
+                    {item}
+                </li>
+            ))}
+        </ul>
+
+        <div className="mt-auto px-5 py-4 flex items-center justify-between gap-4">
+            <div>
+                <p className="text-neutral-400 text-sm">{billLabel}</p>
+                <p className={`text-xs ${billNoteColor} mt-1`}>{billNote}</p>
+            </div>
+            <span className={`text-2xl font-extrabold ${amountColor} shrink-0`}>{amount}</span>
+        </div>
+    </div>
+);
+
 
 const TheProblemSection = () => {
     const { t } = useTranslation();
@@ -17,96 +49,57 @@ const TheProblemSection = () => {
         t("problem.with.4", { defaultValue: "End-month bill: 412 EGP instead of 847 EGP — you saved 435 EGP" }),
     ];
 
+    const billLabel = t("problem.billLabel", { defaultValue: "Electricity Bill — June 2026" });
+
     return (
-        <section className="relative py-20 md:py-28 overflow-hidden border-t border-kashf-border">
-            {/* Radial glow top-center */}
+        <section id="problem" className="relative py-20 md:py-28 overflow-hidden border-t border-kashf-border">
+            {/* Ambient glow */}
             <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-kashf-blue/5 blur-3xl" />
 
-            <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-                {/* Badge */}
-                <div className="flex justify-center mb-6">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-kashf-blue/40 bg-kashf-blue/10 text-kashf-blue text-sm font-medium tracking-wide">
-                        {t("problem.badge", { defaultValue: "The Problem" })}
-                    </span>
-                </div>
+            <div className="relative max-w-6xl mx-auto px-5 sm:px-8">
+                <SectionHeading
+                    align="center"
+                    badge={
+                        <SectionBadge>
+                            {t("problem.badge", { defaultValue: "The Problem" })}
+                        </SectionBadge>
+                    }
+                    title={t("problem.title", { defaultValue: "Why Egyptians dread" })}
+                    accent={t("problem.titleAccent", { defaultValue: "electricity bills" })}
+                    subtitle={t("problem.subtitle", { defaultValue: "One missed tier crossing costs hundreds. Kashf makes sure it never happens." })}
+                    className="mb-14"
+                />
 
-                {/* Headline */}
-                <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-100 tracking-tight mb-5 leading-snug line-height-15">
-                    {t("problem.title", { defaultValue: "Why Egyptians dread" })}{" "}
-                    <span className="text-kashf-blue">
-                        {t("problem.titleAccent", { defaultValue: "electricity bills" })}
-                    </span>
-                </h2>
-                <p className="text-center text-neutral-400 text-base md:text-lg max-w-xl mx-auto mb-14">
-                    {t("problem.subtitle", { defaultValue: "One missed tier crossing costs hundreds. Kashf makes sure it never happens." })}
-                </p>
-
-                {/* Before / After cards */}
+                {/* Before / After grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    {/* WITHOUT */}
-                    <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-6 sm:p-8 flex flex-col gap-6">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl  flex items-center justify-center text-xl">😱</div>
-                            <h3 className="text-neutral-100 font-bold text-lg">
-                                {t("problem.without.title", { defaultValue: "Without Kashf" })}
-                            </h3>
-                        </div>
-
-                        <ul className="flex flex-col gap-3">
-                            {withoutItems.map((item, i) => (
-                                <li key={i} className="flex items-start gap-3 text-sm text-neutral-300 leading-relaxed">
-                                    <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-red-400 font-bold">✕</span>
-                                    {item}
-                                </li>
-                            ))}
-                        </ul>
-
-                        {/* Bill callout */}
-                        <div className="mt-auto rounded-xl px-5 py-4 flex items-center justify-between gap-4">
-                            <div>
-                                <p className="text-neutral-400 text-sm">
-                                    {t("problem.billLabel", { defaultValue: "Electricity Bill — June 2026" })}
-                                </p>
-                                <p className="text-xs text-red-400 mt-1">
-                                    ⚠ {t("problem.without.billNote", { defaultValue: "Tier 5 applied — 0.72 EGP/kWh on last 300 kWh" })}
-                                </p>
-                            </div>
-                            <span className="text-2xl font-extrabold text-red-400 shrink-0">847 EGP</span>
-                        </div>
-                    </div>
-
-                    {/* WITH */}
-                    <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6 sm:p-8 flex flex-col gap-6">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl  flex items-center justify-center text-xl">✨</div>
-                            <h3 className="text-neutral-100 font-bold text-lg">
-                                {t("problem.with.title", { defaultValue: "With Kashf" })}
-                            </h3>
-                        </div>
-
-                        <ul className="flex flex-col gap-3">
-                            {withItems.map((item, i) => (
-                                <li key={i} className="flex items-start gap-3 text-sm text-neutral-300 leading-relaxed">
-                                    <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-emerald-400 font-bold">✓</span>
-                                    {item}
-                                </li>
-                            ))}
-                        </ul>
-
-                        {/* Bill callout */}
-                        <div className="mt-auto px-5 py-4 flex items-center justify-between gap-4">
-                            <div>
-                                <p className="text-neutral-400 text-sm">
-                                    {t("problem.billLabel", { defaultValue: "Electricity Bill — June 2026" })}
-                                </p>
-                                <p className="text-xs text-emerald-400 mt-1">
-                                    ✓ {t("problem.with.billNote", { defaultValue: "Stayed in Tier 3 — saved 435 EGP this month" })}
-                                </p>
-                            </div>
-                            <span className="text-2xl font-extrabold text-emerald-400 shrink-0">412 EGP</span>
-                        </div>
-                    </div>
+                    <ComparisonCard
+                        borderColor="border-red-500/20"
+                        bgColor="bg-red-500/5"
+                        emoji="😱"
+                        title={t("problem.without.title", { defaultValue: "Without Kashf" })}
+                        items={withoutItems}
+                        checkIcon="✕"
+                        checkColor="text-red-400"
+                        billLabel={billLabel}
+                        billNote={`⚠ ${t("problem.without.billNote", { defaultValue: "Tier 5 applied — 0.72 EGP/kWh on last 300 kWh" })}`}
+                        billNoteColor="text-red-400"
+                        amount="847 EGP"
+                        amountColor="text-red-400"
+                    />
+                    <ComparisonCard
+                        borderColor="border-emerald-500/20"
+                        bgColor="bg-emerald-500/5"
+                        emoji="✨"
+                        title={t("problem.with.title", { defaultValue: "With Kashf" })}
+                        items={withItems}
+                        checkIcon="✓"
+                        checkColor="text-emerald-400"
+                        billLabel={billLabel}
+                        billNote={`✓ ${t("problem.with.billNote", { defaultValue: "Stayed in Tier 3 — saved 435 EGP this month" })}`}
+                        billNoteColor="text-emerald-400"
+                        amount="412 EGP"
+                        amountColor="text-emerald-400"
+                    />
                 </div>
 
                 {/* Savings banner */}

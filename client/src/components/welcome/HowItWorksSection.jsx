@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import SectionBadge from "./ui/SectionBadge";
+import SectionHeading from "./ui/SectionHeading";
 
 const STEP_ICONS = [
     <svg key="scan" className="size-6 text-kashf-light-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -23,22 +25,16 @@ const HowItWorksSection = () => {
 
     return (
         <section id="how-it-works" className="scroll-mt-24 py-16 md:py-24 border-t border-kashf-border">
-            <div className="max-w-6xl mx-auto px-4">
+            <div className="max-w-6xl mx-auto px-5 sm:px-8">
                 {/* Header */}
-                <div className="text-center mb-16">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-kashf-blue/40 bg-kashf-blue/10 text-kashf-blue text-sm font-medium tracking-wide mb-8">
-                        {t("howItWorks.badge")}
-                    </span>
-                    <h2 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-extrabold text-neutral-100 tracking-tight line-height-15">
-                        {t("howItWorks.title")}{" "}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-kashf-light-blue to-emerald-400">
-                            {t("howItWorks.titleAccent")}
-                        </span>
-                    </h2>
-                    <p className="max-w-2xl mx-auto text-sm md:text-base text-neutral-400 leading-relaxed">
-                        {t("howItWorks.subtitle")}
-                    </p>
-                </div>
+                <SectionHeading
+                    align="center"
+                    badge={<SectionBadge>{t("howItWorks.badge")}</SectionBadge>}
+                    title={t("howItWorks.title")}
+                    accent={t("howItWorks.titleAccent")}
+                    subtitle={t("howItWorks.subtitle")}
+                    className="mb-16"
+                />
 
                 {/* Steps grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -5,7 +5,7 @@ const MeterSection = () => {
     const { t } = useTranslation();
 
     return (
-        <section id="meter-section" className="hidden sm:flex sm:flex-col sm:items-center sm:justify-center relative py-16 md:py-24 overflow-hidden w-full">
+        <section id="meter-section" className="hidden sm:flex sm:flex-col sm:items-center sm:justify-center relative py-16 md:py-24 overflow-hidden w-full px-4 sm:px-6">
             {/* Ambient Background Glows */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-kashf-blue/10 to-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-kashf-light-blue/5 rounded-full blur-[60px] pointer-events-none" />

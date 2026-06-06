@@ -45,7 +45,7 @@ const HeroSection = () => {
     };
 
     return (
-        <section className="relative flex flex-col items-center justify-center text-center py-16 pt-12 md:py-2 md:pt-12 max-w-4xl mx-auto px-4">
+        <section id="hero" className="relative flex flex-col items-center justify-center text-center py-16 pt-12 md:py-2 md:pt-12 max-w-4xl mx-auto px-5 sm:px-8">
             <AIPoweredBadge />
 
             {/* Hero Title */}

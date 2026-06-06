@@ -234,7 +234,7 @@ const PricingSection = () => {
 
     return (
         <section className="pricing-section" id="pricing">
-            <div className="pricing-header">
+            <div className="pricing-header px-4 sm:px-6">
                 <span className="pricing-eyebrow">
                     <Zap />
                     {t("pricing.eyebrow", { defaultValue: "Simple Pricing" })}
@@ -257,13 +257,13 @@ const PricingSection = () => {
                 </p>
             </div>
 
-            <div className="pricing-grid">
+            <div className="pricing-grid px-4 sm:px-6">
                 {plans.map((plan) => (
                     <PlanCard key={plan.key} plan={plan} t={t} />
                 ))}
             </div>
 
-            <p className="pricing-footnote">
+            <p className="pricing-footnote px-4 sm:px-6">
                 {t("pricing.footnote", {
                     defaultValue: "No credit card required · Cancel anytime ·",
                 })}{" "}

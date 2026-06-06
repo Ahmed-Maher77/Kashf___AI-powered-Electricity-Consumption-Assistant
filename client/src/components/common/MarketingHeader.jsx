@@ -5,14 +5,20 @@ import BrandLogo from "./BrandLogo";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 // Section IDs on the home page that map to hash nav items
-const SECTION_IDS = ["features", "how-it-works", "pricing"];
+const SECTION_IDS = [
+    "hero",
+    "stats",
+    "meter-section",
+    "features",
+    "problem",
+    "how-it-works",
+    "pwa",
+    "testimonials",
+    "pricing",
+];
 
-/**
- * Returns the active hash for the current page.
- * - On non-home pages, falls back to pathname matching.
- * - On the home page, uses an Intersection Observer to detect which section
- *   is in view, keeping the navbar highlight in sync as the user scrolls.
- */
+
+// Returns the active hash for the current page.
 const useActiveNavItem = () => {
     const location = useLocation();
     const [activeHash, setActiveHash] = useState(location.hash);
@@ -45,9 +51,10 @@ const useActiveNavItem = () => {
                 }
             },
             {
-                // Trigger when a section occupies ≥20% of the viewport
-                threshold: [0, 0.2, 0.5],
-                rootMargin: "-80px 0px -40% 0px",
+                // Trigger when a section occupies ≥15% of the viewport for smoother transitions
+                threshold: [0, 0.15, 0.3, 0.5],
+                // Account for fixed header (80px) and give more bottom margin for better detection
+                rootMargin: "-80px 0px -35% 0px",
             }
         );
 
@@ -65,18 +72,22 @@ const MarketingHeader = () => {
     const { activeHash, pathname } = useActiveNavItem();
 
     const navItems = [
-        { to: "/", label: t("marketingNav.home"), end: true },
-        { to: "/#features", label: t("marketingNav.features"), end: false },
-        { to: "/#how-it-works", label: t("marketingNav.howItWorks"), end: false },
-        { to: "/about", label: t("marketingNav.about"), end: true },
-        { to: "/#pricing", label: t("marketingNav.pricing"), end: false },
+        { to: "/", label: t("marketingNav.home"), end: true, sectionId: "hero" },
+        { to: "/#features", label: t("marketingNav.features"), end: false, sectionId: "features" },
+        { to: "/#problem", label: t("marketingNav.problem"), end: false, sectionId: "problem" },
+        { to: "/#how-it-works", label: t("marketingNav.howItWorks"), end: false, sectionId: "how-it-works" },
+        { to: "/#pricing", label: t("marketingNav.pricing"), end: false, sectionId: "pricing" },
     ];
 
     /** Decide if a nav item should be highlighted */
     const isActive = (item) => {
         if (item.to === "/") {
-            // Home is active only when on "/" with no section in view
-            return pathname === "/" && !activeHash;
+            // Home is active when on "/" and either no section in view or hero section is in view
+            return pathname === "/" && (!activeHash || activeHash === "#hero");
+        }
+        if (item.to.startsWith("/#") && item.sectionId) {
+            const hash = `#${item.sectionId}`;
+            return pathname === "/" && activeHash === hash;
         }
         if (item.to.startsWith("/#")) {
             const hash = item.to.slice(1); // "#features"
@@ -110,7 +121,7 @@ const MarketingHeader = () => {
                 <BrandLogo />
 
                 {/* Desktop Navigation */}
-                <div className="hidden md:flex flex-1 items-center justify-between gap-4 ms-6">
+                <div className="hidden lg:flex flex-1 items-center justify-between gap-4 ms-6">
                     <nav
                         className="flex flex-1 items-center justify-center gap-x-5 gap-y-2"
                         aria-label={t("marketingNav.aria")}
@@ -138,7 +149,7 @@ const MarketingHeader = () => {
                 </div>
 
                 {/* Mobile Actions */}
-                <div className="flex md:hidden items-center gap-3">
+                <div className="flex lg:hidden items-center gap-3">
                     <LanguageSwitcher />
                     <button
                         type="button"
@@ -154,7 +165,7 @@ const MarketingHeader = () => {
 
                 {/* Mobile Drawer Backdrop */}
                 <div
-                    className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-xs transition-opacity duration-300 md:hidden ${
+                    className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-xs transition-opacity duration-300 lg:hidden ${
                         isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                     }`}
                     onClick={() => setIsSidebarOpen(false)}
@@ -162,7 +173,7 @@ const MarketingHeader = () => {
 
                 {/* Mobile Drawer Sidebar */}
                 <aside
-                    className={`fixed inset-y-0 inset-e-0 z-50 w-72 max-w-[85vw] bg-kashf-surface p-6 shadow-xl border-s border-kashf-border transition-transform duration-300 md:hidden flex flex-col gap-6 ${
+                    className={`fixed inset-y-0 inset-e-0 z-50 w-72 max-w-[85vw] bg-kashf-surface p-6 shadow-xl border-s border-kashf-border transition-transform duration-300 lg:hidden flex flex-col gap-6 ${
                         isSidebarOpen
                             ? "translate-x-0"
                             : isRtl

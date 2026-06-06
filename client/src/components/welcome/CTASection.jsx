@@ -10,7 +10,7 @@ const CTASection = () => {
     const { t } = useTranslation();
 
     return (
-        <section className="relative py-24 md:py-36 overflow-hidden border-t border-kashf-border">
+        <section id="cta" className="relative py-24 md:py-36 overflow-hidden border-t border-kashf-border">
             {/* Deep radial glow */}
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                 <div className="w-[700px] h-[400px] rounded-full bg-kashf-blue/8 blur-[100px]" />
@@ -25,7 +25,7 @@ const CTASection = () => {
                 }}
             />
 
-            <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center gap-8">
+            <div className="relative max-w-3xl mx-auto px-5 sm:px-8 text-center flex flex-col items-center gap-8">
                 {/* Beta badge */}
                 {/* <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-sm font-medium">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
