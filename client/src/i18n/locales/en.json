@@ -1,213 +1,355 @@
 {
-  "common": {
-    "brand": "Kashf",
-    "brandAdmin": "Kashf Admin",
-    "plannedContent": "Planned content",
-    "loading": "Loading Kashf"
-  },
-  "splash": {
-    "tagline": "Smart electricity monitoring for Egypt"
-  },
-  "language": {
-    "label": "Language",
-    "ariaLabel": "Change application language",
-    "switchTo": "Switch to {{language}}",
-    "ar": "العربية",
-    "en": "English"
-  },
-  "nav": {
-    "mainAria": "Main navigation",
-    "dashboard": "Dashboard",
-    "scan": "Scan",
-    "history": "History",
-    "tips": "Tips",
-    "settings": "Settings",
-    "about": "About"
-  },
-  "adminNav": {
-    "aria": "Admin navigation",
-    "dashboard": "Dashboard",
-    "users": "Users",
-    "scans": "Scans",
-    "tiers": "Tiers",
-    "aiLogs": "AI Logs",
-    "notifications": "Notifications",
-    "settings": "Settings",
-    "backToApp": "Back to app"
-  },
-  "notFound": {
-    "goWelcome": "Go to Welcome",
-    "goDashboard": "Go to Dashboard"
-  },
-  "pages": {
+    "common": {
+        "brand": "Kashf",
+        "brandAdmin": "Kashf Admin",
+        "plannedContent": "Planned content",
+        "loading": "Loading Kashf"
+    },
+    "footer": {
+        "rights": "All rights reserved",
+        "backToTop": "Back to top"
+    },
+    "splash": {
+        "tagline": "Smart electricity monitoring for Egypt"
+    },
+    "stats": {
+        "users": {
+            "value": "2,400+",
+            "label": "Egyptian Households"
+        },
+        "scans": {
+            "value": "15,000+",
+            "label": "Meter Scans"
+        },
+        "savings": {
+            "value": "30%",
+            "label": "Avg. Bill Savings"
+        },
+        "accuracy": {
+            "value": "98%",
+            "label": "OCR Accuracy"
+        }
+    },
+    "testimonials": {
+        "title": "Egyptians who got their bills under control",
+        "subtitle": "Real stories from real users saving money with Kashf",
+        "ahmed": {
+            "name": "Ahmed Khalil",
+            "title": "Father of 3, Nasr City",
+            "quote": "كنت دايماً مفاجأة من الفاتورة، لكن كشف خلاني أعرف استهلاكي بالظبط وبقت تنبيهات قبل ما الفاتورة تزيد."
+        },
+        "omar": {
+            "name": "Omar Samy",
+            "title": "Business Owner, Alexandria",
+            "quote": "كنت مش عارف أحسب الفاتورة إزاي، كشف حل المشكلة وبي توصيات عملية بالذكاء الاصطناعي."
+        },
+        "karim": {
+            "name": "Karim Hassan",
+            "title": "Engineer, New Cairo",
+            "quote": "I was skeptical at first, but the OCR meter scanning is impressive. Saved 340 EGP on my last bill."
+        }
+    },
+    "language": {
+        "label": "Language",
+        "ariaLabel": "Change application language",
+        "switchTo": "Switch to {{language}}",
+        "ar": "العربية",
+        "en": "English"
+    },
+    "marketingNav": {
+        "aria": "Home page navigation",
+        "home": "Home",
+        "features": "Features",
+        "howItWorks": "How It Works",
+        "about": "About",
+        "pricing": "Pricing",
+        "joinKashf": "Join Kashf",
+        "goToDashboard": "Go to dashboard"
+    },
     "welcome": {
-      "title": "Welcome",
-      "description": "Landing page for Kashf — introduce the platform to Egyptian users and guide them to scan their electricity meter.",
-      "sections": [
-        "Hero section with primary CTA",
-        "Project explanation",
-        "How Kashf works (step-by-step)",
-        "CTA to scan meter",
-        "Feature cards (OCR, Sheriha, bill estimate, tips)"
-      ]
+        "aiPoweredBadge": "AI-powered energy insights",
+        "heroTitlePart1": "Know Before Your Electricity",
+        "heroTitlePart2": "Bill Surprises You",
+        "heroSubtitle": "Kashf uses advanced AI and real-time tracking to predict Sheriha jumps, sending you alerts before you enter expensive tiers.",
+        "startSaving": "Start Saving Today",
+        "watchDemo": "Watch Demo",
+        "demoPlaceholderTitle": "Kashf Demo Video",
+        "demoPlaceholderText": "See how Kashf scans meter readings, tracks consumption tiers, and warns you about bill spikes.",
+        "socialProofPrimary": "+2,400 Egyptian households",
+        "socialProofSecondary": "already tracking with Kashf",
+        "meterTier": "Sheriha 3",
+        "meterRemaining": "40 kWh Left",
+        "card1Title": "Consumption Warning",
+        "card1Value": "40 kWh Remaining",
+        "card2Title": "Estimated Bill",
+        "card2Value": "EGP 412",
+        "card3Title": "AI INSIGHT",
+        "card3Value": "Reduce water heater usage today.",
+        "featuresText": "AI meter scanning, Sheriha tracking, tier-up warnings, and personalized energy-saving advice.",
+        "howItWorksText": "Scan your meter, Kashf reads it and calculates your consumption and tier, then shows a clear dashboard with actionable tips.",
+        "pricingText": "Start for free — flexible plans coming soon for your household.",
+        "meterSectionTitle": "Interactive Smart Monitoring",
+        "meterSectionSubtitle": "Experience the real-time feedback of Kashf's virtual utility meter. Watch your consumption zones and plan ahead to stay in control.",
+        "coreCapabilities": "Core Capabilities"
     },
-    "scanMeter": {
-      "title": "Scan Meter",
-      "description": "Capture or upload a photo of your electricity meter so AI OCR can extract the current reading.",
-      "sections": [
-        "Camera scanner",
-        "Upload image option",
-        "Scanning guide",
-        "OCR tips for clear readings"
-      ]
+    "features": {
+        "smartMeter": "Smart Meter Scanning",
+        "smartMeterDesc": "OCR-powered instant meter reading via your phone camera",
+        "aiAnalysis": "AI Consumption Analysis",
+        "aiAnalysisDesc": "Machine learning models trained on Egyptian usage patterns",
+        "prediction": "Sheriha Prediction Engine",
+        "predictionDesc": "Real-time tier tracking with 48-hour cost forecasting",
+        "pwa": "Installable PWA",
+        "pwaDesc": "Works on mobile & desktop, even offline — no app store needed"
     },
-    "processing": {
-      "title": "Processing",
-      "description": "Temporary screen shown while OCR and AI analyze your meter, calculate Sheriha tier, bill estimate, and generate tips.",
-      "sections": [
-        "OCR progress indicator",
-        "AI processing progress",
-        "Status messages per pipeline stage",
-        "Auto-redirect to dashboard on success"
-      ]
+    "auth": {
+        "alreadyHaveAccount": "Already have an account?",
+        "noAccount": "Don't have an account?",
+        "switchToLogin": "Login",
+        "switchToRegister": "Create account",
+        "loginTitle": "Login",
+        "loginSubtitle": "Welcome back — sign in to continue monitoring your electricity.",
+        "loginSubmit": "Login",
+        "loginSubmitting": "Signing in...",
+        "logout": "Log out",
+        "logoutSubmitting": "Logging out...",
+        "loginMissingToken": "Login succeeded but no access token was returned.",
+        "loginGenericError": "Could not sign in. Check your credentials and try again.",
+        "emailPlaceholder": "you@example.com",
+        "passwordPlaceholder": "At least 6 characters",
+        "showPassword": "Show password",
+        "hidePassword": "Hide password"
     },
-    "dashboard": {
-      "title": "User Dashboard",
-      "description": "Your home view for current consumption, electricity tier (Sheriha), estimated bill, and tier-up warnings.",
-      "sections": [
-        "Current consumption and Sheriha tier",
-        "Remaining kWh until next tier",
-        "Estimated bill (EGP)",
-        "Consumption gauge and chart",
-        "Tier warning banner",
-        "AI recommendations preview"
-      ]
+    "register": {
+        "title": "Create account",
+        "subtitle": "Join Kashf and start monitoring your electricity from your dashboard.",
+        "username": "Username",
+        "usernamePlaceholder": "Your display name",
+        "email": "Email",
+        "password": "Password",
+        "repassword": "Confirm password",
+        "repasswordPlaceholder": "Re-enter your password",
+        "picture": "Profile picture",
+        "pictureChoose": "Choose image",
+        "pictureRemove": "Remove",
+        "pictureEmpty": "No image",
+        "picturePreviewAlt": "Profile preview",
+        "submit": "Create account",
+        "submitting": "Creating account...",
+        "backHome": "Back to home",
+        "passwordMismatch": "Passwords do not match.",
+        "missingToken": "Registration succeeded but no access token was returned.",
+        "genericError": "Could not create account. Please try again."
     },
-    "history": {
-      "title": "History",
-      "description": "Browse previous meter scans, consumption trends, bill estimates, and Sheriha tier changes over time.",
-      "sections": [
-        "Previous scans list",
-        "Consumption history timeline",
-        "Bills history table",
-        "Tier change log",
-        "Filters and pagination"
-      ]
+    "profileMenu": {
+        "ariaLabel": "Account menu for {{name}}",
+        "fallbackName": "Account",
+        "profile": "Profile"
     },
-    "scanDetails": {
-      "title": "Scan Details",
-      "description": "Full details for a single meter scan including OCR output, calculations, and AI tips generated for that reading.",
-      "sections": [
-        "Meter image viewer",
-        "OCR result and confidence",
-        "Sheriha and bill calculation breakdown",
-        "Generated AI tips (Egyptian Arabic)",
-        "Rescan action"
-      ]
+    "nav": {
+        "mainAria": "Main navigation",
+        "dashboard": "Dashboard",
+        "scan": "Scan",
+        "history": "History",
+        "tips": "Tips",
+        "settings": "Settings",
+        "about": "About",
+        "admin": "Admin"
     },
-    "tips": {
-      "title": "Tips & Recommendations",
-      "description": "Personalized electricity-saving advice powered by AI, plus general guidance with estimated savings.",
-      "sections": [
-        "Personalized AI tips feed",
-        "General electricity-saving advice",
-        "Estimated savings per tip",
-        "Category filters"
-      ]
-    },
-    "settings": {
-      "title": "Settings",
-      "description": "Manage your language, notifications, and appearance preferences.",
-      "sections": [
-        "Language settings (Arabic / English)",
-        "Notification settings",
-        "Theme settings (light / dark / system)"
-      ]
-    },
-    "about": {
-      "title": "About",
-      "description": "Learn about Kashf's mission, how AI and OCR power the platform, and our privacy commitments.",
-      "sections": [
-        "Project mission",
-        "How AI and OCR work",
-        "Privacy policy"
-      ]
+    "adminNav": {
+        "aria": "Admin navigation",
+        "dashboard": "Dashboard",
+        "users": "Users",
+        "scans": "Scans",
+        "tiers": "Tiers",
+        "aiLogs": "AI Logs",
+        "notifications": "Notifications",
+        "settings": "Settings",
+        "backToApp": "Back to app"
     },
     "notFound": {
-      "title": "404 — Page Not Found",
-      "description": "The page you requested does not exist. Return to the welcome page or your dashboard.",
-      "sections": []
+        "goWelcome": "Go to Welcome",
+        "goDashboard": "Go to Dashboard"
     },
-    "adminDashboard": {
-      "title": "Admin Dashboard",
-      "description": "Operational overview of platform usage, OCR success rate, and system health.",
-      "sections": [
-        "Total users and total scans",
-        "OCR success rate",
-        "AI requests count",
-        "Recent activity feed",
-        "System health indicators"
-      ]
-    },
-    "usersManagement": {
-      "title": "Users Management",
-      "description": "Search, inspect, and moderate user accounts.",
-      "sections": [
-        "Users table with search and filters",
-        "User details panel",
-        "User status (active / disabled)",
-        "Actions: view, disable, enable user"
-      ]
-    },
-    "scanManagement": {
-      "title": "Scan Management",
-      "description": "Review all meter scans, OCR outcomes, and uploaded images.",
-      "sections": [
-        "All scans table",
-        "OCR results and confidence",
-        "Scan status",
-        "Uploaded image previews",
-        "Actions: view scan, delete scan"
-      ]
-    },
-    "tierManagement": {
-      "title": "Tier Management",
-      "description": "Maintain Egyptian electricity tier (Sheriha) rules, pricing tables, and kWh thresholds.",
-      "sections": [
-        "Electricity tier rules",
-        "Pricing tables",
-        "kWh thresholds",
-        "Actions: create, edit, delete tier"
-      ]
-    },
-    "aiLogs": {
-      "title": "AI Logs",
-      "description": "Audit OCR and generative AI requests for debugging and compliance.",
-      "sections": [
-        "OCR requests log",
-        "AI prompts and responses",
-        "Processing times",
-        "Failure logs with filters"
-      ]
-    },
-    "notificationsManagement": {
-      "title": "Notifications Management",
-      "description": "Create and manage system announcements and user notifications.",
-      "sections": [
-        "System announcements list",
-        "User notifications",
-        "Actions: create, edit, delete notification"
-      ]
-    },
-    "systemSettings": {
-      "title": "System Settings",
-      "description": "Configure Gemini API, OCR settings, upload limits, and security policies.",
-      "sections": [
-        "Gemini API configuration",
-        "OCR provider settings",
-        "Upload limits",
-        "Security settings"
-      ]
+    "pages": {
+        "pricing": {
+            "title": "Pricing",
+            "description": "Kashf plans and pricing — coming soon.",
+            "sections": [
+                "Free tier",
+                "Upcoming paid plans",
+                "Feature comparison"
+            ]
+        },
+        "scanMeter": {
+            "title": "Scan Meter",
+            "description": "Capture or upload a photo of your electricity meter so AI OCR can extract the current reading.",
+            "sections": [
+                "Camera scanner",
+                "Upload image option",
+                "Scanning guide",
+                "OCR tips for clear readings"
+            ]
+        },
+        "processing": {
+            "title": "Processing",
+            "description": "Temporary screen shown while OCR and AI analyze your meter, calculate Sheriha tier, bill estimate, and generate tips.",
+            "sections": [
+                "OCR progress indicator",
+                "AI processing progress",
+                "Status messages per pipeline stage",
+                "Auto-redirect to dashboard on success"
+            ]
+        },
+        "dashboard": {
+            "title": "User Dashboard",
+            "description": "Your home view for current consumption, electricity tier (Sheriha), estimated bill, and tier-up warnings.",
+            "sections": [
+                "Current consumption and Sheriha tier",
+                "Remaining kWh until next tier",
+                "Estimated bill (EGP)",
+                "Consumption gauge and chart",
+                "Tier warning banner",
+                "AI recommendations preview"
+            ]
+        },
+        "history": {
+            "title": "History",
+            "description": "Browse previous meter scans, consumption trends, bill estimates, and Sheriha tier changes over time.",
+            "sections": [
+                "Previous scans list",
+                "Consumption history timeline",
+                "Bills history table",
+                "Tier change log",
+                "Filters and pagination"
+            ]
+        },
+        "scanDetails": {
+            "title": "Scan Details",
+            "description": "Full details for a single meter scan including OCR output, calculations, and AI tips generated for that reading.",
+            "sections": [
+                "Meter image viewer",
+                "OCR result and confidence",
+                "Sheriha and bill calculation breakdown",
+                "Generated AI tips (Egyptian Arabic)",
+                "Rescan action"
+            ]
+        },
+        "tips": {
+            "title": "Tips & Recommendations",
+            "description": "Personalized electricity-saving advice powered by AI, plus general guidance with estimated savings.",
+            "sections": [
+                "Personalized AI tips feed",
+                "General electricity-saving advice",
+                "Estimated savings per tip",
+                "Category filters"
+            ]
+        },
+        "profile": {
+            "title": "Profile",
+            "description": "View your account details and profile picture.",
+            "loading": "Loading profile...",
+            "loadError": "Could not load your profile. Try logging in again.",
+            "noPicture": "No profile picture saved yet.",
+            "updatePictureTitle": "Update profile picture",
+            "pictureUpdate": "Save picture",
+            "pictureUpdating": "Saving...",
+            "pictureRequired": "Choose an image first.",
+            "pictureUpdateError": "Could not update profile picture."
+        },
+        "settings": {
+            "title": "Settings",
+            "description": "Manage your language, notifications, and appearance preferences.",
+            "sections": [
+                "Language settings (Arabic / English)",
+                "Notification settings",
+                "Theme settings (light / dark / system)"
+            ]
+        },
+        "about": {
+            "title": "About",
+            "description": "Learn about Kashf's mission, how AI and OCR power the platform, and our privacy commitments.",
+            "sections": [
+                "Project mission",
+                "How AI and OCR work",
+                "Privacy policy"
+            ]
+        },
+        "notFound": {
+            "title": "404 — Page Not Found",
+            "description": "The page you requested does not exist. Return to the welcome page or your dashboard.",
+            "sections": []
+        },
+        "adminDashboard": {
+            "title": "Admin Dashboard",
+            "description": "Operational overview of platform usage, OCR success rate, and system health.",
+            "sections": [
+                "Total users and total scans",
+                "OCR success rate",
+                "AI requests count",
+                "Recent activity feed",
+                "System health indicators"
+            ]
+        },
+        "usersManagement": {
+            "title": "Users Management",
+            "description": "Search, inspect, and moderate user accounts.",
+            "sections": [
+                "Users table with search and filters",
+                "User details panel",
+                "User status (active / disabled)",
+                "Actions: view, disable, enable user"
+            ]
+        },
+        "scanManagement": {
+            "title": "Scan Management",
+            "description": "Review all meter scans, OCR outcomes, and uploaded images.",
+            "sections": [
+                "All scans table",
+                "OCR results and confidence",
+                "Scan status",
+                "Uploaded image previews",
+                "Actions: view scan, delete scan"
+            ]
+        },
+        "tierManagement": {
+            "title": "Tier Management",
+            "description": "Maintain Egyptian electricity tier (Sheriha) rules, pricing tables, and kWh thresholds.",
+            "sections": [
+                "Electricity tier rules",
+                "Pricing tables",
+                "kWh thresholds",
+                "Actions: create, edit, delete tier"
+            ]
+        },
+        "aiLogs": {
+            "title": "AI Logs",
+            "description": "Audit OCR and generative AI requests for debugging and compliance.",
+            "sections": [
+                "OCR requests log",
+                "AI prompts and responses",
+                "Processing times",
+                "Failure logs with filters"
+            ]
+        },
+        "notificationsManagement": {
+            "title": "Notifications Management",
+            "description": "Create and manage system announcements and user notifications.",
+            "sections": [
+                "System announcements list",
+                "User notifications",
+                "Actions: create, edit, delete notification"
+            ]
+        },
+        "systemSettings": {
+            "title": "System Settings",
+            "description": "Configure Gemini API, OCR settings, upload limits, and security policies.",
+            "sections": [
+                "Gemini API configuration",
+                "OCR provider settings",
+                "Upload limits",
+                "Security settings"
+            ]
+        }
     }
-  }
 }
