@@ -14,4 +14,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ['react-redux', '@reduxjs/toolkit', 'react', 'react-dom', 'js-cookie'],
   },
+  server: {
+    port: 5173
+  }
 })
