@@ -40,7 +40,7 @@ const AccountOverview = () => {
             key={stat.label}
             className="bg-kashf-bg/50 rounded-xl p-4 border border-kashf-border/50 hover:border-kashf-blue/30 transition-all duration-200"
           >
-            <div className={`p-2 w-fit mb-3 ${isRTL ? "ms-auto" : "me-auto"}`}>
+            <div className="p-2 w-fit mb-3">
               <stat.icon className={`w-6 h-6 ${stat.color}`} />
             </div>
             <p className="text-xs text-neutral-400 mb-1">{stat.label}</p>

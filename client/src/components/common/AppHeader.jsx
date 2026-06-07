@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUser, selectSubscriptionPlan } from "../../store/auth/authSlice";
+import { selectUser } from "../../store/auth/authSlice";
 import { useLogout } from "../../hooks/auth/useLogout";
 import { useAuthProfile } from "../../hooks/auth/useAuthProfile";
 import BrandLogo from "./BrandLogo";
@@ -26,23 +26,9 @@ const AppHeader = () => {
     const isRtl = i18n.dir() === "rtl";
 
     const user = useSelector(selectUser);
-    const subscriptionPlan = useSelector(selectSubscriptionPlan);
     useAuthProfile();
     const logoutMutation = useLogout();
     const displayName = user?.username || t("profileMenu.fallbackName");
-
-    const getPlanBadge = (plan) => {
-        switch (plan) {
-            case "plus":
-                return { label: t("pricing.plan.plus.title", { defaultValue: "Plus" }), className: "bg-kashf-blue/20 text-kashf-blue border-kashf-blue/30" };
-            case "family":
-                return { label: t("pricing.plan.family.title", { defaultValue: "Family" }), className: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" };
-            default:
-                return { label: t("pricing.plan.free.title", { defaultValue: "Free" }), className: "bg-neutral-800 text-neutral-400 border-neutral-700" };
-        }
-    };
-
-    const planBadge = getPlanBadge(subscriptionPlan);
 
     const navItems = [
         { to: "/dashboard", label: t("nav.dashboard") },
@@ -93,12 +79,7 @@ const AppHeader = () => {
                     ))}
                 </nav>
                 <LanguageSwitcher />
-                <div className="flex items-center gap-2">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${planBadge.className}`}>
-                        {planBadge.label}
-                    </span>
-                    <ProfileMenu />
-                </div>
+                <ProfileMenu />
             </div>
 
             {/* Mobile Actions (Burger Button) */}
@@ -166,9 +147,6 @@ const AppHeader = () => {
                             <p className="truncate text-sm font-semibold text-neutral-100">{displayName}</p>
                             {user?.email && <p className="truncate text-xs text-neutral-500">{user.email}</p>}
                         </div>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border shrink-0 ${planBadge.className}`}>
-                            {planBadge.label}
-                        </span>
                     </div>
 
                     <div className="flex flex-col gap-1.5">

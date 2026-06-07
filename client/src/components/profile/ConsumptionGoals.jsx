@@ -7,7 +7,7 @@ const ConsumptionGoals = () => {
   const isRTL = i18n.dir() === "rtl";
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-2 mt-4 mb-10">
         <Target className="w-5 h-5 text-kashf-blue" />
         <h2 className="text-lg font-semibold text-white">{t("profile.consumptionGoals.title")}</h2>
       </div>

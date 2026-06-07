@@ -4,14 +4,13 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useAuthProfile } from "../../hooks/auth/useAuthProfile";
 import { useLogout } from "../../hooks/auth/useLogout";
-import { selectUser, selectSubscriptionPlan } from "../../store/auth/authSlice";
+import { selectUser } from "../../store/auth/authSlice";
 import ChevronIcon from "../icons/ChevronIcon";
 import UserAvatar from "./UserAvatar";
 
 const ProfileMenu = () => {
     const { t } = useTranslation();
     const user = useSelector(selectUser);
-    const subscriptionPlan = useSelector(selectSubscriptionPlan);
     useAuthProfile();
     const logoutMutation = useLogout();
     const [isOpen, setIsOpen] = useState(false);
@@ -19,19 +18,6 @@ const ProfileMenu = () => {
     const menuId = useId();
 
     const displayName = user?.username || t("profileMenu.fallbackName");
-
-    const getPlanBadge = (plan) => {
-        switch (plan) {
-            case "plus":
-                return { label: t("pricing.plan.plus.title", { defaultValue: "Plus" }), className: "bg-kashf-blue/20 text-kashf-blue border-kashf-blue/30" };
-            case "family":
-                return { label: t("pricing.plan.family.title", { defaultValue: "Family" }), className: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" };
-            default:
-                return { label: t("pricing.plan.free.title", { defaultValue: "Free" }), className: "bg-neutral-800 text-neutral-400 border-neutral-700" };
-        }
-    };
-
-    const planBadge = getPlanBadge(subscriptionPlan);
 
     useEffect(() => {
         if (!isOpen) {
@@ -101,9 +87,6 @@ const ProfileMenu = () => {
                                     </p>
                                 )}
                             </div>
-                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border shrink-0 ml-auto ${planBadge.className}`}>
-                                {planBadge.label}
-                            </span>
                         </div>
                     </div>
 

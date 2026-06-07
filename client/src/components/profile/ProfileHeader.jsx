@@ -1,20 +1,35 @@
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Crown, Mail, Calendar } from "lucide-react";
+import { Crown, Mail, Calendar, Check, Star, Users } from "lucide-react";
 import Badge from "../premium/Badge";
 import UserAvatar from "../common/UserAvatar";
-import { selectUser } from "../../store/auth/authSlice";
+import { selectUser, selectSubscriptionPlan } from "../../store/auth/authSlice";
 
 const ProfileHeader = () => {
   const { t, i18n } = useTranslation();
   const user = useSelector(selectUser);
+  const subscriptionPlan = useSelector(selectSubscriptionPlan);
   const isRTL = i18n.dir() === "rtl";
+
+  const getPlanBadge = (plan) => {
+    switch (plan) {
+      case "plus":
+        return { label: t("pricing.plan.plus.title", { defaultValue: "Plus" }), icon: Star, className: "bg-kashf-blue/20 text-kashf-blue border-kashf-blue/30", iconColor: "text-kashf-blue" };
+      case "family":
+        return { label: t("pricing.plan.family.title", { defaultValue: "Family" }), icon: Users, className: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30", iconColor: "text-emerald-400" };
+      default:
+        return { label: t("pricing.plan.free.title", { defaultValue: "Free" }), icon: Check , className: "bg-neutral-800 text-neutral-400 border-neutral-700", iconColor: "text-neutral-400" };
+    }
+  };
+
+  const planBadge = getPlanBadge(subscriptionPlan);
+  const PlanIcon = planBadge.icon;
 
   return (
     <div className="mb-6">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Profile Picture Section */}
-        <div className={`flex-shrink-0 ${isRTL ? "md:order-2" : "md:order-1"}`}>
+        <div className={`flex-shrink-0 ${isRTL ? "md:order-1" : "md:order-1"}`}>
           <div className="relative">
             <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-kashf-blue/50 ring-offset-4 ring-offset-kashf-surface">
               <UserAvatar user={user} size="full" className="w-full h-full" />
@@ -23,16 +38,24 @@ const ProfileHeader = () => {
         </div>
 
         {/* User Info Section */}
-        <div className={`flex-grow ${isRTL ? "md:order-1" : "md:order-2"}`}>
+        <div className={`flex-grow ${isRTL ? "md:order-2" : "md:order-2"}`}>
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
                 {user?.username || user?.name || "Ahmed Maher"}
               </h1>
-              <Badge variant="premium" className="inline-flex items-center gap-1">
-                <Crown className="w-3 h-3" />
-                {t("profile.header.premiumUser")}
-              </Badge>
+              <div className="flex items-center gap-3 flex-wrap">
+                {subscriptionPlan !== "free" && (
+                  <Badge variant="premium" className="inline-flex items-center gap-1">
+                    <Crown className="w-3 h-3" />
+                    {t("profile.header.premiumUser")}
+                  </Badge>
+                )}
+                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium border ${planBadge.className}`}>
+                  <PlanIcon className={`w-3.5 h-3.5 ${planBadge.iconColor}`} />
+                  {planBadge.label}
+                </span>
+              </div>
             </div>
           </div>
 

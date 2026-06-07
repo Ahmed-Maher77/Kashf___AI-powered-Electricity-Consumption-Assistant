@@ -7,7 +7,7 @@ const Subscription = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.dir() === "rtl";
   return (
-    <div className="mb-6 bg-gradient-to-br from-kashf-blue/20 to-kashf-light-blue/10 border-kashf-blue/30">
+    <div className="mb-6">
       <div className="flex items-center gap-2 mb-6">
         <Crown className="w-5 h-5 text-kashf-blue" />
         <h2 className="text-lg font-semibold text-white">{t("profile.subscription.title")}</h2>

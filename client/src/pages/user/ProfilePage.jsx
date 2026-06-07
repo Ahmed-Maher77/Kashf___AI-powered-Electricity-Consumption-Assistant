@@ -31,7 +31,9 @@ const ProfilePage = () => {
                 return (
                     <div className="space-y-6">
                         <AccountOverview />
+                        <div className="border-t border-kashf-border/50" />
                         <ConsumptionGoals />
+                        <div className="border-t border-kashf-border/50" />
                         <ActivityHistory />
                     </div>
                 );
@@ -45,8 +47,11 @@ const ProfilePage = () => {
                 return (
                     <div className="space-y-6">
                         <PersonalInformation />
+                        <div className="border-t border-kashf-border/50" />
                         <NotificationPreferences />
+                        <div className="border-t border-kashf-border/50" />
                         <AIAssistantPreferences />
+                        <div className="border-t border-kashf-border/50" />
                         <PWAStatus />
                     </div>
                 );

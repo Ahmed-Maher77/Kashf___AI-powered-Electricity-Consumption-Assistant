@@ -10,41 +10,41 @@ const ActivityHistory = () => {
       icon: Upload,
       label: t("profile.activity.uploadedBill"),
       time: "2 hours ago",
-      color: "bg-emerald-500/10",
+      bgColor: "bg-emerald-500/20",
       iconColor: "text-emerald-400",
-      dotColor: "bg-emerald-400",
+      ringColor: "ring-emerald-500/30",
     },
     {
       icon: Scan,
       label: t("profile.activity.scannedMeter"),
       time: "1 day ago",
-      color: "bg-kashf-blue/10",
+      bgColor: "bg-kashf-blue/20",
       iconColor: "text-kashf-blue",
-      dotColor: "bg-kashf-blue",
+      ringColor: "ring-kashf-blue/30",
     },
     {
       icon: User,
       label: t("profile.activity.updatedProfile"),
       time: "3 days ago",
-      color: "bg-purple-500/10",
+      bgColor: "bg-purple-500/20",
       iconColor: "text-purple-400",
-      dotColor: "bg-purple-400",
+      ringColor: "ring-purple-500/30",
     },
     {
       icon: Bell,
       label: t("profile.activity.receivedAlert"),
       time: "5 days ago",
-      color: "bg-amber-500/10",
+      bgColor: "bg-amber-500/20",
       iconColor: "text-amber-400",
-      dotColor: "bg-amber-400",
+      ringColor: "ring-amber-500/30",
     },
     {
       icon: Download,
       label: t("profile.activity.downloadedReport"),
       time: "1 week ago",
-      color: "bg-neutral-500/10",
+      bgColor: "bg-neutral-500/20",
       iconColor: "text-neutral-400",
-      dotColor: "bg-neutral-400",
+      ringColor: "ring-neutral-500/30",
     },
   ];
 
@@ -55,18 +55,22 @@ const ActivityHistory = () => {
         <h2 className="text-lg font-semibold text-white">{t("profile.activity.title")}</h2>
       </div>
 
-      <div className="space-y-3">
+      <div className={"relative " + (isRTL ? "pr-8" : "pl-8")}>
+
         {activities.map((activity, index) => (
           <div
             key={activity.label}
-            className="flex items-center gap-4 p-4 bg-kashf-bg/50 rounded-xl border border-kashf-border/50 hover:border-kashf-blue/30 transition-all duration-200"
+            className={"relative flex items-start gap-4 pb-8 group " + (index < activities.length - 1 ? (isRTL ? "before:-right-4 before:top-12 before:bottom-0 before:w-0.5 before:bg-neutral-700/30 before:absolute" : "before:-left-4 before:top-12 before:bottom-0 before:w-0.5 before:bg-neutral-700/30 before:absolute") : "")}
           >
-            <div className={"flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center " + activity.color}>
-              <activity.icon className={"w-6 h-6 " + activity.iconColor} />
+            {/* Circle with icon and ring */}
+            <div className={"absolute top-0 w-12 h-12 rounded-full border-2 border-kashf-surface z-10 flex items-center justify-center shrink-0 ring-2 ring-offset-2 ring-offset-kashf-surface " + (isRTL ? "-right-10" : "-left-10") + " " + activity.bgColor + " " + activity.ringColor}>
+              <activity.icon className={"w-5 h-5 " + activity.iconColor} />
             </div>
-            <div className="flex-grow min-w-0">
-              <p className="text-sm text-white font-medium">{activity.label}</p>
-              <p className="text-xs text-neutral-400 mt-0.5">{activity.time}</p>
+
+            {/* Content */}
+            <div className={"flex-grow min-w-0 pt-1 " + (isRTL ? "mr-8" : "ml-8")}>
+              <p className="text-sm text-white font-medium group-hover:text-kashf-blue transition-colors">{activity.label}</p>
+              <p className="text-xs text-neutral-400 mt-1">{activity.time}</p>
             </div>
           </div>
         ))}
