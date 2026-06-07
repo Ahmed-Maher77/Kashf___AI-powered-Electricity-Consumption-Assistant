@@ -34,7 +34,7 @@ const PersonalInformation = () => {
     { icon: User,         label: t("profile.personalInfo.fullName"),        value: user?.username          || "—" },
     { icon: Mail,         label: t("profile.personalInfo.emailAddress"),     value: user?.email             || "—" },
     { icon: Phone,        label: t("profile.personalInfo.phoneNumber"),      value: user?.phone             || "—" },
-    { icon: MapPin,       label: t("profile.personalInfo.governorate"),      value: user?.governorate       || "—" },
+    { icon: MapPin,       label: t("profile.personalInfo.governorate"),      value: user?.governorate ? t(`common.governorates.${user.governorate.toLowerCase().replace(/ /g, "_")}`, { defaultValue: user.governorate }) : "—" },
     { icon: Globe,        label: t("profile.personalInfo.preferredLanguage"),value: user?.preferredLanguage === "ar" ? "العربية" : "English" },
     { icon: CheckCircle,  label: t("profile.personalInfo.accountStatus"),    value: t("profile.personalInfo.active") },
   ];
@@ -170,7 +170,7 @@ const PersonalInformation = () => {
               >
                 <option value="">{t("profile.personalInfo.selectGovernorate", { defaultValue: "Select governorate" })}</option>
                 {GOVERNORATES.map((g) => (
-                  <option key={g} value={g}>{g}</option>
+                  <option key={g} value={g}>{t(`common.governorates.${g.toLowerCase().replace(/ /g, "_")}`, { defaultValue: g })}</option>
                 ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">

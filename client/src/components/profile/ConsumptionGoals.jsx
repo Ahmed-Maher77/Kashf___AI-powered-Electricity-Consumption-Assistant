@@ -7,8 +7,6 @@ import Button from "../premium/Button";
 import { selectUser, setUser } from "../../store/auth/authSlice";
 import { updateGoals } from "../../services/goalsService";
 
-const SHERIHA_LABELS = ["—", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5", "Tier 6"];
-
 const ConsumptionGoals = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -23,6 +21,11 @@ const ConsumptionGoals = () => {
     targetBillEgp:   goals.targetBillEgp,
     targetSheriha:   goals.targetSheriha,
   });
+
+  const getTierLabel = (tier) => {
+    if (!tier || tier === 0) return "—";
+    return t("common.tier", { tier, defaultValue: `Tier ${tier}` });
+  };
 
   // No real scan data yet — show 0 progress
   const CURRENT_KWH  = 0;
@@ -91,7 +94,9 @@ const ConsumptionGoals = () => {
               </CircularProgress>
               <div className="mt-4 text-center">
                 <p className="text-sm text-neutral-400 mb-1">{t("profile.consumptionGoals.monthlyConsumption")}</p>
-                <p className="text-lg font-semibold text-white">{CURRENT_KWH} / {goals.monthlyKwhLimit} kWh</p>
+                <p className="text-lg font-semibold text-white">
+                  {t("common.kwhValue", { value: `${CURRENT_KWH} / ${goals.monthlyKwhLimit}`, defaultValue: `${CURRENT_KWH} / ${goals.monthlyKwhLimit} kWh` })}
+                </p>
               </div>
             </div>
 
@@ -105,7 +110,9 @@ const ConsumptionGoals = () => {
               </CircularProgress>
               <div className="mt-4 text-center">
                 <p className="text-sm text-neutral-400 mb-1">{t("profile.consumptionGoals.targetBillAmount")}</p>
-                <p className="text-lg font-semibold text-white">EGP {CURRENT_BILL} / {goals.targetBillEgp}</p>
+                <p className="text-lg font-semibold text-white">
+                  {t("common.egpValue", { value: `${CURRENT_BILL} / ${goals.targetBillEgp}`, defaultValue: `EGP ${CURRENT_BILL} / ${goals.targetBillEgp}` })}
+                </p>
               </div>
             </div>
 
@@ -119,7 +126,7 @@ const ConsumptionGoals = () => {
               </CircularProgress>
               <div className="mt-4 text-center">
                 <p className="text-sm text-neutral-400 mb-1">{t("profile.consumptionGoals.targetSheriha")}</p>
-                <p className="text-lg font-semibold text-white">{SHERIHA_LABELS[goals.targetSheriha] ?? `Tier ${goals.targetSheriha}`}</p>
+                <p className="text-lg font-semibold text-white">{getTierLabel(goals.targetSheriha)}</p>
               </div>
             </div>
           </div>
@@ -167,7 +174,7 @@ const ConsumptionGoals = () => {
               className="w-full bg-kashf-bg/50 border border-kashf-border/50 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-kashf-blue/50 focus:ring-1 focus:ring-kashf-blue/30 transition-all appearance-none"
             >
               {[1,2,3,4,5,6].map(n => (
-                <option key={n} value={n}>{SHERIHA_LABELS[n]}</option>
+                <option key={n} value={n}>{getTierLabel(n)}</option>
               ))}
             </select>
           </div>

@@ -3,7 +3,52 @@
     "brand": "كشف",
     "brandAdmin": "كشف — الإدارة",
     "plannedContent": "المحتوى المخطط",
-    "loading": "جاري تحميل كشف"
+    "loading": "جاري تحميل كشف",
+    "editGoals": "تعديل الأهداف",
+    "kwh": "ك.و.س",
+    "egp": "ج.م",
+    "kwhValue": "{{value}} ك.و.س",
+    "egpValue": "{{value}} ج.م",
+    "tier": "الشريحة {{tier}}",
+    "enable": "تفعيل",
+    "view": "عرض",
+    "time": {
+      "justNow": "الآن",
+      "minutesAgo": "منذ {{count}} د",
+      "hoursAgo": "منذ {{count}} س",
+      "daysAgo": "منذ {{count}} ي",
+      "weeksAgo": "منذ {{count}} أ"
+    },
+    "governorates": {
+      "cairo": "القاهرة",
+      "giza": "الجيزة",
+      "alexandria": "الإسكندرية",
+      "dakahlia": "الدقهلية",
+      "red_sea": "البحر الأحمر",
+      "beheira": "البحيرة",
+      "fayoum": "الفيوم",
+      "gharbia": "الغربية",
+      "ismailia": "الإسماعيلية",
+      "menofia": "المنوفية",
+      "minya": "المنيا",
+      "qaliubiya": "القليوبية",
+      "new_valley": "الوادي الجديد",
+      "north_sinai": "شمال سيناء",
+      "port_said": "بورسعيد",
+      "qalyubia": "القليوبية",
+      "sharqia": "الشرقية",
+      "south_sinai": "جنوب سيناء",
+      "suez": "السويس",
+      "aswan": "أسوان",
+      "asyut": "أسيوط",
+      "beni_suef": "بني سويف",
+      "kafr_el-sheikh": "كفر الشيخ",
+      "luxor": "الأقصر",
+      "matrouh": "مطروح",
+      "sohag": "سوهاج",
+      "qena": "قنا",
+      "damietta": "دمياط"
+    }
   },
   "footer": {
     "rights": "جميع الحقوق محفوظة",
@@ -586,7 +631,11 @@
       "active": "نشط",
       "warning": "تحذير",
       "viewDetails": "عرض التفاصيل",
-      "remove": "إزالة"
+      "remove": "إزالة",
+      "mock": {
+        "home": "المنزل",
+        "office": "المكتب"
+      }
     },
     "preferences": {
       "title": "تفضيلات الإشعارات",
@@ -613,7 +662,9 @@
       "governorate": "المحافظة",
       "preferredLanguage": "اللغة المفضلة",
       "accountStatus": "حالة الحساب",
-      "active": "نشط"
+      "active": "نشط",
+      "selectGovernorate": "اختر المحافظة",
+      "emailReadOnly": "لا يمكن تغيير البريد الإلكتروني."
     },
     "aiAssistant": {
       "title": "مستشار الطاقة بالذكاء الاصطناعي",
@@ -632,7 +683,8 @@
       "targetBillAmount": "مبلغ الفاتورة المستهدف",
       "targetSheriha": "الشريحة المستهدفة",
       "target": "الهدف",
-      "used": "مستخدم"
+      "used": "مستخدم",
+      "noScanData": "ستظهر بيانات الاستهلاك هنا بمجرد مسح قراءة العداد الخاصة بك."
     },
     "security": {
       "title": "إعدادات الأمان",
@@ -644,7 +696,11 @@
       "activeDevicesDesc": "إدارة الأجهزة المسجلة دخولك",
       "loginHistory": "سجل الدخول",
       "loginHistoryDesc": "عرض نشاط الدخول الأخير",
-      "deleteAccount": "حذف الحساب"
+      "deleteAccount": "حذف الحساب",
+      "actions": {
+        "enable": "تفعيل",
+        "view": "عرض"
+      }
     },
     "activity": {
       "title": "سجل النشاط",
@@ -652,14 +708,37 @@
       "scannedMeter": "مسح قراءة العداد",
       "updatedProfile": "تحديث المعلومات الشخصية",
       "receivedAlert": "استلام تنبيه الشرائح",
-      "downloadedReport": "تحميل التقرير الشهري"
+      "downloadedReport": "تحميل التقرير الشهري",
+      "types": {
+        "login": "سجّل الدخول",
+        "logout": "سجّل الخروج",
+        "register": "أنشأ حساباً جديداً",
+        "profile_updated": "حدّث المعلومات الشخصية",
+        "picture_updated": "حدّث صورة الملف الشخصي",
+        "goals_updated": "حدّث أهداف الاستهلاك",
+        "notification_prefs_updated": "حدّث تفضيلات الإشعارات",
+        "scan_uploaded": "مسح قراءة العداد",
+        "bill_uploaded": "رفع فاتورة الكهرباء",
+        "alert_received": "استقبل تنبيهاً للشريحة",
+        "report_downloaded": "حمّل التقرير الشهري",
+        "meter_added": "أضاف عداداً جديداً",
+        "meter_removed": "أزال عداداً"
+      },
+      "empty": "لا يوجد نشاط بعد.",
+      "loadingMore": "جاري التحميل..."
     },
     "pwa": {
       "title": "حالة تثبيت التطبيق",
       "installed": "مثبت",
       "notInstalled": "غير مثبت",
       "pushNotifications": "إشعارات الدفع",
-      "offlineSync": "المزامنة بدون إنترنت"
+      "offlineSync": "المزامنة بدون إنترنت",
+      "platforms": {
+        "android": "أندرويد",
+        "iphone": "آيفون",
+        "windows": "ويندوز",
+        "macos": "ماك أو إس"
+      }
     },
     "subscription": {
       "title": "الاشتراك",
@@ -671,7 +750,43 @@
       "savingsThisMonth": "التوفير هذا الشهر",
       "savingsDesc": "لقد وفرت حوالي 180 جنيه هذا الشهر من خلال توصيات كشف بالذكاء الاصطناعي.",
       "upgradePlan": "ترقية الخطة",
-      "manageSubscription": "إدارة الاشتراك"
+      "upgradeToFamily": "ترقية إلى الخطة العائلية",
+      "manageSubscription": "إدارة الاشتراك",
+      "notApplicable": "غير متوفر",
+      "noCharge": "مجاني للأبد",
+      "includes": "ما تشمله الخطة",
+      "plans": {
+        "free": {
+          "name": "الخطة المجانية",
+          "features": [
+            "عداد كهرباء واحد",
+            "تتبع أساسي للشرائح",
+            "إدخال الفواتير يدويًا"
+          ]
+        },
+        "plus": {
+          "name": "خطة بلس",
+          "features": [
+            "حتى ٣ عدادات كهرباء",
+            "نصائح استهلاك بالذكاء الاصطناعي",
+            "تنبيهات تجاوز الشرائح",
+            "تقارير شهرية",
+            "دعم فني ذو أولوية"
+          ],
+          "savingsNote": "في المتوسط، يوفر مستخدمو بلس من ١٥٠ إلى ٣٠٠ جنيه شهرياً."
+        },
+        "family": {
+          "name": "الخطة العائلية",
+          "features": [
+            "عدادات غير محدودة",
+            "جميع ميزات خطة بلس",
+            "لوحة تحكم استهلاك عائلية",
+            "مدير حساب مخصص",
+            "تنبيهات عبر الرسائل النصية القصيرة SMS"
+          ],
+          "savingsNote": "يوفر مستخدمو الخطة العائلية في المتوسط من ٤٠٠ إلى ٨٠٠ جنيه شهرياً."
+        }
+      }
     }
   }
 }

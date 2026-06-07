@@ -3,7 +3,52 @@
         "brand": "Kashf",
         "brandAdmin": "Kashf Admin",
         "plannedContent": "Planned content",
-        "loading": "Loading Kashf"
+        "loading": "Loading Kashf",
+        "editGoals": "Edit Goals",
+        "kwh": "kWh",
+        "egp": "EGP",
+        "kwhValue": "{{value}} kWh",
+        "egpValue": "EGP {{value}}",
+        "tier": "Tier {{tier}}",
+        "enable": "Enable",
+        "view": "View",
+        "time": {
+            "justNow": "just now",
+            "minutesAgo": "{{count}}m ago",
+            "hoursAgo": "{{count}}h ago",
+            "daysAgo": "{{count}}d ago",
+            "weeksAgo": "{{count}}w ago"
+        },
+        "governorates": {
+            "cairo": "Cairo",
+            "giza": "Giza",
+            "alexandria": "Alexandria",
+            "dakahlia": "Dakahlia",
+            "red_sea": "Red Sea",
+            "beheira": "Beheira",
+            "fayoum": "Fayoum",
+            "gharbia": "Gharbia",
+            "ismailia": "Ismailia",
+            "menofia": "Menofia",
+            "minya": "Minya",
+            "qaliubiya": "Qaliubiya",
+            "new_valley": "New Valley",
+            "north_sinai": "North Sinai",
+            "port_said": "Port Said",
+            "qalyubia": "Qalyubia",
+            "sharqia": "Sharqia",
+            "south_sinai": "South Sinai",
+            "suez": "Suez",
+            "aswan": "Aswan",
+            "asyut": "Asyut",
+            "beni_suef": "Beni Suef",
+            "kafr_el-sheikh": "Kafr el-Sheikh",
+            "luxor": "Luxor",
+            "matrouh": "Matrouh",
+            "sohag": "Sohag",
+            "qena": "Qena",
+            "damietta": "Damietta"
+        }
     },
     "footer": {
         "rights": "All rights reserved",
@@ -590,7 +635,11 @@
             "active": "Active",
             "warning": "Warning",
             "viewDetails": "View Details",
-            "remove": "Remove"
+            "remove": "Remove",
+            "mock": {
+                "home": "Home",
+                "office": "Office"
+            }
         },
         "preferences": {
             "title": "Notification Preferences",
@@ -617,7 +666,9 @@
             "governorate": "Governorate",
             "preferredLanguage": "Preferred Language",
             "accountStatus": "Account Status",
-            "active": "Active"
+            "active": "Active",
+            "selectGovernorate": "Select governorate",
+            "emailReadOnly": "Email cannot be changed."
         },
         "aiAssistant": {
             "title": "AI Energy Advisor",
@@ -636,7 +687,8 @@
             "targetBillAmount": "Target Bill Amount",
             "targetSheriha": "Target Sheriha",
             "target": "Target",
-            "used": "Used"
+            "used": "Used",
+            "noScanData": "Consumption data will appear here once you scan your meter."
         },
         "security": {
             "title": "Security Settings",
@@ -648,7 +700,11 @@
             "activeDevicesDesc": "Manage your logged-in devices",
             "loginHistory": "Login History",
             "loginHistoryDesc": "View recent login activity",
-            "deleteAccount": "Delete Account"
+            "deleteAccount": "Delete Account",
+            "actions": {
+                "enable": "Enable",
+                "view": "View"
+            }
         },
         "activity": {
             "title": "Activity History",
@@ -656,14 +712,37 @@
             "scannedMeter": "Scanned Meter Reading",
             "updatedProfile": "Updated Profile Information",
             "receivedAlert": "Received Sheriha Alert",
-            "downloadedReport": "Downloaded Monthly Report"
+            "downloadedReport": "Downloaded Monthly Report",
+            "types": {
+                "login": "Logged In",
+                "logout": "Logged Out",
+                "register": "Created Account",
+                "profile_updated": "Updated Personal Information",
+                "picture_updated": "Updated Profile Picture",
+                "goals_updated": "Updated Consumption Goals",
+                "notification_prefs_updated": "Updated Notification Preferences",
+                "scan_uploaded": "Scanned Meter Reading",
+                "bill_uploaded": "Uploaded Electricity Bill",
+                "alert_received": "Received Sheriha Alert",
+                "report_downloaded": "Downloaded Monthly Report",
+                "meter_added": "Added New Meter",
+                "meter_removed": "Removed Meter"
+            },
+            "empty": "No activity yet.",
+            "loadingMore": "Loading..."
         },
         "pwa": {
             "title": "PWA Installation Status",
             "installed": "Installed",
             "notInstalled": "Not Installed",
             "pushNotifications": "Push Notifications",
-            "offlineSync": "Offline Sync"
+            "offlineSync": "Offline Sync",
+            "platforms": {
+                "android": "Android",
+                "iphone": "iPhone",
+                "windows": "Windows",
+                "macos": "macOS"
+            }
         },
         "subscription": {
             "title": "Subscription",
@@ -675,7 +754,43 @@
             "savingsThisMonth": "Savings This Month",
             "savingsDesc": "You've saved approximately EGP 180 this month through Kashf's AI recommendations.",
             "upgradePlan": "Upgrade Plan",
-            "manageSubscription": "Manage Subscription"
+            "upgradeToFamily": "Upgrade to Family",
+            "manageSubscription": "Manage Subscription",
+            "notApplicable": "N/A",
+            "noCharge": "Free forever",
+            "includes": "What's included",
+            "plans": {
+                "free": {
+                    "name": "Free Plan",
+                    "features": [
+                        "1 electricity meter",
+                        "Basic tier tracking",
+                        "Manual bill entry"
+                    ]
+                },
+                "plus": {
+                    "name": "Plus Plan",
+                    "features": [
+                        "Up to 3 electricity meters",
+                        "AI-powered consumption tips",
+                        "Tier crossing alerts",
+                        "Monthly reports",
+                        "Priority support"
+                    ],
+                    "savingsNote": "On average, Plus users save EGP 150–300/month."
+                },
+                "family": {
+                    "name": "Family Plan",
+                    "features": [
+                        "Unlimited meters",
+                        "All Plus features",
+                        "Family usage dashboard",
+                        "Dedicated account manager",
+                        "SMS alerts"
+                    ],
+                    "savingsNote": "Family plan users save an average of EGP 400–800/month."
+                }
+            }
         }
     }
 }

@@ -16,19 +16,19 @@ const SecuritySettings = () => {
       icon: Shield,
       label: t("profile.security.twoFactorAuth"),
       description: t("profile.security.twoFactorAuthDesc"),
-      action: "Enable",
+      action: t("profile.security.actions.enable", { defaultValue: "Enable" }),
     },
     {
       icon: Smartphone,
       label: t("profile.security.activeDevices"),
       description: t("profile.security.activeDevicesDesc"),
-      action: "View",
+      action: t("profile.security.actions.view", { defaultValue: "View" }),
     },
     {
       icon: History,
       label: t("profile.security.loginHistory"),
       description: t("profile.security.loginHistoryDesc"),
-      action: "View",
+      action: t("profile.security.actions.view", { defaultValue: "View" }),
     },
   ];
 
@@ -50,7 +50,7 @@ const SecuritySettings = () => {
                 <option.icon className="w-4 h-4 text-kashf-blue" />
               </div>
               <div>
-                <p className="text-sm text-white font-medium">{option.label}</p>
+                <p className="text-sm text-white font-medium mb-1">{option.label}</p>
                 <p className="text-xs text-neutral-400">{option.description}</p>
               </div>
             </div>

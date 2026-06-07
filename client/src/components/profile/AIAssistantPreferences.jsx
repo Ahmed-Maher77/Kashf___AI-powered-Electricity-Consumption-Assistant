@@ -20,10 +20,10 @@ const AIAssistantPreferences = () => {
           </h3>
           <div className="flex gap-2">
             <button className="flex-1 px-4 py-2 rounded-lg bg-kashf-blue text-kashf-bg font-medium text-sm">
-              Arabic
+              {t("language.ar", { defaultValue: "Arabic" })}
             </button>
             <button className="flex-1 px-4 py-2 rounded-lg bg-kashf-bg/50 border border-kashf-border/50 text-neutral-300 font-medium text-sm hover:border-kashf-blue/30 transition-colors">
-              English
+              {t("language.en", { defaultValue: "English" })}
             </button>
           </div>
         </div>

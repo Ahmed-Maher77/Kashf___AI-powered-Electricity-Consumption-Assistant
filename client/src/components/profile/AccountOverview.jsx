@@ -15,7 +15,7 @@ const AccountOverview = () => {
     {
       icon: TrendingUp,
       label: t("profile.overview.currentConsumption"),
-      value: "— kWh",
+      value: `— ${t("common.kwh", { defaultValue: "kWh" })}`,
       color: "text-emerald-400",
       bg: "bg-emerald-500/10",
     },

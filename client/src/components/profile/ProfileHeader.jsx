@@ -9,7 +9,6 @@ const ProfileHeader = () => {
   const { t, i18n } = useTranslation();
   const user = useSelector(selectUser);
   const subscriptionPlan = useSelector(selectSubscriptionPlan);
-  const isRTL = i18n.dir() === "rtl";
 
   const getPlanBadge = (plan) => {
     switch (plan) {
@@ -31,8 +30,7 @@ const ProfileHeader = () => {
 
   return (
     <div className="mb-6">
-      {/* flex-row-reverse in RTL so avatar appears on the right */}
-      <div className={`flex gap-6 ${isRTL ? "flex-col md:flex-row-reverse" : "flex-col md:flex-row"}`}>
+      <div className="flex flex-col md:flex-row gap-6">
 
         {/* Profile Picture */}
         <div className="flex-shrink-0">

@@ -25,7 +25,7 @@ const ACTIVITY_ICON_MAP = {
 const DEFAULT_ICON = { icon: Clock, bg: "bg-neutral-500/20", color: "text-neutral-400", ring: "ring-neutral-500/30" };
 
 // Relative time formatter
-const formatRelativeTime = (dateStr) => {
+const formatRelativeTime = (dateStr, t) => {
   const diff = Date.now() - new Date(dateStr).getTime();
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -33,11 +33,11 @@ const formatRelativeTime = (dateStr) => {
   const days    = Math.floor(hours   / 24);
   const weeks   = Math.floor(days    / 7);
 
-  if (seconds < 60)  return "just now";
-  if (minutes < 60)  return `${minutes}m ago`;
-  if (hours   < 24)  return `${hours}h ago`;
-  if (days    < 7)   return `${days}d ago`;
-  if (weeks   < 4)   return `${weeks}w ago`;
+  if (seconds < 60)  return t("common.time.justNow", { defaultValue: "just now" });
+  if (minutes < 60)  return t("common.time.minutesAgo", { count: minutes, defaultValue: `${minutes}m ago` });
+  if (hours   < 24)  return t("common.time.hoursAgo", { count: hours, defaultValue: `${hours}h ago` });
+  if (days    < 7)   return t("common.time.daysAgo", { count: days, defaultValue: `${days}d ago` });
+  if (weeks   < 4)   return t("common.time.weeksAgo", { count: weeks, defaultValue: `${weeks}w ago` });
   return new Date(dateStr).toLocaleDateString();
 };
 
@@ -124,7 +124,7 @@ const ActivityHistory = () => {
                   {getActivityLabel(activity.type)}
                 </p>
                 <p className="text-xs text-neutral-400 mt-1">
-                  {formatRelativeTime(activity.createdAt)}
+                  {formatRelativeTime(activity.createdAt, t)}
                 </p>
               </div>
             </div>
@@ -138,7 +138,7 @@ const ActivityHistory = () => {
               disabled={loading}
               className="text-sm text-kashf-blue hover:underline disabled:opacity-50 cursor-pointer"
             >
-              {loading ? "Loading..." : t("profile.activity.loadMore", { defaultValue: "Load more" })}
+              {loading ? t("profile.activity.loadingMore", { defaultValue: "Loading..." }) : t("profile.activity.loadMore", { defaultValue: "Load more" })}
             </button>
           </div>
         )}

@@ -8,17 +8,17 @@ const ConnectedMeters = () => {
   const isRTL = i18n.dir() === "rtl";
   const meters = [
     {
-      name: "Home",
+      name: t("profile.meters.mock.home", { defaultValue: "Home" }),
       number: "12345678",
-      consumption: "285 kWh",
-      tier: "Tier 3",
+      consumption: t("common.kwhValue", { value: 285, defaultValue: "285 kWh" }),
+      tier: t("common.tier", { tier: 3, defaultValue: "Tier 3" }),
       status: "active",
     },
     {
-      name: "Office",
+      name: t("profile.meters.mock.office", { defaultValue: "Office" }),
       number: "87654321",
-      consumption: "142 kWh",
-      tier: "Tier 2",
+      consumption: t("common.kwhValue", { value: 142, defaultValue: "142 kWh" }),
+      tier: t("common.tier", { tier: 2, defaultValue: "Tier 2" }),
       status: "warning",
     },
   ];

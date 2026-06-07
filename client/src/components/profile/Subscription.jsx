@@ -88,7 +88,7 @@ const Subscription = () => {
             <div>
               <p className="text-xs text-neutral-400">{t("profile.subscription.currentPlan")}</p>
               <p className={`text-base font-bold ${config.color}`}>
-                {plan.charAt(0).toUpperCase() + plan.slice(1)} Plan
+                {t(`profile.subscription.plans.${plan}.name`, { defaultValue: `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan` })}
               </p>
             </div>
           </div>
@@ -114,10 +114,10 @@ const Subscription = () => {
             {t("profile.subscription.includes", { defaultValue: "What's included" })}
           </p>
           <ul className="space-y-2 mb-4">
-            {config.features.map((f) => (
+            {config.features.map((f, idx) => (
               <li key={f} className="flex items-center gap-2 text-sm text-neutral-300">
                 <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                {f}
+                {t(`profile.subscription.plans.${plan}.features.${idx}`, { defaultValue: f })}
               </li>
             ))}
           </ul>
@@ -130,7 +130,9 @@ const Subscription = () => {
                   {t("profile.subscription.savingsThisMonth")}
                 </span>
               </div>
-              <p className="text-xs text-neutral-400">{config.savingsNote}</p>
+              <p className="text-xs text-neutral-400">
+                {t(`profile.subscription.plans.${plan}.savingsNote`, { defaultValue: config.savingsNote })}
+              </p>
             </div>
           )}
         </div>
@@ -146,7 +148,7 @@ const Subscription = () => {
             onClick={() => navigate("/pricing")}
           >
             {t("profile.subscription.upgradePlan")}
-            <ArrowUpRight className={`w-4 h-4 ${isRTL ? "rotate-180" : ""}`} />
+            <ArrowUpRight className={`w-4 h-4 ${isRTL ? "rotate-270" : ""}`} />
           </Button>
         )}
 
