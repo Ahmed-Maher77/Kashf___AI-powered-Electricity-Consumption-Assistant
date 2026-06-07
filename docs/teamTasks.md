@@ -18,7 +18,7 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | Login page + form | — | |
 | 🟢 Done | AuthBootstrap: silent refresh on mount | — | |
 | 🟢 Done | Session coordinator (token refresh + retry) | — | |
-| 🟢 Done | Redux auth slice (user, accessToken, status) | — | |
+| 🟢 Done | Redux auth slice (user, accessToken, status) | — | Now includes consumptionGoals, notificationPreferences, phone, governorate, preferredLanguage, createdAt |
 | 🟢 Done | Route guards (protected / public / admin) | — | |
 
 ### Welcome Page
@@ -33,7 +33,8 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | PWASection (responsive, install prompt) | — | |
 | 🟢 Done | TestimonialsSection | — | |
 | 🟢 Done | CTASection | — | |
-| 🟢 Done | Shared UI primitives (SectionBadge, SectionHeading, FeatureList) | — | `src/components/welcome/ui/` |
+| 🟢 Done | Tabs equal width (grid layout) | — | |
+| 🟢 Done | Toggle RTL fix | — | Negative translate in RTL |
 
 ### About Page
 | Status | Task | Owner | Notes |
@@ -63,13 +64,16 @@ Use this file to track task ownership across all workstreams. Update status inli
 ### Dashboard (User)
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| ⚪ Planned | ConsumptionSummaryCard | — | Needs `/api/dashboard` |
-| ⚪ Planned | SherihaBadge + RemainingKwhMeter | — | |
-| ⚪ Planned | BillEstimateCard | — | |
-| ⚪ Planned | TierWarningBanner | — | |
-| ⚪ Planned | ConsumptionChart (recharts / chart.js) | — | |
-| ⚪ Planned | AIRecommendationPreview (top 2–3 tips) | — | |
-| ⚪ Planned | Empty state (no scans yet) | — | |
+| 🟢 Done | PersonalInformation (view + edit profile form) | — | Real data from Redux, edit via PATCH /api/auth/profile, fallbacks for empty fields |
+| 🟢 Done | NotificationPreferences (functional toggles) | — | Optimistic toggle, debounced PATCH /api/auth/notifications, RTL fix |
+| 🟢 Done | AIAssistantPreferences | — | |
+| 🟢 Done | ConsumptionGoals (real goals + edit) | — | Reads user.consumptionGoals, edit via PATCH /api/auth/goals, 0% progress until scans |
+| 🟢 Done | SecuritySettings | — | |
+| 🟢 Done | ActivityHistory (real API data + semantic icons) | — | useActivity hook, 13-type icon map, relative time, skeleton, empty state, pagination |
+| 🟢 Done | PWAStatus | — | |
+| 🟢 Done | ProfileHeader (RTL avatar fix, real member since) | — | flex-row-reverse in RTL, real createdAt |
+| 🟢 Done | AccountOverview (RTL icon fix) | — | Logical start alignment for icons |
+| 🟢 Done | Subscription (real plan data + functional actions) | — | Plan-based feature lists, navigate to /pricing |
 
 ### Scan Page
 | Status | Task | Owner | Notes |
@@ -122,12 +126,19 @@ Use this file to track task ownership across all workstreams. Update status inli
 ### Auth (Implemented ✅)
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| 🟢 Done | POST /api/auth/register | — | bcrypt, Cloudinary, JWT, cookies |
-| 🟢 Done | POST /api/auth/login | — | |
-| 🟢 Done | POST /api/auth/logout | — | clearAuthCookies |
+| 🟢 Done | POST /api/auth/register | — | bcrypt, Cloudinary, JWT, cookies, logActivity(register) |
+| 🟢 Done | POST /api/auth/login | — | logActivity(login) |
+| 🟢 Done | POST /api/auth/logout | — | logActivity(logout) |
 | 🟢 Done | POST /api/auth/refresh-token | — | rotating refresh tokens |
 | 🟢 Done | GET /api/auth/me | — | isAuthenticated guard |
-| 🟢 Done | PATCH /api/auth/profile/picture | — | Multer + Cloudinary |
+| 🟢 Done | PATCH /api/auth/profile/picture | — | Multer + Cloudinary, logActivity(picture_updated) |
+| 🟢 Done | PATCH /api/auth/profile | — | Edit username, phone, governorate, preferredLanguage; logActivity(profile_updated) |
+| 🟢 Done | PATCH /api/auth/goals | — | Update consumptionGoals; logActivity(goals_updated) |
+| 🟢 Done | PATCH /api/auth/notifications | — | Partial update notificationPreferences; logActivity(notification_prefs_updated) |
+| 🟢 Done | GET /api/activity | — | Paginated activity history for current user |
+| 🟢 Done | User model (Mongoose) | — | Added: phone, governorate, preferredLanguage, consumptionGoals, notificationPreferences |
+| 🟢 Done | Activity model (Mongoose) | — | userId, type enum (13 types), metadata, 90-day TTL |
+| 🟢 Done | activity.service.js (logActivity + getUserActivity) | — | logActivity is non-critical (fire-and-forget) |
 | 🟢 Done | User model (Mongoose) | — | username, email, password, role, picture |
 | 🟢 Done | token.service.js (sign, verify, set/clear cookies) | — | |
 | 🟢 Done | asyncHandler middleware | — | |

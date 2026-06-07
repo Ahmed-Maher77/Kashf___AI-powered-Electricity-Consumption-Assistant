@@ -566,7 +566,7 @@
     },
     "header": {
       "premiumUser": "مستخدم مميز",
-      "memberSince": "عضو منذ: يناير 2026"
+      "memberSince": "عضو منذ"
     },
     "overview": {
       "title": "نظرة عامة على الحساب",
@@ -612,7 +612,8 @@
       "phoneNumber": "رقم الهاتف",
       "governorate": "المحافظة",
       "preferredLanguage": "اللغة المفضلة",
-      "accountStatus": "حالة الحساب"
+      "accountStatus": "حالة الحساب",
+      "active": "نشط"
     },
     "aiAssistant": {
       "title": "مستشار الطاقة بالذكاء الاصطناعي",
@@ -630,6 +631,7 @@
       "monthlyConsumption": "الاستهلاك الشهري",
       "targetBillAmount": "مبلغ الفاتورة المستهدف",
       "targetSheriha": "الشريحة المستهدفة",
+      "target": "الهدف",
       "used": "مستخدم"
     },
     "security": {

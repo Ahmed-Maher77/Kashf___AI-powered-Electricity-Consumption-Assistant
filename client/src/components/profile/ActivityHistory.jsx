@@ -1,79 +1,147 @@
 import { useTranslation } from "react-i18next";
-import { Clock, Upload, Scan, User, Bell, Download, FileText } from "lucide-react";
+import {
+  LogIn, LogOut, UserPlus, UserCog, Camera, Target, Bell,
+  ScanLine, Upload, AlertTriangle, Download, Plus, Trash2, Clock, RefreshCw
+} from "lucide-react";
+import useActivity from "../../hooks/useActivity";
+
+// Map each activity type to a semantic icon + color scheme
+const ACTIVITY_ICON_MAP = {
+  login:                      { icon: LogIn,         bg: "bg-kashf-blue/20",   color: "text-kashf-blue",    ring: "ring-kashf-blue/30" },
+  logout:                     { icon: LogOut,        bg: "bg-neutral-500/20",  color: "text-neutral-400",   ring: "ring-neutral-500/30" },
+  register:                   { icon: UserPlus,      bg: "bg-emerald-500/20",  color: "text-emerald-400",   ring: "ring-emerald-500/30" },
+  profile_updated:            { icon: UserCog,       bg: "bg-purple-500/20",   color: "text-purple-400",    ring: "ring-purple-500/30" },
+  picture_updated:            { icon: Camera,        bg: "bg-violet-500/20",   color: "text-violet-400",    ring: "ring-violet-500/30" },
+  goals_updated:              { icon: Target,        bg: "bg-amber-500/20",    color: "text-amber-400",     ring: "ring-amber-500/30" },
+  notification_prefs_updated: { icon: Bell,          bg: "bg-sky-500/20",      color: "text-sky-400",       ring: "ring-sky-500/30" },
+  scan_uploaded:              { icon: ScanLine,      bg: "bg-kashf-blue/20",   color: "text-kashf-blue",    ring: "ring-kashf-blue/30" },
+  bill_uploaded:              { icon: Upload,        bg: "bg-emerald-500/20",  color: "text-emerald-400",   ring: "ring-emerald-500/30" },
+  alert_received:             { icon: AlertTriangle, bg: "bg-amber-500/20",    color: "text-amber-400",     ring: "ring-amber-500/30" },
+  report_downloaded:          { icon: Download,      bg: "bg-neutral-500/20",  color: "text-neutral-400",   ring: "ring-neutral-500/30" },
+  meter_added:                { icon: Plus,          bg: "bg-emerald-500/20",  color: "text-emerald-400",   ring: "ring-emerald-500/30" },
+  meter_removed:              { icon: Trash2,        bg: "bg-red-500/20",      color: "text-red-400",       ring: "ring-red-500/30" },
+};
+
+const DEFAULT_ICON = { icon: Clock, bg: "bg-neutral-500/20", color: "text-neutral-400", ring: "ring-neutral-500/30" };
+
+// Relative time formatter
+const formatRelativeTime = (dateStr) => {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours   = Math.floor(minutes / 60);
+  const days    = Math.floor(hours   / 24);
+  const weeks   = Math.floor(days    / 7);
+
+  if (seconds < 60)  return "just now";
+  if (minutes < 60)  return `${minutes}m ago`;
+  if (hours   < 24)  return `${hours}h ago`;
+  if (days    < 7)   return `${days}d ago`;
+  if (weeks   < 4)   return `${weeks}w ago`;
+  return new Date(dateStr).toLocaleDateString();
+};
+
+// Skeleton row
+const SkeletonRow = () => (
+  <div className="relative flex items-start gap-4 pb-8 animate-pulse">
+    <div className="absolute -start-10 top-0 w-12 h-12 rounded-full bg-neutral-800 z-10" />
+    <div className="flex-grow ms-8 pt-1 space-y-2">
+      <div className="h-3 bg-neutral-800 rounded w-2/3" />
+      <div className="h-2.5 bg-neutral-700 rounded w-1/3" />
+    </div>
+  </div>
+);
 
 const ActivityHistory = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.dir() === "rtl";
-  
-  const activities = [
-    {
-      icon: Upload,
-      label: t("profile.activity.uploadedBill"),
-      time: "2 hours ago",
-      bgColor: "bg-emerald-500/20",
-      iconColor: "text-emerald-400",
-      ringColor: "ring-emerald-500/30",
-    },
-    {
-      icon: Scan,
-      label: t("profile.activity.scannedMeter"),
-      time: "1 day ago",
-      bgColor: "bg-kashf-blue/20",
-      iconColor: "text-kashf-blue",
-      ringColor: "ring-kashf-blue/30",
-    },
-    {
-      icon: User,
-      label: t("profile.activity.updatedProfile"),
-      time: "3 days ago",
-      bgColor: "bg-purple-500/20",
-      iconColor: "text-purple-400",
-      ringColor: "ring-purple-500/30",
-    },
-    {
-      icon: Bell,
-      label: t("profile.activity.receivedAlert"),
-      time: "5 days ago",
-      bgColor: "bg-amber-500/20",
-      iconColor: "text-amber-400",
-      ringColor: "ring-amber-500/30",
-    },
-    {
-      icon: Download,
-      label: t("profile.activity.downloadedReport"),
-      time: "1 week ago",
-      bgColor: "bg-neutral-500/20",
-      iconColor: "text-neutral-400",
-      ringColor: "ring-neutral-500/30",
-    },
-  ];
+  const { items, loading, error, hasMore, loadMore, refresh } = useActivity({ limit: 10 });
+
+  const getActivityLabel = (type) =>
+    t(`profile.activity.types.${type}`, { defaultValue: type.replace(/_/g, " ") });
 
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-2 mb-6 mt-18">
-        <Clock className="w-5 h-5 text-kashf-blue" />
-        <h2 className="text-lg font-semibold text-white">{t("profile.activity.title")}</h2>
+      <div className="flex items-center justify-between gap-2 mb-6 mt-18">
+        <div className="flex items-center gap-2">
+          <Clock className="w-5 h-5 text-kashf-blue" />
+          <h2 className="text-lg font-semibold text-white">{t("profile.activity.title")}</h2>
+        </div>
+        <button
+          onClick={refresh}
+          className="text-neutral-500 hover:text-kashf-blue transition-colors cursor-pointer"
+          title="Refresh"
+        >
+          <RefreshCw className="w-4 h-4" />
+        </button>
       </div>
 
-      <div className={"relative " + (isRTL ? "pr-8" : "pl-8")}>
+      {error && (
+        <p className="text-sm text-red-400 mb-4 px-4 py-2 bg-red-500/10 rounded-lg border border-red-500/20">
+          {error}
+        </p>
+      )}
 
-        {activities.map((activity, index) => (
-          <div
-            key={activity.label}
-            className={"relative flex items-start gap-4 pb-8 group " + (index < activities.length - 1 ? (isRTL ? "before:-right-4 before:top-12 before:bottom-0 before:w-0.5 before:bg-neutral-700/30 before:absolute" : "before:-left-4 before:top-12 before:bottom-0 before:w-0.5 before:bg-neutral-700/30 before:absolute") : "")}
-          >
-            {/* Circle with icon and ring */}
-            <div className={"absolute top-0 w-12 h-12 rounded-full border-2 border-kashf-surface z-10 flex items-center justify-center shrink-0 ring-2 ring-offset-2 ring-offset-kashf-surface " + (isRTL ? "-right-10" : "-left-10") + " " + activity.bgColor + " " + activity.ringColor}>
-              <activity.icon className={"w-5 h-5 " + activity.iconColor} />
-            </div>
+      <div className={`relative ${isRTL ? "pr-8" : "pl-8"}`}>
+        {loading && items.length === 0 && (
+          Array.from({ length: 4 }).map((_, i) => <SkeletonRow key={i} />)
+        )}
 
-            {/* Content */}
-            <div className={"flex-grow min-w-0 pt-1 " + (isRTL ? "mr-8" : "ml-8")}>
-              <p className="text-sm text-white font-medium group-hover:text-kashf-blue transition-colors">{activity.label}</p>
-              <p className="text-xs text-neutral-400 mt-1">{activity.time}</p>
-            </div>
+        {!loading && items.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-12 text-neutral-500">
+            <Clock className="w-10 h-10 mb-3 opacity-30" />
+            <p className="text-sm">{t("profile.activity.empty", { defaultValue: "No activity yet." })}</p>
           </div>
-        ))}
+        )}
+
+        {items.map((activity, index) => {
+          const { icon: Icon, bg, color, ring } = ACTIVITY_ICON_MAP[activity.type] ?? DEFAULT_ICON;
+          const isLast = index === items.length - 1 && !hasMore;
+
+          return (
+            <div
+              key={activity._id}
+              className={`relative flex items-start gap-4 pb-8 group ${
+                !isLast
+                  ? isRTL
+                    ? "before:-right-4 before:top-12 before:bottom-0 before:w-0.5 before:bg-neutral-700/40 before:absolute"
+                    : "before:-left-4 before:top-12 before:bottom-0 before:w-0.5 before:bg-neutral-700/40 before:absolute"
+                  : ""
+              }`}
+            >
+              {/* Icon bubble */}
+              <div
+                className={`absolute top-0 w-10 h-10 rounded-full border-2 border-kashf-surface z-10 flex items-center justify-center shrink-0 ring-2 ring-offset-2 ring-offset-kashf-surface ${
+                  isRTL ? "-right-9" : "-left-9"
+                } ${bg} ${ring}`}
+              >
+                <Icon className={`w-4 h-4 ${color}`} />
+              </div>
+
+              {/* Content */}
+              <div className={`flex-grow min-w-0 pt-1 ${isRTL ? "mr-6" : "ml-6"}`}>
+                <p className="text-sm text-white font-medium group-hover:text-kashf-blue transition-colors">
+                  {getActivityLabel(activity.type)}
+                </p>
+                <p className="text-xs text-neutral-400 mt-1">
+                  {formatRelativeTime(activity.createdAt)}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+
+        {hasMore && (
+          <div className="flex justify-center pt-2">
+            <button
+              onClick={loadMore}
+              disabled={loading}
+              className="text-sm text-kashf-blue hover:underline disabled:opacity-50 cursor-pointer"
+            >
+              {loading ? "Loading..." : t("profile.activity.loadMore", { defaultValue: "Load more" })}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

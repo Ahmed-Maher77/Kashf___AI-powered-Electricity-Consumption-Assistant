@@ -18,18 +18,24 @@ const ProfileHeader = () => {
       case "family":
         return { label: t("pricing.plan.family.title", { defaultValue: "Family" }), icon: Users, className: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30", iconColor: "text-emerald-400" };
       default:
-        return { label: t("pricing.plan.free.title", { defaultValue: "Free" }), icon: Check , className: "bg-neutral-800 text-neutral-400 border-neutral-700", iconColor: "text-neutral-400" };
+        return { label: t("pricing.plan.free.title", { defaultValue: "Free" }), icon: Check, className: "bg-neutral-800 text-neutral-400 border-neutral-700", iconColor: "text-neutral-400" };
     }
   };
 
   const planBadge = getPlanBadge(subscriptionPlan);
   const PlanIcon = planBadge.icon;
 
+  const memberSince = user?.createdAt
+    ? new Date(user.createdAt).toLocaleDateString(i18n.language, { year: "numeric", month: "long" })
+    : null;
+
   return (
     <div className="mb-6">
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Profile Picture Section */}
-        <div className={`flex-shrink-0 ${isRTL ? "md:order-1" : "md:order-1"}`}>
+      {/* flex-row-reverse in RTL so avatar appears on the right */}
+      <div className={`flex gap-6 ${isRTL ? "flex-col md:flex-row-reverse" : "flex-col md:flex-row"}`}>
+
+        {/* Profile Picture */}
+        <div className="flex-shrink-0">
           <div className="relative">
             <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-kashf-blue/50 ring-offset-4 ring-offset-kashf-surface">
               <UserAvatar user={user} size="full" className="w-full h-full" />
@@ -37,12 +43,12 @@ const ProfileHeader = () => {
           </div>
         </div>
 
-        {/* User Info Section */}
-        <div className={`flex-grow ${isRTL ? "md:order-2" : "md:order-2"}`}>
+        {/* User Info */}
+        <div className="flex-grow">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                {user?.username || user?.name || "Ahmed Maher"}
+                {user?.username || user?.name || "—"}
               </h1>
               <div className="flex items-center gap-3 flex-wrap">
                 {subscriptionPlan !== "free" && (
@@ -61,13 +67,17 @@ const ProfileHeader = () => {
 
           <div className="space-y-2 text-sm text-neutral-400">
             <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-kashf-blue" />
-              <span>{user?.email || "user@example.com"}</span>
+              <Mail className="w-4 h-4 text-kashf-blue flex-shrink-0" />
+              <span>{user?.email || "—"}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-kashf-blue" />
-              <span>{t("profile.header.memberSince")}</span>
-            </div>
+            {memberSince && (
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-kashf-blue flex-shrink-0" />
+                <span>
+                  <b>{t("profile.header.memberSince")}:</b> {memberSince}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -76,3 +86,4 @@ const ProfileHeader = () => {
 };
 
 export default ProfileHeader;
+

@@ -15,14 +15,14 @@
 server/
 ├── server.js                        # Entry point: app setup, route mounts, global middleware
 ├── vercel.json                      # Vercel deployment config (@vercel/node)
-├── netlify.toml                     # Legacy Netlify config (kept for fallback)
 ├── config/
 │   ├── corsOptions.js               # CORS origin whitelist (env-configurable)
 │   └── startServerWithDB.js         # DB connect + app.listen with retry
 ├── database/
 │   ├── dbConnect.js                 # Mongoose connection helper
 │   └── models/
-│       └── user.model.js            # User Mongoose schema
+│       ├── user.model.js            # User schema (auth + profile + goals + notif prefs)
+│       └── activity.model.js        # Activity log schema (userId, type, metadata, 90-day TTL)
 ├── public/
 │   └── views/
 │       ├── home.html                # GET / static page
@@ -31,7 +31,8 @@ server/
 │   └── seedAdmin.js                 # One-time admin seed script
 └── src/
     ├── config/
-    │   ├── auth.constants.js        # AUTH_COOKIE_KEYS, USER_ROLES enums
+    │   ├── auth.constants.js        # AUTH_COOKIE_KEYS, USER_ROLES, SUBSCRIPTION_PLANS
+    │   ├── activity.constants.js    # ACTIVITY_TYPES enum (13 types) + ACTIVITY_TYPE_VALUES
     │   └── cloudinary.js            # uploadToCloudinary / deleteFromCloudinary helpers
     ├── middlewares/
     │   ├── asyncHandler.js          # Wraps async controllers → next(err)
@@ -40,16 +41,19 @@ server/
     │   ├── uploadProfilePicture.js  # Multer memory-storage, image MIME filter
     │   └── validateRequestBody.js   # Joi body validation factory
     ├── modules/
-    │   ├── user.routes.js           # Auth + user profile routes
+    │   ├── user.routes.js           # Auth + user profile routes (8 endpoints)
     │   ├── user.controller.js       # Thin controllers → authService
     │   ├── user.validation.js       # loginSchema, signupSchema (Joi)
+    │   ├── activity.routes.js       # GET /api/activity
+    │   ├── activity.controller.js   # Reads page/limit, calls activityService
     │   └── admin.routes.js          # Admin route stubs (in progress)
     ├── services/
-    │   ├── auth.service.js          # register, login, logout, refreshToken, getMe, updateProfilePicture
+    │   ├── auth.service.js          # register, login, logout, refresh, getMe, updateProfilePicture, updateProfile, updateGoals, updateNotificationPrefs
+    │   ├── activity.service.js      # logActivity (non-critical) + getUserActivity (paginated)
     │   └── token.service.js         # signAccessToken, signRefreshToken, verifyRefreshToken, setAuthCookies, clearAuthCookies
     └── utils/
         ├── AppError.js              # Operational error class
-        └── userMapper.js            # toPublicUser() — strips password from user object
+        └── userMapper.js            # toPublicUser() — public shape including all new fields
 ```
 
 ### Route organization
@@ -57,6 +61,7 @@ server/
 - API routes live under `src/modules/` as feature modules.
 - Auth routes are mounted at `/api/auth` via `app.use("/api/auth", userRoutes)`.
 - Admin routes are mounted at `/api/admin` via `app.use("/api/admin", adminRoutes)`.
+- Activity routes are mounted at `/api/activity` via `app.use("/api/activity", activityRoutes)`.
 - `GET /` serves a static HTML home page; unmatched routes return `404.html`.
 
 ---

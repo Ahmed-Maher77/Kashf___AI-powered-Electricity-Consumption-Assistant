@@ -570,7 +570,7 @@
         },
         "header": {
             "premiumUser": "Premium User",
-            "memberSince": "Member Since: January 2026"
+            "memberSince": "Member Since"
         },
         "overview": {
             "title": "Account Overview",
@@ -616,7 +616,8 @@
             "phoneNumber": "Phone Number",
             "governorate": "Governorate",
             "preferredLanguage": "Preferred Language",
-            "accountStatus": "Account Status"
+            "accountStatus": "Account Status",
+            "active": "Active"
         },
         "aiAssistant": {
             "title": "AI Energy Advisor",
@@ -634,6 +635,7 @@
             "monthlyConsumption": "Monthly Consumption",
             "targetBillAmount": "Target Bill Amount",
             "targetSheriha": "Target Sheriha",
+            "target": "Target",
             "used": "Used"
         },
         "security": {

@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../../database/models/user.model.js";
 import { USER_ROLES, SUBSCRIPTION_PLANS, DEFAULT_SUBSCRIPTION_PLAN } from "../config/auth.constants.js";
+import { ACTIVITY_TYPES } from "../config/activity.constants.js";
 import { deleteFromCloudinary, uploadToCloudinary } from "../config/cloudinary.js";
 import AppError from "../utils/AppError.js";
 import { toPublicUser } from "../utils/userMapper.js";
@@ -11,6 +12,7 @@ import {
     signRefreshToken,
     verifyRefreshToken,
 } from "./token.service.js";
+import { logActivity } from "./activity.service.js";
 
 const SALT_ROUNDS = 10;
 
@@ -57,6 +59,9 @@ export const register = async ({ body, file, res }) => {
         const { accessToken, refreshToken } = buildTokens(user);
         setAuthCookies(res, { accessToken, refreshToken });
 
+        // Log registration activity (non-blocking)
+        logActivity(user._id, ACTIVITY_TYPES.REGISTER);
+
         return {
             user: toPublicUser(user),
             accessToken,
@@ -87,14 +92,18 @@ export const login = async ({ body, res }) => {
     const { accessToken, refreshToken } = buildTokens(user);
     setAuthCookies(res, { accessToken, refreshToken });
 
+    // Log login activity (non-blocking)
+    logActivity(user._id, ACTIVITY_TYPES.LOGIN);
+
     return {
         user: toPublicUser(user),
         accessToken,
     };
 };
 
-export const logout = async ({ res }) => {
+export const logout = async ({ res, userId }) => {
     clearAuthCookies(res);
+    if (userId) logActivity(userId, ACTIVITY_TYPES.LOGOUT);
 };
 
 export const refreshToken = async ({ refreshTokenValue, res }) => {
@@ -154,11 +163,83 @@ export const updateProfilePicture = async ({ userId, file }) => {
             await deleteFromCloudinary(previousPicture);
         }
 
+        logActivity(userId, ACTIVITY_TYPES.PICTURE_UPDATED);
+
         return toPublicUser(user);
     } catch (error) {
         await deleteFromCloudinary(pictureUrl);
         throw error;
     }
+};
+
+// ─── Edit Profile ──────────────────────────────────────────────────────────────
+
+export const updateProfile = async ({ userId, body }) => {
+    const { username, phone, governorate, preferredLanguage } = body;
+
+    // Check username uniqueness if being changed
+    if (username) {
+        const existing = await User.findOne({ username, _id: { $ne: userId } });
+        if (existing) {
+            throw new AppError("Username is already taken.", 409);
+        }
+    }
+
+    const updates = {};
+    if (username          !== undefined) updates.username          = username;
+    if (phone             !== undefined) updates.phone             = phone || null;
+    if (governorate       !== undefined) updates.governorate       = governorate || null;
+    if (preferredLanguage !== undefined) updates.preferredLanguage = preferredLanguage;
+
+    const user = await User.findByIdAndUpdate(
+        userId,
+        { $set: updates },
+        { new: true, runValidators: true }
+    );
+
+    if (!user) throw new AppError("User not found.", 404);
+
+    logActivity(userId, ACTIVITY_TYPES.PROFILE_UPDATED);
+
+    return toPublicUser(user);
+};
+
+// ─── Consumption Goals ─────────────────────────────────────────────────────────
+
+export const updateGoals = async ({ userId, goals }) => {
+    const user = await User.findByIdAndUpdate(
+        userId,
+        { $set: { consumptionGoals: goals } },
+        { new: true, runValidators: true }
+    );
+
+    if (!user) throw new AppError("User not found.", 404);
+
+    logActivity(userId, ACTIVITY_TYPES.GOALS_UPDATED);
+
+    return toPublicUser(user);
+};
+
+// ─── Notification Preferences ──────────────────────────────────────────────────
+
+export const updateNotificationPrefs = async ({ userId, prefs }) => {
+    // Build a $set object with only the provided keys
+    const setFields = {};
+    for (const [key, value] of Object.entries(prefs)) {
+        setFields[`notificationPreferences.${key}`] = value;
+    }
+
+    const user = await User.findByIdAndUpdate(
+        userId,
+        { $set: setFields },
+        { new: true, runValidators: true }
+    );
+
+    if (!user) throw new AppError("User not found.", 404);
+
+    logActivity(userId, ACTIVITY_TYPES.NOTIFICATION_PREFS_UPDATED);
+
+    return toPublicUser(user);
 };
 
 export const hashPasswordForSeed = hashPassword;

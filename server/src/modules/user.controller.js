@@ -34,7 +34,7 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
-    await authService.logout({ res });
+    await authService.logout({ res, userId: req.user?.id });
 
     res.status(200).json({ success: true, message: "Logged out successfully." });
 });
@@ -76,4 +76,31 @@ const updateProfilePicture = asyncHandler(async (req, res) => {
     });
 });
 
-export { register, login, logout, refreshToken, me, updateProfilePicture };
+const updateProfile = asyncHandler(async (req, res) => {
+    const user = await authService.updateProfile({
+        userId: req.user.id,
+        body: req.body,
+    });
+
+    res.status(200).json({ success: true, data: { user } });
+});
+
+const updateGoals = asyncHandler(async (req, res) => {
+    const user = await authService.updateGoals({
+        userId: req.user.id,
+        goals: req.body,
+    });
+
+    res.status(200).json({ success: true, data: { user } });
+});
+
+const updateNotifications = asyncHandler(async (req, res) => {
+    const user = await authService.updateNotificationPrefs({
+        userId: req.user.id,
+        prefs: req.body,
+    });
+
+    res.status(200).json({ success: true, data: { user } });
+});
+
+export { register, login, logout, refreshToken, me, updateProfilePicture, updateProfile, updateGoals, updateNotifications };

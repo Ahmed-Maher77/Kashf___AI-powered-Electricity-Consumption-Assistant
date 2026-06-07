@@ -8,6 +8,7 @@ import cors from "cors";
 import corsOptions from "./config/corsOptions.js";
 import adminRoutes from "./src/modules/admin.routes.js";
 import userRoutes from "./src/modules/user.routes.js";
+import activityRoutes from "./src/modules/activity.routes.js";
 
 
 
@@ -53,6 +54,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", userRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/activity", activityRoutes);
 
 
 

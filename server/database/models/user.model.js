@@ -34,6 +34,38 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: null,
         },
+        // ─── Profile extras ────────────────────────────────────────────────
+        phone: {
+            type: String,
+            default: null,
+            trim: true,
+        },
+        governorate: {
+            type: String,
+            default: null,
+            trim: true,
+        },
+        preferredLanguage: {
+            type: String,
+            enum: ["ar", "en"],
+            default: "ar",
+        },
+        // ─── Consumption goals ─────────────────────────────────────────────
+        consumptionGoals: {
+            monthlyKwhLimit: { type: Number, default: 400, min: 50, max: 2000 },
+            targetBillEgp:   { type: Number, default: 700, min: 10, max: 5000 },
+            targetSheriha:   { type: Number, default: 4,   min: 1,  max: 6   },
+        },
+        // ─── Notification preferences ──────────────────────────────────────
+        notificationPreferences: {
+            sherihaWarning:     { type: Boolean, default: true  },
+            billForecast:       { type: Boolean, default: true  },
+            aiRecommendations:  { type: Boolean, default: true  },
+            monthlyReports:     { type: Boolean, default: false },
+            pushNotifications:  { type: Boolean, default: true  },
+            emailNotifications: { type: Boolean, default: true  },
+            smsNotifications:   { type: Boolean, default: false },
+        },
     },
     { timestamps: true }
 );
@@ -41,3 +73,4 @@ const userSchema = new mongoose.Schema(
 const User = mongoose.model("User", userSchema);
 
 export default User;
+

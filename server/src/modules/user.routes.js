@@ -24,4 +24,10 @@ router.patch(
 );
 router.post("/refresh-token", userController.refreshToken);
 
+// ─── New profile management routes ────────────────────────────────────────────
+router.patch("/profile",       isAuthenticated, userController.updateProfile);
+router.patch("/goals",         isAuthenticated, userController.updateGoals);
+router.patch("/notifications", isAuthenticated, userController.updateNotifications);
+
 export default router;
+
