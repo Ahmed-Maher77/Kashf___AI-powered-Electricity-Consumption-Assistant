@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../../database/models/user.model.js";
-import { USER_ROLES } from "../config/auth.constants.js";
+import { USER_ROLES, SUBSCRIPTION_PLANS, DEFAULT_SUBSCRIPTION_PLAN } from "../config/auth.constants.js";
 import { deleteFromCloudinary, uploadToCloudinary } from "../config/cloudinary.js";
 import AppError from "../utils/AppError.js";
 import { toPublicUser } from "../utils/userMapper.js";
@@ -50,6 +50,7 @@ export const register = async ({ body, file, res }) => {
             email,
             password: hashedPassword,
             role: USER_ROLES.USER,
+            subscriptionPlan: DEFAULT_SUBSCRIPTION_PLAN,
             picture: pictureUrl,
         });
 

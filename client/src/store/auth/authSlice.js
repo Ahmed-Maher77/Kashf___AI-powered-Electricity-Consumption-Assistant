@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { USER_ROLES } from "../../auth/authConstants";
+import { USER_ROLES, SUBSCRIPTION_PLANS } from "../../auth/authConstants";
 import {
     clearAuthSession,
     persistAuthSession,
@@ -84,5 +84,10 @@ export const selectUserRole = (state) => state.auth.role;
 export const selectAccessToken = (state) => state.auth.accessToken;
 export const selectUser = (state) => state.auth.user;
 export const selectIsAdmin = (state) => state.auth.role === USER_ROLES.ADMIN;
+export const selectSubscriptionPlan = (state) => state.auth.user?.subscriptionPlan ?? SUBSCRIPTION_PLANS.FREE;
+export const selectIsPlusOrFamily = (state) => {
+    const plan = state.auth.user?.subscriptionPlan;
+    return plan === SUBSCRIPTION_PLANS.PLUS || plan === SUBSCRIPTION_PLANS.FAMILY;
+};
 
 export default authSlice.reducer;

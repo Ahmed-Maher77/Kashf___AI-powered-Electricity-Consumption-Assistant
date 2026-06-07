@@ -559,5 +559,121 @@
             "primary": "Get Started",
             "secondary": "Contact Us"
         }
+    },
+    "profile": {
+        "tabs": {
+            "overview": "Overview",
+            "meters": "Meters",
+            "preferences": "Preferences",
+            "security": "Security",
+            "subscription": "Subscription"
+        },
+        "header": {
+            "premiumUser": "Premium User",
+            "memberSince": "Member Since: January 2026"
+        },
+        "overview": {
+            "title": "Account Overview",
+            "currentSheriha": "Current Sheriha",
+            "currentConsumption": "Current Consumption",
+            "remainingBeforeNextTier": "Remaining Before Next Tier",
+            "estimatedMonthlyBill": "Estimated Monthly Bill"
+        },
+        "meters": {
+            "title": "My Electricity Meters",
+            "addNewMeter": "Add New Meter",
+            "meterName": "Meter Name",
+            "meterNumber": "Meter Number",
+            "currentConsumption": "Current Consumption",
+            "currentTier": "Current Tier",
+            "status": "Status",
+            "active": "Active",
+            "warning": "Warning",
+            "viewDetails": "View Details",
+            "remove": "Remove"
+        },
+        "preferences": {
+            "title": "Notification Preferences",
+            "alertTypes": "Alert Types",
+            "sherihaWarningAlerts": "Sheriha Warning Alerts",
+            "sherihaWarningDesc": "Get notified when approaching tier limits",
+            "billForecastNotifications": "Bill Forecast Notifications",
+            "billForecastDesc": "Receive monthly bill estimates",
+            "aiRecommendations": "AI Recommendations",
+            "aiRecommendationsDesc": "Personalized energy-saving tips",
+            "monthlyReports": "Monthly Reports",
+            "monthlyReportsDesc": "Detailed consumption summaries",
+            "notificationChannels": "Notification Channels",
+            "pushNotifications": "Push Notifications",
+            "emailNotifications": "Email Notifications",
+            "smsNotifications": "SMS Notifications"
+        },
+        "personalInfo": {
+            "title": "Personal Information",
+            "editProfile": "Edit Profile",
+            "fullName": "Full Name",
+            "emailAddress": "Email Address",
+            "phoneNumber": "Phone Number",
+            "governorate": "Governorate",
+            "preferredLanguage": "Preferred Language",
+            "accountStatus": "Account Status"
+        },
+        "aiAssistant": {
+            "title": "AI Energy Advisor",
+            "adviceLanguage": "Advice Language",
+            "adviceStyle": "Advice Style",
+            "shortTips": "Short Tips",
+            "detailedExplanations": "Detailed Explanations",
+            "savingGoal": "Saving Goal",
+            "maximumSavings": "Maximum Savings",
+            "balancedUsage": "Balanced Usage",
+            "comfortFirst": "Comfort First"
+        },
+        "consumptionGoals": {
+            "title": "Consumption Goals",
+            "monthlyConsumption": "Monthly Consumption",
+            "targetBillAmount": "Target Bill Amount",
+            "targetSheriha": "Target Sheriha",
+            "used": "Used"
+        },
+        "security": {
+            "title": "Security Settings",
+            "changePassword": "Change Password",
+            "changePasswordDesc": "Update your password regularly",
+            "twoFactorAuth": "Two-Factor Authentication",
+            "twoFactorAuthDesc": "Add an extra layer of security",
+            "activeDevices": "Active Devices",
+            "activeDevicesDesc": "Manage your logged-in devices",
+            "loginHistory": "Login History",
+            "loginHistoryDesc": "View recent login activity",
+            "deleteAccount": "Delete Account"
+        },
+        "activity": {
+            "title": "Activity History",
+            "uploadedBill": "Uploaded Electricity Bill",
+            "scannedMeter": "Scanned Meter Reading",
+            "updatedProfile": "Updated Profile Information",
+            "receivedAlert": "Received Sheriha Alert",
+            "downloadedReport": "Downloaded Monthly Report"
+        },
+        "pwa": {
+            "title": "PWA Installation Status",
+            "installed": "Installed",
+            "notInstalled": "Not Installed",
+            "pushNotifications": "Push Notifications",
+            "offlineSync": "Offline Sync"
+        },
+        "subscription": {
+            "title": "Subscription",
+            "currentPlan": "Current Plan",
+            "premium": "Premium",
+            "renewalDate": "Renewal Date",
+            "billingCycle": "Billing Cycle",
+            "monthly": "Monthly",
+            "savingsThisMonth": "Savings This Month",
+            "savingsDesc": "You've saved approximately EGP 180 this month through Kashf's AI recommendations.",
+            "upgradePlan": "Upgrade Plan",
+            "manageSubscription": "Manage Subscription"
+        }
     }
 }

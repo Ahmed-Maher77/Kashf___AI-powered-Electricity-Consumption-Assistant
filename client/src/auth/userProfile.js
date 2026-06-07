@@ -9,6 +9,7 @@ export const normalizeUserProfile = (user) => {
         id: resolvedId != null ? String(resolvedId) : null,
         username: user.username ?? "",
         email: user.email ?? "",
+        subscriptionPlan: user.subscriptionPlan ?? "free",
         picture: user.picture ?? null,
     };
 };

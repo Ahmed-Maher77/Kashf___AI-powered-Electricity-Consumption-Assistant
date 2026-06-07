@@ -555,5 +555,121 @@
       "primary": "ابدأ الآن",
       "secondary": "تواصل معنا"
     }
+  },
+  "profile": {
+    "tabs": {
+      "overview": "نظرة عامة",
+      "meters": "العدادات",
+      "preferences": "التفضيلات",
+      "security": "الأمان",
+      "subscription": "الاشتراك"
+    },
+    "header": {
+      "premiumUser": "مستخدم مميز",
+      "memberSince": "عضو منذ: يناير 2026"
+    },
+    "overview": {
+      "title": "نظرة عامة على الحساب",
+      "currentSheriha": "الشرائح الحالية",
+      "currentConsumption": "الاستهلاك الحالي",
+      "remainingBeforeNextTier": "المتبقي قبل الشريحة التالية",
+      "estimatedMonthlyBill": "الفاتورة الشهرية المتوقعة"
+    },
+    "meters": {
+      "title": "عدادات الكهرباء الخاصة بي",
+      "addNewMeter": "إضافة عداد جديد",
+      "meterName": "اسم العداد",
+      "meterNumber": "رقم العداد",
+      "currentConsumption": "الاستهلاك الحالي",
+      "currentTier": "الشريحة الحالية",
+      "status": "الحالة",
+      "active": "نشط",
+      "warning": "تحذير",
+      "viewDetails": "عرض التفاصيل",
+      "remove": "إزالة"
+    },
+    "preferences": {
+      "title": "تفضيلات الإشعارات",
+      "alertTypes": "أنواع التنبيهات",
+      "sherihaWarningAlerts": "تنبيهات الشرائح",
+      "sherihaWarningDesc": "احصل على إشعار عند الاقتراب من حدود الشرائح",
+      "billForecastNotifications": "إشعارات توقعات الفاتورة",
+      "billForecastDesc": "استلم تقديرات الفاتورة الشهرية",
+      "aiRecommendations": "توصيات الذكاء الاصطناعي",
+      "aiRecommendationsDesc": "نصائح توفير الطاقة المخصصة",
+      "monthlyReports": "التقارير الشهرية",
+      "monthlyReportsDesc": "ملخصات الاستهلاك التفصيلية",
+      "notificationChannels": "قنوات الإشعارات",
+      "pushNotifications": "إشعارات الدفع",
+      "emailNotifications": "إشعارات البريد الإلكتروني",
+      "smsNotifications": "إشعارات الرسائل النصية"
+    },
+    "personalInfo": {
+      "title": "المعلومات الشخصية",
+      "editProfile": "تعديل الملف الشخصي",
+      "fullName": "الاسم الكامل",
+      "emailAddress": "عنوان البريد الإلكتروني",
+      "phoneNumber": "رقم الهاتف",
+      "governorate": "المحافظة",
+      "preferredLanguage": "اللغة المفضلة",
+      "accountStatus": "حالة الحساب"
+    },
+    "aiAssistant": {
+      "title": "مستشار الطاقة بالذكاء الاصطناعي",
+      "adviceLanguage": "لغة النصائح",
+      "adviceStyle": "أسلوب النصائح",
+      "shortTips": "نصائح قصيرة",
+      "detailedExplanations": "شرح مفصل",
+      "savingGoal": "هدف التوفير",
+      "maximumSavings": "أقصى توفير",
+      "balancedUsage": "استخدام متوازن",
+      "comfortFirst": "الراحة أولاً"
+    },
+    "consumptionGoals": {
+      "title": "أهداف الاستهلاك",
+      "monthlyConsumption": "الاستهلاك الشهري",
+      "targetBillAmount": "مبلغ الفاتورة المستهدف",
+      "targetSheriha": "الشريحة المستهدفة",
+      "used": "مستخدم"
+    },
+    "security": {
+      "title": "إعدادات الأمان",
+      "changePassword": "تغيير كلمة المرور",
+      "changePasswordDesc": "قم بتحديث كلمة المرور بانتظام",
+      "twoFactorAuth": "المصادقة الثنائية",
+      "twoFactorAuthDesc": "أضف طبقة أمان إضافية",
+      "activeDevices": "الأجهزة النشطة",
+      "activeDevicesDesc": "إدارة الأجهزة المسجلة دخولك",
+      "loginHistory": "سجل الدخول",
+      "loginHistoryDesc": "عرض نشاط الدخول الأخير",
+      "deleteAccount": "حذف الحساب"
+    },
+    "activity": {
+      "title": "سجل النشاط",
+      "uploadedBill": "رفع فاتورة الكهرباء",
+      "scannedMeter": "مسح قراءة العداد",
+      "updatedProfile": "تحديث المعلومات الشخصية",
+      "receivedAlert": "استلام تنبيه الشرائح",
+      "downloadedReport": "تحميل التقرير الشهري"
+    },
+    "pwa": {
+      "title": "حالة تثبيت التطبيق",
+      "installed": "مثبت",
+      "notInstalled": "غير مثبت",
+      "pushNotifications": "إشعارات الدفع",
+      "offlineSync": "المزامنة بدون إنترنت"
+    },
+    "subscription": {
+      "title": "الاشتراك",
+      "currentPlan": "الخطة الحالية",
+      "premium": "مميز",
+      "renewalDate": "تاريخ التجديد",
+      "billingCycle": "دورة الفوترة",
+      "monthly": "شهري",
+      "savingsThisMonth": "التوفير هذا الشهر",
+      "savingsDesc": "لقد وفرت حوالي 180 جنيه هذا الشهر من خلال توصيات كشف بالذكاء الاصطناعي.",
+      "upgradePlan": "ترقية الخطة",
+      "manageSubscription": "إدارة الاشتراك"
+    }
   }
 }

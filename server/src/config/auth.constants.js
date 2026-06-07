@@ -12,3 +12,11 @@ export const USER_ROLES = {
     USER: "user",
     ADMIN: "admin",
 };
+
+export const SUBSCRIPTION_PLANS = {
+    FREE: "free",
+    PLUS: "plus",
+    FAMILY: "family",
+};
+
+export const DEFAULT_SUBSCRIPTION_PLAN = SUBSCRIPTION_PLANS.FREE;

@@ -3,5 +3,6 @@ export const toPublicUser = (user) => ({
     username: user.username,
     email: user.email,
     role: user.role,
+    subscriptionPlan: user.subscriptionPlan ?? "free",
     picture: user.picture ?? null,
 });

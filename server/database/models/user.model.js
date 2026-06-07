@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { USER_ROLES } from "../../src/config/auth.constants.js";
+import { USER_ROLES, SUBSCRIPTION_PLANS, DEFAULT_SUBSCRIPTION_PLAN } from "../../src/config/auth.constants.js";
 
 const userSchema = new mongoose.Schema(
     {
@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             enum: [USER_ROLES.USER, USER_ROLES.ADMIN],
             default: USER_ROLES.USER,
+        },
+        subscriptionPlan: {
+            type: String,
+            enum: Object.values(SUBSCRIPTION_PLANS),
+            default: DEFAULT_SUBSCRIPTION_PLAN,
         },
         picture: {
             type: String,
