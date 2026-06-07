@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import {
   LogIn, LogOut, UserPlus, UserCog, Camera, Target, Bell,
-  ScanLine, Upload, AlertTriangle, Download, Plus, Trash2, Clock, RefreshCw
+  ScanLine, Upload, AlertTriangle, Download, Plus, Trash2, Clock, RefreshCw,
+  ChevronLeft, ChevronRight
 } from "lucide-react";
 import useActivity from "../../hooks/useActivity";
 
@@ -55,7 +56,7 @@ const SkeletonRow = () => (
 const ActivityHistory = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.dir() === "rtl";
-  const { items, loading, error, hasMore, loadMore, refresh } = useActivity({ limit: 10 });
+  const { items, loading, error, hasMore, totalPages, prevPage, nextPage, page, refresh } = useActivity({ limit: 5 });
 
   const getActivityLabel = (type) =>
     t(`profile.activity.types.${type}`, { defaultValue: type.replace(/_/g, " ") });
@@ -96,7 +97,7 @@ const ActivityHistory = () => {
 
         {items.map((activity, index) => {
           const { icon: Icon, bg, color, ring } = ACTIVITY_ICON_MAP[activity.type] ?? DEFAULT_ICON;
-          const isLast = index === items.length - 1 && !hasMore;
+          const isLast = index === items.length - 1;
 
           return (
             <div
@@ -131,14 +132,28 @@ const ActivityHistory = () => {
           );
         })}
 
-        {hasMore && (
-          <div className="flex justify-center pt-2">
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between pt-6 border-t border-kashf-border/30 mt-4">
             <button
-              onClick={loadMore}
-              disabled={loading}
-              className="text-sm text-kashf-blue hover:underline disabled:opacity-50 cursor-pointer"
+              onClick={prevPage}
+              disabled={page === 1 || loading}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-kashf-bg/50 border border-kashf-border/50 text-xs text-neutral-300 hover:border-kashf-blue/30 disabled:opacity-40 disabled:hover:border-kashf-border/50 cursor-pointer transition-colors"
             >
-              {loading ? t("profile.activity.loadingMore", { defaultValue: "Loading..." }) : t("profile.activity.loadMore", { defaultValue: "Load more" })}
+              {isRTL ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+              {t("common.pagination.prev", { defaultValue: "Previous" })}
+            </button>
+            
+            <span className="text-xs text-neutral-400 font-medium">
+              {t("common.pagination.pageInfo", { page, totalPages, defaultValue: `Page ${page} of ${totalPages}` })}
+            </span>
+
+            <button
+              onClick={nextPage}
+              disabled={!hasMore || loading}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-kashf-bg/50 border border-kashf-border/50 text-xs text-neutral-300 hover:border-kashf-blue/30 disabled:opacity-40 disabled:hover:border-kashf-border/50 cursor-pointer transition-colors"
+            >
+              {t("common.pagination.next", { defaultValue: "Next" })}
+              {isRTL ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
             </button>
           </div>
         )}

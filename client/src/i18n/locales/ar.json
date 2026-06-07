@@ -12,6 +12,11 @@
     "tier": "الشريحة {{tier}}",
     "enable": "تفعيل",
     "view": "عرض",
+    "pagination": {
+      "prev": "السابق",
+      "next": "التالي",
+      "pageInfo": "الصفحة {{page}} من {{totalPages}}"
+    },
     "time": {
       "justNow": "الآن",
       "minutesAgo": "منذ {{count}} د",

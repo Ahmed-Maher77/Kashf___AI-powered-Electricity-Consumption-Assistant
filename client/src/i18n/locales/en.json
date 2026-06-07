@@ -12,6 +12,11 @@
         "tier": "Tier {{tier}}",
         "enable": "Enable",
         "view": "View",
+        "pagination": {
+            "prev": "Previous",
+            "next": "Next",
+            "pageInfo": "Page {{page}} of {{totalPages}}"
+        },
         "time": {
             "justNow": "just now",
             "minutesAgo": "{{count}}m ago",
