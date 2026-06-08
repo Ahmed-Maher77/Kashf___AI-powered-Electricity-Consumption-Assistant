@@ -3,6 +3,7 @@ import GuestRoute from "../auth/GuestRoute";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import { USER_ROLES } from "../auth/authConstants";
 import UserLayout from "../layouts/UserLayout";
+import AppLayout from "../layouts/AppLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import {
     WelcomePage,
@@ -24,11 +25,18 @@ import {
     AiLogsPage,
     NotificationsManagementPage,
     SystemSettingsPage,
+    MyMetersPage,
+    ConsumptionAnalyticsPage,
+    BillsPage,
+    AiAdvisorPage,
+    AlertsPage,
+    ReportsPage,
+    BillingPage,
+    SettingsPage
 } from "./lazyPages";
 
 export const router = createBrowserRouter([
     {
-        path: "/",
         element: <UserLayout />,
         children: [
             {
@@ -45,20 +53,29 @@ export const router = createBrowserRouter([
             },
             { path: "about", element: <AboutPage /> },
             { path: "pricing", element: <PricingPage /> },
+        ],
+    },
+    {
+        element: <ProtectedRoute allowedRoles={[USER_ROLES.USER, USER_ROLES.ADMIN]} />,
+        children: [
             {
-                element: (
-                    <ProtectedRoute
-                        allowedRoles={[USER_ROLES.USER, USER_ROLES.ADMIN]}
-                    />
-                ),
+                element: <AppLayout />,
                 children: [
+                    { path: "dashboard", element: <DashboardPage /> },
+                    { path: "meters", element: <MyMetersPage /> },
+                    { path: "analytics", element: <ConsumptionAnalyticsPage /> },
+                    { path: "bills", element: <BillsPage /> },
+                    { path: "ai-advisor", element: <AiAdvisorPage /> },
+                    { path: "alerts", element: <AlertsPage /> },
+                    { path: "reports", element: <ReportsPage /> },
+                    { path: "billing", element: <BillingPage /> },
+                    { path: "profile", element: <ProfilePage /> },
+                    { path: "settings", element: <SettingsPage /> },
                     { path: "scan", element: <ScanMeterPage /> },
                     { path: "processing", element: <ProcessingPage /> },
-                    { path: "dashboard", element: <DashboardPage /> },
                     { path: "history", element: <HistoryPage /> },
                     { path: "history/:id", element: <ScanDetailsPage /> },
                     { path: "tips", element: <TipsPage /> },
-                    { path: "profile", element: <ProfilePage /> },
                 ],
             },
         ],

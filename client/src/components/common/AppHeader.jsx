@@ -33,9 +33,14 @@ const AppHeader = () => {
 
     const navItems = [
         { to: "/dashboard", label: t("nav.dashboard") },
-        { to: "/scan", label: t("nav.scan") },
-        { to: "/history", label: t("nav.history") },
-        { to: "/tips", label: t("nav.tips") },
+        { to: "/meters", label: t("nav.meters") },
+        { to: "/analytics", label: t("nav.analytics") },
+        { to: "/bills", label: t("nav.bills") },
+        { to: "/ai-advisor", label: t("nav.aiAdvisor") },
+        { to: "/alerts", label: t("nav.alerts") },
+        { to: "/reports", label: t("nav.reports") },
+        { to: "/billing", label: t("nav.billing") },
+        { to: "/settings", label: t("nav.settings") },
     ];
 
     // Close sidebar on Escape key press
@@ -66,18 +71,8 @@ const AppHeader = () => {
         <header className="flex items-center justify-between border-b border-kashf-border px-6 py-4 bg-kashf-surface">
             <BrandLogo />
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-4 sm:gap-6">
-                <nav
-                    className="flex gap-x-4 gap-y-2"
-                    aria-label={t("nav.mainAria")}
-                >
-                    {navItems.map(({ to, label }) => (
-                        <NavLink key={to} to={to} className={navLinkClass}>
-                            {label}
-                        </NavLink>
-                    ))}
-                </nav>
+            {/* Desktop Actions */}
+            <div className="hidden lg:flex flex-1 items-center justify-end gap-4 ms-6">
                 <LanguageSwitcher />
                 <ProfileMenu />
             </div>
