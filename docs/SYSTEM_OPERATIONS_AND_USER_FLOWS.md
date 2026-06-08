@@ -20,10 +20,10 @@ This document describes every significant user-facing operation in Kashf — ste
 3. [App Bootstrap Flow](#3-app-bootstrap-flow)
 4. [Welcome Page Flow](#4-welcome-page-flow)
 5. [About Page Flow](#5-about-page-flow)
-6. [Scan Meter Flow](#6-scan-meter-flow) *(planned)*
-7. [Dashboard Flow](#7-dashboard-flow) *(planned)*
-8. [History Flow](#8-history-flow) *(planned)*
-9. [AI Tips Flow](#9-ai-tips-flow) *(planned)*
+6. [Scan Meter Flow](#6-scan-meter-flow)
+7. [Dashboard Flow](#7-dashboard-flow)
+8. [History Flow](#8-history-flow)
+9. [AI Tips Flow](#9-ai-tips-flow)
 10. [Admin Flows](#10-admin-flows) *(planned)*
 
 ---
@@ -409,7 +409,7 @@ User actions:
 
 ---
 
-## 6. Scan Meter Flow *(planned)*
+## 6. Scan Meter Flow
 
 **Entry point:** `/scan`
 
@@ -441,38 +441,38 @@ Redirect to /dashboard with fresh data
 
 ---
 
-## 7. Dashboard Flow *(planned)*
+## 7. Dashboard Flow
 
 **Entry point:** `/dashboard`
 
 ```
-[PLANNED]
 isAuthenticated guard → user must be logged in
   │
   ▼
-CLIENT sends GET /api/dashboard
+Dashboard UI shell loads with sidebar navigation
   │
   ▼
-SERVER aggregates:
-  ├── latest scan reading
-  ├── current Sheriha tier + position
-  ├── kWh remaining before next tier
-  ├── estimated bill (EGP)
-  └── recent AI tips preview
+User navigates through available modules:
+  ├── Overview (/dashboard): Summary cards, quick actions
+  ├── My Meters (/meters): Manage registered meters
+  ├── Analytics (/analytics): Recharts-based consumption data
+  ├── Bills (/bills): Billing history and estimates
+  ├── AI Advisor (/ai-advisor): Personalized recommendations
+  ├── Alerts (/alerts): Notification center
+  ├── Reports (/reports): Detailed PDF/Excel exports
+  └── Profile (/profile): Manage settings and security
   │
   ▼
-Dashboard renders widgets:
-  ├── ConsumptionSummaryCard
-  ├── SherihaBadge + RemainingKwhMeter
-  ├── BillEstimateCard
-  ├── TierWarningBanner (if close to threshold)
-  ├── ConsumptionChart (time series)
-  └── AIRecommendationPreview
+Frontend requests specific endpoint data based on active route
+  │
+  ▼
+Data rendered visually using Recharts (Analytics), tables (Bills/History), etc.
+
 ```
 
 ---
 
-## 8. History Flow *(planned)*
+## 8. History Flow
 
 **Entry point:** `/history`
 
@@ -488,7 +488,7 @@ User opens scan → GET /api/scans/:id
 
 ---
 
-## 9. AI Tips Flow *(planned)*
+## 9. AI Tips Flow
 
 **Entry point:** `/tips`
 

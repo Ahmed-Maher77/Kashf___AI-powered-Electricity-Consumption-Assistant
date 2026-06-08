@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants } from "../../utils/animations";
 import SectionBadge from "./ui/SectionBadge";
 import SectionHeading from "./ui/SectionHeading";
 
@@ -52,17 +53,6 @@ const TheProblemSection = () => {
 
     const billLabel = t("problem.billLabel", { defaultValue: "Electricity Bill — June 2026" });
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 40 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: 0.45 + (i * 0.15), duration: 0.6, ease: "easeOut" }
-        })
-    };
-
-
-
     return (
         <section 
             id="problem" 
@@ -93,7 +83,7 @@ const TheProblemSection = () => {
                     whileInView="show"
                     viewport={{ once: true, margin: "-50px" }}
                 >
-                    <motion.div variants={itemVariants} custom={0} className="h-full">
+                    <motion.div variants={fadeUpVariants} custom={0} className="h-full">
                         <ComparisonCard
                             borderColor="border-red-500/20"
                             bgColor="bg-red-500/5"
@@ -109,7 +99,7 @@ const TheProblemSection = () => {
                             amountColor="text-red-400"
                         />
                     </motion.div>
-                    <motion.div variants={itemVariants} custom={1} className="h-full">
+                    <motion.div variants={fadeUpVariants} custom={1} className="h-full">
                         <ComparisonCard
                             borderColor="border-emerald-500/20"
                             bgColor="bg-emerald-500/5"
@@ -129,7 +119,7 @@ const TheProblemSection = () => {
 
                 {/* Savings banner */}
                 <motion.div 
-                    variants={itemVariants} 
+                    variants={fadeUpVariants} 
                     custom={2} 
                     initial="hidden"
                     whileInView="show"

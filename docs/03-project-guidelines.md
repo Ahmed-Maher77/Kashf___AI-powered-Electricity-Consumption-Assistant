@@ -447,6 +447,8 @@ export const login = async ({ email, password }) => {
 - React 19 + Vite + React Router 7
 - Tailwind CSS v4 (`@import "tailwindcss"` in `index.css`)
 - Theme tokens: `kashf-blue`, `kashf-light-blue`, `kashf-bg`, etc.
+- Framer Motion (for complex animations and scroll reveals)
+- Recharts (for data visualization)
 
 ### Structure
 
@@ -456,6 +458,7 @@ export const login = async ({ email, password }) => {
 | Shared UI | `src/components/common/` (Header, Footer) |
 | Layouts | `src/layouts/` |
 | Routes | `src/routes/router.jsx` + lazy imports in `lazyPages.js` |
+| Utils | `src/utils/` (Helper functions, shared `animations.js`) |
 
 ### Routing
 
@@ -468,6 +471,7 @@ export const login = async ({ email, password }) => {
 - Use **Tailwind utility classes** in JSX.
 - Component-specific CSS only when necessary (e.g. `Loader.css` for SVG animations).
 - Do not add new plain `.css` layout files without team agreement.
+- For Framer Motion animations, do not inline standard variants (like `fadeUpVariants`). Import them centrally from `src/utils/animations.js` to ensure consistent easing and timings across the app.
 
 ### API calls (when integrated)
 

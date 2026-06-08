@@ -8,7 +8,10 @@ Egyptian households' smart electricity assistant: scan meters, track Sheriha tie
 - **Sheriha Tier Tracking** — Real-time consumption monitoring with 48-hour cost forecasting
 - **AI Energy Assistant** — Personalized recommendations in Egyptian Arabic
 - **Progressive Web App** — Installable offline-first, works on iOS/Android/Windows/macOS without app store
-- **Multi-language** — English & Arabic (RTL support)
+- **Multi-language** — Full Dashboard UI in English & Arabic (RTL support)
+- **Interactive UI** — Animated, scroll-triggered user interfaces with Framer Motion
+- **Comprehensive Analytics** — Real-time meter gauges, historical consumption charts, and detailed reports
+- **Billing Management** — Subscription tiers and payment tracking
 - **Responsive Design** — Mobile-first, optimized for curved screens
 
 ## Tech Stack
@@ -20,6 +23,8 @@ Egyptian households' smart electricity assistant: scan meters, track Sheriha tie
 - **TanStack Query** — server state & caching
 - **React Hook Form + Zod** — forms & validation
 - **i18next** — internationalization (EN/AR)
+- **Framer Motion** — complex scroll and spring animations
+- **Recharts** — interactive data visualization
 - **Lucide React** — icon system
 - **ESLint** — linting
 
@@ -43,7 +48,7 @@ client/
 │   │   ├── admin/          # Admin dashboard pages
 │   │   └── user/           # User-facing pages
 │   ├── store/              # Redux slices
-│   ├── utils/              # Helper functions
+│   ├── utils/              # Helper functions & shared animations (`animations.js`)
 │   ├── App.jsx             # App entry with routing
 │   └── main.jsx            # Vite entry point
 ├── index.html
@@ -61,9 +66,17 @@ client/
 | `/register` | User registration |
 | `/login` | User login |
 | `/dashboard` | User dashboard (authenticated) |
+| `/meters` | Manage user meters (authenticated) |
+| `/analytics` | Consumption analytics and charts (authenticated) |
+| `/bills` | View consumption bills (authenticated) |
+| `/ai-advisor` | AI energy insights (authenticated) |
+| `/alerts` | Notification center (authenticated) |
+| `/reports` | Detailed energy reports (authenticated) |
+| `/billing` | Subscription and payments (authenticated) |
 | `/scan` | Meter scanning (authenticated) |
 | `/history` | Consumption history (authenticated) |
 | `/tips` | AI recommendations (authenticated) |
+| `/profile` | User profile (authenticated) |
 | `/settings` | User settings (authenticated) |
 | `/admin/*` | Admin panel (role-based) |
 

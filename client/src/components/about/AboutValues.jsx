@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants } from "../../utils/animations";
 import { Target, Globe, Users, Zap } from "lucide-react";
 import SectionBadge from "../welcome/ui/SectionBadge";
 import SectionHeading from "../welcome/ui/SectionHeading";
@@ -20,15 +21,6 @@ const ValueCard = ({ icon: Icon, title, desc }) => (
 const AboutValues = () => {
     const { t } = useTranslation();
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: 0.15 + (i * 0.15), duration: 0.6, ease: "easeOut" }
-        })
-    };
-
     return (
         <section id="about-values" className="py-20 md:py-28 border-b border-kashf-border overflow-hidden">
             <motion.div 
@@ -48,7 +40,7 @@ const AboutValues = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-18">
                     {VALUE_KEYS.map((key, i) => (
-                        <motion.div key={key} variants={itemVariants} custom={i} className="h-full">
+                        <motion.div key={key} variants={fadeUpVariants} custom={i} className="h-full">
                             <ValueCard
                                 icon={ICONS[i]}
                                 title={t(`about.values.${key}.title`)}

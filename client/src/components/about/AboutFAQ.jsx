@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants } from "../../utils/animations";
 import { ChevronDown } from "lucide-react";
 import SectionBadge from "../welcome/ui/SectionBadge";
 import SectionHeading from "../welcome/ui/SectionHeading";
@@ -41,15 +42,6 @@ const FAQItem = ({ q, a }) => {
 const AboutFAQ = () => {
     const { t } = useTranslation();
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: 0.15 + (i * 0.15), duration: 0.6, ease: "easeOut" }
-        })
-    };
-
     return (
         <section id="about-faq" className="py-20 md:py-28 border-b border-kashf-border overflow-hidden">
             <motion.div 
@@ -69,7 +61,7 @@ const AboutFAQ = () => {
 
                 <div className="flex flex-col gap-3 mt-14">
                     {FAQ_KEYS.map((key, i) => (
-                        <motion.div key={key} variants={itemVariants} custom={i}>
+                        <motion.div key={key} variants={fadeUpVariants} custom={i}>
                             <FAQItem
                                 q={t(`about.faq.items.${key}.q`)}
                                 a={t(`about.faq.items.${key}.a`)}
@@ -78,7 +70,7 @@ const AboutFAQ = () => {
                     ))}
                 </div>
 
-                <motion.p variants={itemVariants} custom={FAQ_KEYS.length} className="text-center text-neutral-500 text-sm mt-10">
+                <motion.p variants={fadeUpVariants} custom={FAQ_KEYS.length} className="text-center text-neutral-500 text-sm mt-10">
                     {t("about.faq.contact")}{" "}
                     <a href="mailto:ahmedmaher.dev1@gmail.com" className="text-kashf-blue hover:underline">
                         {t("about.faq.email")}

@@ -1,27 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants as itemVariants, containerVariants, glowVariants } from "../../utils/animations";
 import SmartMeter from "./SmartMeter";
 
 const MeterSection = () => {
     const { t } = useTranslation();
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.2 }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-    };
-
-    const glowVariants = {
-        hidden: { opacity: 0 },
-        show: { opacity: 1, transition: { duration: 1.5, ease: "easeOut" } }
-    };
 
     return (
         <motion.section 

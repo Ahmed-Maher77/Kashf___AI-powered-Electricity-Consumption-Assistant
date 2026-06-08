@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants } from "../../utils/animations";
 import SectionBadge from "../welcome/ui/SectionBadge";
 import SectionHeading from "../welcome/ui/SectionHeading";
 
@@ -31,15 +32,6 @@ const AboutStory = () => {
 
     const timelineKeys = ["t1", "t2", "t3"];
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: 0.15 + (i * 0.15), duration: 0.6, ease: "easeOut" }
-        })
-    };
-
     return (
         <section id="about-story" className="py-20 md:py-28 border-b border-kashf-border overflow-hidden">
             <motion.div 
@@ -61,16 +53,16 @@ const AboutStory = () => {
                         />
 
                         <div className="flex flex-col gap-5 text-neutral-400 text-base leading-relaxed">
-                            <motion.p variants={itemVariants} custom={0}>{t("about.story.body1")}</motion.p>
-                            <motion.p variants={itemVariants} custom={1}>{t("about.story.body2")}</motion.p>
-                            <motion.p variants={itemVariants} custom={2}>{t("about.story.body3")}</motion.p>
+                            <motion.p variants={fadeUpVariants} custom={0}>{t("about.story.body1")}</motion.p>
+                            <motion.p variants={fadeUpVariants} custom={1}>{t("about.story.body2")}</motion.p>
+                            <motion.p variants={fadeUpVariants} custom={2}>{t("about.story.body3")}</motion.p>
                         </div>
                     </div>
 
                     {/* ── Right: timeline ── */}
                     <div className="flex flex-col gap-0 pt-2 w-fit">
                         {timelineKeys.map((key, i) => (
-                            <motion.div key={key} variants={itemVariants} custom={i + 3}>
+                            <motion.div key={key} variants={fadeUpVariants} custom={i + 3}>
                                 <TimelineItem
                                     year={t(`about.story.timeline.${key}.year`)}
                                     label={t(`about.story.timeline.${key}.label`)}

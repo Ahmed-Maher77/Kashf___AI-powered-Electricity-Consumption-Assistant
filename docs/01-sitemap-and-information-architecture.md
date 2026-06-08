@@ -14,6 +14,14 @@
 ├── Scan Meter
 ├── Processing
 ├── User Dashboard
+├── My Meters
+├── Consumption Analytics
+├── Bills
+├── AI Advisor
+├── Alerts
+├── Reports
+├── Billing
+├── Profile
 ├── History
 ├── Scan Details
 ├── Tips & Recommendations
@@ -35,9 +43,17 @@
 | `/` | Welcome |
 | `/login` | Login |
 | `/register` | Register |
+| `/dashboard` | User Dashboard |
+| `/meters` | My Meters |
+| `/analytics` | Consumption Analytics |
+| `/bills` | Bills |
+| `/ai-advisor` | AI Advisor |
+| `/alerts` | Alerts |
+| `/reports` | Reports |
+| `/billing` | Billing |
+| `/profile` | Profile |
 | `/scan` | Scan Meter |
 | `/processing` | Processing |
-| `/dashboard` | User Dashboard |
 | `/history` | History |
 | `/history/:id` | Scan Details |
 | `/tips` | Tips & Recommendations |
@@ -684,9 +700,16 @@ Primary nav (persistent on authenticated user shell):
 | Label | Route | Icon role |
 |-------|-------|-----------|
 | Dashboard | `/dashboard` | Home / overview |
-| Scan | `/scan` | Primary action |
+| My Meters | `/meters` | Manage user meters |
+| Scan Meter | `/scan` | Primary action |
+| Analytics | `/analytics` | Consumption charts |
 | History | `/history` | Past scans |
-| Tips | `/tips` | Recommendations |
+| Bills | `/bills` | Consumption bills |
+| AI Advisor | `/ai-advisor` | Recommendations |
+| Reports | `/reports` | Detailed reports |
+| Alerts | `/alerts` | Notification center |
+| Billing | `/billing` | Subscription info |
+| Profile | `/profile` | User profile |
 | Settings | `/settings` | Preferences |
 
 Secondary / footer links: About (`/about`), Welcome (`/`) for logged-out users.

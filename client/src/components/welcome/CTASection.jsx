@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants as itemVariants, containerVariants } from "../../utils/animations";
 
 const stats = [
     { numKey: "cta.stat1.num", numDefault: "2,400+", labelKey: "cta.stat1.label", labelDefault: "Egyptian Households" },
@@ -9,19 +10,6 @@ const stats = [
 
 const CTASection = () => {
     const { t } = useTranslation();
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.15 }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-    };
 
     return (
         <motion.section 

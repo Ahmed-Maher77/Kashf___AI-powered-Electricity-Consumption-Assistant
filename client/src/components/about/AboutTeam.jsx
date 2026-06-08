@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants } from "../../utils/animations";
 import SectionBadge from "../welcome/ui/SectionBadge";
 import SectionHeading from "../welcome/ui/SectionHeading";
 import teamAhmed from "../../assets/images/team_members/ahmed-maher-algohary.jpg";
@@ -72,15 +73,6 @@ const TeamCard = ({ member }) => {
 const AboutTeam = () => {
     const { t } = useTranslation();
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: 0.15 + (i * 0.15), duration: 0.6, ease: "easeOut" }
-        })
-    };
-
     return (
         <section id="about-team" className="py-20 md:py-28 md:pt-24 border-b border-kashf-border overflow-hidden">
             <motion.div 
@@ -100,7 +92,7 @@ const AboutTeam = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mt-20">
                     {MEMBERS.map((member, i) => (
-                        <motion.div key={member.key} variants={itemVariants} custom={i} className="h-full">
+                        <motion.div key={member.key} variants={fadeUpVariants} custom={i} className="h-full">
                             <TeamCard member={member} />
                         </motion.div>
                     ))}

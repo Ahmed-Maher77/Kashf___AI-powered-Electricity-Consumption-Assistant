@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { WifiOff, Bell, RefreshCw, MonitorSmartphone, Download } from "lucide-react";
 import { motion } from "framer-motion";
+import { fadeUpVariants } from "../../utils/animations";
+import { WifiOff, Bell, RefreshCw, MonitorSmartphone, Download } from "lucide-react";
 import appMockup from "../../assets/images/installable-app.png";
 import SectionBadge from "./ui/SectionBadge";
 import SectionHeading from "./ui/SectionHeading";
@@ -22,17 +23,6 @@ const PWASection = () => {
         icon: f.icon,
         label: t(f.key, { defaultValue: f.def }),
     }));
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: 0.45 + (i * 0.15), duration: 0.6, ease: "easeOut" }
-        })
-    };
-
-
 
     return (
         <section 
@@ -64,7 +54,7 @@ const PWASection = () => {
                         />
 
                         <motion.div 
-                            variants={itemVariants} 
+                            variants={fadeUpVariants} 
                             custom={0}
                             initial="hidden"
                             whileInView="show"
@@ -75,7 +65,7 @@ const PWASection = () => {
 
                         {/* Platform pills */}
                         <motion.div 
-                            variants={itemVariants} 
+                            variants={fadeUpVariants} 
                             custom={1} 
                             initial="hidden"
                             whileInView="show"
@@ -95,7 +85,7 @@ const PWASection = () => {
 
                     {/* ── Right: phone mockup + install toast ── */}
                     <motion.div 
-                        variants={itemVariants} 
+                        variants={fadeUpVariants} 
                         custom={2} 
                         initial="hidden"
                         whileInView="show"

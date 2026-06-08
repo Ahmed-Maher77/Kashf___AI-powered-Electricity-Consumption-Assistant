@@ -1,18 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { fadeUpVariants } from "../../utils/animations";
 
 const AboutCTA = () => {
     const { t } = useTranslation();
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: 0.15 + (i * 0.15), duration: 0.6, ease: "easeOut" }
-        })
-    };
 
     return (
         <section id="about-cta" className="relative py-24 md:py-36 overflow-hidden text-center">
@@ -35,15 +27,15 @@ const AboutCTA = () => {
                 whileInView="show"
                 viewport={{ once: true, margin: "-50px" }}
             >
-                <motion.h2 variants={itemVariants} custom={0} className="text-4xl sm:text-5xl font-extrabold text-neutral-100 leading-tight tracking-tight">
+                <motion.h2 variants={fadeUpVariants} custom={0} className="text-4xl sm:text-5xl font-extrabold text-neutral-100 leading-tight tracking-tight">
                     {t("about.cta.title")}{" "}
                     <span className="text-kashf-blue">{t("about.cta.titleAccent")}</span>
                 </motion.h2>
-                <motion.p variants={itemVariants} custom={1} className="text-neutral-400 text-base md:text-lg leading-relaxed">
+                <motion.p variants={fadeUpVariants} custom={1} className="text-neutral-400 text-base md:text-lg leading-relaxed">
                     {t("about.cta.desc")}
                 </motion.p>
 
-                <motion.div variants={itemVariants} custom={2} className="flex flex-wrap items-center justify-center gap-4">
+                <motion.div variants={fadeUpVariants} custom={2} className="flex flex-wrap items-center justify-center gap-4">
                     {/* Primary */}
                     <Link
                         to="/register"
@@ -62,7 +54,7 @@ const AboutCTA = () => {
                     </a>
                 </motion.div>
 
-                <motion.p variants={itemVariants} custom={3} className="text-neutral-600 text-sm">
+                <motion.p variants={fadeUpVariants} custom={3} className="text-neutral-600 text-sm">
                     No credit card · No app store · Works on any device
                 </motion.p>
             </motion.div>

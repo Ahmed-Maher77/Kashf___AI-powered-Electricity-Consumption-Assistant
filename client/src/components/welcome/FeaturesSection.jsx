@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Camera, Brain, Zap, MonitorSmartphone } from "lucide-react";
 import { motion } from "framer-motion";
 import SectionHeading from "./ui/SectionHeading";
+import { fadeUpVariants } from "../../utils/animations";
 
 const CAPABILITIES = [
     { Icon: Camera, titleKey: "features.smartMeter", titleDef: "Smart Meter Scanning", descKey: "features.smartMeterDesc", descDef: "OCR-powered instant meter reading via your phone camera" },
@@ -32,15 +33,6 @@ const FeatureCard = ({ Icon, title, desc }) => (
 const FeaturesSection = () => {
     const { t } = useTranslation();
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 40 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: 0.45 + (i * 0.15), duration: 0.5, ease: "easeOut" }
-        })
-    };
-
     return (
         <section 
             id="features" 
@@ -62,7 +54,7 @@ const FeaturesSection = () => {
                     viewport={{ once: true, margin: "-50px" }}
                 >
                     {CAPABILITIES.map((c, index) => (
-                        <motion.div key={c.titleKey} variants={itemVariants} custom={index} className="h-full">
+                        <motion.div key={c.titleKey} variants={fadeUpVariants} custom={index} className="h-full">
                             <FeatureCard
                                 Icon={c.Icon}
                                 title={t(c.titleKey, { defaultValue: c.titleDef })}

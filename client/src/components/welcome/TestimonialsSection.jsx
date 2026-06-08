@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants as itemVariants, containerVariants } from "../../utils/animations";
 
 // Gap between cards in px — must match the gap-6 class (1.5rem = 24px)
 const CARD_GAP = 24;
@@ -238,19 +239,6 @@ const TestimonialsSection = () => {
             ))}
         </div>
     );
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.2 }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-    };
 
     return (
         <motion.section 

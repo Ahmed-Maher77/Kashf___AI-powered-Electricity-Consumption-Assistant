@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants } from "../../utils/animations";
 import SectionBadge from "./ui/SectionBadge";
 import SectionHeading from "./ui/SectionHeading";
 
@@ -23,15 +24,6 @@ const STEP_KEYS = ["scan", "analyze", "track", "save"];
 
 const HowItWorksSection = () => {
     const { t } = useTranslation();
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: 0.45 + (i * 0.15), duration: 0.6, ease: "easeOut" }
-        })
-    };
 
     return (
         <section 
@@ -57,7 +49,7 @@ const HowItWorksSection = () => {
                     viewport={{ once: true, margin: "-50px" }}
                 >
                     {STEP_KEYS.map((key, index) => (
-                        <motion.div key={key} variants={itemVariants} custom={index} className="h-full">
+                        <motion.div key={key} variants={fadeUpVariants} custom={index} className="h-full">
                             <div
                                 className="relative group flex flex-col gap-4 rounded-2xl border border-neutral-800 bg-[#0d0d12] p-6 transition-all duration-500 hover:border-kashf-blue/40 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(6,182,212,0.12)] h-full"
                             >

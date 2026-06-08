@@ -55,10 +55,10 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | RTL layout support | — | Tailwind logical properties |
 | 🟢 Done | Pricing translations | — | |
 | 🟢 Done | About page translations | — | |
-| 🟡 In Progress | Dashboard translations | — | Needs dashboard data |
-| 🔴 Todo | Scan page translations | — | |
-| 🔴 Todo | Tips page translations | — | |
-| 🔴 Todo | Settings page translations | — | |
+| 🟢 Done | Dashboard translations | — | Done for all user modules |
+| 🟢 Done | Scan page translations | — | |
+| 🟢 Done | Tips page translations | — | |
+| 🟢 Done | Settings page translations | — | |
 | 🔴 Todo | Admin panel translations | — | Lower priority |
 
 ### Dashboard (User)
@@ -74,6 +74,10 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | ProfileHeader (RTL avatar fix, real member since) | — | flex-row-reverse in RTL, real createdAt |
 | 🟢 Done | AccountOverview (RTL icon fix) | — | Logical start alignment for icons |
 | 🟢 Done | Subscription (real plan data + functional actions) | — | Plan-based feature lists, navigate to /pricing |
+| 🟢 Done | ConsumptionAnalyticsPage | — | Recharts integration for visual data |
+| 🟢 Done | MyMetersPage | — | View and manage meters |
+| 🟢 Done | BillsPage & BillingPage | — | Billing history and subscription management |
+| 🟢 Done | ReportsPage & AlertsPage | — | Detailed exports and notification center |
 
 ### Scan Page
 | Status | Task | Owner | Notes |
@@ -292,7 +296,7 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🔴 Todo | Database schema diagrams | — | Draw.io or Mermaid ER diagrams |
 | 🔴 Todo | OCR + AI pipeline diagram | — | |
 | 🔴 Todo | Onboarding guide for new team members | — | |
-| 🔴 Todo | Update docs when scan/dashboard/tips are implemented | — | |
+| 🟢 Done | Update docs when scan/dashboard/tips are implemented | — | Updated with current implementation |
 | 🔴 Todo | Changelog (notable releases) | — | |
 
 ---

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { fadeUpVariants } from "../../../utils/animations";
 
 const SectionHeading = ({
     title,
@@ -13,19 +14,6 @@ const SectionHeading = ({
     const textAlign = align === "left" ? "text-start" : "text-center";
     const subtitleAlign = align === "left" ? "" : "mx-auto";
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: {
-                delay: baseDelay + (i * 0.15),
-                duration: 0.6,
-                ease: "easeOut"
-            }
-        })
-    };
-
     return (
         <motion.div 
             className={`flex flex-col gap-4 ${textAlign} ${className}`}
@@ -34,18 +22,18 @@ const SectionHeading = ({
             viewport={{ once: true, margin: "-50px" }}
         >
             {badge && (
-                <motion.div className={align === "center" ? "flex justify-center" : ""} variants={itemVariants} custom={0}>
+                <motion.div className={align === "center" ? "flex justify-center" : ""} variants={fadeUpVariants} custom={{ i: 0, baseDelay }}>
                     {badge}
                 </motion.div>
             )}
-            <motion.div variants={itemVariants} custom={badge ? 1 : 0}>
+            <motion.div variants={fadeUpVariants} custom={{ i: badge ? 1 : 0, baseDelay }}>
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-100 tracking-tight leading-snug line-height-15">
                     {title}{" "}
                     {accent && <span className="text-kashf-blue">{accent}</span>}
                 </h2>
             </motion.div>
             {subtitle && (
-                <motion.div variants={itemVariants} custom={badge ? 2 : 1}>
+                <motion.div variants={fadeUpVariants} custom={{ i: badge ? 2 : 1, baseDelay }}>
                     <p
                         className={`text-neutral-400 text-base md:text-lg leading-relaxed max-w-xl ${subtitleAlign}`}
                     >

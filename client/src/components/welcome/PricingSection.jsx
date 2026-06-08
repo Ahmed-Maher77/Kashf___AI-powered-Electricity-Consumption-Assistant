@@ -2,6 +2,7 @@ import "./PricingSection.css";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { fadeUpVariants as itemVariants, containerVariants } from "../../utils/animations";
 import {
     Zap,
     Check,
@@ -235,19 +236,6 @@ const PlanCard = ({ plan, t }) => {
 ───────────────────────────────────────────── */
 const PricingSection = () => {
     const { t } = useTranslation();
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.15 }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-    };
 
     return (
         <motion.section 
