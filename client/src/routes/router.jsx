@@ -33,11 +33,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: (
-                    <GuestRoute>
-                        <WelcomePage />
-                    </GuestRoute>
-                ),
+                element: <WelcomePage />,
             },
             {
                 path: "register",

@@ -31,6 +31,8 @@ const plans = [
         badgeKey: null,
         Icon: Layers,
         features: [
+            { key: "feat.oneMeter", def: "1 electricity meter", Icon: Layers },
+            { key: "feat.freeCoins", def: "50 Coins per month", Icon: Zap },
             { key: "feat.meterScan", def: "Meter scanning", Icon: ScanLine },
             {
                 key: "feat.consumTrack",
@@ -57,6 +59,8 @@ const plans = [
         badgeDef: "Most Popular",
         Icon: Zap,
         features: [
+            { key: "feat.twoMeters", def: "Up to 2 electricity meters", Icon: Layers },
+            { key: "feat.plusCoins", def: "150 Coins per month", Icon: Zap },
             {
                 key: "feat.everythingFree",
                 def: "Everything in Free",
@@ -96,15 +100,12 @@ const plans = [
         badgeKey: null,
         Icon: Users,
         features: [
+            { key: "feat.fiveMeters", def: "Up to 5 electricity meters", Icon: Layers },
+            { key: "feat.familyCoins", def: "300 Coins per month", Icon: Zap },
             {
                 key: "feat.everythingPlus",
                 def: "Everything in Plus",
                 Icon: Check,
-            },
-            {
-                key: "feat.multiMeter",
-                def: "Multiple meter management",
-                Icon: Layers,
             },
             {
                 key: "feat.familyReports",

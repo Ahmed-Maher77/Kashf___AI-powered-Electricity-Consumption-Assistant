@@ -539,7 +539,13 @@
         "familyReports": "Family usage reports",
         "sharedAccess": "Shared access",
         "extHistory": "Extended consumption history",
-        "prioritySupport": "Priority support"
+        "prioritySupport": "Priority support",
+        "oneMeter": "1 electricity meter",
+        "twoMeters": "Up to 2 electricity meters",
+        "fiveMeters": "Up to 5 electricity meters",
+        "freeCoins": "50 Coins per month",
+        "plusCoins": "150 Coins per month",
+        "familyCoins": "300 Coins per month"
     },
     "about": {
         "hero": {
@@ -812,6 +818,8 @@
             "renewalDate": "Renewal Date",
             "billingCycle": "Billing Cycle",
             "monthly": "Monthly",
+            "coinBalance": "Coin Balance",
+            "rolloverCoins": "Rollover Coins",
             "savingsThisMonth": "Savings This Month",
             "savingsDesc": "You've saved approximately EGP 180 this month through Kashf's AI recommendations.",
             "upgradePlan": "Upgrade Plan",
@@ -825,6 +833,7 @@
                     "name": "Free Plan",
                     "features": [
                         "1 electricity meter",
+                        "50 Coins per month",
                         "Basic tier tracking",
                         "Manual bill entry"
                     ]
@@ -832,7 +841,8 @@
                 "plus": {
                     "name": "Plus Plan",
                     "features": [
-                        "Up to 3 electricity meters",
+                        "Up to 2 electricity meters",
+                        "150 Coins per month",
                         "AI-powered consumption tips",
                         "Tier crossing alerts",
                         "Monthly reports",
@@ -843,7 +853,8 @@
                 "family": {
                     "name": "Family Plan",
                     "features": [
-                        "Unlimited meters",
+                        "Up to 5 electricity meters",
+                        "300 Coins per month",
                         "All Plus features",
                         "Family usage dashboard",
                         "Dedicated account manager",

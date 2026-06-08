@@ -34,6 +34,19 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: null,
         },
+        // ─── Coin System ───────────────────────────────────────────────────
+        coins: {
+            type: Number,
+            default: 50, // Free plan default
+        },
+        rolloverCoins: {
+            type: Number,
+            default: 0,
+        },
+        lastCoinResetDate: {
+            type: Date,
+            default: Date.now,
+        },
         // ─── Profile extras ────────────────────────────────────────────────
         phone: {
             type: String,

@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/auth/authSlice";
 import BrandLogo from "./BrandLogo";
 import LanguageSwitcher from "./LanguageSwitcher";
+import ProfileMenu from "./ProfileMenu";
+import MobileProfileActions from "./MobileProfileActions";
 
 // Section IDs on the home page that map to hash nav items
 const SECTION_IDS = [
@@ -69,6 +73,9 @@ const MarketingHeader = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const isRtl = i18n.dir() === "rtl";
     const { activeHash, pathname } = useActiveNavItem();
+    
+    // Check if user is logged in
+    const user = useSelector(selectUser);
 
     const navItems = [
         { to: "/", label: t("marketingNav.home"), end: true, sectionId: "hero" },
@@ -139,12 +146,24 @@ const MarketingHeader = () => {
                         <LanguageSwitcher />
                     </nav>
 
-                    <Link
-                        to="/register"
-                        className="shrink-0 rounded-md bg-kashf-blue px-4 py-2 text-sm font-semibold text-kashf-bg no-underline transition-opacity hover:opacity-90"
-                    >
-                        {t("marketingNav.joinKashf")}
-                    </Link>
+                    {user ? (
+                        <div className="shrink-0 flex items-center gap-4">
+                            <Link
+                                to="/dashboard"
+                                className="text-sm font-semibold text-neutral-300 hover:text-white transition-colors"
+                            >
+                                {t("nav.dashboard", { defaultValue: "Dashboard" })}
+                            </Link>
+                            <ProfileMenu />
+                        </div>
+                    ) : (
+                        <Link
+                            to="/register"
+                            className="shrink-0 rounded-md bg-kashf-blue px-4 py-2 text-sm font-semibold text-kashf-bg no-underline transition-opacity hover:opacity-90"
+                        >
+                            {t("marketingNav.joinKashf")}
+                        </Link>
+                    )}
                 </div>
 
                 {/* Mobile Actions */}
@@ -214,16 +233,20 @@ const MarketingHeader = () => {
                         ))}
                     </nav>
 
-                    {/* Mobile CTAs */}
-                    <div className="mt-auto border-t border-kashf-border pt-4 flex flex-col gap-4">
-                        <Link
-                            to="/register"
-                            onClick={() => setIsSidebarOpen(false)}
-                            className="flex w-full items-center justify-center rounded-lg bg-kashf-blue px-4 py-3 text-base font-semibold text-kashf-bg no-underline transition-opacity hover:opacity-90"
-                        >
-                            {t("marketingNav.joinKashf")}
-                        </Link>
-                    </div>
+                    {/* Mobile CTAs / Profile Actions */}
+                    {user ? (
+                        <MobileProfileActions setIsSidebarOpen={setIsSidebarOpen} />
+                    ) : (
+                        <div className="mt-auto border-t border-kashf-border pt-4 flex flex-col gap-4">
+                            <Link
+                                to="/register"
+                                onClick={() => setIsSidebarOpen(false)}
+                                className="flex w-full items-center justify-center rounded-lg bg-kashf-blue px-4 py-3 text-base font-semibold text-kashf-bg no-underline transition-opacity hover:opacity-90"
+                            >
+                                {t("marketingNav.joinKashf")}
+                            </Link>
+                        </div>
+                    )}
                 </aside>
             </div>
         </header>

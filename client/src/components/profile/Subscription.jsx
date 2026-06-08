@@ -13,6 +13,7 @@ const PLAN_CONFIG = {
     border: "border-neutral-700",
     features: [
       "1 electricity meter",
+      "50 Coins per month",
       "Basic tier tracking",
       "Manual bill entry",
     ],
@@ -24,7 +25,8 @@ const PLAN_CONFIG = {
     bg: "bg-kashf-blue/10",
     border: "border-kashf-blue/30",
     features: [
-      "Up to 3 electricity meters",
+      "Up to 2 electricity meters",
+      "150 Coins per month",
       "AI-powered consumption tips",
       "Tier crossing alerts",
       "Monthly reports",
@@ -38,7 +40,8 @@ const PLAN_CONFIG = {
     bg: "bg-emerald-500/10",
     border: "border-emerald-500/30",
     features: [
-      "Unlimited meters",
+      "Up to 5 electricity meters",
+      "300 Coins per month",
       "All Plus features",
       "Family usage dashboard",
       "Dedicated account manager",
@@ -105,6 +108,24 @@ const Subscription = () => {
                 ? t("profile.subscription.noCharge", { defaultValue: "Free forever" })
                 : t("profile.subscription.monthly")}
             </span>
+          </div>
+
+          {/* Coins Display */}
+          <div className="flex flex-col gap-2 p-3 bg-kashf-bg/50 rounded-xl border border-kashf-border/50">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-neutral-400">{t("profile.subscription.coinBalance", { defaultValue: "Coin Balance" })}</span>
+              <span className="text-sm font-semibold text-amber-400 flex items-center gap-1">
+                {user?.coins ?? 50} 
+              </span>
+            </div>
+            {user?.rolloverCoins > 0 && (
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-neutral-500">{t("profile.subscription.rolloverCoins", { defaultValue: "Rollover Coins" })}</span>
+                <span className="text-xs font-semibold text-amber-400/70">
+                  +{user.rolloverCoins}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

@@ -4,6 +4,9 @@ export const toPublicUser = (user) => ({
     email: user.email,
     role: user.role,
     subscriptionPlan: user.subscriptionPlan ?? "free",
+    coins: user.coins ?? 50,
+    rolloverCoins: user.rolloverCoins ?? 0,
+    lastCoinResetDate: user.lastCoinResetDate ?? null,
     picture: user.picture ?? null,
     // Profile extras
     phone: user.phone ?? null,

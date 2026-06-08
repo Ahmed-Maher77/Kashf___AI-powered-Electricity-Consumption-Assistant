@@ -9,6 +9,7 @@ import BrandLogo from "./BrandLogo";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ProfileMenu from "./ProfileMenu";
 import UserAvatar from "./UserAvatar";
+import MobileProfileActions from "./MobileProfileActions";
 
 const navLinkClass = ({ isActive }) =>
     `text-sm no-underline transition-colors hover:text-kashf-light-blue ${
@@ -139,36 +140,7 @@ const AppHeader = () => {
                 </nav>
 
                 {/* Mobile Profile & Actions */}
-                <div className="mt-auto border-t border-kashf-border pt-4 flex flex-col gap-4">
-                    <div className="flex items-center gap-3">
-                        <UserAvatar user={user} className="size-10 shrink-0" />
-                        <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-semibold text-neutral-100">{displayName}</p>
-                            {user?.email && <p className="truncate text-xs text-neutral-500">{user.email}</p>}
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                        <NavLink
-                            to="/profile"
-                            onClick={() => setIsSidebarOpen(false)}
-                            className={navLinkClassMobile}
-                        >
-                            {t("profileMenu.profile")}
-                        </NavLink>
-                        <button
-                            type="button"
-                            disabled={logoutMutation.isPending}
-                            onClick={() => {
-                                setIsSidebarOpen(false);
-                                logoutMutation.mutate();
-                            }}
-                            className="flex w-full items-center px-4 py-3 rounded-lg text-base text-red-400 hover:bg-kashf-muted transition-colors cursor-pointer border-none bg-transparent disabled:opacity-60 text-start font-semibold"
-                        >
-                            {logoutMutation.isPending ? t("auth.logoutSubmitting") : t("auth.logout")}
-                        </button>
-                    </div>
-                </div>
+                <MobileProfileActions setIsSidebarOpen={setIsSidebarOpen} />
             </aside>
         </header>
     );
