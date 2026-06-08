@@ -5,7 +5,7 @@ const Button = ({ children, variant = "primary", size = "md", className, ...prop
     primary: "bg-kashf-blue text-kashf-bg hover:bg-kashf-light-blue",
     secondary: "bg-kashf-surface border border-kashf-border text-neutral-300 hover:border-kashf-blue",
     ghost: "text-neutral-300 hover:text-white hover:bg-kashf-muted",
-    danger: "bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30",
+    danger: "bg-red-500/20 text-white border border-red-500/30 hover:bg-red-500/30",
   };
 
   const sizes = {

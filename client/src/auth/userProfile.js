@@ -31,6 +31,7 @@ export const normalizeUserProfile = (user) => {
             emailNotifications: user.notificationPreferences?.emailNotifications ?? true,
             smsNotifications:   user.notificationPreferences?.smsNotifications   ?? false,
         },
+        twoFactorEnabled: user.twoFactorEnabled ?? false,
         createdAt: user.createdAt ?? null,
     };
 };

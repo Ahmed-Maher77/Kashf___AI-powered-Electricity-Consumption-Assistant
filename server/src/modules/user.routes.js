@@ -29,5 +29,16 @@ router.patch("/profile",       isAuthenticated, userController.updateProfile);
 router.patch("/goals",         isAuthenticated, userController.updateGoals);
 router.patch("/notifications", isAuthenticated, userController.updateNotifications);
 
+// ─── Security Settings Routes ──────────────────────────────────────────────────
+router.post("/security/change-password", isAuthenticated, userController.changePassword);
+router.post("/security/2fa/setup",        isAuthenticated, userController.setup2fa);
+router.post("/security/2fa/enable",       isAuthenticated, userController.enable2fa);
+router.post("/security/2fa/disable",      isAuthenticated, userController.disable2fa);
+router.post("/security/2fa/verify",       userController.verify2faLogin);
+router.get("/security/devices",          isAuthenticated, userController.getSessions);
+router.delete("/security/devices/:sessionId", isAuthenticated, userController.revokeSession);
+router.get("/security/login-history",    isAuthenticated, userController.getLoginHistory);
+router.post("/security/delete-account",  isAuthenticated, userController.deleteAccount);
+
 export default router;
 

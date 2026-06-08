@@ -105,21 +105,6 @@ const ProfileMenu = () => {
                         {t("profileMenu.profile")}
                     </NavLink>
 
-                    <NavLink
-                        to="/settings"
-                        role="menuitem"
-                        onClick={() => setIsOpen(false)}
-                        className={({ isActive }) =>
-                            `${menuItemClass} no-underline ${
-                                isActive
-                                    ? "bg-kashf-muted text-kashf-light-blue"
-                                    : ""
-                            }`
-                        }
-                    >
-                        {t("nav.settings")}
-                    </NavLink>
-
                     <button
                         type="button"
                         role="menuitem"

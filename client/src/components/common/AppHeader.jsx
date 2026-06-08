@@ -35,7 +35,6 @@ const AppHeader = () => {
         { to: "/scan", label: t("nav.scan") },
         { to: "/history", label: t("nav.history") },
         { to: "/tips", label: t("nav.tips") },
-        { to: "/settings", label: t("nav.settings") },
     ];
 
     // Close sidebar on Escape key press

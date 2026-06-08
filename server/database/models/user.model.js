@@ -66,6 +66,16 @@ const userSchema = new mongoose.Schema(
             emailNotifications: { type: Boolean, default: true  },
             smsNotifications:   { type: Boolean, default: false },
         },
+        // ─── Security fields ───────────────────────────────────────────────
+        twoFactorEnabled: {
+            type: Boolean,
+            default: false,
+        },
+        twoFactorSecret: {
+            type: String,
+            select: false,
+            default: null,
+        },
     },
     { timestamps: true }
 );

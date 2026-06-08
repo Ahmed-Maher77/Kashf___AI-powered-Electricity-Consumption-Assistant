@@ -18,6 +18,7 @@ import {
     LayoutDashboard,
     CalendarDays,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 /* ─────────────────────────────────────────────
    DATA
@@ -267,9 +268,9 @@ const PricingSection = () => {
                 {t("pricing.footnote", {
                     defaultValue: "No credit card required · Cancel anytime ·",
                 })}{" "}
-                <a href="#faq">
+                <NavLink to="/about#about-faq" className="pricing-faq-link">
                     {t("pricing.faqLink", { defaultValue: "Read the FAQ" })}
-                </a>
+                </NavLink>
             </p>
         </section>
     );

@@ -44,6 +44,19 @@ export const verifyRefreshToken = (token) => {
     return decoded;
 };
 
+export const signTemp2faToken = (payload) =>
+    jwt.sign({ ...payload, tokenType: "temp_2fa" }, getJwtSecret(), {
+        expiresIn: "5m",
+    });
+
+export const verifyTemp2faToken = (token) => {
+    const decoded = jwt.verify(token, getJwtSecret());
+    if (decoded.tokenType !== "temp_2fa") {
+        throw new Error("Invalid token type.");
+    }
+    return decoded;
+};
+
 export const setAuthCookies = (res, { accessToken, refreshToken }) => {
     const isProduction = process.env.NODE_ENV === "production";
     const cookieOptions = {

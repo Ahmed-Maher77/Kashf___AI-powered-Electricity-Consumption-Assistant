@@ -20,6 +20,9 @@ export const useLogin = () => {
     return useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
+            if (data?.data?.twoFactorRequired) {
+                return;
+            }
             const accessToken = data?.data?.accessToken;
             const role = data?.data?.user?.role ?? "user";
 

@@ -620,7 +620,10 @@
         },
         "header": {
             "premiumUser": "Premium User",
-            "memberSince": "Member Since"
+            "memberSince": "Member Since",
+            "changePicture": "Change Photo",
+            "uploading": "Uploading...",
+            "uploadError": "Failed to upload photo."
         },
         "overview": {
             "title": "Account Overview",
@@ -708,7 +711,53 @@
             "deleteAccount": "Delete Account",
             "actions": {
                 "enable": "Enable",
-                "view": "View"
+                "disable": "Disable",
+                "view": "View",
+                "revoke": "Revoke",
+                "cancel": "Cancel",
+                "save": "Save Changes"
+            },
+            "status": {
+                "enabled": "Enabled",
+                "disabled": "Disabled"
+            },
+            "changePasswordModal": {
+                "title": "Change Password",
+                "currentPassword": "Current Password",
+                "newPassword": "New Password",
+                "confirmPassword": "Confirm New Password",
+                "success": "Password updated successfully.",
+                "mismatch": "Passwords do not match."
+            },
+            "twoFactorModal": {
+                "title": "Two-Factor Authentication (2FA)",
+                "enableInstructions": "Enter the secret key below into your authenticator app (e.g., Google Authenticator, Authy) to set up 2FA, then enter the generated 6-digit verification code.",
+                "secretKey": "Secret Key",
+                "enterCode": "Enter 6-Digit Code",
+                "disableInstructions": "Enter your account password to confirm disabling two-factor authentication.",
+                "confirmPassword": "Account Password",
+                "successEnabled": "Two-factor authentication has been enabled successfully.",
+                "successDisabled": "Two-factor authentication has been disabled."
+            },
+            "devicesModal": {
+                "title": "Active Devices",
+                "current": "Current Device",
+                "unknown": "Unknown Device",
+                "revokeSuccess": "Session revoked successfully.",
+                "empty": "No active devices found. If you logged in before session tracking was enabled, please log out and log back in."
+            },
+            "historyModal": {
+                "title": "Login History",
+                "time": "Time",
+                "ip": "IP Address",
+                "device": "Device / Browser"
+            },
+            "deleteModal": {
+                "title": "Delete Account",
+                "warning": "Warning: This action is permanent and cannot be undone. All your meter data, consumption goals, scan history, and account settings will be permanently deleted.",
+                "confirmText": "To confirm deletion, please enter your password below:",
+                "button": "Permanently Delete My Account",
+                "success": "Your account has been deleted successfully."
             }
         },
         "activity": {

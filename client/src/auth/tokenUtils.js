@@ -1,6 +1,6 @@
 import { USER_ROLES } from "./authConstants";
 
-const decodeJwtPayload = (token) => {
+export const decodeJwtPayload = (token) => {
     try {
         const payloadSegment = token.split(".")[1];
 

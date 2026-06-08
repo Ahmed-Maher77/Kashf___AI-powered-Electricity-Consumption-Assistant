@@ -12,6 +12,9 @@ export const ACTIVITY_TYPES = {
     REPORT_DOWNLOADED: "report_downloaded",
     METER_ADDED: "meter_added",
     METER_REMOVED: "meter_removed",
+    PASSWORD_CHANGED: "password_changed",
+    TWO_FACTOR_ENABLED: "two_factor_enabled",
+    TWO_FACTOR_DISABLED: "two_factor_disabled",
 };
 
 export const ACTIVITY_TYPE_VALUES = Object.values(ACTIVITY_TYPES);

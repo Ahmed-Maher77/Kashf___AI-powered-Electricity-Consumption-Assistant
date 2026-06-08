@@ -9,7 +9,6 @@ export const DashboardPage = lazy(() => import("../pages/user/DashboardPage"));
 export const HistoryPage = lazy(() => import("../pages/user/HistoryPage"));
 export const ScanDetailsPage = lazy(() => import("../pages/user/ScanDetailsPage"));
 export const TipsPage = lazy(() => import("../pages/user/TipsPage"));
-export const SettingsPage = lazy(() => import("../pages/user/SettingsPage"));
 export const ProfilePage = lazy(() => import("../pages/user/ProfilePage"));
 export const AboutPage = lazy(() => import("../pages/user/AboutPage"));
 export const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
