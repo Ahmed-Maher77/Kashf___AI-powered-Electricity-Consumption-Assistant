@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 // Gap between cards in px — must match the gap-6 class (1.5rem = 24px)
 const CARD_GAP = 24;
@@ -238,42 +239,51 @@ const TestimonialsSection = () => {
         </div>
     );
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.2 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    };
+
     return (
-        <section id="testimonials" className="py-16 md:py-24 border-t border-kashf-border">
+        <motion.section 
+            id="testimonials" 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+            className="py-16 md:py-24 border-t border-kashf-border"
+        >
             <div className="max-w-6xl mx-auto px-5 sm:px-8">
                 {/* Heading */}
-                <div className="text-center mb-12">
+                <motion.div variants={itemVariants} className="text-center mb-12">
                     <h2 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-extrabold text-neutral-100 tracking-tight line-height-15">
                         {t("testimonials.title", { defaultValue: "Egyptians who got their bills under control" })}
                     </h2>
                     <p className="max-w-2xl mx-auto text-base md:text-lg text-neutral-400">
                         {t("testimonials.subtitle", { defaultValue: "Real stories from real users saving money with Kashf" })}
                     </p>
-                </div>
+                </motion.div>
 
                 {/* Slider */}
-                <div className="relative">
+                <motion.div variants={itemVariants} className="relative">
                     <div
                         ref={scrollContainerRef}
                         className="overflow-x-auto scrollbar-hide select-none"
                         style={{
                             cursor: isDraggingState ? "grabbing" : "grab",
-                            // scrollBehavior managed imperatively; inline style wins over class
                         }}
                         onMouseDown={onMouseDown}
                         onTouchStart={onTouchStart}
                         onTouchEnd={onTouchEnd}
                     >
-                        {/*
-                          Cards use a CSS custom property for width so the single
-                          source of truth (--card-w) drives both the card width
-                          and the measureCardsPerPage calculation.
-
-                          Breakpoints:
-                            mobile  (<640px)  → 1 card  → full width
-                            tablet  (≥640px)  → 2 cards → ~50% − half gap
-                            desktop (≥1024px) → 3 cards → ~33% − two-thirds gap
-                        */}
                         <div className="flex pb-4" style={{ gap: CARD_GAP }}>
                             {testimonials.map((testimonial) => (
                                 <div
@@ -326,7 +336,7 @@ const TestimonialsSection = () => {
                             />
                         ))}
                     </div>
-                </div>
+                </motion.div>
             </div>
 
             <style>{`
@@ -338,7 +348,7 @@ const TestimonialsSection = () => {
                     display: none;
                 }
             `}</style>
-        </section>
+        </motion.section>
     );
 };
 

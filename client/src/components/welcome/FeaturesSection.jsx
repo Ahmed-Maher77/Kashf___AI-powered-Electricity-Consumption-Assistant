@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Camera, Brain, Zap, MonitorSmartphone } from "lucide-react";
+import { motion } from "framer-motion";
 import SectionHeading from "./ui/SectionHeading";
 
 const CAPABILITIES = [
@@ -31,26 +32,45 @@ const FeatureCard = ({ Icon, title, desc }) => (
 const FeaturesSection = () => {
     const { t } = useTranslation();
 
+    const itemVariants = {
+        hidden: { opacity: 0, y: 40 },
+        show: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: 0.45 + (i * 0.15), duration: 0.5, ease: "easeOut" }
+        })
+    };
+
     return (
-        <section id="features" className="mb-10 scroll-mt-24 py-16 md:py-24">
+        <section 
+            id="features" 
+            className="mb-10 scroll-mt-24 py-16 md:py-24 overflow-hidden"
+        >
             <div className="max-w-6xl mx-auto px-5 sm:px-8">
                 <SectionHeading
                     align="center"
                     title={t("welcome.coreCapabilities", { defaultValue: "Core Capabilities" })}
                     subtitle={t("welcome.featuresText")}
                     className="mb-16"
+                    baseDelay={0}
                 />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {CAPABILITIES.map((c) => (
-                        <FeatureCard
-                            key={c.titleKey}
-                            Icon={c.Icon}
-                            title={t(c.titleKey, { defaultValue: c.titleDef })}
-                            desc={t(c.descKey, { defaultValue: c.descDef })}
-                        />
+                <motion.div 
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-50px" }}
+                >
+                    {CAPABILITIES.map((c, index) => (
+                        <motion.div key={c.titleKey} variants={itemVariants} custom={index} className="h-full">
+                            <FeatureCard
+                                Icon={c.Icon}
+                                title={t(c.titleKey, { defaultValue: c.titleDef })}
+                                desc={t(c.descKey, { defaultValue: c.descDef })}
+                            />
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );

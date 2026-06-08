@@ -17,7 +17,7 @@ import { selectUser } from '../store/auth/authSlice';
 import UserAvatar from '../components/common/UserAvatar';
 
 const SettingsPage = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const user = useSelector(selectUser);
 
     const [toggles, setToggles] = useState({
@@ -36,8 +36,8 @@ const SettingsPage = () => {
         <div className="space-y-6 max-w-5xl mx-auto pb-10">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-white">Profile & Settings</h1>
-                <p className="text-neutral-400 text-sm mt-1">Manage your account details, security, and notification preferences.</p>
+                <h1 className="text-2xl font-bold text-white">{t('settings.title')}</h1>
+                <p className="text-neutral-400 text-sm mt-1">{t('settings.subtitle')}</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -53,10 +53,10 @@ const SettingsPage = () => {
                         
                         <div className="w-full space-y-3 mt-2">
                             <button className="w-full py-2 bg-neutral-800 hover:bg-neutral-700 rounded-lg text-sm font-medium text-white transition-colors">
-                                Edit Profile
+                                {t('settings.editProfile')}
                             </button>
                             <button className="w-full py-2 border border-neutral-700 hover:bg-neutral-800 rounded-lg text-sm font-medium text-neutral-300 transition-colors">
-                                Change Avatar
+                                {t('settings.changeAvatar')}
                             </button>
                         </div>
                     </div>
@@ -65,12 +65,16 @@ const SettingsPage = () => {
                     <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6">
                         <div className="flex items-center gap-2 mb-4">
                             <Globe className="size-5 text-kashf-light-blue" />
-                            <h3 className="text-base font-bold text-white">Preferences</h3>
+                            <h3 className="text-base font-bold text-white">{t('settings.preferences')}</h3>
                         </div>
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-xs font-medium text-neutral-400 mb-1.5 uppercase tracking-wider">Interface Language</label>
-                                <select className="w-full bg-neutral-900 border border-neutral-800 text-sm text-white rounded-lg px-3 py-2.5 focus:outline-none focus:border-kashf-blue">
+                                <label className="block text-xs font-medium text-neutral-400 mb-1.5 uppercase tracking-wider">{t('settings.interfaceLanguage')}</label>
+                                <select 
+                                    className="w-full bg-neutral-900 border border-neutral-800 text-sm text-white rounded-lg px-3 py-2.5 focus:outline-none focus:border-kashf-blue"
+                                    value={i18n.language}
+                                    onChange={(e) => i18n.changeLanguage(e.target.value)}
+                                >
                                     <option value="en">English</option>
                                     <option value="ar">العربية (Arabic)</option>
                                 </select>
@@ -86,34 +90,34 @@ const SettingsPage = () => {
                     <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6">
                         <div className="flex items-center gap-2 mb-6">
                             <Bell className="size-5 text-amber-400" />
-                            <h3 className="text-base font-bold text-white">Notification Settings</h3>
+                            <h3 className="text-base font-bold text-white">{t('settings.notificationSettings')}</h3>
                         </div>
                         
                         <div className="space-y-1">
                             <ToggleRow 
-                                title="Push Notifications" 
-                                desc="Receive alerts directly on your device." 
+                                title={t('settings.push.title')} 
+                                desc={t('settings.push.desc')} 
                                 icon={Smartphone} 
                                 active={toggles.push} 
                                 onToggle={() => handleToggle('push')} 
                             />
                             <ToggleRow 
-                                title="Email Summaries" 
-                                desc="Weekly consumption and billing summaries." 
+                                title={t('settings.email.title')} 
+                                desc={t('settings.email.desc')} 
                                 icon={Mail} 
                                 active={toggles.email} 
                                 onToggle={() => handleToggle('email')} 
                             />
                             <ToggleRow 
-                                title="AI Recommendations" 
-                                desc="Get notified when Kashf AI finds savings." 
+                                title={t('settings.ai.title')} 
+                                desc={t('settings.ai.desc')} 
                                 icon={User} 
                                 active={toggles.ai} 
                                 onToggle={() => handleToggle('ai')} 
                             />
                             <ToggleRow 
-                                title="Sheriha (Tier) Alerts" 
-                                desc="Critical warnings before crossing a new tier." 
+                                title={t('settings.sheriha.title')} 
+                                desc={t('settings.sheriha.desc')} 
                                 icon={Bell} 
                                 active={toggles.sheriha} 
                                 onToggle={() => handleToggle('sheriha')} 
@@ -125,7 +129,7 @@ const SettingsPage = () => {
                     <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6">
                         <div className="flex items-center gap-2 mb-6">
                             <Shield className="size-5 text-emerald-400" />
-                            <h3 className="text-base font-bold text-white">Security & Login</h3>
+                            <h3 className="text-base font-bold text-white">{t('settings.securityLogin')}</h3>
                         </div>
 
                         <div className="space-y-4">
@@ -135,12 +139,12 @@ const SettingsPage = () => {
                                         <Lock className="size-4" />
                                     </div>
                                     <div>
-                                        <h4 className="text-sm font-semibold text-white">Change Password</h4>
-                                        <p className="text-xs text-neutral-400">Last changed 3 months ago</p>
+                                        <h4 className="text-sm font-semibold text-white">{t('settings.changePassword')}</h4>
+                                        <p className="text-xs text-neutral-400">{t('settings.lastChanged')}</p>
                                     </div>
                                 </div>
                                 <button className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 rounded-lg text-sm font-medium text-white transition-colors">
-                                    Update
+                                    {t('settings.update')}
                                 </button>
                             </div>
 
@@ -150,19 +154,19 @@ const SettingsPage = () => {
                                         <Shield className="size-4" />
                                     </div>
                                     <div>
-                                        <h4 className="text-sm font-semibold text-white">Two-Factor Authentication</h4>
-                                        <p className="text-xs text-emerald-400">Currently Enabled</p>
+                                        <h4 className="text-sm font-semibold text-white">{t('settings.twoFactor')}</h4>
+                                        <p className="text-xs text-emerald-400">{t('settings.currentlyEnabled')}</p>
                                     </div>
                                 </div>
                                 <button className="px-4 py-2 border border-neutral-700 hover:bg-neutral-800 rounded-lg text-sm font-medium text-neutral-300 transition-colors">
-                                    Manage
+                                    {t('settings.manage')}
                                 </button>
                             </div>
 
                             <div className="pt-6 mt-6 border-t border-neutral-800">
                                 <button className="flex items-center gap-2 text-sm font-medium text-red-400 hover:text-red-300 transition-colors">
                                     <LogOut className="size-4" />
-                                    Sign out of all other devices
+                                    {t('settings.signOutOther')}
                                 </button>
                             </div>
                         </div>
@@ -170,10 +174,10 @@ const SettingsPage = () => {
 
                     {/* Danger Zone */}
                     <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-6">
-                        <h3 className="text-base font-bold text-red-400 mb-2">Danger Zone</h3>
-                        <p className="text-sm text-neutral-400 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+                        <h3 className="text-base font-bold text-red-400 mb-2">{t('settings.dangerZone')}</h3>
+                        <p className="text-sm text-neutral-400 mb-4">{t('settings.deleteWarning')}</p>
                         <button className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-sm font-medium transition-colors">
-                            Delete Account
+                            {t('settings.deleteAccount')}
                         </button>
                     </div>
 

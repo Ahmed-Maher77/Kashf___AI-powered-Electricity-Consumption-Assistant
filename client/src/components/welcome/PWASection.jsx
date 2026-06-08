@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { WifiOff, Bell, RefreshCw, MonitorSmartphone, Download } from "lucide-react";
+import { motion } from "framer-motion";
 import appMockup from "../../assets/images/installable-app.png";
 import SectionBadge from "./ui/SectionBadge";
 import SectionHeading from "./ui/SectionHeading";
@@ -22,8 +23,22 @@ const PWASection = () => {
         label: t(f.key, { defaultValue: f.def }),
     }));
 
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: 0.45 + (i * 0.15), duration: 0.6, ease: "easeOut" }
+        })
+    };
+
+
+
     return (
-        <section id="pwa" className="relative py-20 md:py-28 overflow-hidden border-t border-kashf-border">
+        <section 
+            id="pwa" 
+            className="relative py-20 md:py-28 overflow-hidden border-t border-kashf-border"
+        >
             {/* Ambient glow */}
             <div className="pointer-events-none absolute top-1/2 -translate-y-1/2 -right-40 w-[500px] h-[500px] rounded-full bg-kashf-blue/6 blur-3xl" />
 
@@ -45,12 +60,28 @@ const PWASection = () => {
                                 defaultValue:
                                     "Kashf is a Progressive Web App — install it directly from your browser on any phone or desktop. Works offline, gets push notifications, feels like a native app.",
                             })}
+                            baseDelay={0}
                         />
 
-                        <FeatureList items={featureItems} iconWrapClass="rounded-lg" />
+                        <motion.div 
+                            variants={itemVariants} 
+                            custom={0}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: true, margin: "-50px" }}
+                        >
+                            <FeatureList items={featureItems} iconWrapClass="rounded-lg" />
+                        </motion.div>
 
                         {/* Platform pills */}
-                        <div className="flex flex-wrap gap-2 mt-2">
+                        <motion.div 
+                            variants={itemVariants} 
+                            custom={1} 
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: true, margin: "-50px" }}
+                            className="flex flex-wrap gap-2 mt-2"
+                        >
                             {PLATFORMS.map((p) => (
                                 <span
                                     key={p}
@@ -59,11 +90,18 @@ const PWASection = () => {
                                     {p}
                                 </span>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
 
                     {/* ── Right: phone mockup + install toast ── */}
-                    <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
+                    <motion.div 
+                        variants={itemVariants} 
+                        custom={2} 
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: true, margin: "-50px" }}
+                        className="order-1 lg:order-2 flex justify-center lg:justify-end"
+                    >
                         {/* Outer wrapper: stacked on mobile, side-by-side on sm+ */}
                         <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-4 w-full sm:w-auto">
 
@@ -93,7 +131,7 @@ const PWASection = () => {
                             </div>
 
                         </div>
-                    </div>
+                    </motion.div>
 
                 </div>
             </div>

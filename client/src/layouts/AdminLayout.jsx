@@ -1,6 +1,7 @@
 import { Suspense, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, useOutlet, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import Loader from "../components/Loader/Loader";
 
 const adminNavLinkClass = ({ isActive }) =>
@@ -14,6 +15,8 @@ const AdminLayout = () => {
     const { t, i18n } = useTranslation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const isRtl = i18n.dir() === "rtl";
+    const { pathname } = useLocation();
+    const currentOutlet = useOutlet();
 
     const adminNavItems = [
         { to: "/admin/dashboard", label: t("adminNav.dashboard") },
@@ -142,7 +145,20 @@ const AdminLayout = () => {
             {/* Main Content Pane */}
             <div className="flex-1 overflow-auto">
                 <Suspense fallback={<Loader />}>
-                    <Outlet />
+                    <AnimatePresence mode="wait">
+                        {currentOutlet && (
+                            <motion.div
+                                key={pathname}
+                                initial={{ opacity: 0, y: 15 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -15 }}
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="h-full w-full"
+                            >
+                                {currentOutlet}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </Suspense>
             </div>
         </div>

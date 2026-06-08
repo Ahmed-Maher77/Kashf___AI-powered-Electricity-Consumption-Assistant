@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import SectionBadge from "../welcome/ui/SectionBadge";
 import SectionHeading from "../welcome/ui/SectionHeading";
@@ -40,34 +41,50 @@ const FAQItem = ({ q, a }) => {
 const AboutFAQ = () => {
     const { t } = useTranslation();
 
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: 0.15 + (i * 0.15), duration: 0.6, ease: "easeOut" }
+        })
+    };
+
     return (
-        <section id="about-faq" className="py-20 md:py-28 border-b border-kashf-border">
-            <div className="max-w-3xl mx-auto px-5 sm:px-8">
+        <section id="about-faq" className="py-20 md:py-28 border-b border-kashf-border overflow-hidden">
+            <motion.div 
+                className="max-w-3xl mx-auto px-5 sm:px-8"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-50px" }}
+            >
                 <SectionHeading
                     align="center"
                     title={t("about.faq.title")}
                     accent={t("about.faq.titleAccent")}
                     subtitle={t("about.faq.subtitle")}
                     className="mb-12"
+                    baseDelay={0}
                 />
 
                 <div className="flex flex-col gap-3 mt-14">
-                    {FAQ_KEYS.map((key) => (
-                        <FAQItem
-                            key={key}
-                            q={t(`about.faq.items.${key}.q`)}
-                            a={t(`about.faq.items.${key}.a`)}
-                        />
+                    {FAQ_KEYS.map((key, i) => (
+                        <motion.div key={key} variants={itemVariants} custom={i}>
+                            <FAQItem
+                                q={t(`about.faq.items.${key}.q`)}
+                                a={t(`about.faq.items.${key}.a`)}
+                            />
+                        </motion.div>
                     ))}
                 </div>
 
-                <p className="text-center text-neutral-500 text-sm mt-10">
+                <motion.p variants={itemVariants} custom={FAQ_KEYS.length} className="text-center text-neutral-500 text-sm mt-10">
                     {t("about.faq.contact")}{" "}
                     <a href="mailto:ahmedmaher.dev1@gmail.com" className="text-kashf-blue hover:underline">
                         {t("about.faq.email")}
                     </a>
-                </p>
-            </div>
+                </motion.p>
+            </motion.div>
         </section>
     );
 };

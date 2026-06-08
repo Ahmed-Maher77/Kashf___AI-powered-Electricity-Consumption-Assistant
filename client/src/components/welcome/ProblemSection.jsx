@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import SectionBadge from "./ui/SectionBadge";
 import SectionHeading from "./ui/SectionHeading";
 
@@ -51,8 +52,22 @@ const TheProblemSection = () => {
 
     const billLabel = t("problem.billLabel", { defaultValue: "Electricity Bill — June 2026" });
 
+    const itemVariants = {
+        hidden: { opacity: 0, y: 40 },
+        show: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: 0.45 + (i * 0.15), duration: 0.6, ease: "easeOut" }
+        })
+    };
+
+
+
     return (
-        <section id="problem" className="relative py-20 md:py-28 overflow-hidden border-t border-kashf-border">
+        <section 
+            id="problem" 
+            className="relative py-20 md:py-28 overflow-hidden border-t border-kashf-border"
+        >
             {/* Ambient glow */}
             <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-kashf-blue/5 blur-3xl" />
 
@@ -68,42 +83,59 @@ const TheProblemSection = () => {
                     accent={t("problem.titleAccent", { defaultValue: "electricity bills" })}
                     subtitle={t("problem.subtitle", { defaultValue: "One missed tier crossing costs hundreds. Kashf makes sure it never happens." })}
                     className="mb-14"
+                    baseDelay={0}
                 />
 
                 {/* Before / After grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <ComparisonCard
-                        borderColor="border-red-500/20"
-                        bgColor="bg-red-500/5"
-                        emoji="😱"
-                        title={t("problem.without.title", { defaultValue: "Without Kashf" })}
-                        items={withoutItems}
-                        checkIcon="✕"
-                        checkColor="text-red-400"
-                        billLabel={billLabel}
-                        billNote={`⚠ ${t("problem.without.billNote", { defaultValue: "Tier 5 applied — 0.72 EGP/kWh on last 300 kWh" })}`}
-                        billNoteColor="text-red-400"
-                        amount="847 EGP"
-                        amountColor="text-red-400"
-                    />
-                    <ComparisonCard
-                        borderColor="border-emerald-500/20"
-                        bgColor="bg-emerald-500/5"
-                        emoji="✨"
-                        title={t("problem.with.title", { defaultValue: "With Kashf" })}
-                        items={withItems}
-                        checkIcon="✓"
-                        checkColor="text-emerald-400"
-                        billLabel={billLabel}
-                        billNote={`✓ ${t("problem.with.billNote", { defaultValue: "Stayed in Tier 3 — saved 435 EGP this month" })}`}
-                        billNoteColor="text-emerald-400"
-                        amount="412 EGP"
-                        amountColor="text-emerald-400"
-                    />
-                </div>
+                <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-50px" }}
+                >
+                    <motion.div variants={itemVariants} custom={0} className="h-full">
+                        <ComparisonCard
+                            borderColor="border-red-500/20"
+                            bgColor="bg-red-500/5"
+                            emoji="😱"
+                            title={t("problem.without.title", { defaultValue: "Without Kashf" })}
+                            items={withoutItems}
+                            checkIcon="✕"
+                            checkColor="text-red-400"
+                            billLabel={billLabel}
+                            billNote={`⚠ ${t("problem.without.billNote", { defaultValue: "Tier 5 applied — 0.72 EGP/kWh on last 300 kWh" })}`}
+                            billNoteColor="text-red-400"
+                            amount="847 EGP"
+                            amountColor="text-red-400"
+                        />
+                    </motion.div>
+                    <motion.div variants={itemVariants} custom={1} className="h-full">
+                        <ComparisonCard
+                            borderColor="border-emerald-500/20"
+                            bgColor="bg-emerald-500/5"
+                            emoji="✨"
+                            title={t("problem.with.title", { defaultValue: "With Kashf" })}
+                            items={withItems}
+                            checkIcon="✓"
+                            checkColor="text-emerald-400"
+                            billLabel={billLabel}
+                            billNote={`✓ ${t("problem.with.billNote", { defaultValue: "Stayed in Tier 3 — saved 435 EGP this month" })}`}
+                            billNoteColor="text-emerald-400"
+                            amount="412 EGP"
+                            amountColor="text-emerald-400"
+                        />
+                    </motion.div>
+                </motion.div>
 
                 {/* Savings banner */}
-                <div className="mt-12 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-3 text-center sm:text-left">
+                <motion.div 
+                    variants={itemVariants} 
+                    custom={2} 
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="mt-12 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-3 text-center sm:text-left"
+                >
                     <span className="text-3xl">💡</span>
                     <p className="text-neutral-300 text-sm sm:text-base">
                         {t("problem.banner", { defaultValue: "The average Kashf user saves" })}{" "}
@@ -112,7 +144,7 @@ const TheProblemSection = () => {
                         </span>{" "}
                         {t("problem.bannerSuffix", { defaultValue: "by staying ahead of tier thresholds." })}
                     </p>
-                </div>
+                </motion.div>
             </div>
         </section>
     );

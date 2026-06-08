@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Waypoints, Zap, Clock, Thermometer, MessageSquareText } from "lucide-react";
+import { motion } from "framer-motion";
 import SectionBadge from "./ui/SectionBadge";
 import SectionHeading from "./ui/SectionHeading";
 import FeatureList from "./ui/FeatureList";
@@ -52,8 +53,22 @@ const AIAssistantSection = () => {
         label: t(f.key, { defaultValue: f.def }),
     }));
 
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: 0.45 + (i * 0.15), duration: 0.6, ease: "easeOut" }
+        })
+    };
+
+
+
     return (
-        <section id="ai-assistant" className="relative py-20 md:py-28 overflow-hidden border-t border-kashf-border">
+        <section 
+            id="ai-assistant" 
+            className="relative py-20 md:py-28 overflow-hidden border-t border-kashf-border"
+        >
             {/* Ambient glow */}
             <div className="pointer-events-none absolute top-1/2 -translate-y-1/2 -left-40 w-[400px] h-[400px] rounded-full bg-kashf-blue/10 blur-3xl" />
 
@@ -75,17 +90,33 @@ const AIAssistantSection = () => {
                                 defaultValue:
                                     "Kashf's AI analyzes your usage profile and gives you actionable steps in plain Egyptian Arabic — not generic tips, but recommendations based on your actual home behavior.",
                             })}
+                            baseDelay={0}
                         />
 
-                        <FeatureList items={featureItems} iconWrapClass="text-kashf-blue/50" />
+                        <motion.div 
+                            variants={itemVariants} 
+                            custom={0}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: true, margin: "-50px" }}
+                        >
+                            <FeatureList items={featureItems} iconWrapClass="text-kashf-blue/50" />
+                        </motion.div>
                     </div>
 
                     {/* ── Right: chat UI ── */}
-                    <div className="rounded-2xl border border-kashf-border bg-kashf-surface overflow-hidden shadow-2xl shadow-black/40">
+                    <motion.div 
+                        variants={itemVariants} 
+                        custom={1} 
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: true, margin: "-50px" }}
+                        className="rounded-2xl border border-kashf-border bg-kashf-surface overflow-hidden shadow-2xl shadow-black/40"
+                    >
                         <ChatHeader />
                         <ChatMessages messages={CHAT_MESSAGES} quickReplies={QUICK_REPLIES} />
                         <ChatInputBar />
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

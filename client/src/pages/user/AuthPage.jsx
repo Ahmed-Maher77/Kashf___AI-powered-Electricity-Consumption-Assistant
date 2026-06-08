@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import AuthModeSwitch from "../../components/auth/AuthModeSwitch";
 import LoginForm from "../../components/auth/LoginForm";
 import RegisterForm from "../../components/auth/RegisterForm";
@@ -18,14 +19,24 @@ const AuthPage = () => {
 
     return (
         <main className="mx-auto max-w-lg px-6 py-12">
-            <h1 className="mb-2 text-2xl font-semibold text-neutral-100">
-                {isLogin ? t("auth.loginTitle") : t("register.title")}
-            </h1>
-            <p className="mb-12 text-neutral-400">
-                {isLogin ? t("auth.loginSubtitle") : t("register.subtitle")}
-            </p>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={mode}
+                    initial={{ opacity: 0, x: isLogin ? -20 : 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: isLogin ? 20 : -20 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                >
+                    <h1 className="mb-2 text-2xl font-semibold text-neutral-100">
+                        {isLogin ? t("auth.loginTitle") : t("register.title")}
+                    </h1>
+                    <p className="mb-12 text-neutral-400">
+                        {isLogin ? t("auth.loginSubtitle") : t("register.subtitle")}
+                    </p>
 
-            {isLogin ? <LoginForm /> : <RegisterForm />}
+                    {isLogin ? <LoginForm /> : <RegisterForm />}
+                </motion.div>
+            </AnimatePresence>
 
             <AuthModeSwitch
                 isLogin={isLogin}

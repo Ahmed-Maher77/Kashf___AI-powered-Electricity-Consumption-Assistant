@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import SectionBadge from "../welcome/ui/SectionBadge";
 import SectionHeading from "../welcome/ui/SectionHeading";
 import teamAhmed from "../../assets/images/team_members/ahmed-maher-algohary.jpg";
@@ -30,7 +31,7 @@ const TeamCard = ({ member }) => {
     const title = t(`about.team.members.${member.key}.title`);
 
     return (
-        <div className="group relative flex flex-col items-center gap-4 rounded-2xl border border-neutral-800 bg-[#0d0d12] p-6 transition-all duration-500 hover:border-kashf-blue/40 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(6,182,212,0.12)]">
+        <div className="group relative flex flex-col items-center gap-4 rounded-2xl border border-neutral-800 bg-[#0d0d12] p-6 transition-all duration-500 hover:border-kashf-blue/40 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(6,182,212,0.12)] h-full">
             {/* Hover glow */}
             <span aria-hidden className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br from-kashf-blue/8 via-kashf-light-blue/5 to-emerald-400/5" />
             <span aria-hidden className="pointer-events-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-kashf-blue/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -71,23 +72,40 @@ const TeamCard = ({ member }) => {
 const AboutTeam = () => {
     const { t } = useTranslation();
 
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: 0.15 + (i * 0.15), duration: 0.6, ease: "easeOut" }
+        })
+    };
+
     return (
-        <section id="about-team" className="py-20 md:py-28 md:pt-24 border-b border-kashf-border">
-            <div className="max-w-5xl mx-auto px-5 sm:px-8">
+        <section id="about-team" className="py-20 md:py-28 md:pt-24 border-b border-kashf-border overflow-hidden">
+            <motion.div 
+                className="max-w-7xl xl:max-w-[1400px] mx-auto px-5 sm:px-8"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-50px" }}
+            >
                 <SectionHeading
                     align="center"
                     title={t("about.team.title")}
                     accent={t("about.team.titleAccent")}
                     subtitle={t("about.team.subtitle")}
                     className="mb-14"
+                    baseDelay={0}
                 />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
-                    {MEMBERS.map((member) => (
-                        <TeamCard key={member.key} member={member} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mt-20">
+                    {MEMBERS.map((member, i) => (
+                        <motion.div key={member.key} variants={itemVariants} custom={i} className="h-full">
+                            <TeamCard member={member} />
+                        </motion.div>
                     ))}
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 };

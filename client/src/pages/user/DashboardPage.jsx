@@ -14,84 +14,85 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   PieChart, Pie, Cell
 } from 'recharts';
+import { motion } from 'framer-motion';
 
 // Dummy Data
-const trendData = [
-  { month: 'Jan', consumption: 320 },
-  { month: 'Feb', consumption: 280 },
-  { month: 'Mar', consumption: 310 },
-  { month: 'Apr', consumption: 380 },
-  { month: 'May', consumption: 420 },
-  { month: 'Jun', consumption: 285 },
-];
-
-const distributionData = [
-  { name: 'AC & Cooling', value: 45 },
-  { name: 'Water Heater', value: 25 },
-  { name: 'Lighting', value: 10 },
-  { name: 'Appliances', value: 20 },
-];
-
-const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
-
 const DashboardPage = () => {
     const { t } = useTranslation();
 
+    // Rebuild data inside component to translate labels
+    const trendData = [
+        { month: t('dashboardOverview.months.jan'), consumption: 320 },
+        { month: t('dashboardOverview.months.feb'), consumption: 280 },
+        { month: t('dashboardOverview.months.mar'), consumption: 310 },
+        { month: t('dashboardOverview.months.apr'), consumption: 380 },
+        { month: t('dashboardOverview.months.may'), consumption: 420 },
+        { month: t('dashboardOverview.months.jun'), consumption: 285 },
+    ];
+
+    const distributionData = [
+        { name: t('dashboardOverview.categories.ac'), value: 45 },
+        { name: t('dashboardOverview.categories.heater'), value: 25 },
+        { name: t('dashboardOverview.categories.lighting'), value: 10 },
+        { name: t('dashboardOverview.categories.appliances'), value: 20 },
+    ];
+
+    const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
     return (
         <div className="space-y-6 max-w-7xl mx-auto pb-10">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
-                    <p className="text-neutral-400 text-sm mt-1">Real-time electricity monitoring & insights</p>
+                    <h1 className="text-2xl font-bold text-white">{t('dashboardOverview.title')}</h1>
+                    <p className="text-neutral-400 text-sm mt-1">{t('dashboardOverview.subtitle')}</p>
                 </div>
                 <div className="flex items-center gap-2 bg-kashf-blue/10 text-kashf-light-blue px-4 py-2 rounded-lg border border-kashf-blue/20">
                     <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-kashf-light-blue opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-kashf-blue"></span>
                     </span>
-                    <span className="text-sm font-medium">Live Sync Active</span>
+                    <span className="text-sm font-medium">{t('dashboardOverview.liveSync')}</span>
                 </div>
             </div>
 
             {/* Stats Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
                 <StatCard 
-                    title="Current Usage" 
+                    title={t('dashboardOverview.currentUsage')} 
                     value="285" 
-                    unit="kWh" 
+                    unit={t('common.kwh')} 
                     icon={Activity} 
-                    trend="-12% vs last month"
+                    trend={`-12% ${t('dashboardOverview.vsLastMonth')}`}
                     trendColor="text-emerald-400"
                 />
                 <StatCard 
-                    title="Current Sheriha" 
-                    value="Tier 3" 
+                    title={t('dashboardOverview.currentSheriha')} 
+                    value={t('common.tier', { tier: 3 })} 
                     unit="0-350" 
                     icon={Zap} 
                     color="text-amber-400"
                 />
                 <StatCard 
-                    title="Remaining to Tier 4" 
+                    title={t('dashboardOverview.remainingToTier', { tier: 4 })} 
                     value="65" 
-                    unit="kWh" 
+                    unit={t('common.kwh')} 
                     icon={AlertTriangle} 
                     color="text-amber-400"
-                    subtext="Expected to cross in 4 days"
+                    subtext={t('dashboardOverview.expectedToCross', { days: 4 })}
                 />
                 <StatCard 
-                    title="Estimated Bill" 
+                    title={t('dashboardOverview.estimatedBill')} 
                     value="412" 
-                    unit="EGP" 
+                    unit={t('common.egp')} 
                     icon={Receipt} 
                 />
                 <StatCard 
-                    title="Monthly Savings" 
+                    title={t('dashboardOverview.monthlySavings')} 
                     value="180" 
-                    unit="EGP" 
+                    unit={t('common.egp')} 
                     icon={PiggyBank} 
                     color="text-emerald-400"
-                    subtext="Saved via AI tips"
+                    subtext={t('dashboardOverview.savedViaAi')}
                 />
             </div>
 
@@ -101,7 +102,7 @@ const DashboardPage = () => {
                 {/* Gauge Section (Takes up 1 column) */}
                 <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6 flex flex-col items-center justify-center relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 via-amber-400 to-red-500"></div>
-                    <h3 className="text-sm font-medium text-neutral-400 w-full mb-6">Consumption Gauge</h3>
+                    <h3 className="text-sm font-medium text-neutral-400 w-full mb-6">{t('dashboardOverview.consumptionGauge')}</h3>
                     
                     <div className="relative w-48 h-48 mb-4">
                         {/* Fake SVG Gauge */}
@@ -109,26 +110,45 @@ const DashboardPage = () => {
                             {/* Track */}
                             <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#262626" strokeWidth="12" strokeLinecap="round" />
                             {/* Value (Amber zone) */}
-                            <path d="M 10 50 A 40 40 0 0 1 70 15" fill="none" stroke="#f59e0b" strokeWidth="12" strokeLinecap="round" className="drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+                            <motion.path 
+                                d="M 10 50 A 40 40 0 0 1 70 15" 
+                                fill="none" 
+                                stroke="#f59e0b" 
+                                strokeWidth="12" 
+                                strokeLinecap="round" 
+                                className="drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]"
+                                initial={{ pathLength: 0 }}
+                                whileInView={{ pathLength: 1 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                            />
                             {/* Needle */}
-                            <line x1="50" y1="50" x2="65" y2="20" stroke="#e5e5e5" strokeWidth="3" strokeLinecap="round" />
+                            <motion.g
+                                initial={{ rotate: 0 }}
+                                whileInView={{ rotate: 120 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                style={{ transformOrigin: "50px 50px" }}
+                            >
+                                <line x1="50" y1="50" x2="10" y2="50" stroke="#e5e5e5" strokeWidth="3" strokeLinecap="round" />
+                            </motion.g>
                             <circle cx="50" cy="50" r="4" fill="#e5e5e5" />
                         </svg>
                         
                         <div className="absolute bottom-0 left-0 w-full text-center">
                             <p className="text-4xl font-bold text-white tracking-tight">285</p>
-                            <p className="text-xs text-neutral-400 uppercase tracking-widest mt-1">kWh</p>
+                            <p className="text-xs text-neutral-400 uppercase tracking-widest mt-1">{t('common.kwh')}</p>
                         </div>
                     </div>
                     
                     <div className="w-full mt-6 space-y-3 bg-neutral-900/50 p-4 rounded-xl border border-neutral-800">
                         <div className="flex justify-between items-center text-sm">
-                            <span className="text-neutral-400">Current Status</span>
-                            <span className="text-amber-400 font-medium">Warning Zone</span>
+                            <span className="text-neutral-400">{t('dashboardOverview.currentStatus')}</span>
+                            <span className="text-amber-400 font-medium">{t('dashboardOverview.warningZone')}</span>
                         </div>
                         <div className="flex justify-between items-center text-sm">
-                            <span className="text-neutral-400">Next Threshold</span>
-                            <span className="text-white">350 kWh (Tier 4)</span>
+                            <span className="text-neutral-400">{t('dashboardOverview.nextThreshold')}</span>
+                            <span className="text-white">{t('dashboardOverview.tierLimit', { limit: 350, tier: 4 })}</span>
                         </div>
                     </div>
                 </div>
@@ -142,35 +162,38 @@ const DashboardPage = () => {
                             <Bot className="size-5" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-bold text-white">AI Energy Advisor</h3>
-                            <p className="text-sm text-neutral-400">Personalized actions to prevent tier jumps</p>
+                            <h3 className="text-lg font-bold text-white">{t('dashboardOverview.aiAdvisor')}</h3>
+                            <p className="text-sm text-neutral-400">{t('dashboardOverview.aiAdvisorDesc')}</p>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10 flex-1">
                         <AiTipCard 
-                            title="Water Heater" 
-                            desc="You left the heater on for 8 hours yesterday. Use it only 1 hour before showering."
-                            impact="High Impact"
-                            savings="~45 EGP"
+                            title={t('dashboardOverview.waterHeater')} 
+                            desc={t('dashboardOverview.waterHeaterDesc')}
+                            impact={t('dashboardOverview.impactHigh')}
+                            savings={`~45 ${t('common.egp')}`}
+                            t={t}
                         />
                         <AiTipCard 
-                            title="AC Usage Timing" 
-                            desc="Running ACs during peak hours (2PM-6PM) uses 15% more power due to heat."
-                            impact="Medium Impact"
-                            savings="~30 EGP"
+                            title={t('dashboardOverview.acTiming')} 
+                            desc={t('dashboardOverview.acTimingDesc')}
+                            impact={t('dashboardOverview.impactMedium')}
+                            savings={`~30 ${t('common.egp')}`}
+                            t={t}
                         />
                         <AiTipCard 
-                            title="Vampire Draw" 
-                            desc="Your idle consumption is unusually high at night. Unplug microwaves and TVs."
-                            impact="Quick Win"
-                            savings="~15 EGP"
+                            title={t('dashboardOverview.vampireDraw')} 
+                            desc={t('dashboardOverview.vampireDrawDesc')}
+                            impact={t('dashboardOverview.impactQuick')}
+                            savings={`~15 ${t('common.egp')}`}
+                            t={t}
                         />
                     </div>
                     
                     <button className="mt-6 w-full py-3 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded-xl text-sm font-medium text-white flex items-center justify-center gap-2 transition-colors relative z-10">
                         <Sparkles className="size-4 text-kashf-light-blue" />
-                        Ask Kashf how to reduce your bill
+                        {t('dashboardOverview.askKashf')}
                     </button>
                 </div>
             </div>
@@ -180,7 +203,7 @@ const DashboardPage = () => {
                 
                 {/* Trend Chart */}
                 <div className="lg:col-span-2 bg-kashf-surface border border-kashf-border rounded-2xl p-6">
-                    <h3 className="text-sm font-medium text-white mb-6">Monthly Consumption Trend</h3>
+                    <h3 className="text-sm font-medium text-white mb-6">{t('dashboardOverview.monthlyTrend')}</h3>
                     <div className="h-[250px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={trendData}>
@@ -199,7 +222,7 @@ const DashboardPage = () => {
 
                 {/* Donut Chart */}
                 <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6 flex flex-col">
-                    <h3 className="text-sm font-medium text-white mb-6">Consumption Breakdown</h3>
+                    <h3 className="text-sm font-medium text-white mb-6">{t('dashboardOverview.consumptionBreakdown')}</h3>
                     <div className="h-[200px] w-full flex-1">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
@@ -260,13 +283,13 @@ const StatCard = ({ title, value, unit, icon: Icon, color = "text-kashf-light-bl
     </div>
 );
 
-const AiTipCard = ({ title, desc, impact, savings }) => (
+const AiTipCard = ({ title, desc, impact, savings, t }) => (
     <div className="bg-neutral-900/50 border border-neutral-800 p-4 rounded-xl flex flex-col h-full hover:bg-neutral-800/50 transition-colors cursor-pointer group">
         <div className="flex justify-between items-start mb-2 gap-2">
             <h4 className="text-sm font-semibold text-white leading-tight">{title}</h4>
             <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium shrink-0 ${
-                impact === 'High Impact' ? 'bg-red-500/10 text-red-400' :
-                impact === 'Medium Impact' ? 'bg-amber-500/10 text-amber-400' :
+                impact === t?.('dashboardOverview.impactHigh') ? 'bg-red-500/10 text-red-400' :
+                impact === t?.('dashboardOverview.impactMedium') ? 'bg-amber-500/10 text-amber-400' :
                 'bg-emerald-500/10 text-emerald-400'
             }`}>
                 {impact}
@@ -274,7 +297,7 @@ const AiTipCard = ({ title, desc, impact, savings }) => (
         </div>
         <p className="text-xs text-neutral-400 leading-relaxed flex-1 mb-3">{desc}</p>
         <div className="flex justify-between items-center pt-3 border-t border-neutral-800 mt-auto">
-            <span className="text-xs font-medium text-emerald-400">Save {savings}</span>
+            <span className="text-xs font-medium text-emerald-400">{t?.('dashboardOverview.saveAmount', { savings }) || `Save ${savings}`}</span>
             <ChevronRight className="size-4 text-neutral-500 group-hover:text-white transition-colors" />
         </div>
     </div>

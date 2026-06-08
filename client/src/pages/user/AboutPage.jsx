@@ -6,6 +6,7 @@ import AboutValues from "../../components/about/AboutValues";
 import AboutTeam   from "../../components/about/AboutTeam";
 import AboutFAQ    from "../../components/about/AboutFAQ";
 import AboutCTA    from "../../components/about/AboutCTA";
+import ScrollSection from "../../components/common/ScrollSection";
 
 const AboutPage = () => {
     const location = useLocation();
@@ -20,11 +21,11 @@ const AboutPage = () => {
     return (
         <div className="min-h-screen bg-kashf-bg text-neutral-100">
             <AboutHero />
-            <AboutStory />
-            <AboutValues />
-            <AboutTeam />
-            <AboutFAQ />
-            <AboutCTA />
+            <ScrollSection><AboutStory /></ScrollSection>
+            <ScrollSection><AboutValues /></ScrollSection>
+            <ScrollSection><AboutTeam /></ScrollSection>
+            <ScrollSection><AboutFAQ /></ScrollSection>
+            <ScrollSection><AboutCTA /></ScrollSection>
         </div>
     );
 };

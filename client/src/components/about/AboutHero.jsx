@@ -1,9 +1,24 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
 
 const AboutHero = () => {
     const { t } = useTranslation();
+
+    const container = {
+        hidden: { opacity: 0 },
+        show: { opacity: 1 }
+    };
+
+    const item = {
+        hidden: { opacity: 0, y: 20 },
+        show: (customDelay) => ({ 
+            opacity: 1, 
+            y: 0, 
+            transition: { duration: 0.5, delay: customDelay, ease: "easeOut" } 
+        })
+    };
 
     const scrollToNext = () => {
         const next = document.getElementById("about-story");
@@ -27,51 +42,49 @@ const AboutHero = () => {
                 }}
             />
 
-            <div className="relative max-w-4xl mx-auto flex flex-col items-center gap-7 py-24 md:py-32">
-                {/* Badge */}
-                {/* <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-kashf-blue/40 bg-kashf-blue/10 text-kashf-blue text-sm font-medium">
-                    <Zap className="w-3.5 h-3.5" />
-                    {t("about.hero.badge")}
-                </span> */}
-
+            <motion.div variants={container} initial="hidden" animate="show" className="relative max-w-4xl mx-auto flex flex-col items-center gap-7 py-24 md:py-32">
                 {/* Heading */}
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight rtl:leading-[1.5] text-neutral-100">
+                <motion.h1 custom={0.1} variants={item} className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight rtl:leading-[1.5] text-neutral-100">
                     {t("about.hero.title")}{" "}
                     <span className="text-kashf-blue">{t("about.hero.titleAccent")}</span>
-                </h1>
+                </motion.h1>
 
                 {/* Description */}
-                <p className="text-neutral-400 text-base  md:text-lg leading-[1.3] rtl:leading-relaxed max-w-2xl">
+                <motion.p custom={0.3} variants={item} className="text-neutral-400 text-base  md:text-lg leading-[1.3] rtl:leading-relaxed max-w-2xl">
                     {t("about.hero.desc")}
-                </p>
+                </motion.p>
 
                 {/* CTA */}
-                <Link
-                    to="/register"
-                    className="mt-2 inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-kashf-blue text-black font-bold text-sm hover:brightness-110 transition-all duration-200 no-underline"
-                >
-                    {t("about.cta.primary")}
-                </Link>
+                <motion.div custom={0.5} variants={item}>
+                    <Link
+                        to="/register"
+                        className="mt-2 inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-kashf-blue text-black font-bold text-sm hover:brightness-110 transition-all duration-200 no-underline"
+                    >
+                        {t("about.cta.primary")}
+                    </Link>
+                </motion.div>
 
                 {/* Animated scroll hint */}
-                <button
-                    onClick={scrollToNext}
-                    aria-label="Scroll to next section"
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group cursor-pointer border-none bg-transparent p-2 outline-none focus-visible:ring-2 focus-visible:ring-kashf-blue rounded-full"
-                >
-                    <span className="text-neutral-600 text-xs select-none transition-colors group-hover:text-kashf-blue">
-                        {t("about.hero.scrollHint")}
-                    </span>
-                    <span
-                        className="relative flex items-start justify-center w-5 h-8 rounded-full border-2 border-neutral-600 transition-all duration-300 group-hover:border-kashf-blue/70 group-hover:shadow-[0_0_14px_rgba(6,182,212,0.35)]"
-                        aria-hidden="true"
+                <motion.div custom={0.7} variants={item} className="absolute bottom-8 left-1/2 -translate-x-1/2">
+                    <button
+                        onClick={scrollToNext}
+                        aria-label="Scroll to next section"
+                        className="flex flex-col items-center gap-2 group cursor-pointer border-none bg-transparent p-2 outline-none focus-visible:ring-2 focus-visible:ring-kashf-blue rounded-full"
                     >
+                        <span className="text-neutral-600 text-xs select-none transition-colors group-hover:text-kashf-blue">
+                            {t("about.hero.scrollHint")}
+                        </span>
                         <span
-                            className="absolute left-1/2 w-1 h-2 rounded-full bg-kashf-blue transition-colors duration-300 -translate-x-1/2"
-                            style={{ animation: "scrollDotTravel 2s ease-in-out infinite" }}
-                        />
-                    </span>
-                </button>
+                            className="relative flex items-start justify-center w-5 h-8 rounded-full border-2 border-neutral-600 transition-all duration-300 group-hover:border-kashf-blue/70 group-hover:shadow-[0_0_14px_rgba(6,182,212,0.35)]"
+                            aria-hidden="true"
+                        >
+                            <span
+                                className="absolute left-1/2 w-1 h-2 rounded-full bg-kashf-blue transition-colors duration-300 -translate-x-1/2"
+                                style={{ animation: "scrollDotTravel 2s ease-in-out infinite" }}
+                            />
+                        </span>
+                    </button>
+                </motion.div>
 
                 {/* Keyframe for the scroll dot */}
                 <style>{`
@@ -81,7 +94,7 @@ const AboutHero = () => {
                         100% { top: 6px;   opacity: 1; }
                     }
                 `}</style>
-            </div>
+            </motion.div>
         </section>
     );
 };

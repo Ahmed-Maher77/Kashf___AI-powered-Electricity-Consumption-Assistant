@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 const stats = [
     { numKey: "cta.stat1.num", numDefault: "2,400+", labelKey: "cta.stat1.label", labelDefault: "Egyptian Households" },
@@ -9,8 +10,28 @@ const stats = [
 const CTASection = () => {
     const { t } = useTranslation();
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    };
+
     return (
-        <section id="cta" className="relative py-24 md:py-36 overflow-hidden border-t border-kashf-border">
+        <motion.section 
+            id="cta" 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+            className="relative py-24 md:py-36 overflow-hidden border-t border-kashf-border"
+        >
             {/* Deep radial glow */}
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                 <div className="w-[700px] h-[400px] rounded-full bg-kashf-blue/8 blur-[100px]" />
@@ -33,32 +54,40 @@ const CTASection = () => {
                 </span> */}
 
                 {/* Headline */}
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-neutral-100 tracking-tight leading-tight line-height-15">
-                    {t("cta.title", { defaultValue: "Take Control of Your" })}{" "}
-                    <span className="block text-kashf-blue mt-1">
-                        {t("cta.titleAccent", { defaultValue: "Electricity Bill" })}
-                    </span>
-                </h2>
+                <motion.div variants={itemVariants}>
+                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-neutral-100 tracking-tight leading-tight line-height-15">
+                        {t("cta.title", { defaultValue: "Take Control of Your" })}{" "}
+                        <span className="block text-kashf-blue mt-1">
+                            {t("cta.titleAccent", { defaultValue: "Electricity Bill" })}
+                        </span>
+                    </h2>
+                </motion.div>
 
-                <p className="text-neutral-400 text-base md:text-lg leading-relaxed max-w-xl">
-                    {t("cta.desc", { defaultValue: "Join 2,400+ Egyptian households already using Kashf to monitor consumption, avoid tier jumps, and save hundreds of pounds every month." })}
-                </p>
+                <motion.div variants={itemVariants}>
+                    <p className="text-neutral-400 text-base md:text-lg leading-relaxed max-w-xl">
+                        {t("cta.desc", { defaultValue: "Join 2,400+ Egyptian households already using Kashf to monitor consumption, avoid tier jumps, and save hundreds of pounds every month." })}
+                    </p>
+                </motion.div>
 
                 {/* CTA Button */}
-                <button className="group relative px-6 py-4 rounded-2xl bg-kashf-blue text-black font-extrabold text-base sm:text-lg overflow-hidden shadow-sm shadow-kashf-blue/30 hover:shadow-kashf-blue/50 transition-all duration-300 hover:scale-101 active:scale-100 cursor-pointer">
-                    <span className="relative z-10">
-                        {t("cta.button", { defaultValue: "Start Monitoring For Free" })}
-                    </span>
-                    {/* Shine sweep */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-                </button>
+                <motion.div variants={itemVariants}>
+                    <button className="group relative px-6 py-4 rounded-2xl bg-kashf-blue text-black font-extrabold text-base sm:text-lg overflow-hidden shadow-sm shadow-kashf-blue/30 hover:shadow-kashf-blue/50 transition-all duration-300 hover:scale-101 active:scale-100 cursor-pointer">
+                        <span className="relative z-10">
+                            {t("cta.button", { defaultValue: "Start Monitoring For Free" })}
+                        </span>
+                        {/* Shine sweep */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                    </button>
+                </motion.div>
 
                 {/* Fine print */}
-                <p className="text-neutral-600 text-sm">
-                    {t("cta.finePrint", { defaultValue: "Safe Payment. No app store. Works on any device." })}
-                </p>
+                <motion.div variants={itemVariants}>
+                    <p className="text-neutral-600 text-sm">
+                        {t("cta.finePrint", { defaultValue: "Safe Payment. No app store. Works on any device." })}
+                    </p>
+                </motion.div>
             </div>
-        </section>
+        </motion.section>
     );
 };
 

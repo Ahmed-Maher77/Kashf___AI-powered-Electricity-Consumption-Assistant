@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import SectionBadge from "../welcome/ui/SectionBadge";
 import SectionHeading from "../welcome/ui/SectionHeading";
 
@@ -30,9 +31,23 @@ const AboutStory = () => {
 
     const timelineKeys = ["t1", "t2", "t3"];
 
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: 0.15 + (i * 0.15), duration: 0.6, ease: "easeOut" }
+        })
+    };
+
     return (
-        <section id="about-story" className="py-20 md:py-28 border-b border-kashf-border">
-            <div className="max-w-6xl mx-auto px-5 sm:px-8">
+        <section id="about-story" className="py-20 md:py-28 border-b border-kashf-border overflow-hidden">
+            <motion.div 
+                className="max-w-6xl mx-auto px-5 sm:px-8"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-50px" }}
+            >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-14 lg:gap-20 items-start justify-between">
 
                     {/* ── Left: story text ── */}
@@ -42,29 +57,31 @@ const AboutStory = () => {
                             badge={<SectionBadge>{t("about.story.badge")}</SectionBadge>}
                             title={t("about.story.title")}
                             accent={t("about.story.titleAccent")}
+                            baseDelay={0}
                         />
 
                         <div className="flex flex-col gap-5 text-neutral-400 text-base leading-relaxed">
-                            <p>{t("about.story.body1")}</p>
-                            <p>{t("about.story.body2")}</p>
-                            <p>{t("about.story.body3")}</p>
+                            <motion.p variants={itemVariants} custom={0}>{t("about.story.body1")}</motion.p>
+                            <motion.p variants={itemVariants} custom={1}>{t("about.story.body2")}</motion.p>
+                            <motion.p variants={itemVariants} custom={2}>{t("about.story.body3")}</motion.p>
                         </div>
                     </div>
 
                     {/* ── Right: timeline ── */}
                     <div className="flex flex-col gap-0 pt-2 w-fit">
                         {timelineKeys.map((key, i) => (
-                            <TimelineItem
-                                key={key}
-                                year={t(`about.story.timeline.${key}.year`)}
-                                label={t(`about.story.timeline.${key}.label`)}
-                                desc={t(`about.story.timeline.${key}.desc`)}
-                                color={TIMELINE_COLORS[i]}
-                            />
+                            <motion.div key={key} variants={itemVariants} custom={i + 3}>
+                                <TimelineItem
+                                    year={t(`about.story.timeline.${key}.year`)}
+                                    label={t(`about.story.timeline.${key}.label`)}
+                                    desc={t(`about.story.timeline.${key}.desc`)}
+                                    color={TIMELINE_COLORS[i]}
+                                />
+                            </motion.div>
                         ))}
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 };

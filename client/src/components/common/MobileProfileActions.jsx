@@ -20,8 +20,8 @@ const MobileProfileActions = ({ setIsSidebarOpen }) => {
     if (!user) return null;
 
     return (
-        <div className="mt-auto border-t border-kashf-border pt-4 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
+        <div className="mt-auto border-t border-kashf-border pt-4 flex flex-col gap-4 w-full">
+            <div className="flex items-center gap-3 px-4">
                 <UserAvatar user={user} className="size-10 shrink-0" />
                 <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold text-neutral-100">{displayName}</p>

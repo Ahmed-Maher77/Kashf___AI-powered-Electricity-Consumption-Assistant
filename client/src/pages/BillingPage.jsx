@@ -12,54 +12,71 @@ import {
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/auth/authSlice';
 
-const PLANS = [
-    {
-        id: 'free',
-        name: 'Free',
-        price: '0',
-        interval: 'forever',
-        description: 'Perfect for tracking a single meter.',
-        features: ['1 Electricity Meter', '50 AI Coins / month', 'Basic Tier Tracking', 'Community Support'],
-        icon: Zap,
-        color: 'text-neutral-400',
-        bg: 'bg-neutral-800'
-    },
-    {
-        id: 'plus',
-        name: 'Plus',
-        price: '49',
-        interval: 'per month',
-        description: 'Advanced analytics for power users.',
-        features: ['Up to 2 Meters', '150 AI Coins / month', 'Priority AI Tips', 'Cost Forecasting', 'Email Support'],
-        icon: Shield,
-        color: 'text-kashf-light-blue',
-        bg: 'bg-kashf-blue/20',
-        popular: true
-    },
-    {
-        id: 'family',
-        name: 'Family',
-        price: '99',
-        interval: 'per month',
-        description: 'Complete coverage for multiple properties.',
-        features: ['Up to 5 Meters', '300 AI Coins / month', 'Family Member Access', 'Custom PDF Reports', '24/7 Priority Support'],
-        icon: Users,
-        color: 'text-amber-400',
-        bg: 'bg-amber-500/20'
-    }
-];
-
 const BillingPage = () => {
     const { t } = useTranslation();
     const user = useSelector(selectUser);
     const currentPlan = user?.subscriptionPlan || 'free';
 
+    const PLANS = [
+        {
+            id: 'free',
+            name: t('billing.plans.free.name'),
+            price: '0',
+            interval: t('billing.plans.free.interval'),
+            description: t('billing.plans.free.description'),
+            features: [
+                t('billing.plans.free.features.0', { defaultValue: '1 Electricity Meter' }),
+                t('billing.plans.free.features.1', { defaultValue: '50 AI Coins / month' }),
+                t('billing.plans.free.features.2', { defaultValue: 'Basic Tier Tracking' }),
+                t('billing.plans.free.features.3', { defaultValue: 'Community Support' })
+            ],
+            icon: Zap,
+            color: 'text-neutral-400',
+            bg: 'bg-neutral-800'
+        },
+        {
+            id: 'plus',
+            name: t('billing.plans.plus.name'),
+            price: '49',
+            interval: t('billing.plans.plus.interval'),
+            description: t('billing.plans.plus.description'),
+            features: [
+                t('billing.plans.plus.features.0', { defaultValue: 'Up to 2 Meters' }),
+                t('billing.plans.plus.features.1', { defaultValue: '150 AI Coins / month' }),
+                t('billing.plans.plus.features.2', { defaultValue: 'Priority AI Tips' }),
+                t('billing.plans.plus.features.3', { defaultValue: 'Cost Forecasting' }),
+                t('billing.plans.plus.features.4', { defaultValue: 'Email Support' })
+            ],
+            icon: Shield,
+            color: 'text-kashf-light-blue',
+            bg: 'bg-kashf-blue/20',
+            popular: true
+        },
+        {
+            id: 'family',
+            name: t('billing.plans.family.name'),
+            price: '99',
+            interval: t('billing.plans.family.interval'),
+            description: t('billing.plans.family.description'),
+            features: [
+                t('billing.plans.family.features.0', { defaultValue: 'Up to 5 Meters' }),
+                t('billing.plans.family.features.1', { defaultValue: '300 AI Coins / month' }),
+                t('billing.plans.family.features.2', { defaultValue: 'Family Member Access' }),
+                t('billing.plans.family.features.3', { defaultValue: 'Custom PDF Reports' }),
+                t('billing.plans.family.features.4', { defaultValue: '24/7 Priority Support' })
+            ],
+            icon: Users,
+            color: 'text-amber-400',
+            bg: 'bg-amber-500/20'
+        }
+    ];
+
     return (
         <div className="space-y-8 max-w-7xl mx-auto pb-10">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-white">Subscription & Billing</h1>
-                <p className="text-neutral-400 text-sm mt-1">Manage your plan, payment methods, and invoices.</p>
+                <h1 className="text-2xl font-bold text-white">{t('billing.title')}</h1>
+                <p className="text-neutral-400 text-sm mt-1">{t('billing.subtitle')}</p>
             </div>
 
             {/* Current Plan & Payment Method Row */}
@@ -71,26 +88,26 @@ const BillingPage = () => {
                     
                     <div className="flex justify-between items-start mb-6 relative z-10">
                         <div>
-                            <p className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-1">Current Plan</p>
-                            <h2 className="text-3xl font-bold text-white capitalize">{currentPlan} Plan</h2>
+                            <p className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-1">{t('billing.currentPlan')}</p>
+                            <h2 className="text-3xl font-bold text-white capitalize">{t(`billing.plans.${currentPlan}.name`)}</h2>
                         </div>
                         <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-medium rounded-full border border-emerald-500/20">
-                            Active
+                            {t('billing.active')}
                         </span>
                     </div>
 
                     <div className="space-y-3 relative z-10">
                         <div className="flex justify-between text-sm pb-3 border-b border-neutral-800">
-                            <span className="text-neutral-400">Renewal Date</span>
+                            <span className="text-neutral-400">{t('billing.renewalDate')}</span>
                             <span className="text-white font-medium">Jul 07, 2026</span>
                         </div>
                         <div className="flex justify-between text-sm pb-3 border-b border-neutral-800">
-                            <span className="text-neutral-400">Billing Cycle</span>
-                            <span className="text-white font-medium">Monthly</span>
+                            <span className="text-neutral-400">{t('billing.billingCycle')}</span>
+                            <span className="text-white font-medium">{t('billing.monthly')}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span className="text-neutral-400">Monthly Cost</span>
-                            <span className="text-white font-medium">{currentPlan === 'free' ? '0' : currentPlan === 'plus' ? '49' : '99'} EGP</span>
+                            <span className="text-neutral-400">{t('billing.monthlyCost')}</span>
+                            <span className="text-white font-medium">{currentPlan === 'free' ? '0' : currentPlan === 'plus' ? '49' : '99'} {t('common.egp')}</span>
                         </div>
                     </div>
                 </div>
@@ -99,19 +116,19 @@ const BillingPage = () => {
                 <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6 flex flex-col">
                     <div className="flex justify-between items-start mb-6">
                         <div>
-                            <p className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-1">Payment Method</p>
-                            <h2 className="text-lg font-bold text-white">Default Card</h2>
+                            <p className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-1">{t('billing.paymentMethod')}</p>
+                            <h2 className="text-lg font-bold text-white">{t('billing.defaultCard')}</h2>
                         </div>
                         <button className="text-sm font-medium text-kashf-light-blue hover:text-white transition-colors">
-                            Update
+                            {t('billing.update')}
                         </button>
                     </div>
 
                     {currentPlan === 'free' ? (
                         <div className="flex-1 flex flex-col items-center justify-center p-6 border-2 border-dashed border-neutral-800 rounded-xl bg-neutral-900/30 text-center">
                             <CreditCard className="size-8 text-neutral-600 mb-3" />
-                            <p className="text-sm text-neutral-400">No payment method on file.</p>
-                            <p className="text-xs text-neutral-500 mt-1">Upgrade your plan to add a card.</p>
+                            <p className="text-sm text-neutral-400">{t('billing.noPaymentMethod')}</p>
+                            <p className="text-xs text-neutral-500 mt-1">{t('billing.upgradeToAddCard')}</p>
                         </div>
                     ) : (
                         <div className="p-4 border border-neutral-700 bg-neutral-800/50 rounded-xl flex items-center gap-4">
@@ -121,9 +138,9 @@ const BillingPage = () => {
                             <div className="flex-1">
                                 <p className="text-white font-medium text-sm flex items-center gap-2">
                                     •••• •••• •••• 4242
-                                    <span className="px-1.5 py-0.5 bg-neutral-700 text-[10px] rounded text-neutral-300">Default</span>
+                                    <span className="px-1.5 py-0.5 bg-neutral-700 text-[10px] rounded text-neutral-300">{t('billing.default')}</span>
                                 </p>
-                                <p className="text-xs text-neutral-500">Expires 12/28</p>
+                                <p className="text-xs text-neutral-500">{t('billing.expires')} 12/28</p>
                             </div>
                         </div>
                     )}
@@ -132,7 +149,7 @@ const BillingPage = () => {
 
             {/* Available Plans */}
             <div>
-                <h3 className="text-lg font-bold text-white mb-4">Available Plans</h3>
+                <h3 className="text-lg font-bold text-white mb-4">{t('billing.availablePlans')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {PLANS.map((plan) => {
                         const Icon = plan.icon;
@@ -143,8 +160,8 @@ const BillingPage = () => {
                                 plan.popular ? 'border-kashf-blue' : isCurrent ? 'border-neutral-600' : 'border-kashf-border'
                             } hover:border-neutral-500 transition-colors`}>
                                 {plan.popular && (
-                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-kashf-blue text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
-                                        Most Popular
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-kashf-blue text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full whitespace-nowrap">
+                                        {t('billing.mostPopular')}
                                     </div>
                                 )}
                                 
@@ -155,9 +172,9 @@ const BillingPage = () => {
                                     <h4 className="text-lg font-bold text-white">{plan.name}</h4>
                                 </div>
                                 
-                                <div className="mb-4">
+                                <div className="mb-4 text-left" dir="ltr">
                                     <span className="text-3xl font-bold text-white">{plan.price}</span>
-                                    <span className="text-sm text-neutral-400"> EGP / {plan.interval}</span>
+                                    <span className="text-sm text-neutral-400"> {t('common.egp')} / {plan.interval}</span>
                                 </div>
                                 
                                 <p className="text-sm text-neutral-400 mb-6 flex-1">{plan.description}</p>
@@ -178,7 +195,7 @@ const BillingPage = () => {
                                         ? 'bg-kashf-blue hover:bg-kashf-light-blue text-white shadow-lg shadow-kashf-blue/20' 
                                         : 'bg-neutral-800 hover:bg-neutral-700 text-white'
                                 }`}>
-                                    {isCurrent ? 'Current Plan' : 'Upgrade Plan'}
+                                    {isCurrent ? t('billing.currentPlanBtn') : t('billing.upgradeBtn')}
                                 </button>
                             </div>
                         );
@@ -190,30 +207,30 @@ const BillingPage = () => {
             {currentPlan !== 'free' && (
                 <div className="bg-kashf-surface border border-kashf-border rounded-2xl overflow-hidden">
                     <div className="p-6 border-b border-kashf-border">
-                        <h3 className="text-lg font-bold text-white">Billing History</h3>
+                        <h3 className="text-lg font-bold text-white">{t('billing.history.title')}</h3>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm text-neutral-400">
                             <thead className="bg-neutral-900/50 text-xs uppercase font-semibold text-neutral-500 border-b border-kashf-border">
                                 <tr>
-                                    <th className="px-6 py-4">Date</th>
-                                    <th className="px-6 py-4">Amount</th>
-                                    <th className="px-6 py-4">Plan</th>
-                                    <th className="px-6 py-4">Status</th>
-                                    <th className="px-6 py-4 text-right">Invoice</th>
+                                    <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('billing.history.date')}</th>
+                                    <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('billing.history.amount')}</th>
+                                    <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('billing.history.plan')}</th>
+                                    <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('billing.history.status')}</th>
+                                    <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('billing.history.invoice')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-neutral-800">
                                 <tr className="hover:bg-neutral-900/30 transition-colors">
                                     <td className="px-6 py-4 text-white">Jun 07, 2026</td>
-                                    <td className="px-6 py-4 font-medium">49.00 EGP</td>
-                                    <td className="px-6 py-4">Plus Plan</td>
+                                    <td className="px-6 py-4 font-medium" dir="ltr">49.00 {t('common.egp')}</td>
+                                    <td className="px-6 py-4">{t('billing.plans.plus.name')}</td>
                                     <td className="px-6 py-4">
-                                        <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400">Paid</span>
+                                        <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400">{t('billing.history.paid')}</span>
                                     </td>
-                                    <td className="px-6 py-4 text-right">
-                                        <button className="text-kashf-light-blue hover:text-white transition-colors flex items-center justify-end gap-1 ml-auto">
-                                            <Download className="size-4" /> PDF
+                                    <td className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-left' : 'text-right'}`}>
+                                        <button className="text-kashf-light-blue hover:text-white transition-colors inline-flex items-center justify-end gap-1">
+                                            <Download className="size-4" /> {t('billing.history.pdf')}
                                         </button>
                                     </td>
                                 </tr>

@@ -300,7 +300,14 @@
         "profile": "Profile",
         "settings": "Settings",
         "about": "About",
-        "admin": "Admin"
+        "admin": "Admin",
+        "currentPlan": "Current Plan",
+        "coinsUsage": "Coins Usage",
+        "plan": {
+            "family": "Family",
+            "plus": "Plus",
+            "free": "Free"
+        }
     },
     "adminNav": {
         "aria": "Admin navigation",
@@ -873,5 +880,318 @@
                 }
             }
         }
+    },
+    "dashboardOverview": {
+        "title": "Dashboard Overview",
+        "subtitle": "Real-time electricity monitoring & insights",
+        "liveSync": "Live Sync Active",
+        "currentUsage": "Current Usage",
+        "vsLastMonth": "vs last month",
+        "currentSheriha": "Current Sheriha",
+        "remainingToTier": "Remaining to Tier {{tier}}",
+        "expectedToCross": "Expected to cross in {{days}} days",
+        "estimatedBill": "Estimated Bill",
+        "monthlySavings": "Monthly Savings",
+        "savedViaAi": "Saved via AI tips",
+        "consumptionGauge": "Consumption Gauge",
+        "currentStatus": "Current Status",
+        "warningZone": "Warning Zone",
+        "nextThreshold": "Next Threshold",
+        "tierLimit": "{{limit}} kWh (Tier {{tier}})",
+        "aiAdvisor": "AI Energy Advisor",
+        "aiAdvisorDesc": "Personalized actions to prevent tier jumps",
+        "waterHeater": "Water Heater",
+        "waterHeaterDesc": "You left the heater on for 8 hours yesterday. Use it only 1 hour before showering.",
+        "acTiming": "AC Usage Timing",
+        "acTimingDesc": "Running ACs during peak hours (2PM-6PM) uses 15% more power due to heat.",
+        "vampireDraw": "Vampire Draw",
+        "vampireDrawDesc": "Your idle consumption is unusually high at night. Unplug microwaves and TVs.",
+        "impactHigh": "High Impact",
+        "impactMedium": "Medium Impact",
+        "impactQuick": "Quick Win",
+        "saveAmount": "Save {{savings}}",
+        "askKashf": "Ask Kashf how to reduce your bill",
+        "monthlyTrend": "Monthly Consumption Trend",
+        "consumptionBreakdown": "Consumption Breakdown",
+        "months": {
+            "jan": "Jan",
+            "feb": "Feb",
+            "mar": "Mar",
+            "apr": "Apr",
+            "may": "May",
+            "jun": "Jun"
+        },
+        "categories": {
+            "ac": "AC & Cooling",
+            "heater": "Water Heater",
+            "lighting": "Lighting",
+            "appliances": "Appliances"
+        }
+    },
+    "aiAdvisor": {
+        "title": "AI Energy Advisor",
+        "subtitle": "Get personalized recommendations in Egyptian Arabic to lower your bill.",
+        "onlineStatus": "AI Online",
+        "inputPlaceholder": "Ask Kashf about your electricity usage...",
+        "disclaimer": "AI responses are generated based on your historical OCR scans and consumption patterns.",
+        "activeOpportunities": "Active Opportunities",
+        "impactLabel": "{{impact}} Impact",
+        "estimatedSavings": "Estimated Savings",
+        "suggestedQuestions": {
+            "q1": "How can I reduce my bill this month?",
+            "q2": "Why am I consuming more electricity than last May?",
+            "q3": "Am I going to reach Tier 4?",
+            "q4": "What appliances are using the most power right now?"
+        },
+        "savings": {
+            "impactHigh": "High",
+            "impactLow": "Low",
+            "optAC": {
+                "title": "Optimize AC Temperature",
+                "action": "Set living room AC to 25°C instead of 22°C",
+                "savings": "120 EGP"
+            },
+            "shiftHeater": {
+                "title": "Shift Water Heater Usage",
+                "action": "Turn on 1 hour before use, don't leave it on 24/7",
+                "savings": "95 EGP"
+            },
+            "standbyPower": {
+                "title": "Reduce Standby Power",
+                "action": "Unplug microwave and TV when not in use",
+                "savings": "25 EGP"
+            }
+        },
+        "mockChat": {
+            "msg1": "Welcome to Kashf! I am your smart electricity assistant. I noticed your consumption this week is 15% higher than usual. How can I help you?",
+            "msg2": "What is causing this high consumption?",
+            "msg3": "Based on the data analysis, the AC during the afternoon (2 PM to 5 PM) draws a lot of power. If you reduce its use by just one hour or set the temp to 25°C, you will save around 45 EGP and avoid entering the fourth tier."
+        }
+    },
+    "alerts": {
+        "title": "Notifications & Alerts",
+        "subtitle": "Stay updated on tier thresholds, consumption spikes, and AI tips.",
+        "markAllRead": "Mark all as read",
+        "emptyState": {
+            "title": "No alerts found",
+            "subtitle": "You're all caught up in this category."
+        },
+        "filters": {
+            "all": "All",
+            "warnings": "Warnings",
+            "critical": "Critical",
+            "recommendations": "Recommendations",
+            "system": "System"
+        },
+        "data": {
+            "alert1": {
+                "title": "Approaching Tier 4",
+                "message": "You are 40 kWh away from Tier 4. Reducing usage over the next 4 days can save you 180 EGP.",
+                "time": "2 hours ago"
+            },
+            "alert2": {
+                "title": "Consumption Spike Detected",
+                "message": "Your consumption increased by 12% compared to last Tuesday. Check your AC usage.",
+                "time": "5 hours ago"
+            },
+            "alert3": {
+                "title": "New AI Savings Opportunity",
+                "message": "Kashf AI found a new pattern. Shift your water heater usage to save ~45 EGP/month.",
+                "time": "1 day ago"
+            },
+            "alert4": {
+                "title": "Bill Estimated",
+                "message": "Your June bill estimate has been updated to 412 EGP based on current trajectory.",
+                "time": "2 days ago"
+            }
+        }
+    },
+    "billing": {
+        "title": "Subscription & Billing",
+        "subtitle": "Manage your plan, payment methods, and invoices.",
+        "currentPlan": "Current Plan",
+        "active": "Active",
+        "renewalDate": "Renewal Date",
+        "billingCycle": "Billing Cycle",
+        "monthly": "Monthly",
+        "monthlyCost": "Monthly Cost",
+        "paymentMethod": "Payment Method",
+        "defaultCard": "Default Card",
+        "update": "Update",
+        "noPaymentMethod": "No payment method on file.",
+        "upgradeToAddCard": "Upgrade your plan to add a card.",
+        "default": "Default",
+        "expires": "Expires",
+        "availablePlans": "Available Plans",
+        "mostPopular": "Most Popular",
+        "currentPlanBtn": "Current Plan",
+        "upgradeBtn": "Upgrade Plan",
+        "history": {
+            "title": "Billing History",
+            "date": "Date",
+            "amount": "Amount",
+            "plan": "Plan",
+            "status": "Status",
+            "invoice": "Invoice",
+            "paid": "Paid",
+            "pdf": "PDF"
+        },
+        "plans": {
+            "free": {
+                "name": "Free",
+                "interval": "forever",
+                "description": "Perfect for tracking a single meter.",
+                "features": ["1 Electricity Meter", "50 AI Coins / month", "Basic Tier Tracking", "Community Support"]
+            },
+            "plus": {
+                "name": "Plus",
+                "interval": "per month",
+                "description": "Advanced analytics for power users.",
+                "features": ["Up to 2 Meters", "150 AI Coins / month", "Priority AI Tips", "Cost Forecasting", "Email Support"]
+            },
+            "family": {
+                "name": "Family",
+                "interval": "per month",
+                "description": "Complete coverage for multiple properties.",
+                "features": ["Up to 5 Meters", "300 AI Coins / month", "Family Member Access", "Custom PDF Reports", "24/7 Priority Support"]
+            }
+        }
+    },
+    "bills": {
+        "title": "Bills & Predictions",
+        "subtitle": "Review past invoices and track upcoming electricity costs.",
+        "exportSummary": "Export Annual Summary",
+        "currentEstimate": "June Estimate",
+        "tierWarning": "Approaching Tier 4 (+180 EGP risk)",
+        "projectedConsumption": "Projected Consumption",
+        "expectedTier": "Expected Tier",
+        "dueDate": "Due Date",
+        "chartTitle": "Cost Trajectory & Forecast (EGP)",
+        "actualCost": "Actual Cost",
+        "aiPrediction": "AI Prediction",
+        "history": {
+            "title": "Invoice History",
+            "invoiceNo": "Invoice No.",
+            "billingMonth": "Billing Month",
+            "consumption": "Consumption",
+            "tier": "Sheriha Tier",
+            "amount": "Amount (EGP)",
+            "status": "Status",
+            "action": "Action",
+            "paid": "Paid"
+        },
+        "months": {
+            "jan": "Jan", "feb": "Feb", "mar": "Mar", "apr": "Apr", "may": "May", "jun": "Jun", "jul": "Jul", "aug": "Aug"
+        }
+    },
+    "analytics": {
+        "title": "Consumption Analytics",
+        "subtitle": "Deep dive into your energy usage patterns and forecasts.",
+        "week": "Week",
+        "month": "Month",
+        "year": "Year",
+        "avgDailyUsage": "Avg Daily Usage",
+        "thisWeek": "This Week",
+        "peakHour": "Peak Hour",
+        "highestUsage": "Consistently highest usage",
+        "monthlyForecast": "Monthly Forecast",
+        "tier4Danger": "Tier 4 Danger",
+        "weeklyComparison": "Weekly Comparison",
+        "lastWeek": "Last Week",
+        "consumptionForecast": "Consumption Forecast",
+        "actualUsage": "Actual Usage",
+        "aiForecast": "AI Forecast",
+        "aiObservationsTitle": "AI Analyst Observations",
+        "insights": {
+            "spike": {
+                "title": "Weekend Spike Detected",
+                "desc": "Your consumption on Saturdays and Sundays is 45% higher than weekdays. This is likely due to the AC running continuously in the living room."
+            },
+            "efficiency": {
+                "title": "Excellent Nighttime Efficiency",
+                "desc": "Your base load between 2AM and 6AM has dropped to 0.5 kWh, indicating no parasitic drain. Great job!"
+            }
+        },
+        "heatmapTitle": "Peak Usage Heatmap (Time vs Day)",
+        "time": "Time",
+        "days": {
+            "mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri", "sat": "Sat", "sun": "Sun"
+        },
+        "low": "Low",
+        "high": "High"
+    },
+    "meters": {
+        "title": "My Meters",
+        "subtitle": "Manage and monitor all your connected electricity meters.",
+        "addMeter": "Add New Meter",
+        "registerMeter": "Register New Meter",
+        "registerMeterDesc": "Add another property or sub-meter to track its consumption.",
+        "consumption": "Consumption",
+        "currentTier": "Current Tier",
+        "lastReading": "Last Reading",
+        "viewAnalytics": "View Analytics",
+        "status": {
+            "active": "Active",
+            "standby": "Standby"
+        },
+        "mock": {
+            "meter1": "Home Primary Meter",
+            "meter2": "Alexandria Chalet"
+        }
+    },
+    "reports": {
+        "title": "Downloadable Reports",
+        "subtitle": "Export your consumption data, AI insights, and billing histories.",
+        "availableReports": "Available Reports",
+        "generateCustom": "Generate Custom Date Range",
+        "preview": "Preview",
+        "downloadPdf": "Download PDF",
+        "reportDate": "Report Date",
+        "meterId": "Meter ID",
+        "totalConsumption": "Total Consumption",
+        "finalSheriha": "Final Sheriha",
+        "chartArea": "Chart Visualization Area",
+        "mock": {
+            "report1": "Monthly Consumption Report",
+            "report2": "Quarterly Analysis Q1 2026",
+            "report3": "Raw Meter Data (CSV)",
+            "report4": "Annual Energy Audit"
+        }
+    },
+    "settings": {
+        "title": "Profile & Settings",
+        "subtitle": "Manage your account details, security, and notification preferences.",
+        "editProfile": "Edit Profile",
+        "changeAvatar": "Change Avatar",
+        "preferences": "Preferences",
+        "interfaceLanguage": "Interface Language",
+        "notificationSettings": "Notification Settings",
+        "push": {
+            "title": "Push Notifications",
+            "desc": "Receive alerts directly on your device."
+        },
+        "email": {
+            "title": "Email Summaries",
+            "desc": "Weekly consumption and billing summaries."
+        },
+        "ai": {
+            "title": "AI Recommendations",
+            "desc": "Get notified when Kashf AI finds savings."
+        },
+        "sheriha": {
+            "title": "Sheriha (Tier) Alerts",
+            "desc": "Critical warnings before crossing a new tier."
+        },
+        "securityLogin": "Security & Login",
+        "changePassword": "Change Password",
+        "lastChanged": "Last changed 3 months ago",
+        "update": "Update",
+        "twoFactor": "Two-Factor Authentication",
+        "currentlyEnabled": "Currently Enabled",
+        "manage": "Manage",
+        "signOutOther": "Sign out of all other devices",
+        "dangerZone": "Danger Zone",
+        "deleteWarning": "Once you delete your account, there is no going back. Please be certain.",
+        "deleteAccount": "Delete Account"
     }
 }

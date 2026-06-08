@@ -14,39 +14,39 @@ import {
   ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend
 } from 'recharts';
 
-const MOCK_BILLS = [
-  { id: 'INV-2605', month: 'May 2026', consumption: 420, tier: 5, amount: 650.50, status: 'Paid', date: '2026-06-01' },
-  { id: 'INV-2604', month: 'Apr 2026', consumption: 380, tier: 4, amount: 485.00, status: 'Paid', date: '2026-05-01' },
-  { id: 'INV-2603', month: 'Mar 2026', consumption: 310, tier: 3, amount: 280.25, status: 'Paid', date: '2026-04-01' },
-  { id: 'INV-2602', month: 'Feb 2026', consumption: 280, tier: 3, amount: 245.50, status: 'Paid', date: '2026-03-01' },
-  { id: 'INV-2601', month: 'Jan 2026', consumption: 320, tier: 3, amount: 295.00, status: 'Paid', date: '2026-02-01' },
-];
-
-const forecastData = [
-  { month: 'Jan', cost: 295, projected: null },
-  { month: 'Feb', cost: 245, projected: null },
-  { month: 'Mar', cost: 280, projected: null },
-  { month: 'Apr', cost: 485, projected: null },
-  { month: 'May', cost: 650, projected: null },
-  { month: 'Jun', cost: 412, projected: 412 }, // Current month estimate
-  { month: 'Jul', cost: null, projected: 520 },
-  { month: 'Aug', cost: null, projected: 580 },
-];
-
 const BillsPage = () => {
     const { t } = useTranslation();
+
+    const MOCK_BILLS = [
+      { id: 'INV-2605', month: `${t('bills.months.may')} 2026`, consumption: 420, tier: 5, amount: 650.50, status: t('bills.history.paid'), date: '2026-06-01' },
+      { id: 'INV-2604', month: `${t('bills.months.apr')} 2026`, consumption: 380, tier: 4, amount: 485.00, status: t('bills.history.paid'), date: '2026-05-01' },
+      { id: 'INV-2603', month: `${t('bills.months.mar')} 2026`, consumption: 310, tier: 3, amount: 280.25, status: t('bills.history.paid'), date: '2026-04-01' },
+      { id: 'INV-2602', month: `${t('bills.months.feb')} 2026`, consumption: 280, tier: 3, amount: 245.50, status: t('bills.history.paid'), date: '2026-03-01' },
+      { id: 'INV-2601', month: `${t('bills.months.jan')} 2026`, consumption: 320, tier: 3, amount: 295.00, status: t('bills.history.paid'), date: '2026-02-01' },
+    ];
+
+    const forecastData = [
+      { month: t('bills.months.jan'), cost: 295, projected: null },
+      { month: t('bills.months.feb'), cost: 245, projected: null },
+      { month: t('bills.months.mar'), cost: 280, projected: null },
+      { month: t('bills.months.apr'), cost: 485, projected: null },
+      { month: t('bills.months.may'), cost: 650, projected: null },
+      { month: t('bills.months.jun'), cost: 412, projected: 412 }, // Current month estimate
+      { month: t('bills.months.jul'), cost: null, projected: 520 },
+      { month: t('bills.months.aug'), cost: null, projected: 580 },
+    ];
 
     return (
         <div className="space-y-6 max-w-7xl mx-auto pb-10">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Bills & Predictions</h1>
-                    <p className="text-neutral-400 text-sm mt-1">Review past invoices and track upcoming electricity costs.</p>
+                    <h1 className="text-2xl font-bold text-white">{t('bills.title')}</h1>
+                    <p className="text-neutral-400 text-sm mt-1">{t('bills.subtitle')}</p>
                 </div>
                 <button className="flex items-center gap-2 bg-kashf-surface border border-kashf-border hover:bg-neutral-800 text-white px-4 py-2 rounded-lg font-medium transition-colors">
                     <Download className="size-4" />
-                    Export Annual Summary
+                    {t('bills.exportSummary')}
                 </button>
             </div>
 
@@ -60,29 +60,29 @@ const BillsPage = () => {
                     <div className="relative z-10">
                         <div className="flex items-center gap-2 mb-4">
                             <Receipt className="size-5 text-kashf-light-blue" />
-                            <h3 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider">June Estimate</h3>
+                            <h3 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider">{t('bills.currentEstimate')}</h3>
                         </div>
-                        <div className="flex items-baseline gap-2 mb-1">
+                        <div className="flex items-baseline gap-2 mb-1" dir="ltr">
                             <span className="text-4xl font-bold text-white">EGP 412</span>
                             <span className="text-sm text-neutral-500">.50</span>
                         </div>
                         <p className="text-sm text-amber-400 flex items-center gap-1.5 font-medium mt-3">
                             <AlertCircle className="size-4" />
-                            Approaching Tier 4 (+180 EGP risk)
+                            {t('bills.tierWarning')}
                         </p>
                     </div>
 
                     <div className="relative z-10 mt-8 space-y-4">
                         <div className="flex justify-between items-center text-sm pb-3 border-b border-neutral-800/50">
-                            <span className="text-neutral-400">Projected Consumption</span>
-                            <span className="font-medium text-white">345 kWh</span>
+                            <span className="text-neutral-400">{t('bills.projectedConsumption')}</span>
+                            <span className="font-medium text-white" dir="ltr">345 kWh</span>
                         </div>
                         <div className="flex justify-between items-center text-sm pb-3 border-b border-neutral-800/50">
-                            <span className="text-neutral-400">Expected Tier</span>
-                            <span className="font-medium text-white">Tier 3</span>
+                            <span className="text-neutral-400">{t('bills.expectedTier')}</span>
+                            <span className="font-medium text-white">{t('common.tier', { tier: 3, defaultValue: 'Tier 3' })}</span>
                         </div>
                         <div className="flex justify-between items-center text-sm">
-                            <span className="text-neutral-400">Due Date</span>
+                            <span className="text-neutral-400">{t('bills.dueDate')}</span>
                             <span className="font-medium text-white">Jul 01, 2026</span>
                         </div>
                     </div>
@@ -90,8 +90,8 @@ const BillsPage = () => {
 
                 {/* Cost Forecast Chart */}
                 <div className="lg:col-span-3 bg-kashf-surface border border-kashf-border rounded-2xl p-6">
-                    <h3 className="text-sm font-medium text-white mb-6">Cost Trajectory & Forecast (EGP)</h3>
-                    <div className="h-[300px] w-full">
+                    <h3 className="text-sm font-medium text-white mb-6">{t('bills.chartTitle')}</h3>
+                    <div className="h-[300px] w-full" dir="ltr">
                         <ResponsiveContainer width="100%" height="100%">
                             <ComposedChart data={forecastData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
@@ -101,8 +101,8 @@ const BillsPage = () => {
                                     contentStyle={{ backgroundColor: '#171717', borderColor: '#262626', borderRadius: '8px' }}
                                 />
                                 <Legend wrapperStyle={{ fontSize: '12px', color: '#a3a3a3', paddingTop: '10px' }} />
-                                <Bar dataKey="cost" name="Actual Cost" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={40} />
-                                <Line type="monotone" dataKey="projected" name="AI Prediction" stroke="#f59e0b" strokeWidth={3} strokeDasharray="5 5" dot={{ r: 6, fill: '#f59e0b', strokeWidth: 0 }} />
+                                <Bar dataKey="cost" name={t('bills.actualCost')} fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={40} />
+                                <Line type="monotone" dataKey="projected" name={t('bills.aiPrediction')} stroke="#f59e0b" strokeWidth={3} strokeDasharray="5 5" dot={{ r: 6, fill: '#f59e0b', strokeWidth: 0 }} />
                             </ComposedChart>
                         </ResponsiveContainer>
                     </div>
@@ -113,7 +113,7 @@ const BillsPage = () => {
             {/* Bill History Table */}
             <div className="bg-kashf-surface border border-kashf-border rounded-2xl overflow-hidden">
                 <div className="p-6 border-b border-kashf-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <h3 className="text-lg font-bold text-white">Invoice History</h3>
+                    <h3 className="text-lg font-bold text-white">{t('bills.history.title')}</h3>
                     <div className="flex items-center gap-3">
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -137,13 +137,13 @@ const BillsPage = () => {
                     <table className="w-full text-left text-sm text-neutral-400">
                         <thead className="bg-neutral-900/50 text-xs uppercase font-semibold text-neutral-500 border-b border-kashf-border">
                             <tr>
-                                <th className="px-6 py-4">Invoice No.</th>
-                                <th className="px-6 py-4">Billing Month</th>
-                                <th className="px-6 py-4">Consumption</th>
-                                <th className="px-6 py-4">Sheriha Tier</th>
-                                <th className="px-6 py-4">Amount (EGP)</th>
-                                <th className="px-6 py-4">Status</th>
-                                <th className="px-6 py-4 text-right">Action</th>
+                                <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('bills.history.invoiceNo')}</th>
+                                <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('bills.history.billingMonth')}</th>
+                                <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('bills.history.consumption')}</th>
+                                <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('bills.history.tier')}</th>
+                                <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('bills.history.amount')}</th>
+                                <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('bills.history.status')}</th>
+                                <th className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('bills.history.action')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-neutral-800">
@@ -151,12 +151,12 @@ const BillsPage = () => {
                                 <tr key={bill.id} className="hover:bg-neutral-900/30 transition-colors group">
                                     <td className="px-6 py-4 font-medium text-white">{bill.id}</td>
                                     <td className="px-6 py-4">{bill.month}</td>
-                                    <td className="px-6 py-4">{bill.consumption} kWh</td>
+                                    <td className="px-6 py-4" dir="ltr">{bill.consumption} kWh</td>
                                     <td className="px-6 py-4">
                                         <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                                             bill.tier >= 4 ? 'bg-amber-500/10 text-amber-400' : 'bg-kashf-blue/10 text-kashf-light-blue'
                                         }`}>
-                                            Tier {bill.tier}
+                                            {t('common.tier', { tier: bill.tier, defaultValue: `Tier ${bill.tier}` })}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 font-bold text-white">{bill.amount.toFixed(2)}</td>
@@ -166,7 +166,7 @@ const BillsPage = () => {
                                             {bill.status}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 text-right">
+                                    <td className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-left' : 'text-right'}`}>
                                         <button className="p-2 text-neutral-500 hover:text-white bg-neutral-800/0 hover:bg-neutral-800 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100">
                                             <Download className="size-4" />
                                         </button>

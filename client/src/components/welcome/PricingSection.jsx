@@ -1,6 +1,7 @@
 import "./PricingSection.css";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import {
     Zap,
     Check,
@@ -165,7 +166,8 @@ const PlanCard = ({ plan, t }) => {
     };
 
     return (
-        <div
+        <motion.div
+            variants={plan.variants}
             className={`plan-card ${featured ? "plan-card--featured" : ""} ${accentClass}`}
         >
             {featured && (
@@ -224,7 +226,7 @@ const PlanCard = ({ plan, t }) => {
                     {t(ctaKey, { defaultValue: ctaDef })}
                 </button>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
@@ -234,9 +236,29 @@ const PlanCard = ({ plan, t }) => {
 const PricingSection = () => {
     const { t } = useTranslation();
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    };
+
     return (
-        <section className="pricing-section" id="pricing">
-            <div className="pricing-header px-4 sm:px-6">
+        <motion.section 
+            className="pricing-section" 
+            id="pricing"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+        >
+            <motion.div variants={itemVariants} className="pricing-header px-4 sm:px-6">
                 <span className="pricing-eyebrow">
                     <Zap />
                     {t("pricing.eyebrow", { defaultValue: "Simple Pricing" })}
@@ -257,23 +279,23 @@ const PricingSection = () => {
                             "Everything you need to monitor consumption, avoid costly Sheriha jumps, and receive AI-powered recommendations.",
                     })}
                 </p>
-            </div>
+            </motion.div>
 
             <div className="pricing-grid px-4 sm:px-6">
                 {plans.map((plan) => (
-                    <PlanCard key={plan.key} plan={plan} t={t} />
+                    <PlanCard key={plan.key} plan={{...plan, variants: itemVariants}} t={t} />
                 ))}
             </div>
 
-            <p className="pricing-footnote px-4 sm:px-6">
+            <motion.p variants={itemVariants} className="pricing-footnote px-4 sm:px-6">
                 {t("pricing.footnote", {
                     defaultValue: "No credit card required · Cancel anytime ·",
                 })}{" "}
                 <NavLink to="/about#about-faq" className="pricing-faq-link">
                     {t("pricing.faqLink", { defaultValue: "Read the FAQ" })}
                 </NavLink>
-            </p>
-        </section>
+            </motion.p>
+        </motion.section>
     );
 };
 

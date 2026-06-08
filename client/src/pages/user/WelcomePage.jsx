@@ -11,6 +11,7 @@ import TheProblemSection from "../../components/welcome/ProblemSection";
 import AIAssistantSection from "../../components/welcome/AIAssistantSection";
 import PWASection from "../../components/welcome/PWASection";
 import CTASection from "../../components/welcome/CTASection";
+import ScrollSection from "../../components/common/ScrollSection";
 
 const WelcomePage = () => {
     const location = useLocation();
@@ -27,7 +28,7 @@ const WelcomePage = () => {
     return (
         <main className="py-10 pb-16">
             <HeroSection />
-            <StatsSection />
+            <ScrollSection delay={0.1}><StatsSection /></ScrollSection>
             <MeterSection />
             <FeaturesSection />
             <TheProblemSection />
