@@ -453,21 +453,22 @@ Dashboard UI shell loads with sidebar navigation
   │
   ▼
 User navigates through available modules:
-  ├── Overview (/dashboard): Summary cards, quick actions
-  ├── My Meters (/meters): Manage registered meters
-  ├── Analytics (/analytics): Recharts-based consumption data
-  ├── Bills (/bills): Billing history and estimates
-  ├── AI Advisor (/ai-advisor): Personalized recommendations
-  ├── Alerts (/alerts): Notification center
-  ├── Reports (/reports): Detailed PDF/Excel exports
-  └── Profile (/profile): Manage settings and security
+  ├── Overview (/dashboard): Summary cards, Consumption Gauge, Monthly Trends Chart, and Recent Activity.
+  ├── My Meters (/meters): Manage registered meters (CRUD using local React state) with dummy AI Advices.
+  ├── Analytics (/analytics): Recharts-based consumption data.
+  ├── Bills (/bills): Billing history and estimates.
+  ├── AI Advisor (/ai-advisor): Personalized recommendations mock layout.
+  ├── Alerts (/alerts): Notification center.
+  ├── Reports (/reports): Detailed PDF/Excel exports.
+  └── Profile (/profile): Manage settings and security.
   │
   ▼
 Frontend requests specific endpoint data based on active route
+  ├── NOTE: Core features (My Meters, Dashboard Stats, AI Advices) currently utilize local state and mock data arrays.
+  └── UI fully supports RTL and LTR directionality based on the selected language (`ar` / `en`).
   │
   ▼
 Data rendered visually using Recharts (Analytics), tables (Bills/History), etc.
-
 ```
 
 ---
@@ -493,7 +494,7 @@ User opens scan → GET /api/scans/:id
 **Entry point:** `/tips`
 
 ```
-[PLANNED]
+[PLANNED - Currently UI Mocked in MyMetersPage]
 GET /api/tips
   └── returns personalized tips based on user's consumption profile
   │

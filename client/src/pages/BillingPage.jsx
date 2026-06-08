@@ -25,10 +25,13 @@ const BillingPage = () => {
             interval: t('billing.plans.free.interval'),
             description: t('billing.plans.free.description'),
             features: [
-                t('billing.plans.free.features.0', { defaultValue: '1 Electricity Meter' }),
-                t('billing.plans.free.features.1', { defaultValue: '50 AI Coins / month' }),
-                t('billing.plans.free.features.2', { defaultValue: 'Basic Tier Tracking' }),
-                t('billing.plans.free.features.3', { defaultValue: 'Community Support' })
+                t('feat.oneMeter', { defaultValue: '1 electricity meter' }),
+                t('feat.freeCoins', { defaultValue: '50 Coins per month' }),
+                t('feat.meterScan', { defaultValue: 'Meter scanning' }),
+                t('feat.consumTrack', { defaultValue: 'Consumption tracking' }),
+                t('feat.sheriha', { defaultValue: 'Sheriha monitoring' }),
+                t('feat.dashboard', { defaultValue: 'Basic dashboard' }),
+                t('feat.history', { defaultValue: 'Monthly history' })
             ],
             icon: Zap,
             color: 'text-neutral-400',
@@ -41,11 +44,15 @@ const BillingPage = () => {
             interval: t('billing.plans.plus.interval'),
             description: t('billing.plans.plus.description'),
             features: [
-                t('billing.plans.plus.features.0', { defaultValue: 'Up to 2 Meters' }),
-                t('billing.plans.plus.features.1', { defaultValue: '150 AI Coins / month' }),
-                t('billing.plans.plus.features.2', { defaultValue: 'Priority AI Tips' }),
-                t('billing.plans.plus.features.3', { defaultValue: 'Cost Forecasting' }),
-                t('billing.plans.plus.features.4', { defaultValue: 'Email Support' })
+                t('feat.twoMeters', { defaultValue: 'Up to 2 electricity meters' }),
+                t('feat.plusCoins', { defaultValue: '150 Coins per month' }),
+                t('feat.everythingFree', { defaultValue: 'Everything in Free' }),
+                t('feat.aiRecs', { defaultValue: 'AI-powered recommendations' }),
+                t('feat.billForecast', { defaultValue: 'Bill forecasting' }),
+                t('feat.earlyAlerts', { defaultValue: 'Early Sheriha alerts' }),
+                t('feat.analytics', { defaultValue: 'Advanced analytics' }),
+                t('feat.push', { defaultValue: 'Push notifications' }),
+                t('feat.pwa', { defaultValue: 'Installable PWA' })
             ],
             icon: Shield,
             color: 'text-kashf-light-blue',
@@ -59,11 +66,13 @@ const BillingPage = () => {
             interval: t('billing.plans.family.interval'),
             description: t('billing.plans.family.description'),
             features: [
-                t('billing.plans.family.features.0', { defaultValue: 'Up to 5 Meters' }),
-                t('billing.plans.family.features.1', { defaultValue: '300 AI Coins / month' }),
-                t('billing.plans.family.features.2', { defaultValue: 'Family Member Access' }),
-                t('billing.plans.family.features.3', { defaultValue: 'Custom PDF Reports' }),
-                t('billing.plans.family.features.4', { defaultValue: '24/7 Priority Support' })
+                t('feat.fiveMeters', { defaultValue: 'Up to 5 electricity meters' }),
+                t('feat.familyCoins', { defaultValue: '300 Coins per month' }),
+                t('feat.everythingPlus', { defaultValue: 'Everything in Plus' }),
+                t('feat.familyReports', { defaultValue: 'Family usage reports' }),
+                t('feat.sharedAccess', { defaultValue: 'Shared access' }),
+                t('feat.extHistory', { defaultValue: 'Extended consumption history' }),
+                t('feat.prioritySupport', { defaultValue: 'Priority support' })
             ],
             icon: Users,
             color: 'text-amber-400',
@@ -172,9 +181,9 @@ const BillingPage = () => {
                                     <h4 className="text-lg font-bold text-white">{plan.name}</h4>
                                 </div>
                                 
-                                <div className="mb-4 text-left" dir="ltr">
+                                <div className="mb-4 flex items-baseline gap-1.5" dir="auto">
                                     <span className="text-3xl font-bold text-white">{plan.price}</span>
-                                    <span className="text-sm text-neutral-400"> {t('common.egp')} / {plan.interval}</span>
+                                    <span className="text-sm text-neutral-400">{t('common.egp')} / {plan.interval}</span>
                                 </div>
                                 
                                 <p className="text-sm text-neutral-400 mb-6 flex-1">{plan.description}</p>

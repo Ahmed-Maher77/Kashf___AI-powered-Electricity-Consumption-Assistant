@@ -58,6 +58,7 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | Dashboard translations | — | Done for all user modules |
 | 🟢 Done | Scan page translations | — | |
 | 🟢 Done | Tips page translations | — | |
+| 🟢 Done | Global CSS Configuration | — | Added Tailwind v4 base styles (global cursor pointer) |
 | 🔴 Todo | Admin panel translations | — | Lower priority |
 
 ### Dashboard (User)
@@ -73,10 +74,10 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | ProfileHeader (RTL avatar fix, real member since) | — | flex-row-reverse in RTL, real createdAt |
 | 🟢 Done | AccountOverview (RTL icon fix) | — | Logical start alignment for icons |
 | 🟢 Done | Subscription (real plan data + functional actions) | — | Plan-based feature lists, navigate to /pricing |
-| 🟢 Done | ConsumptionAnalyticsPage | — | Recharts integration for visual data |
-| 🟢 Done | MyMetersPage | — | View and manage meters |
-| 🟢 Done | BillsPage & BillingPage | — | Billing history and subscription management |
-| 🟢 Done | ReportsPage & AlertsPage | — | Detailed exports and notification center |
+| 🟢 Done | ConsumptionAnalyticsPage | — | UI Mocked: Recharts integration for visual data |
+| 🟢 Done | MyMetersPage | — | UI Mocked: View, manage, edit meters + AI Tips |
+| 🟢 Done | BillsPage & BillingPage | — | UI Mocked: Billing history and subscription management |
+| 🟢 Done | ReportsPage & AlertsPage | — | UI Mocked: Detailed exports and notification center |
 
 ### Scan Page
 | Status | Task | Owner | Notes |
@@ -98,7 +99,7 @@ Use this file to track task ownership across all workstreams. Update status inli
 ### Tips & Recommendations
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| ⚪ Planned | PersonalizedTipsFeed | — | Driven by AI service |
+| 🟢 Done | PersonalizedTipsFeed | — | UI Mocked: Driven by dummy AI Advices integrated into My Meters |
 | ⚪ Planned | TipCategoryFilter | — | |
 | ⚪ Planned | SavingsEstimateCard | — | |
 

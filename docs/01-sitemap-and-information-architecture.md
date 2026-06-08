@@ -209,11 +209,11 @@
 - Consumption chart
 
 **Components:**
-- `ConsumptionSummaryCard`
-- `SherihaBadge`
-- `RemainingKwhMeter`
-- `BillEstimateCard`
-- `TierWarningBanner`
+- `StatCard`
+- `ConsumptionGauge`
+- `MonthlyConsumptionTrend`
+- `MetersRegistered` (List)
+- `RecentActivity`
 - `ConsumptionGauge`
 - `AIRecommendationPreview`
 - `ConsumptionChart` (time series)
@@ -235,6 +235,30 @@
 
 **Empty States:**
 - No scans yet → onboarding CTA to `/scan` with short explanation
+
+---
+
+### My Meters Page
+
+**Route:** `/meters`
+
+**Purpose:** Manage electricity meters associated with the user account, add new ones, and view personalized AI Advices for each meter.
+
+**Main Sections:**
+- Meter List
+- Add/Edit Meter Form (Modal)
+- Delete Confirmation (Modal)
+- AI Advices View (Modal)
+
+**Components:**
+- `MeterFormModal`
+- `AIAdvicesModal`
+- `DeleteConfirmModal`
+- `StatCard` (Mock usage limits)
+
+**Displayed Data:**
+- Meter alias, reference number, type, active status
+- Dynamic translated AI Advices per meter
 
 **Error States:**
 - Dashboard data fetch failed → retry + partial cache if available
