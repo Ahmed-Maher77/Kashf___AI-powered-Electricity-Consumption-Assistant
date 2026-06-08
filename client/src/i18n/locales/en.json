@@ -791,11 +791,18 @@
             "notInstalled": "Not Installed",
             "pushNotifications": "Push Notifications",
             "offlineSync": "Offline Sync",
+            "currentDevice": "Current Device",
+            "installPrompt": "Install app for better experience",
             "platforms": {
                 "android": "Android",
                 "iphone": "iPhone",
                 "windows": "Windows",
-                "macos": "macOS"
+                "macos": "macOS",
+                "windows_phone": "Windows Phone",
+                "ios": "iOS",
+                "linux": "Linux",
+                "web_browser": "Web Browser",
+                "unknown": "Unknown"
             }
         },
         "subscription": {

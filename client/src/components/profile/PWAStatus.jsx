@@ -1,36 +1,49 @@
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Smartphone, Monitor, Cloud, Bell, CheckCircle, XCircle } from "lucide-react";
+import { Smartphone, Monitor, Cloud, CheckCircle, XCircle } from "lucide-react";
 import Badge from "../premium/Badge";
 
 const PWAStatus = () => {
-  const { t, i18n } = useTranslation();
-  const isRTL = i18n.dir() === "rtl";
-  const platforms = [
-    {
-      name: "Android",
-      icon: Smartphone,
-      installed: true,
-      features: [t("profile.pwa.installed"), t("profile.pwa.pushNotifications"), t("profile.pwa.offlineSync")],
-    },
-    {
-      name: "iPhone",
-      icon: Smartphone,
-      installed: false,
-      features: [t("profile.pwa.notInstalled")],
-    },
-    {
-      name: "Windows",
-      icon: Monitor,
-      installed: true,
-      features: [t("profile.pwa.installed"), t("profile.pwa.offlineSync")],
-    },
-    {
-      name: "macOS",
-      icon: Monitor,
-      installed: false,
-      features: [t("profile.pwa.notInstalled")],
-    },
-  ];
+  const { t } = useTranslation();
+  const [platform, setPlatform] = useState({ id: "unknown", icon: Monitor });
+  const [isInstalled, setIsInstalled] = useState(false);
+
+  useEffect(() => {
+    // Detect Platform
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    if (/windows phone/i.test(userAgent)) {
+      setPlatform({ id: "windows_phone", icon: Smartphone });
+    } else if (/android/i.test(userAgent)) {
+      setPlatform({ id: "android", icon: Smartphone });
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      setPlatform({ id: "ios", icon: Smartphone });
+    } else if (/Mac/i.test(userAgent)) {
+      setPlatform({ id: "macos", icon: Monitor });
+    } else if (/Win/i.test(userAgent)) {
+      setPlatform({ id: "windows", icon: Monitor });
+    } else if (/Linux/i.test(userAgent)) {
+      setPlatform({ id: "linux", icon: Monitor });
+    } else {
+      setPlatform({ id: "web_browser", icon: Cloud });
+    }
+
+    // Detect PWA Installation
+    const checkInstallation = () => {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone || document.referrer.includes('android-app://');
+      setIsInstalled(isStandalone);
+    };
+
+    checkInstallation();
+
+    // Listen for display-mode changes
+    const matchMediaObj = window.matchMedia('(display-mode: standalone)');
+    const handleChange = () => checkInstallation();
+    matchMediaObj.addEventListener('change', handleChange);
+
+    return () => {
+      matchMediaObj.removeEventListener('change', handleChange);
+    };
+  }, []);
 
   return (
     <div className="mb-6">
@@ -39,41 +52,36 @@ const PWAStatus = () => {
         <h2 className="text-lg font-semibold text-white">{t("profile.pwa.title")}</h2>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {platforms.map((platform) => (
-          <div
-            key={platform.name}
-            className="bg-kashf-bg/50 rounded-xl p-4 border border-kashf-border/50 hover:border-kashf-blue/30 transition-all duration-200"
-          >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
+        <div className="bg-kashf-bg/50 rounded-xl p-4 border border-kashf-border/50 hover:border-kashf-blue/30 transition-all duration-200">
             <div className="flex items-center justify-between mb-3">
               <div className="bg-kashf-blue/10 rounded-lg p-2">
                 <platform.icon className="w-5 h-5 text-kashf-blue" />
               </div>
               <Badge
-                variant={platform.installed ? "success" : "outline"}
+                variant={isInstalled ? "success" : "outline"}
                 className="flex items-center gap-1"
               >
-                {platform.installed ? (
+                {isInstalled ? (
                   <CheckCircle className="w-3 h-3" />
                 ) : (
                   <XCircle className="w-3 h-3" />
                 )}
-                {platform.installed ? t("profile.pwa.installed") : t("profile.pwa.notInstalled")}
+                {isInstalled ? t("profile.pwa.installed") : t("profile.pwa.notInstalled")}
               </Badge>
             </div>
-            <p className="text-sm font-medium text-white mb-2">{platform.name}</p>
+            <p className="text-sm font-medium text-white mb-2">{t("profile.pwa.currentDevice")}: {t("profile.pwa.platforms." + platform.id, { defaultValue: platform.id })}</p>
             <div className="space-y-1">
-              {platform.features.map((feature) => (
-                <p
-                  key={feature}
-                  className="text-xs text-neutral-400"
-                >
-                  {feature}
-                </p>
-              ))}
+                {isInstalled ? (
+                    <>
+                        <p className="text-xs text-neutral-400">{t("profile.pwa.pushNotifications")}</p>
+                        <p className="text-xs text-neutral-400">{t("profile.pwa.offlineSync")}</p>
+                    </>
+                ) : (
+                    <p className="text-xs text-neutral-400">{t("profile.pwa.installPrompt")}</p>
+                )}
             </div>
           </div>
-        ))}
       </div>
     </div>
   );

@@ -787,11 +787,18 @@
       "notInstalled": "غير مثبت",
       "pushNotifications": "إشعارات الدفع",
       "offlineSync": "المزامنة بدون إنترنت",
+      "currentDevice": "الجهاز الحالي",
+      "installPrompt": "قم بتثبيت التطبيق لتجربة أفضل",
       "platforms": {
         "android": "أندرويد",
         "iphone": "آيفون",
         "windows": "ويندوز",
-        "macos": "ماك أو إس"
+        "macos": "ماك أو إس",
+        "windows_phone": "ويندوز فون",
+        "ios": "آي أو إس",
+        "linux": "لينكس",
+        "web_browser": "متصفح الويب",
+        "unknown": "غير معروف"
       }
     },
     "subscription": {
