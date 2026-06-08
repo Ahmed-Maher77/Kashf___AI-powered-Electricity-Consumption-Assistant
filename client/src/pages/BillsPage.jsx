@@ -8,22 +8,38 @@ import {
     AlertCircle,
     Calendar,
     ChevronDown,
-    Filter
+    Filter,
+    Check,
+    Clock
 } from 'lucide-react';
 import {
   ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import PageHeader from '../components/layout/PageHeader';
 
 const BillsPage = () => {
     const { t } = useTranslation();
 
     const MOCK_BILLS = [
-      { id: 'INV-2605', month: `${t('bills.months.may')} 2026`, consumption: 420, tier: 5, amount: 650.50, status: t('bills.history.paid'), date: '2026-06-01' },
-      { id: 'INV-2604', month: `${t('bills.months.apr')} 2026`, consumption: 380, tier: 4, amount: 485.00, status: t('bills.history.paid'), date: '2026-05-01' },
-      { id: 'INV-2603', month: `${t('bills.months.mar')} 2026`, consumption: 310, tier: 3, amount: 280.25, status: t('bills.history.paid'), date: '2026-04-01' },
-      { id: 'INV-2602', month: `${t('bills.months.feb')} 2026`, consumption: 280, tier: 3, amount: 245.50, status: t('bills.history.paid'), date: '2026-03-01' },
-      { id: 'INV-2601', month: `${t('bills.months.jan')} 2026`, consumption: 320, tier: 3, amount: 295.00, status: t('bills.history.paid'), date: '2026-02-01' },
+      { id: 'INV-2605', month: `${t('bills.months.may')} 2026`, consumption: 420, tier: 5, amount: 650.50, status: 'pending', date: '2026-06-01' },
+      { id: 'INV-2604', month: `${t('bills.months.apr')} 2026`, consumption: 380, tier: 4, amount: 485.00, status: 'paid', date: '2026-05-01' },
+      { id: 'INV-2603', month: `${t('bills.months.mar')} 2026`, consumption: 310, tier: 3, amount: 280.25, status: 'paid', date: '2026-04-01' },
+      { id: 'INV-2602', month: `${t('bills.months.feb')} 2026`, consumption: 280, tier: 3, amount: 245.50, status: 'paid', date: '2026-03-01' },
+      { id: 'INV-2601', month: `${t('bills.months.jan')} 2026`, consumption: 320, tier: 3, amount: 295.00, status: 'paid', date: '2026-02-01' },
     ];
+
+    const getStatusProps = (status) => {
+        switch (status) {
+            case 'paid':
+                return { icon: Check, color: 'text-emerald-400', label: t('bills.history.paid', 'Paid') };
+            case 'pending':
+                return { icon: Clock, color: 'text-amber-400', label: t('bills.history.pending', 'Pending') };
+            case 'overdue':
+                return { icon: AlertCircle, color: 'text-red-400', label: t('bills.history.overdue', 'Overdue') };
+            default:
+                return { icon: Check, color: 'text-neutral-400', label: status };
+        }
+    };
 
     const forecastData = [
       { month: t('bills.months.jan'), cost: 295, projected: null },
@@ -39,16 +55,15 @@ const BillsPage = () => {
     return (
         <div className="space-y-6 max-w-7xl mx-auto pb-10">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h1 className="text-2xl font-bold text-white">{t('bills.title')}</h1>
-                    <p className="text-neutral-400 text-sm mt-1">{t('bills.subtitle')}</p>
-                </div>
+            <PageHeader 
+                title={t('bills.title')} 
+                subtitle={t('bills.subtitle')}
+            >
                 <button className="flex items-center gap-2 bg-kashf-surface border border-kashf-border hover:bg-neutral-800 text-white px-4 py-2 rounded-lg font-medium transition-colors">
                     <Download className="size-4" />
                     {t('bills.exportSummary')}
                 </button>
-            </div>
+            </PageHeader>
 
             {/* Bill Prediction Section */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -161,13 +176,19 @@ const BillsPage = () => {
                                     </td>
                                     <td className="px-6 py-4 font-bold text-white">{bill.amount.toFixed(2)}</td>
                                     <td className="px-6 py-4">
-                                        <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
-                                            <div className="size-1.5 rounded-full bg-emerald-400"></div>
-                                            {bill.status}
-                                        </span>
+                                        {(() => {
+                                            const statusProps = getStatusProps(bill.status);
+                                            const Icon = statusProps.icon;
+                                            return (
+                                                <span className={`flex items-center gap-1.5 ${statusProps.color} font-medium`}>
+                                                    <Icon className={`size-4 ${statusProps.color}`} />
+                                                    {statusProps.label}
+                                                </span>
+                                            );
+                                        })()}
                                     </td>
                                     <td className={`px-6 py-4 ${document.documentElement.dir === 'rtl' ? 'text-left' : 'text-right'}`}>
-                                        <button className="p-2 text-neutral-500 hover:text-white bg-neutral-800/0 hover:bg-neutral-800 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100">
+                                        <button className="p-2 text-neutral-500 hover:text-white bg-neutral-800/0 hover:bg-neutral-800 rounded-lg transition-colors focus:opacity-100">
                                             <Download className="size-4" />
                                         </button>
                                     </td>

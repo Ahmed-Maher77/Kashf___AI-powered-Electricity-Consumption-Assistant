@@ -9,6 +9,7 @@ import corsOptions from "./config/corsOptions.js";
 import adminRoutes from "./src/modules/admin.routes.js";
 import userRoutes from "./src/modules/user.routes.js";
 import activityRoutes from "./src/modules/activity.routes.js";
+import meterRoutes from "./src/modules/meter.routes.js";
 
 
 
@@ -55,6 +56,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/activity", activityRoutes);
+app.use("/api/meters", meterRoutes);
 
 
 
@@ -73,6 +75,7 @@ app.use((req, res) => {
 // ======= Global Error Handler =======
 
 app.use((err, req, res, next) => {
+    console.error("Global Error Handler caught:", err);
     const { statusCode, message } = err;
     res.status(statusCode || 500).json({
         error: message || "Internal Server Error",

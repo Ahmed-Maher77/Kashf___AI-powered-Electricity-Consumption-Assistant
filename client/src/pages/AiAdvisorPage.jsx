@@ -10,6 +10,7 @@ import {
     ThermometerSnowflake,
     Lightbulb
 } from 'lucide-react';
+import PageHeader from '../components/layout/PageHeader';
 import UserAvatar from '../components/common/UserAvatar';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/auth/authSlice';
@@ -77,14 +78,11 @@ const AiAdvisorPage = () => {
     return (
         <div className="space-y-6 max-w-7xl mx-auto pb-10 h-[calc(100vh-120px)] flex flex-col">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shrink-0">
-                <div>
-                    <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                        <Bot className="size-6 text-kashf-light-blue" />
-                        {t('aiAdvisor.title')}
-                    </h1>
-                    <p className="text-neutral-400 text-sm mt-1">{t('aiAdvisor.subtitle')}</p>
-                </div>
+            <PageHeader 
+                icon={Bot}
+                title={t('aiAdvisor.title')} 
+                subtitle={t('aiAdvisor.subtitle')}
+            >
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
                     <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -92,7 +90,7 @@ const AiAdvisorPage = () => {
                     </span>
                     <span className="text-xs font-medium text-emerald-400">{t('aiAdvisor.onlineStatus')}</span>
                 </div>
-            </div>
+            </PageHeader>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0">
                 

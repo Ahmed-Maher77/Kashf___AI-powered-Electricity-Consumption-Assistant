@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/auth/authSlice';
+import PageHeader from '../components/layout/PageHeader';
 
 const BillingPage = () => {
     const { t } = useTranslation();
@@ -83,10 +84,10 @@ const BillingPage = () => {
     return (
         <div className="space-y-8 max-w-7xl mx-auto pb-10">
             {/* Header */}
-            <div>
-                <h1 className="text-2xl font-bold text-white">{t('billing.title')}</h1>
-                <p className="text-neutral-400 text-sm mt-1">{t('billing.subtitle')}</p>
-            </div>
+            <PageHeader 
+                title={t('billing.title')} 
+                subtitle={t('billing.subtitle')}
+            />
 
             {/* Current Plan & Payment Method Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -8,6 +8,7 @@ import {
     ChevronRight,
     BarChart2
 } from 'lucide-react';
+import PageHeader from '../components/layout/PageHeader';
 
 const ReportsPage = () => {
     const { t } = useTranslation();
@@ -22,10 +23,10 @@ const ReportsPage = () => {
     return (
         <div className="space-y-6 max-w-7xl mx-auto pb-10">
             {/* Header */}
-            <div>
-                <h1 className="text-2xl font-bold text-white">{t('reports.title')}</h1>
-                <p className="text-neutral-400 text-sm mt-1">{t('reports.subtitle')}</p>
-            </div>
+            <PageHeader 
+                title={t('reports.title')} 
+                subtitle={t('reports.subtitle')}
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 

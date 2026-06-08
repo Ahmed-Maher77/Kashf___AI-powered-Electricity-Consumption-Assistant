@@ -8,6 +8,7 @@ import {
     Settings,
     CheckCircle2
 } from 'lucide-react';
+import PageHeader from '../components/layout/PageHeader';
 
 const AlertsPage = () => {
     const { t } = useTranslation();
@@ -71,16 +72,15 @@ const AlertsPage = () => {
     return (
         <div className="space-y-6 max-w-4xl mx-auto pb-10">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h1 className="text-2xl font-bold text-white">{t('alerts.title')}</h1>
-                    <p className="text-neutral-400 text-sm mt-1">{t('alerts.subtitle')}</p>
-                </div>
+            <PageHeader 
+                title={t('alerts.title')} 
+                subtitle={t('alerts.subtitle')}
+            >
                 <button className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
                     <CheckCircle2 className="size-4" />
                     {t('alerts.markAllRead')}
                 </button>
-            </div>
+            </PageHeader>
 
             {/* Filter Tabs */}
             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide border-b border-kashf-border">

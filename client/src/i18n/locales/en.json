@@ -339,6 +339,10 @@
         },
         "scanMeter": {
             "title": "Scan Meter",
+            "selectMeter": "Select a meter to scan",
+            "noMeters": "You must add a meter before you can scan.",
+            "goToMeters": "Go to My Meters",
+            "startScan": "Start Scan",
             "description": "Capture or upload a photo of your electricity meter so AI OCR can extract the current reading.",
             "sections": [
                 "Camera scanner",
@@ -1121,13 +1125,42 @@
                 "desc": "Your base load between 2AM and 6AM has dropped to 0.5 kWh, indicating no parasitic drain. Great job!"
             }
         },
+        "obs": {
+            "noDataTitle": "Data Collection in Progress",
+            "noDataDesc": "We are currently collecting your consumption data. Real AI observations will appear after your first few readings.",
+            "trendSpikeTitle": "Consumption Spike Detected",
+            "trendSpikeDesc": "Your most recent reading shows a 20%+ increase compared to the previous period. Check for any unusually long-running appliances.",
+            "trendDropTitle": "Consumption Decreased",
+            "trendDropDesc": "Excellent! Your recent consumption dropped compared to your previous period.",
+            "periodAverageHighTitle": "High Average Usage",
+            "periodAverageHighDesc": "Your average usage per reading is {{avg}} kWh. This is higher than recommended.",
+            "dummyPeakTitle": "Peak Usage Detected",
+            "dummyPeakDesc": "Your consumption between 6PM and 10PM is consistently high. Consider shifting heavy appliances to morning hours to reduce strain.",
+            "dummyBaseTitle": "Base Load Optimized",
+            "dummyBaseDesc": "Your nighttime usage dropped to 0.4 kWh/hr. This means you successfully eliminated parasitic loads.",
+            "dummyWeatherTitle": "Weather Impact",
+            "dummyWeatherDesc": "The upcoming heatwave might increase your AC consumption by 15%. Pre-cooling your home can help save energy.",
+            "dummyTime1": "2 hrs ago",
+            "dummyTime2": "1 day ago",
+            "dummyTime3": "3 days ago"
+        },
         "heatmapTitle": "Peak Usage Heatmap (Time vs Day)",
         "time": "Time",
         "days": {
             "mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri", "sat": "Sat", "sun": "Sun"
         },
         "low": "Low",
-        "high": "High"
+        "high": "High",
+        "noDataTitle": "No Data Available",
+        "noDataDesc": "Add a meter to see analytics.",
+        "period": "Period {{num}}",
+        "periodShort": "P{{num}}",
+        "periodEst": "P{{num}} (Est)",
+        "highConsumptionAlert": "High Consumption Alert",
+        "highConsumptionDesc": "You are currently in Tier {{tier}}. Consider reducing heavy appliance usage to avoid crossing into the next expensive tier.",
+        "efficientUsage": "Efficient Usage",
+        "efficientUsageDesc": "Great job! Your consumption is highly optimized compared to similar households.",
+        "usage": "Usage"
     },
     "meters": {
         "title": "My Meters",
@@ -1141,13 +1174,18 @@
         "viewAnalytics": "View Analytics",
         "status": {
             "active": "Active",
-            "standby": "Standby"
+            "standby": "Standby",
+            "inactive": "Inactive",
+            "maintenance": "Maintenance"
         },
         "mock": {
             "meter1": "Home Primary Meter",
             "meter2": "Alexandria Chalet"
         },
         "deleteConfirm": "Are you sure you want to delete this meter?",
+        "deleteConfirmTitle": "Delete Meter?",
+        "deleteConfirmDesc": "Are you sure you want to delete this meter? This action cannot be undone.",
+        "deleteMeter": "Delete Meter",
         "aiAdvices": "AI Advices",
         "aiAdvicesTitle": "AI Insights",
         "editMeter": "Edit Meter",
@@ -1157,6 +1195,7 @@
         "formNumber": "Meter Number",
         "formNumberPlaceholder": "10-digit meter number",
         "formType": "Meter Type",
+        "formStatus": "Status",
         "typeResidential": "Residential",
         "typeCommercial": "Commercial",
         "typeVacation": "Vacation Home",
@@ -1164,7 +1203,14 @@
         "aiAdviceHigh2": "Your AC might be running inefficiently. A 1-degree increase saves up to 5% on cooling.",
         "aiAdviceHigh3": "Approaching Tier 4! Reducing usage now prevents a significant jump in cost per kWh.",
         "aiAdviceLow1": "Great job! Your consumption is highly optimized compared to similar households.",
-        "aiAdviceLow2": "To keep costs low, ensure standby appliances (like TVs and consoles) are unplugged."
+        "aiAdviceLow2": "To keep costs low, ensure standby appliances (like TVs and consoles) are unplugged.",
+        "forMeter": "For {{name}}",
+        "adviceWarning": "Warning",
+        "adviceAlert": "Critical Alert",
+        "adviceSuccess": "Success",
+        "adviceTip": "Tip",
+        "noAdvicesTitle": "Gathering Data...",
+        "noAdvicesDesc": "We need a bit more consumption data to generate personalized AI advices. Check back soon!"
     },
     "reports": {
         "title": "Downloadable Reports",
