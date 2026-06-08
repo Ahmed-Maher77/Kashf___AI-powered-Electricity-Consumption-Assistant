@@ -25,7 +25,6 @@
 ├── History
 ├── Scan Details
 ├── Tips & Recommendations
-├── Settings
 ├── About
 ├── Admin
 │   ├── Dashboard
@@ -57,7 +56,6 @@
 | `/history` | History |
 | `/history/:id` | Scan Details |
 | `/tips` | Tips & Recommendations |
-| `/settings` | Settings |
 | `/about` | About |
 | `/admin/dashboard` | Admin Dashboard |
 | `/admin/users` | Users Management |
@@ -710,7 +708,6 @@ Primary nav (persistent on authenticated user shell):
 | Alerts | `/alerts` | Notification center |
 | Billing | `/billing` | Subscription info |
 | Profile | `/profile` | User profile |
-| Settings | `/settings` | Preferences |
 
 Secondary / footer links: About (`/about`), Welcome (`/`) for logged-out users.
 

@@ -41,7 +41,6 @@ const AppHeader = () => {
         { to: "/alerts", label: t("nav.alerts") },
         { to: "/reports", label: t("nav.reports") },
         { to: "/billing", label: t("nav.billing") },
-        { to: "/settings", label: t("nav.settings") },
     ];
 
     const containerVariants = {

@@ -58,7 +58,6 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | Dashboard translations | — | Done for all user modules |
 | 🟢 Done | Scan page translations | — | |
 | 🟢 Done | Tips page translations | — | |
-| 🟢 Done | Settings page translations | — | |
 | 🔴 Todo | Admin panel translations | — | Lower priority |
 
 ### Dashboard (User)
@@ -103,7 +102,7 @@ Use this file to track task ownership across all workstreams. Update status inli
 | ⚪ Planned | TipCategoryFilter | — | |
 | ⚪ Planned | SavingsEstimateCard | — | |
 
-### Settings
+### Profile & Account
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
 | ⚪ Planned | LanguageSelector (already partially done via Navbar) | — | |

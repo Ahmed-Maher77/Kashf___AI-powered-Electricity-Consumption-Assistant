@@ -20,8 +20,6 @@ export const AiAdvisorPage = lazy(() => import("../pages/AiAdvisorPage"));
 export const AlertsPage = lazy(() => import("../pages/AlertsPage"));
 export const ReportsPage = lazy(() => import("../pages/ReportsPage"));
 export const BillingPage = lazy(() => import("../pages/BillingPage"));
-export const SettingsPage = lazy(() => import("../pages/SettingsPage"));
-
 export const AdminDashboardPage = lazy(() =>
     import("../pages/admin/AdminDashboardPage")
 );

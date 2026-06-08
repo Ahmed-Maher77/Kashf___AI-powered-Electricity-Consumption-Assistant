@@ -12,7 +12,6 @@ import {
     FileText, 
     CreditCard, 
     User, 
-    Settings,
     LogOut,
     ChevronLeft,
     ChevronRight
@@ -48,7 +47,6 @@ const DashboardSidebar = () => {
         { to: "/reports", label: t("nav.reports"), icon: FileText },
         { to: "/billing", label: t("nav.billing"), icon: CreditCard },
         { to: "/profile", label: t("nav.profile"), icon: User },
-        { to: "/settings", label: t("nav.settings"), icon: Settings },
     ];
 
     const navLinkClass = ({ isActive }) =>
