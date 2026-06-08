@@ -160,7 +160,7 @@ const BillingPage = () => {
                                 plan.popular ? 'border-kashf-blue' : isCurrent ? 'border-neutral-600' : 'border-kashf-border'
                             } hover:border-neutral-500 transition-colors`}>
                                 {plan.popular && (
-                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-kashf-blue text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full whitespace-nowrap">
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-kashf-blue text-kashf-bg text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full whitespace-nowrap">
                                         {t('billing.mostPopular')}
                                     </div>
                                 )}
@@ -192,7 +192,7 @@ const BillingPage = () => {
                                     isCurrent 
                                     ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed' 
                                     : plan.popular 
-                                        ? 'bg-kashf-blue hover:bg-kashf-light-blue text-white shadow-lg shadow-kashf-blue/20' 
+                                        ? 'bg-kashf-blue hover:opacity-90 text-kashf-bg shadow-lg shadow-kashf-blue/20' 
                                         : 'bg-neutral-800 hover:bg-neutral-700 text-white'
                                 }`}>
                                     {isCurrent ? t('billing.currentPlanBtn') : t('billing.upgradeBtn')}

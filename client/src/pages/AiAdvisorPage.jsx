@@ -114,7 +114,7 @@ const AiAdvisorPage = () => {
                                 </div>
                                 <div className={`max-w-[80%] rounded-2xl p-4 ${
                                     msg.sender === 'user' 
-                                    ? 'bg-kashf-blue text-white rounded-tr-sm' 
+                                    ? 'bg-kashf-blue text-kashf-bg rounded-tr-sm' 
                                     : 'bg-neutral-800 border border-neutral-700 text-neutral-200 rounded-tl-sm'
                                 }`} dir="rtl">
                                     <p className="text-sm leading-relaxed">{msg.message}</p>
@@ -140,7 +140,7 @@ const AiAdvisorPage = () => {
                                 placeholder={t('aiAdvisor.inputPlaceholder')}
                                 className="w-full bg-neutral-900 border border-neutral-800 text-white rounded-xl pl-4 pr-12 py-4 focus:outline-none focus:border-kashf-blue focus:ring-1 focus:ring-kashf-blue transition-all"
                             />
-                            <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-kashf-blue hover:bg-kashf-light-blue text-white rounded-lg transition-colors">
+                            <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-kashf-blue hover:opacity-90 text-kashf-bg rounded-lg transition-opacity">
                                 <Send className="size-4" />
                             </button>
                         </div>

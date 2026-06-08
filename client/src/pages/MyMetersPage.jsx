@@ -51,7 +51,7 @@ const MyMetersPage = () => {
                     <h1 className="text-2xl font-bold text-white">{t('meters.title')}</h1>
                     <p className="text-neutral-400 text-sm mt-1">{t('meters.subtitle')}</p>
                 </div>
-                <button className="flex items-center gap-2 bg-kashf-blue hover:bg-kashf-blue/90 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                <button className="flex items-center gap-2 bg-kashf-blue hover:opacity-90 text-kashf-bg px-4 py-2 rounded-lg font-semibold transition-opacity">
                     <Plus className="size-5" />
                     {t('meters.addMeter')}
                 </button>

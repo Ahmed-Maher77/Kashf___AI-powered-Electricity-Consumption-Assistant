@@ -882,6 +882,12 @@
         }
     },
     "dashboardOverview": {
+        "noMetersTitle": "No Meters Registered",
+        "noMetersDesc": "Add your first meter or scan a bill to unlock your dashboard, track consumption, and get personalized AI recommendations.",
+        "addMeterCta": "Add New Meter",
+        "scanMeterCta": "Scan Meter",
+        "yourMeters": "Registered Meters",
+        "viewAll": "View All",
         "title": "Dashboard Overview",
         "subtitle": "Real-time electricity monitoring & insights",
         "liveSync": "Live Sync Active",

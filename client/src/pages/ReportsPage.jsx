@@ -68,7 +68,7 @@ const ReportsPage = () => {
                             <h2 className="text-2xl font-bold text-white">{t('reports.mock.report1')}</h2>
                             <p className="text-neutral-400 mt-1">{t('bills.months.may', { defaultValue: 'May' })} 2026 • 2.4 MB • PDF</p>
                         </div>
-                        <button className="flex items-center gap-2 bg-kashf-blue hover:bg-kashf-light-blue text-white px-5 py-2.5 rounded-lg font-medium shadow-lg shadow-kashf-blue/20 transition-colors">
+                        <button className="flex items-center gap-2 bg-kashf-blue hover:opacity-90 text-kashf-bg px-5 py-2.5 rounded-lg font-semibold shadow-lg shadow-kashf-blue/20 transition-opacity">
                             <Download className="size-4" />
                             {t('reports.downloadPdf')}
                         </button>
