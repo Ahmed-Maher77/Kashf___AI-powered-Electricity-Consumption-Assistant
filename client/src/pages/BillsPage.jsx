@@ -43,6 +43,40 @@ const BillsPage = () => {
         }
     };
 
+    const handleExportSummary = () => {
+        if (!bills || bills.length === 0) return;
+        
+        const headers = [
+            t('bills.history.invoiceNo', 'Invoice No.'),
+            t('bills.history.billingMonth', 'Billing Month'),
+            t('bills.history.consumption', 'Consumption'),
+            t('bills.history.tier', 'Tier'),
+            t('bills.history.amount', 'Amount'),
+            t('bills.history.status', 'Status')
+        ].join(',');
+
+        const csvRows = bills.map(bill => {
+            return [
+                bill.id || '',
+                bill.month || '',
+                bill.consumption || 0,
+                bill.tier || '',
+                bill.amount || 0,
+                bill.status || ''
+            ].join(',');
+        });
+
+        const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + headers + "\n" + csvRows.join('\n');
+        const encodedUri = encodeURI(csvContent);
+        
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `Kashf_Bills_Summary_${new Date().getFullYear()}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     useEffect(() => {
         dispatch(fetchBills({ page, limit: 5, year: yearFilter, status: statusFilter }));
     }, [dispatch, page, yearFilter, statusFilter]);
@@ -117,15 +151,19 @@ const BillsPage = () => {
                 title={t('bills.title')} 
                 subtitle={t('bills.subtitle')}
             >
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                     <button 
                         onClick={() => setIsAddModalOpen(true)}
-                        className="flex items-center gap-2 bg-kashf-blue hover:bg-kashf-light-blue text-kashf-bg px-4 py-2 rounded-lg font-medium transition-colors"
+                        className="flex items-center gap-2 bg-kashf-blue hover:bg-kashf-light-blue text-kashf-bg px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-colors"
                     >
                         <Plus className="size-4" />
                         {t('bills.addBill', 'Add Bill')}
                     </button>
-                    <button className="flex items-center gap-2 bg-kashf-surface border border-kashf-border hover:bg-neutral-800 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                    <button 
+                        onClick={handleExportSummary}
+                        disabled={!bills || bills.length === 0}
+                        className="flex items-center gap-2 bg-kashf-surface border border-kashf-border hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-colors"
+                    >
                         <Download className="size-4" />
                         {t('bills.exportSummary')}
                     </button>
@@ -133,37 +171,35 @@ const BillsPage = () => {
             </PageHeader>
 
             {/* Bill Prediction Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div className="flex flex-col gap-6">
                 
                 {/* Current Estimate Card */}
-                <div className="lg:col-span-1 bg-gradient-to-br from-kashf-surface to-kashf-bg border border-kashf-border rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
-                    <div className="absolute top-0 right-0 p-24 bg-kashf-blue/5 rounded-full blur-2xl"></div>
-                    
+                <div className="relative flex flex-col sm:flex-row sm:items-center justify-between py-4 sm:py-8">
                     <div className="relative z-10">
                         <div className="flex items-center gap-2 mb-4">
                             <Receipt className="size-5 text-kashf-light-blue" />
                             <h3 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider">{t('bills.currentEstimate')}</h3>
                         </div>
                         <div className="flex items-baseline gap-2 mb-1" dir="ltr">
-                            <span className="text-4xl font-bold text-white">EGP 412</span>
-                            <span className="text-sm text-neutral-500">.50</span>
+                            <span className="text-3xl sm:text-4xl font-bold text-white">EGP 412</span>
+                            <span className="text-xs sm:text-sm text-neutral-500">.50</span>
                         </div>
-                        <p className="text-sm text-amber-400 flex items-center gap-1.5 font-medium mt-3">
+                        <p className="text-xs sm:text-sm text-amber-400 flex items-center gap-1.5 font-medium mt-3">
                             <AlertCircle className="size-4" />
                             {t('bills.tierWarning')}
                         </p>
                     </div>
 
-                    <div className="relative z-10 mt-8 space-y-4">
-                        <div className="flex justify-between items-center text-sm pb-3 border-b border-neutral-800/50">
+                    <div className="relative z-10 mt-8 sm:mt-0 sm:w-1/2 space-y-4">
+                        <div className="flex justify-between items-center text-xs sm:text-sm pb-3 border-b border-neutral-800/50">
                             <span className="text-neutral-400">{t('bills.projectedConsumption')}</span>
                             <span className="font-medium text-white" dir="ltr">345 kWh</span>
                         </div>
-                        <div className="flex justify-between items-center text-sm pb-3 border-b border-neutral-800/50">
+                        <div className="flex justify-between items-center text-xs sm:text-sm pb-3 border-b border-neutral-800/50">
                             <span className="text-neutral-400">{t('bills.expectedTier')}</span>
                             <span className="font-medium text-white">{t('common.tier', { tier: 3, defaultValue: 'Tier 3' })}</span>
                         </div>
-                        <div className="flex justify-between items-center text-sm">
+                        <div className="flex justify-between items-center text-xs sm:text-sm">
                             <span className="text-neutral-400">{t('bills.dueDate')}</span>
                             <span className="font-medium text-white">Jul 01, 2026</span>
                         </div>
@@ -171,10 +207,10 @@ const BillsPage = () => {
                 </div>
 
                 {/* Cost Forecast Chart */}
-                <div className="lg:col-span-3 bg-kashf-surface border border-kashf-border rounded-2xl p-6">
-                    <h3 className="text-sm font-medium text-white mb-6">{t('bills.chartTitle')}</h3>
+                <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6">
+                    <h3 className="text-xs sm:text-sm font-medium text-white mb-6">{t('bills.chartTitle')}</h3>
                     <div className="h-[300px] w-full" dir="ltr">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="99%" height={300}>
                             <ComposedChart data={forecastData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
                                 <XAxis dataKey="month" stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
@@ -195,7 +231,7 @@ const BillsPage = () => {
             {/* Bill History Table */}
             <div className="pt-4">
                 <div className="pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <h3 className="text-lg font-bold text-white">{t('bills.history.title')}</h3>
+                    <h3 className="text-base sm:text-lg font-bold text-white">{t('bills.history.title')}</h3>
                     <div className="flex items-center gap-3 flex-wrap">
                         {/* Year Filter */}
                         <div className="relative">
@@ -205,7 +241,7 @@ const BillsPage = () => {
                             <select 
                                 value={yearFilter}
                                 onChange={(e) => { setYearFilter(e.target.value); setPage(1); }}
-                                className="bg-neutral-900 border border-neutral-800 text-sm text-neutral-300 rounded-lg pl-10 pr-8 py-2 appearance-none focus:outline-none focus:border-kashf-blue"
+                                className="bg-neutral-900 border border-neutral-800 text-xs sm:text-sm text-neutral-300 rounded-lg pl-8 pr-6 py-1.5 sm:pl-10 sm:pr-8 sm:py-2 appearance-none focus:outline-none focus:border-kashf-blue"
                             >
                                 <option value="all">{t('common.allYears', 'All Years')}</option>
                                 <option value="2026">2026</option>
@@ -224,7 +260,7 @@ const BillsPage = () => {
                             <select 
                                 value={statusFilter}
                                 onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-                                className="bg-neutral-900 border border-neutral-800 text-sm text-neutral-300 rounded-lg pl-10 pr-8 py-2 appearance-none focus:outline-none focus:border-kashf-blue"
+                                className="bg-neutral-900 border border-neutral-800 text-xs sm:text-sm text-neutral-300 rounded-lg pl-8 pr-6 py-1.5 sm:pl-10 sm:pr-8 sm:py-2 appearance-none focus:outline-none focus:border-kashf-blue"
                             >
                                 <option value="all">{t('common.allStatus', 'All Status')}</option>
                                 <option value="paid">{t('bills.history.paid', 'Paid')}</option>
@@ -239,8 +275,8 @@ const BillsPage = () => {
                 </div>
                 
                 <div className="overflow-x-auto border border-kashf-border rounded-xl">
-                    <table className="w-full text-start text-sm text-neutral-400">
-                        <thead className="bg-neutral-900/50 text-xs uppercase font-semibold text-neutral-500 border-b border-kashf-border">
+                    <table className="w-full text-start text-xs sm:text-sm text-neutral-400 min-w-[600px]">
+                        <thead className="bg-neutral-900/50 text-[10px] sm:text-xs uppercase font-semibold text-neutral-500 border-b border-kashf-border">
                             <tr>
                                 <th className="px-6 py-4 text-start">{t('bills.history.invoiceNo')}</th>
                                 <th className="px-6 py-4 text-start">{t('bills.history.billingMonth')}</th>

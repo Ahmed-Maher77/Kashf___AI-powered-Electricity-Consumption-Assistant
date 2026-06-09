@@ -54,7 +54,7 @@ const Footer = () => {
                                 d="M5 10l7-7m0 0l7 7m-7-7v18"
                             />
                         </svg>
-                        {t("footer.backToTop")}
+                        <span className="hidden sm:inline">{t("footer.backToTop")}</span>
                     </button>
                     <LanguageSwitcher menuPlacement="top" />
                 </div>

@@ -8,7 +8,9 @@ import {
     TrendingDown,
     Clock,
     ThermometerSnowflake,
-    Lightbulb
+    Lightbulb,
+    Wifi,
+    WifiOff
 } from 'lucide-react';
 import PageHeader from '../components/layout/PageHeader';
 import UserAvatar from '../components/common/UserAvatar';
@@ -19,6 +21,20 @@ const AiAdvisorPage = () => {
     const { t } = useTranslation();
     const user = useSelector(selectUser);
     const [message, setMessage] = useState('');
+    const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+    React.useEffect(() => {
+        const handleOnline = () => setIsOnline(true);
+        const handleOffline = () => setIsOnline(false);
+
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
 
     const SUGGESTED_QUESTIONS = [
         t('aiAdvisor.suggestedQuestions.q1'),
@@ -83,19 +99,18 @@ const AiAdvisorPage = () => {
                 title={t('aiAdvisor.title')} 
                 subtitle={t('aiAdvisor.subtitle')}
             >
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                    <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <div className={`flex items-center gap-2 px-3 py-1.5 ${isOnline ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'} border rounded-full`}>
+                    {isOnline ? <Wifi className="size-4" /> : <WifiOff className="size-4" />}
+                    <span className="text-xs font-medium">
+                        {isOnline ? t('aiAdvisor.onlineStatus', 'Online') : t('aiAdvisor.offlineStatus', 'Offline')}
                     </span>
-                    <span className="text-xs font-medium text-emerald-400">{t('aiAdvisor.onlineStatus')}</span>
                 </div>
             </PageHeader>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0">
+            <div className="flex-1 min-h-0 flex justify-center">
                 
                 {/* Chat Interface */}
-                <div className="lg:col-span-2 bg-kashf-surface border border-kashf-border rounded-2xl flex flex-col overflow-hidden">
+                <div className="w-full max-w-4xl bg-kashf-surface border border-kashf-border rounded-2xl flex flex-col overflow-hidden">
                     
                     {/* Chat Messages */}
                     <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-kashf-surface to-neutral-900/50">
@@ -149,43 +164,7 @@ const AiAdvisorPage = () => {
                     </div>
                 </div>
 
-                {/* Savings Opportunities Sidebar */}
-                <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6 overflow-y-auto hidden lg:block">
-                    <div className="flex items-center gap-2 mb-6">
-                        <Lightbulb className="size-5 text-amber-400" />
-                        <h3 className="text-sm font-bold text-white">{t('aiAdvisor.activeOpportunities')}</h3>
-                    </div>
-                    
-                    <div className="space-y-4">
-                        {SAVINGS_OPPORTUNITIES.map((opp, i) => {
-                            const Icon = opp.icon;
-                            return (
-                                <div key={i} className="p-4 rounded-xl border border-neutral-800 bg-neutral-900/50 hover:bg-neutral-800 transition-colors group cursor-pointer">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <div className={`p-2 rounded-lg ${opp.bg} ${opp.color}`}>
-                                            <Icon className="size-4" />
-                                        </div>
-                                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                                            opp.impact === t('aiAdvisor.savings.impactHigh') ? 'bg-red-500/10 text-red-400' : 'bg-emerald-500/10 text-emerald-400'
-                                        }`}>
-                                            {t('aiAdvisor.impactLabel', { impact: opp.impact })}
-                                        </span>
-                                    </div>
-                                    <h4 className="text-sm font-semibold text-white mb-1">{opp.title}</h4>
-                                    <p className="text-xs text-neutral-400 mb-4">{opp.action}</p>
-                                    
-                                    <div className="flex justify-between items-center pt-3 border-t border-neutral-800">
-                                        <span className="text-xs text-neutral-500">{t('aiAdvisor.estimatedSavings')}</span>
-                                        <span className="text-sm font-bold text-emerald-400 flex items-center gap-1">
-                                            <TrendingDown className="size-3" />
-                                            {opp.savings}
-                                        </span>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
+
 
             </div>
         </div>
