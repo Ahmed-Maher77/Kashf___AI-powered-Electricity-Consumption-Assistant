@@ -3,6 +3,7 @@ import authReducer from "./auth/authSlice";
 import metersReducer from "./meters/metersSlice";
 import billsReducer from "./bills/billsSlice";
 import alertsReducer from "./alerts/alertsSlice";
+import simulationsReducer from "./simulations/simulationSlice";
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         meters: metersReducer,
         bills: billsReducer,
         alerts: alertsReducer,
+        simulations: simulationsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

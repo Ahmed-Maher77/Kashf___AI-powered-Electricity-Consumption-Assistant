@@ -31,7 +31,8 @@ import {
     AiAdvisorPage,
     AlertsPage,
     ReportsPage,
-    BillingPage
+    BillingPage,
+    SimulationDashboardPage
 } from "./lazyPages";
 
 export const router = createBrowserRouter([
@@ -74,6 +75,7 @@ export const router = createBrowserRouter([
                     { path: "history", element: <HistoryPage /> },
                     { path: "history/:id", element: <ScanDetailsPage /> },
                     { path: "tips", element: <TipsPage /> },
+                    { path: "meters/:id/simulation", element: <SimulationDashboardPage /> },
                 ],
             },
         ],

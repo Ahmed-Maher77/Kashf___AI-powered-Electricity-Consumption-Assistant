@@ -12,12 +12,6 @@ import {
     Sparkles,
     AlertCircle,
     ChevronDown
-import {
-    BarChart2,
-    Zap,
-    CalendarDays,
-    AlertCircle,
-    ChevronDown
 } from 'lucide-react';
 import PageHeader from '../components/layout/PageHeader';
 import StatCard from '../components/common/StatCard';
@@ -220,7 +214,6 @@ const ConsumptionAnalyticsPage = () => {
 
             {/* Insights Panel */}
             <AIObservations observations={observations} />
-            </div>
         </div>
     );
 };

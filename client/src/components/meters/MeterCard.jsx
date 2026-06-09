@@ -9,9 +9,10 @@ import {
     Trash2,
     Calendar,
     Sparkles,
-    Activity
+    Activity,
+    Zap
 } from 'lucide-react';
-import { AreaChart, Area, RechartsTooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import ChartTooltip from '../common/ChartTooltip';
 
@@ -68,6 +69,13 @@ const MeterCard = ({ meter, onEdit, onDelete, onViewAI }) => {
                                         >
                                             <Settings className="size-4" />
                                             {t('meters.editMeter', "Edit Meter")}
+                                        </button>
+                                        <button 
+                                            onClick={() => { setIsDropdownOpen(false); navigate(`/meters/${meter.id}/simulation`); }}
+                                            className="w-full text-start px-4 py-3 text-sm text-neutral-300 hover:bg-neutral-800 hover:text-white transition-colors flex items-center gap-3"
+                                        >
+                                            <Zap className="size-4 text-amber-400" />
+                                            {t('meters.manageSimulation', "Manage Simulation")}
                                         </button>
                                         <button 
                                             onClick={() => { setIsDropdownOpen(false); onDelete(); }}
