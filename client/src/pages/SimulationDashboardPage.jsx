@@ -19,7 +19,11 @@ import PageHeader from '../components/layout/PageHeader';
 import CircuitCard from '../components/simulations/CircuitCard';
 import AddCircuitModal from '../components/simulations/AddCircuitModal';
 import AddDeviceModal from '../components/simulations/AddDeviceModal';
+import EngineControlPanel from '../components/simulations/EngineControlPanel';
+import EmptyCircuitsState from '../components/simulations/EmptyCircuitsState';
 
+
+// Fetches real-time data and calculates aggregate power usage across circuits and devices.
 const SimulationDashboardPage = () => {
     const { id: meterId } = useParams();
     const navigate = useNavigate();
@@ -32,7 +36,7 @@ const SimulationDashboardPage = () => {
     const [isAddCircuitOpen, setIsAddCircuitOpen] = useState(false);
     const [selectedCircuitForDevice, setSelectedCircuitForDevice] = useState(null);
 
-    // Fetch dependencies
+    // Fetch dependencies: Both meters (to resolve the current meter by ID) and simulations (to match against the meter's name/profile).
     useEffect(() => {
         if (meters.length === 0) {
             dispatch(fetchMeters());
@@ -44,11 +48,13 @@ const SimulationDashboardPage = () => {
         return meters.find(m => m.id === meterId);
     }, [meters, meterId]);
 
+    // Resolves the simulation matching the active meter's name.
     const localSimulation = useMemo(() => {
         if (!meter) return null;
         return simulations.find(s => s.name === meter.name);
     }, [simulations, meter]);
 
+    // Fetch deep simulation data once the shallow profile is resolved
     useEffect(() => {
         if (localSimulation && (!currentSimulation || currentSimulation.id !== localSimulation.id)) {
             dispatch(fetchSimulation(localSimulation.id));
@@ -81,6 +87,8 @@ const SimulationDashboardPage = () => {
         );
     }
 
+    // Aggregates live power draw across all active devices in all circuits.
+    // Calculated in O(c * d) time where c = circuits, d = devices.
     const totalPower = currentSimulation.circuits?.reduce((sum, circuit) => {
         return sum + (circuit.devices?.reduce((deviceSum, d) => deviceSum + (d.isOn ? d.power : 0), 0) || 0);
     }, 0) || 0;
@@ -106,48 +114,7 @@ const SimulationDashboardPage = () => {
             </div>
 
             {/* Engine Control Panel */}
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6 my-10">
-                <div className="flex items-center gap-6 w-full md:w-auto">
-                    <div className="flex items-center gap-3">
-                        <div className={`p-3 rounded-full ${currentSimulation.isRunning ? 'bg-emerald-500/10 text-emerald-500' : 'bg-neutral-800 text-neutral-500'}`}>
-                            <Zap className="size-6" />
-                        </div>
-                        <div>
-                            <p className="text-xs text-neutral-500 uppercase tracking-wider">{t('simulations.status', 'Engine Status')}</p>
-                            <p className="text-lg font-bold text-white">
-                                {currentSimulation.isRunning ? t('simulations.running', 'Running') : t('simulations.paused', 'Paused')}
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div className="h-10 w-px bg-neutral-800 hidden md:block"></div>
-                    
-                    <div className="flex flex-col items-center">
-                        <p className="text-xs text-neutral-500 uppercase tracking-wider text-center">{t('simulations.livePower', 'Live Power Draw')}</p>
-                        <p className="text-lg font-bold text-white flex items-baseline justify-center gap-1">
-                            <bdi>{totalPower} <span className="text-xs text-neutral-500 font-normal">W</span></bdi>
-                        </p>
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-3 w-full md:w-auto">
-                    <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg font-medium transition-colors border border-neutral-700">
-                        <RotateCcw className="size-4" />
-                        {t('simulations.reset', 'Reset')}
-                    </button>
-                    {currentSimulation.isRunning ? (
-                        <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-bold transition-colors">
-                            <Pause className="size-4" />
-                            {t('simulations.pause', 'Pause')}
-                        </button>
-                    ) : (
-                        <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold transition-colors">
-                            <Play className="size-4" />
-                            {t('simulations.start', 'Start')}
-                        </button>
-                    )}
-                </div>
-            </div>
+            <EngineControlPanel currentSimulation={currentSimulation} totalPower={totalPower} />
 
             {/* Circuits Grid Header */}
             <div className="flex items-center justify-between mt-8 mb-5">
@@ -176,18 +143,7 @@ const SimulationDashboardPage = () => {
                 ))}
 
                 {(!currentSimulation.circuits || currentSimulation.circuits.length === 0) && (
-                    <div className="col-span-full py-16 border-2 border-dashed border-neutral-800 rounded-2xl flex flex-col items-center justify-center text-center gap-2">
-                        <Zap className="size-10 text-neutral-600 mb-4" />
-                        <h3 className="text-lg font-medium text-white mb-2">{t('simulations.noCircuits', 'No Circuits Yet')}</h3>
-                        <p className="text-sm text-neutral-400 max-w-sm mb-6  rtl:leading-loose">{t('simulations.noCircuitsDesc', 'Add your first circuit (like Kitchen or Bedroom) to start building your simulation.')}</p>
-                        <button 
-                            onClick={() => setIsAddCircuitOpen(true)}
-                            className="flex items-center gap-2 bg-kashf-blue hover:bg-opacity-90 text-kashf-bg px-6 py-2.5 rounded-xl font-bold transition-colors"
-                        >
-                            <Plus className="size-5" />
-                            {t('simulations.addCircuit', 'Add Circuit')}
-                        </button>
-                    </div>
+                    <EmptyCircuitsState onAddClick={() => setIsAddCircuitOpen(true)} />
                 )}
             </div>
 

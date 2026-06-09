@@ -8,6 +8,7 @@ import {
 } from "../../auth/authStorage";
 import { normalizeUserProfile } from "../../auth/userProfile";
 
+// Maps raw session data to the structured Redux state format.
 const mapSessionToState = (session) => ({
     accessToken: session.accessToken,
     role: session.role,
@@ -17,10 +18,12 @@ const mapSessionToState = (session) => ({
 
 const initialSession = readAuthSession();
 
+// Initializes synchronously from local storage to prevent auth flickering.
 const authSlice = createSlice({
     name: "auth",
     initialState: mapSessionToState(initialSession),
     reducers: {
+        // Logs a user in by persisting their session and updating state.
         login: (state, action) => {
             const {
                 accessToken,
@@ -41,6 +44,7 @@ const authSlice = createSlice({
 
             Object.assign(state, mapped);
         },
+        // Clears the current session from both state and persistent storage.
         logout: (state) => {
             clearAuthSession();
             state.accessToken = null;
@@ -48,6 +52,7 @@ const authSlice = createSlice({
             state.user = null;
             state.isAuthenticated = false;
         },
+        // Updates the user profile in state and storage without affecting auth tokens.
         setUser: (state, action) => {
             const profile = normalizeUserProfile(action.payload);
 
@@ -58,6 +63,7 @@ const authSlice = createSlice({
             setUserProfile(profile);
             state.user = profile;
         },
+        // Re-syncs the Redux state with persistent storage
         refreshSession: (state) => {
             let nextSession = readAuthSession();
 
@@ -78,13 +84,19 @@ const authSlice = createSlice({
 
 export const { login, logout, setUser, refreshSession } = authSlice.actions;
 
+// --- Selectors ---
+
 export const selectAuth = (state) => state.auth;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectUserRole = (state) => state.auth.role;
 export const selectAccessToken = (state) => state.auth.accessToken;
 export const selectUser = (state) => state.auth.user;
+
+// Convenience selectors for authorization checks
 export const selectIsAdmin = (state) => state.auth.role === USER_ROLES.ADMIN;
 export const selectSubscriptionPlan = (state) => state.auth.user?.subscriptionPlan ?? SUBSCRIPTION_PLANS.FREE;
+
+// Determines if the user has access to premium simulation and analytics features.
 export const selectIsPlusOrFamily = (state) => {
     const plan = state.auth.user?.subscriptionPlan;
     return plan === SUBSCRIPTION_PLANS.PLUS || plan === SUBSCRIPTION_PLANS.FAMILY;

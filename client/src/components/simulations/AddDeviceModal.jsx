@@ -85,7 +85,7 @@ const AddDeviceModal = ({ isOpen, onClose, circuit, simulationId }) => {
                                     <PlusCircle className="size-5 text-kashf-blue" />
                                     {t('simulations.addDeviceTo', "Add Device")}
                                 </h2>
-                                <p className="text-sm text-neutral-400 mt-1">{t('simulations.toCircuit', "To Circuit:")} <span className="text-white font-medium">{circuit.name}</span></p>
+                                <p className="text-sm text-neutral-400 mt-1 rtl:mt-2">{t('simulations.toCircuit', "To Circuit:")} <span className="text-white font-medium">{circuit.name}</span></p>
                             </div>
                             <button 
                                 onClick={onClose}
@@ -98,7 +98,7 @@ const AddDeviceModal = ({ isOpen, onClose, circuit, simulationId }) => {
                         <div className="overflow-y-auto p-6">
                             <form id="add-device-form" onSubmit={handleSubmit} className="space-y-5">
                                 <div>
-                                    <label className="block text-sm font-medium text-neutral-400 mb-1">
+                                    <label className="block text-sm font-medium text-neutral-400 mb-2.5">
                                         {t('simulations.deviceName', "Device Name")}
                                     </label>
                                     <input 
@@ -112,7 +112,7 @@ const AddDeviceModal = ({ isOpen, onClose, circuit, simulationId }) => {
                                 </div>
                                 
                                 <div>
-                                    <label className="block text-sm font-medium text-neutral-400 mb-1">
+                                    <label className="block text-sm font-medium text-neutral-400 mb-2.5">
                                         {t('simulations.devicePower', "Power Consumption (Watts)")}
                                     </label>
                                     <input 
@@ -127,7 +127,7 @@ const AddDeviceModal = ({ isOpen, onClose, circuit, simulationId }) => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-neutral-400 mb-2">
+                                    <label className="block text-sm font-medium text-neutral-400 mb-2.5">
                                         {t('simulations.deviceType', "Device Type")}
                                     </label>
                                     <div className="grid grid-cols-3 gap-3">

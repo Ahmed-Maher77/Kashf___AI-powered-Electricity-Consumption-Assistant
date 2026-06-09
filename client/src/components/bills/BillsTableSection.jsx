@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Calendar, ChevronDown, Filter, Check, Clock, AlertCircle, Edit2, Trash2 } from 'lucide-react';
+import { Check, Clock, AlertCircle, Edit2, Trash2 } from 'lucide-react';
+import BillsFilter from './BillsFilter';
+import BillsPagination from './BillsPagination';
 
 const BillsTableSection = ({ 
     bills, 
@@ -34,46 +36,13 @@ const BillsTableSection = ({
         <div className="pt-4">
             <div className="pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <h3 className="text-base sm:text-lg font-bold text-white">{t('bills.history.title')}</h3>
-                <div className="flex items-center gap-3 flex-wrap">
-                    {/* Year Filter */}
-                    <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Calendar className="size-4 text-neutral-500" />
-                        </div>
-                        <select 
-                            value={yearFilter}
-                            onChange={(e) => { setYearFilter(e.target.value); setPage(1); }}
-                            className="bg-neutral-900 border border-neutral-800 text-xs sm:text-sm text-neutral-300 rounded-lg pl-8 pr-6 py-1.5 sm:pl-10 sm:pr-8 sm:py-2 appearance-none focus:outline-none focus:border-kashf-blue"
-                        >
-                            <option value="all">{t('common.allYears', 'All Years')}</option>
-                            <option value="2026">2026</option>
-                            <option value="2025">2025</option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                            <ChevronDown className="size-4 text-neutral-500" />
-                        </div>
-                    </div>
-
-                    {/* Status Filter */}
-                    <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Filter className="size-4 text-neutral-500" />
-                        </div>
-                        <select 
-                            value={statusFilter}
-                            onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-                            className="bg-neutral-900 border border-neutral-800 text-xs sm:text-sm text-neutral-300 rounded-lg pl-8 pr-6 py-1.5 sm:pl-10 sm:pr-8 sm:py-2 appearance-none focus:outline-none focus:border-kashf-blue"
-                        >
-                            <option value="all">{t('common.allStatus', 'All Status')}</option>
-                            <option value="paid">{t('bills.history.paid', 'Paid')}</option>
-                            <option value="pending">{t('bills.history.pending', 'Pending')}</option>
-                            <option value="overdue">{t('bills.history.overdue', 'Overdue')}</option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                            <ChevronDown className="size-4 text-neutral-500" />
-                        </div>
-                    </div>
-                </div>
+                <BillsFilter 
+                    yearFilter={yearFilter}
+                    setYearFilter={setYearFilter}
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
+                    setPage={setPage}
+                />
             </div>
             
             <div className="overflow-x-auto border border-kashf-border rounded-xl">
@@ -153,26 +122,8 @@ const BillsTableSection = ({
                 </table>
 
                 {/* Pagination Controls */}
-                {!isLoading && totalPages > 1 && (
-                    <div className="flex items-center justify-between px-6 py-4 border-t border-kashf-border bg-neutral-900/50">
-                        <button 
-                            onClick={() => setPage(p => Math.max(1, p - 1))}
-                            disabled={page === 1}
-                            className="px-4 py-2 text-sm font-medium text-neutral-300 bg-neutral-800/50 hover:bg-neutral-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                            {t('common.previous', 'Previous')}
-                        </button>
-                        <span className="text-sm text-neutral-400">
-                            {t('common.pageOf', { current: page, total: totalPages, defaultValue: `Page ${page} of ${totalPages}` })}
-                        </span>
-                        <button 
-                            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                            disabled={page === totalPages}
-                            className="px-4 py-2 text-sm font-medium text-neutral-300 bg-neutral-800/50 hover:bg-neutral-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                            {t('common.next', 'Next')}
-                        </button>
-                    </div>
+                {!isLoading && (
+                    <BillsPagination page={page} setPage={setPage} totalPages={totalPages} />
                 )}
             </div>
         </div>

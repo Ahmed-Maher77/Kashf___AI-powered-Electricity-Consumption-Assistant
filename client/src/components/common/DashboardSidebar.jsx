@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
@@ -23,6 +23,7 @@ import { selectUser } from "../../store/auth/authSlice";
 import { useLogout } from "../../hooks/auth/useLogout";
 
 const DashboardSidebar = () => {
+    const navigate = useNavigate();
     const [isCollapsed, setIsCollapsed] = useState(true);
     const { t, i18n } = useTranslation();
     const isRtl = i18n.dir() === "rtl";
@@ -123,7 +124,12 @@ const DashboardSidebar = () => {
                     )}
 
                     {/* Profile Actions */}
-                    <motion.div variants={itemVariants} className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 w-full'}`}>
+                    <motion.div 
+                        variants={itemVariants} 
+                        onClick={() => navigate('/profile')}
+                        className={`flex items-center cursor-pointer hover:bg-neutral-800/50 p-2 -mx-2 rounded-lg transition-colors ${isCollapsed ? 'justify-center' : 'gap-3 w-full'}`}
+                        title={t("nav.profile")}
+                    >
                         <UserAvatar user={user} className="size-9 shrink-0" />
                         {!isCollapsed && (
                             <div className="min-w-0 flex-1">

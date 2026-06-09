@@ -7,7 +7,7 @@ const initialState = {
     error: null,
 };
 
-// Fetch meters
+// Fetches all meters associated with the authenticated user.
 export const fetchMeters = createAsyncThunk('meters/fetchMeters', async (_, thunkAPI) => {
     try {
         return await meterService.getMeters();
@@ -16,7 +16,7 @@ export const fetchMeters = createAsyncThunk('meters/fetchMeters', async (_, thun
     }
 });
 
-// Create new meter
+// Creates a new electricity meter.
 export const createMeterAsync = createAsyncThunk('meters/createMeter', async (meterData, thunkAPI) => {
     try {
         return await meterService.createMeter(meterData);
@@ -25,7 +25,7 @@ export const createMeterAsync = createAsyncThunk('meters/createMeter', async (me
     }
 });
 
-// Update meter
+// Updates an existing meter's properties.
 export const updateMeterAsync = createAsyncThunk('meters/updateMeter', async ({ id, data }, thunkAPI) => {
     try {
         return await meterService.updateMeter(id, data);
@@ -34,7 +34,7 @@ export const updateMeterAsync = createAsyncThunk('meters/updateMeter', async ({ 
     }
 });
 
-// Delete meter
+// Deletes a meter by its ID.
 export const deleteMeterAsync = createAsyncThunk('meters/deleteMeter', async (id, thunkAPI) => {
     try {
         return await meterService.deleteMeter(id);
@@ -43,12 +43,11 @@ export const deleteMeterAsync = createAsyncThunk('meters/deleteMeter', async (id
     }
 });
 
+// Redux slice handling electricity meters CRUD operations and state.
 const metersSlice = createSlice({
     name: 'meters',
     initialState,
     reducers: {
-        // We can keep these for optimistic updates if needed, 
-        // but it's better to rely on extraReducers.
         clearMeters: (state) => {
             state.meters = [];
         }

@@ -15,6 +15,8 @@ import MeterFormModal from '../components/meters/MeterFormModal';
 import AIAdvicesModal from '../components/meters/AIAdvicesModal';
 import MeterCard from '../components/meters/MeterCard';
 
+// Page component for viewing and managing all physical meters registered to a user.
+// Acts as the top-level container for Meter cards, forms, and AI insight modals.
 const MyMetersPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -22,10 +24,12 @@ const MyMetersPage = () => {
     const dispatch = useDispatch();
     const { meters, isLoading, error } = useSelector(state => state.meters);
     
+    // Fetch user meters on initial mount
     useEffect(() => {
         dispatch(fetchMeters());
     }, [dispatch]);
     
+    // Modal states for adding/editing meters, viewing AI insights, and deletion confirmation
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isAIModalOpen, setIsAIModalOpen] = useState(false);
     const [editingMeter, setEditingMeter] = useState(null);
@@ -43,6 +47,8 @@ const MyMetersPage = () => {
         }
     };
 
+    // Handles saving a new or edited meter to the Redux store.
+    // Routes to either a CREATE or UPDATE thunk based on whether `editingMeter` exists.
     const handleSaveMeter = (meterData) => {
         if (editingMeter) {
             dispatch(updateMeterAsync({ id: editingMeter.id, data: meterData }));

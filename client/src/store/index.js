@@ -5,6 +5,7 @@ import billsReducer from "./bills/billsSlice";
 import alertsReducer from "./alerts/alertsSlice";
 import simulationsReducer from "./simulations/simulationSlice";
 
+// Combines all feature slices and configures middleware.
 export const store = configureStore({
     reducer: {
         auth: authReducer,

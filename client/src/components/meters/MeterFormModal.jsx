@@ -4,14 +4,20 @@ import { X, Zap, ChevronDown, Check, ArrowRight, ArrowLeft, Home, Settings } fro
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { createSimulationAsync } from '../../store/simulations/simulationSlice';
+import MeterInfoStep from './MeterInfoStep';
+import SimulationModeStep from './SimulationModeStep';
 
+// A multi-step modal wizard for creating or editing a meter.
+// Step 1: Basic meter information (Name, Number, Type).
+// Step 2: Simulation Mode (Auto-generate simulation, empty simulation, or none).
+// Note: Step 2 is skipped when editing an existing meter.
 const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const [step, setStep] = useState(1); // 1: Meter Info, 2: Simulation Mode
     
-    // Meter Data
+    // Step 1: Basic Meter Details
     const [formData, setFormData] = useState({
         name: meter?.name || '',
         number: meter?.number || '',
@@ -19,10 +25,11 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
         status: meter?.status || 'active'
     });
 
-    // Simulation Data
+    // Step 2: Simulation Auto-Generation Rules
     const [simMode, setSimMode] = useState('auto'); // 'auto' | 'custom' | 'none'
     const [isSaving, setIsSaving] = useState(false);
 
+    // Reset form state when the modal opens or the selected meter changes
     useEffect(() => {
         if (meter) {
             setFormData({
@@ -51,15 +58,17 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
         setStep(1);
     };
 
+    // Handles final form submission.
     const handleSubmit = async () => {
         setIsSaving(true);
         try {
-            // First save meter
+            // First save meter via parent callback (creates/updates meter in DB)
             await onSave(formData);
             
-            // If it's a new meter and simulation mode is selected
+            // If it's a new meter and a simulation environment was requested
             if (!meter && simMode !== 'none') {
                 const autoGenerate = simMode === 'auto';
+                // Fire off asynchronous simulation provisioning
                 await dispatch(createSimulationAsync({ 
                     name: formData.name, 
                     autoGenerate 
@@ -112,129 +121,11 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
                         
                         <div className="p-6 space-y-4">
                             {step === 1 && (
-                                <motion.div 
-                                    initial={{ opacity: 0, x: -20 }} 
-                                    animate={{ opacity: 1, x: 0 }} 
-                                    className="space-y-4"
-                                >
-                                    <div>
-                                        <label className="block text-sm font-medium text-neutral-400 mb-2">{t('meters.formName', "Meter Name / Location")}</label>
-                                        <input 
-                                            type="text" 
-                                            required
-                                            value={formData.name}
-                                            onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                            className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kashf-blue focus:ring-1 focus:ring-kashf-blue transition-all"
-                                            placeholder={t('meters.formNamePlaceholder', "e.g., Home, Beach House")}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-neutral-400 mb-2">{t('meters.formNumber', "Meter Number")}</label>
-                                        <input 
-                                            type="text" 
-                                            required
-                                            value={formData.number}
-                                            onChange={(e) => setFormData({...formData, number: e.target.value})}
-                                            className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kashf-blue focus:ring-1 focus:ring-kashf-blue transition-all"
-                                            placeholder={t('meters.formNumberPlaceholder', "10-digit meter number")}
-                                        />
-                                    </div>
-                                    <div className="relative">
-                                        <label className="block text-sm font-medium text-neutral-400 mb-1">{t('meters.formType', "Meter Type")}</label>
-                                        <div className="relative">
-                                            <select 
-                                                value={formData.type}
-                                                onChange={(e) => setFormData({...formData, type: e.target.value})}
-                                                className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kashf-blue focus:ring-1 focus:ring-kashf-blue transition-all appearance-none"
-                                            >
-                                                <option value="residential">{t('meters.typeResidential', "Residential")}</option>
-                                                <option value="commercial">{t('meters.typeCommercial', "Commercial")}</option>
-                                                <option value="vacation">{t('meters.typeVacation', "Vacation Home")}</option>
-                                            </select>
-                                            <div className="absolute inset-y-0 ltr:right-0 rtl:left-0 flex items-center px-4 pointer-events-none text-neutral-400">
-                                                <ChevronDown className="size-4" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="relative">
-                                        <label className="block text-sm font-medium text-neutral-400 mb-1">{t('meters.formStatus', "Status")}</label>
-                                        <div className="relative">
-                                            <select 
-                                                value={formData.status}
-                                                onChange={(e) => setFormData({...formData, status: e.target.value})}
-                                                className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kashf-blue focus:ring-1 focus:ring-kashf-blue transition-all appearance-none"
-                                            >
-                                                <option value="active">{t('meters.status.active', "Active")}</option>
-                                                <option value="inactive">{t('meters.status.inactive', "Inactive")}</option>
-                                                <option value="maintenance">{t('meters.status.maintenance', "Maintenance")}</option>
-                                            </select>
-                                            <div className="absolute inset-y-0 ltr:right-0 rtl:left-0 flex items-center px-4 pointer-events-none text-neutral-400">
-                                                <ChevronDown className="size-4" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </motion.div>
+                                <MeterInfoStep formData={formData} setFormData={setFormData} />
                             )}
 
                             {step === 2 && !meter && (
-                                <motion.div 
-                                    initial={{ opacity: 0, x: 20 }} 
-                                    animate={{ opacity: 1, x: 0 }} 
-                                    className="space-y-4"
-                                >
-                                    <div className="text-center mb-8">
-                                        <h3 className="text-lg font-medium text-white mb-2">{t('meters.createSimulationProfile', "Create Simulation Profile")}</h3>
-                                        <p className="text-sm text-neutral-400 rtl:leading-relaxed">{t('meters.createSimulationProfileDesc', "Would you like to auto-generate a smart home simulation for this meter to start seeing live consumption analytics?")}</p>
-                                    </div>
-
-                                    <div className="space-y-3">
-                                        <button 
-                                            type="button"
-                                            onClick={() => setSimMode('auto')}
-                                            className={`w-full flex items-center gap-4 p-4 rounded-xl border ${simMode === 'auto' ? 'border-kashf-blue bg-kashf-blue/10' : 'border-neutral-800 bg-neutral-900/50 hover:bg-neutral-800'} transition-all text-start`}
-                                        >
-                                            <div className={`p-2 rounded-lg ${simMode === 'auto' ? 'bg-kashf-blue text-kashf-bg' : 'bg-neutral-800 text-neutral-400'}`}>
-                                                <Home className="size-5" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <h4 className="font-medium text-white">{t('meters.simModeAuto', "Auto-Generate Smart Home")}</h4>
-                                                <p className="text-xs text-neutral-400 mt-1 rtl:leading-relaxed">{t('meters.simModeAutoDesc', "Pre-configures standard circuits (Kitchen, Living Room, etc.) and appliances.")}</p>
-                                            </div>
-                                            <Check className={`size-5 transition-opacity ${simMode === 'auto' ? 'opacity-100 text-kashf-blue' : 'opacity-0'}`} />
-                                        </button>
-
-                                        <button 
-                                            type="button"
-                                            onClick={() => setSimMode('custom')}
-                                            className={`w-full flex items-center gap-4 p-4 rounded-xl border ${simMode === 'custom' ? 'border-kashf-blue bg-kashf-blue/10' : 'border-neutral-800 bg-neutral-900/50 hover:bg-neutral-800'} transition-all text-start`}
-                                        >
-                                            <div className={`p-2 rounded-lg ${simMode === 'custom' ? 'bg-kashf-blue text-kashf-bg' : 'bg-neutral-800 text-neutral-400'}`}>
-                                                <Settings className="size-5" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <h4 className="font-medium text-white">{t('meters.simModeCustom', "Custom Setup")}</h4>
-                                                <p className="text-xs text-neutral-400 mt-1 rtl:leading-relaxed">{t('meters.simModeCustomDesc', "Start with an empty simulation profile. You can add circuits and devices later.")}</p>
-                                            </div>
-                                            <Check className={`size-5 transition-opacity ${simMode === 'custom' ? 'opacity-100 text-kashf-blue' : 'opacity-0'}`} />
-                                        </button>
-
-                                        <button 
-                                            type="button"
-                                            onClick={() => setSimMode('none')}
-                                            className={`w-full flex items-center gap-4 p-4 rounded-xl border ${simMode === 'none' ? 'border-kashf-blue bg-kashf-blue/10' : 'border-neutral-800 bg-neutral-900/50 hover:bg-neutral-800'} transition-all text-start`}
-                                        >
-                                            <div className={`p-2 rounded-lg ${simMode === 'none' ? 'bg-kashf-blue text-kashf-bg' : 'bg-neutral-800 text-neutral-400'}`}>
-                                                <ArrowRight className="size-5 rtl:rotate-180" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <h4 className="font-medium text-white">{t('meters.simModeSkip', "Skip for now")}</h4>
-                                                <p className="text-xs text-neutral-400 mt-1 rtl:leading-relaxed">{t('meters.simModeSkipDesc', "Just create the meter. I'll setup the simulation later.")}</p>
-                                            </div>
-                                            <Check className={`size-5 transition-opacity ${simMode === 'none' ? 'opacity-100 text-kashf-blue' : 'opacity-0'}`} />
-                                        </button>
-                                    </div>
-                                </motion.div>
+                                <SimulationModeStep simMode={simMode} setSimMode={setSimMode} />
                             )}
 
                             <div className="pt-4 flex gap-3">

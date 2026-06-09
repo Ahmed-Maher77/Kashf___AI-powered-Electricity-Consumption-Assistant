@@ -8,6 +8,7 @@ const initialState = {
     error: null,
 };
 
+// Fetches all simulations available to the user.
 export const fetchSimulations = createAsyncThunk('simulations/fetchSimulations', async (_, thunkAPI) => {
     try {
         return await simulationService.getSimulations();
@@ -16,6 +17,7 @@ export const fetchSimulations = createAsyncThunk('simulations/fetchSimulations',
     }
 });
 
+// Fetches a single simulation by its ID.
 export const fetchSimulation = createAsyncThunk('simulations/fetchSimulation', async (id, thunkAPI) => {
     try {
         return await simulationService.getSimulation(id);
@@ -24,6 +26,7 @@ export const fetchSimulation = createAsyncThunk('simulations/fetchSimulation', a
     }
 });
 
+// Creates a new simulation environment.
 export const createSimulationAsync = createAsyncThunk('simulations/createSimulation', async (data, thunkAPI) => {
     try {
         return await simulationService.createSimulation(data);
@@ -32,6 +35,7 @@ export const createSimulationAsync = createAsyncThunk('simulations/createSimulat
     }
 });
 
+// Deletes a simulation by its ID.
 export const deleteSimulationAsync = createAsyncThunk('simulations/deleteSimulation', async (id, thunkAPI) => {
     try {
         return await simulationService.deleteSimulation(id);
@@ -40,6 +44,7 @@ export const deleteSimulationAsync = createAsyncThunk('simulations/deleteSimulat
     }
 });
 
+// Adds a new electrical circuit to a specific simulation.
 export const addCircuitAsync = createAsyncThunk('simulations/addCircuit', async ({ simulationId, data }, thunkAPI) => {
     try {
         return await simulationService.addCircuit(simulationId, data);
@@ -48,6 +53,7 @@ export const addCircuitAsync = createAsyncThunk('simulations/addCircuit', async 
     }
 });
 
+// Deletes a specific electrical circuit from a simulation.
 export const deleteCircuitAsync = createAsyncThunk('simulations/deleteCircuit', async ({ simulationId, circuitId }, thunkAPI) => {
     try {
         return await simulationService.deleteCircuit(simulationId, circuitId);
@@ -56,6 +62,7 @@ export const deleteCircuitAsync = createAsyncThunk('simulations/deleteCircuit', 
     }
 });
 
+// Adds a new device to an existing circuit within a simulation.
 export const addDeviceAsync = createAsyncThunk('simulations/addDevice', async ({ simulationId, data }, thunkAPI) => {
     try {
         return await simulationService.addDevice(simulationId, data);
@@ -64,6 +71,7 @@ export const addDeviceAsync = createAsyncThunk('simulations/addDevice', async ({
     }
 });
 
+// Starts the simulation engine for a given simulation.
 export const startSimulationAsync = createAsyncThunk('simulations/startSimulation', async (id, thunkAPI) => {
     try {
         return await simulationService.startSimulation(id);
@@ -72,6 +80,7 @@ export const startSimulationAsync = createAsyncThunk('simulations/startSimulatio
     }
 });
 
+// Pauses a running simulation engine.
 export const pauseSimulationAsync = createAsyncThunk('simulations/pauseSimulation', async (id, thunkAPI) => {
     try {
         return await simulationService.pauseSimulation(id);
@@ -80,6 +89,7 @@ export const pauseSimulationAsync = createAsyncThunk('simulations/pauseSimulatio
     }
 });
 
+// Resets a simulation's state back to its initial configuration.
 export const resetSimulationAsync = createAsyncThunk('simulations/resetSimulation', async (id, thunkAPI) => {
     try {
         return await simulationService.resetSimulation(id);
@@ -88,6 +98,7 @@ export const resetSimulationAsync = createAsyncThunk('simulations/resetSimulatio
     }
 });
 
+// Redux slice handling electrical simulation state, including circuits, devices, and engine status (running/paused).
 const simulationSlice = createSlice({
     name: 'simulations',
     initialState,

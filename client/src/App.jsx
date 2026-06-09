@@ -5,6 +5,7 @@ import AppSplash from "./components/AppSplash/AppSplash";
 import { router } from "./routes/router";
 import { store } from "./store";
 
+
 const App = () => {
     return (
         <Provider store={store}>
