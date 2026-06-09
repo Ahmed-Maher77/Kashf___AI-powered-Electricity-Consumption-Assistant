@@ -48,7 +48,7 @@ const TestimonialsSection = () => {
             id: 3,
             name: t("testimonials.karim.name", { defaultValue: "Karim Hassan" }),
             title: t("testimonials.karim.title", { defaultValue: "Engineer, New Cairo" }),
-            quote: t("testimonials.karim.quote", { defaultValue: "I was skeptical at first, but the OCR meter scanning is impressive. Saved 340 EGP on my last bill." }),
+            quote: t("testimonials.karim.quote", { defaultValue: "I was skeptical at first, but the real-time embedded system tracking is impressive. Saved 340 EGP on my last bill." }),
             initials: "KH",
             bgColor: "bg-purple-500/20",
             textColor: "text-purple-400",

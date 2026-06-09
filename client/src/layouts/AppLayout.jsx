@@ -1,14 +1,22 @@
 import { Suspense, useEffect } from "react";
 import { useOutlet, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import DashboardSidebar from "../components/common/DashboardSidebar";
 import AppHeader from "../components/common/AppHeader";
 import Loader from "../components/Loader/Loader";
 import Footer from "../components/common/Footer";
+import { fetchMeters } from "../store/meters/metersSlice";
 
 const AppLayout = () => {
     const { pathname } = useLocation();
     const currentOutlet = useOutlet();
+    const dispatch = useDispatch();
+
+    // Fetch meters globally for all authenticated pages
+    useEffect(() => {
+        dispatch(fetchMeters());
+    }, [dispatch]);
 
     // Scroll to top on route change
     useEffect(() => {

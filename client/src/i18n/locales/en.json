@@ -81,7 +81,7 @@
         },
         "scans": {
             "value": "15,000+",
-            "label": "Meter Scans"
+            "label": "Active Sensors"
         },
         "savings": {
             "value": "30%",
@@ -89,7 +89,7 @@
         },
         "accuracy": {
             "value": "98%",
-            "label": "OCR Accuracy"
+            "label": "Sync Precision"
         }
     },
     "testimonials": {
@@ -108,7 +108,7 @@
         "karim": {
             "name": "Karim Hassan",
             "title": "Engineer, New Cairo",
-            "quote": "I was skeptical at first, but the OCR meter scanning is impressive. Saved 340 EGP on my last bill."
+            "quote": "I was skeptical at first, but the real-time embedded system tracking is impressive. Saved 340 EGP on my last bill."
         }
     },
     "language": {
@@ -129,7 +129,8 @@
         "pricing": "Pricing",
         "cta": "Get Started",
         "joinKashf": "Join Kashf",
-        "goToDashboard": "Go to dashboard"
+        "goToDashboard": "Go to dashboard",
+        "scan": "Live Sync"
     },
     "welcome": {
         "aiPoweredBadge": "AI-powered energy insights",
@@ -139,7 +140,7 @@
         "startSaving": "Start Saving Today",
         "watchDemo": "Watch Demo",
         "demoPlaceholderTitle": "Kashf Demo Video",
-        "demoPlaceholderText": "See how Kashf scans meter readings, tracks consumption tiers, and warns you about bill spikes.",
+        "demoPlaceholderText": "See how Kashf syncs meter readings, tracks consumption tiers, and warns you about bill spikes.",
         "socialProofPrimary": "+2,400 Egyptian households",
         "socialProofSecondary": "already tracking with Kashf",
         "meterTier": "Sheriha 3",
@@ -151,7 +152,7 @@
         "card3Title": "AI INSIGHT",
         "card3Value": "Reduce water heater usage today.",
         "featuresText": "AI meter scanning, Sheriha tracking, tier-up warnings, and personalized energy-saving advice.",
-        "howItWorksText": "Scan your meter, Kashf reads it and calculates your consumption and tier, then shows a clear dashboard with actionable tips.",
+        "howItWorksText": "Connect your meter, Kashf syncs it and calculates your consumption and tier, then shows a clear dashboard with actionable tips.",
         "pricingText": "Start for free — flexible plans coming soon for your household.",
         "meterSectionTitle": "Interactive Smart Monitoring",
         "meterSectionSubtitle": "Experience the real-time feedback of Kashf's virtual utility meter. Watch your consumption zones and plan ahead to stay in control.",
@@ -163,10 +164,22 @@
         "titleAccent": "Smarter every month.",
         "subtitle": "From meter reading to money saved — Kashf handles everything automatically.",
         "steps": {
-            "scan": { "title": "Scan the Meter", "desc": "Point your camera at the electricity meter. Kashf reads the digits instantly via OCR." },
-            "analyze": { "title": "Analyze Consumption", "desc": "AI analyzes the reading against your history and Egyptian tariff tiers in real time." },
-            "track": { "title": "Track Your Tier", "desc": "Current tier, remaining kWh, cost forecast, and next threshold — all on one screen." },
-            "save": { "title": "Save Money", "desc": "Follow personalized AI recommendations and receive alerts before crossing the next tier." }
+            "scan": {
+                "title": "Connect the System",
+                "desc": "Connect the Kashf Smart Node to your electricity meter. Kashf syncs the data instantly in real-time."
+            },
+            "analyze": {
+                "title": "Analyze Consumption",
+                "desc": "AI analyzes the reading against your history and Egyptian tariff tiers in real time."
+            },
+            "track": {
+                "title": "Track Your Tier",
+                "desc": "Current tier, remaining kWh, cost forecast, and next threshold — all on one screen."
+            },
+            "save": {
+                "title": "Save Money",
+                "desc": "Follow personalized AI recommendations and receive alerts before crossing the next tier."
+            }
         }
     },
     "problem": {
@@ -176,19 +189,19 @@
         "subtitle": "Crossing just one tier costs hundreds of pounds. Kashf makes sure it never happens.",
         "billLabel": "Electricity Bill — June 2026",
         "without": {
-            "title": "Without Kashf",
             "1": "Bill arrived — 847 EGP instead of the expected 350 EGP",
             "2": "Jumped to Tier 5 mid-month with zero warning",
             "3": "AC, water heater, and appliances all running simultaneously",
             "4": "No visibility into daily usage, no forecast, no way out",
+            "title": "Without Kashf",
             "billNote": "Tier 5 applied — 0.72 EGP/kWh on last 300 kWh"
         },
         "with": {
-            "title": "With Kashf",
             "1": "Real-time tier tracking shows you're at 287 kWh, 63 left to Tier 5",
             "2": "48-hour forecast: 'You'll cross at this rate within 2.5 days'",
             "3": "AI sent an alert: Reduce AC by 1.5 hrs for 3 days",
             "4": "End-of-month bill: 412 EGP instead of 847 EGP — saved 435 EGP",
+            "title": "With Kashf",
             "billNote": "Stayed in Tier 3 — saved 435 EGP this month"
         },
         "banner": "Kashf user average savings",
@@ -237,13 +250,22 @@
         "desc": "Join over 2,400 Egyptian households using Kashf to track consumption, avoid tier jumps, and save hundreds of pounds every month.",
         "button": "Start Monitoring for Free",
         "finePrint": "No credit card. No App Store. Works on any device.",
-        "stat1": { "num": "2,400+", "label": "Egyptian households" },
-        "stat2": { "num": "380 EGP", "label": "Avg. monthly savings" },
-        "stat3": { "num": "100%", "label": "Free during beta" }
+        "stat1": {
+            "num": "2,400+",
+            "label": "Egyptian households"
+        },
+        "stat2": {
+            "num": "380 EGP",
+            "label": "Avg. monthly savings"
+        },
+        "stat3": {
+            "num": "100%",
+            "label": "Free during beta"
+        }
     },
     "features": {
-        "smartMeter": "Smart Meter Scanning",
-        "smartMeterDesc": "OCR-powered instant meter reading via your phone camera",
+        "smartMeter": "Real-Time Embedded Monitoring",
+        "smartMeterDesc": "Smart embedded system instant meter syncing via Kashf Smart Node",
         "aiAnalysis": "AI Consumption Analysis",
         "aiAnalysisDesc": "Machine learning models trained on Egyptian usage patterns",
         "prediction": "Sheriha Prediction Engine",
@@ -299,7 +321,7 @@
         "mainAria": "Main navigation",
         "mainMenu": "Main Menu",
         "dashboard": "Dashboard",
-        "scan": "Scan",
+        "scan": "Live Sync",
         "history": "History",
         "tips": "Tips",
         "meters": "My Meters",
@@ -325,7 +347,7 @@
         "aria": "Admin navigation",
         "dashboard": "Dashboard",
         "users": "Users",
-        "scans": "Scans",
+        "scans": "Devices",
         "tiers": "Tiers",
         "aiLogs": "AI Logs",
         "notifications": "Notifications",
@@ -347,24 +369,24 @@
             ]
         },
         "scanMeter": {
-            "title": "Scan Meter",
-            "selectMeter": "Select a meter to scan",
-            "noMeters": "You must add a meter before you can scan.",
+            "title": "Live Sync",
+            "selectMeter": "Select a meter to view live sync",
+            "noMeters": "You must add a meter before you can sync.",
             "goToMeters": "Go to My Meters",
-            "startScan": "Start Scan",
-            "description": "Capture or upload a photo of your electricity meter so AI OCR can extract the current reading.",
+            "startScan": "Start Sync",
+            "description": "Connect your Kashf Smart Node so the embedded system can stream current readings in real-time.",
             "sections": [
-                "Camera scanner",
-                "Upload image option",
-                "Scanning guide",
-                "OCR tips for clear readings"
+                "Hardware integration",
+                "Live data streaming",
+                "Sync troubleshooting",
+                "Node connection guide"
             ]
         },
         "processing": {
             "title": "Processing",
-            "description": "Temporary screen shown while OCR and AI analyze your meter, calculate Sheriha tier, bill estimate, and generate tips.",
+            "description": "Temporary screen shown while the Smart System analyzes your live data, calculates Sheriha tier, bill estimate, and generates tips.",
             "sections": [
-                "OCR progress indicator",
+                "Device sync indicator",
                 "AI processing progress",
                 "Status messages per pipeline stage",
                 "Auto-redirect to dashboard on success"
@@ -394,14 +416,14 @@
             ]
         },
         "scanDetails": {
-            "title": "Scan Details",
-            "description": "Full details for a single meter scan including OCR output, calculations, and AI tips generated for that reading.",
+            "title": "Sync Details",
+            "description": "Full details for a single data sync including live readings, calculations, and AI tips generated for that reading.",
             "sections": [
-                "Meter image viewer",
-                "OCR result and confidence",
+                "Live data stream",
+                "Sync status and latency",
                 "Sheriha and bill calculation breakdown",
                 "Generated AI tips (Egyptian Arabic)",
-                "Rescan action"
+                "Resync action"
             ]
         },
         "tips": {
@@ -437,10 +459,10 @@
         },
         "about": {
             "title": "About",
-            "description": "Learn about Kashf's mission, how AI and OCR power the platform, and our privacy commitments.",
+            "description": "Learn about Kashf's mission, how AI and Smart Nodes power the platform, and our privacy commitments.",
             "sections": [
                 "Project mission",
-                "How AI and OCR work",
+                "How AI and Smart Nodes work",
                 "Privacy policy"
             ]
         },
@@ -451,10 +473,10 @@
         },
         "adminDashboard": {
             "title": "Admin Dashboard",
-            "description": "Operational overview of platform usage, OCR success rate, and system health.",
+            "description": "Operational overview of platform usage, Sync success rate, and system health.",
             "sections": [
                 "Total users and total scans",
-                "OCR success rate",
+                "Sync success rate",
                 "AI requests count",
                 "Recent activity feed",
                 "System health indicators"
@@ -471,14 +493,14 @@
             ]
         },
         "scanManagement": {
-            "title": "Scan Management",
-            "description": "Review all meter scans, OCR outcomes, and uploaded images.",
+            "title": "Device Management",
+            "description": "Review all meter syncs, connection statuses, and device logs.",
             "sections": [
-                "All scans table",
-                "OCR results and confidence",
-                "Scan status",
-                "Uploaded image previews",
-                "Actions: view scan, delete scan"
+                "All syncs table",
+                "Sync results and latency",
+                "Sync status",
+                "Device connection graphs",
+                "Actions: view sync, delete sync"
             ]
         },
         "tierManagement": {
@@ -493,9 +515,9 @@
         },
         "aiLogs": {
             "title": "AI Logs",
-            "description": "Audit OCR and generative AI requests for debugging and compliance.",
+            "description": "Audit Data Sync and generative AI requests for debugging and compliance.",
             "sections": [
-                "OCR requests log",
+                "Sync requests log",
                 "AI prompts and responses",
                 "Processing times",
                 "Failure logs with filters"
@@ -515,7 +537,7 @@
             "description": "Configure Gemini API, OCR settings, upload limits, and security policies.",
             "sections": [
                 "Gemini API configuration",
-                "OCR provider settings",
+                "Embedded device settings",
                 "Upload limits",
                 "Security settings"
             ]
@@ -593,11 +615,23 @@
             "titleAccent": "Egyptian Families",
             "body1": "In Egypt, many families only discover they exceeded their electricity tier after receiving an expensive monthly bill. The tiered Sheriha system means crossing a threshold by even 1 kWh can dramatically increase costs.",
             "body2": "Kashf was created to provide proactive insights, helping users understand their consumption before costly surprises happen. Our AI-powered platform analyzes usage patterns, predicts tier crossings, and delivers personalized recommendations.",
-            "body3": "We\u2019re focused on the Egyptian market, understanding local tariff structures, consumption patterns, and household needs. Our mission is simple: empower families with transparency and control.",
+            "body3": "We’re focused on the Egyptian market, understanding local tariff structures, consumption patterns, and household needs. Our mission is simple: empower families with transparency and control.",
             "timeline": {
-                "t1": { "year": "2025", "label": "The Problem", "desc": "Egyptian families face unpredictable electricity bills" },
-                "t2": { "year": "2026", "label": "The Solution", "desc": "Kashf is born with AI-powered insights" },
-                "t3": { "year": "Today", "label": "The Impact", "desc": "Thousands of households saving money" }
+                "t1": {
+                    "year": "2025",
+                    "label": "The Problem",
+                    "desc": "Egyptian families face unpredictable electricity bills"
+                },
+                "t2": {
+                    "year": "2026",
+                    "label": "The Solution",
+                    "desc": "Kashf is born with AI-powered insights"
+                },
+                "t3": {
+                    "year": "Today",
+                    "label": "The Impact",
+                    "desc": "Thousands of households saving money"
+                }
             }
         },
         "values": {
@@ -605,10 +639,22 @@
             "title": "Four principles",
             "titleAccent": "that shape every decision",
             "subtitle": "Our compass for building a product Egyptians trust with their energy and money.",
-            "v1": { "title": "Accuracy First", "desc": "We obsess over OCR precision and prediction quality. Every decimal point matters when it affects your bill." },
-            "v2": { "title": "Built for Egypt", "desc": "Kashf is designed around Egypt\u2019s tariff structure, spoken Arabic, and real household usage patterns." },
-            "v3": { "title": "Community-Driven", "desc": "Every feature starts with real feedback from Egyptian families who use Kashf daily." },
-            "v4": { "title": "Speed & Simplicity", "desc": "Scan your meter in seconds. See your forecast instantly. No spreadsheets, no complexity." }
+            "v1": {
+                "title": "Accuracy First",
+                "desc": "We obsess over sensor precision and prediction quality. Every decimal point matters when it affects your bill."
+            },
+            "v2": {
+                "title": "Built for Egypt",
+                "desc": "Kashf is designed around Egypt’s tariff structure, spoken Arabic, and real household usage patterns."
+            },
+            "v3": {
+                "title": "Community-Driven",
+                "desc": "Every feature starts with real feedback from Egyptian families who use Kashf daily."
+            },
+            "v4": {
+                "title": "Speed & Simplicity",
+                "desc": "Scan your meter in seconds. See your forecast instantly. No spreadsheets, no complexity."
+            }
         },
         "team": {
             "badge": "The Team",
@@ -616,11 +662,26 @@
             "titleAccent": "behind Kashf",
             "subtitle": "A small, dedicated team of Egyptians passionate about energy transparency and smart technology.",
             "members": {
-                "maher":   { "name": "Ahmed Maher Algohary", "title": "Software Engineer | Web Designer & Developer" },
-                "rashad":  { "name": "Mohamed Rashad", "title": "Software Engineer | Mobile App Developer" },
-                "essam":   { "name": "Ahmed Essam", "title": "Software Engineer | Backend Developer" },
-                "awadallah": { "name": "Mohamed Awadallah", "title": "Software Engineer | Mobile App Developer" },
-                "yasser": { "name": "Yasser Eid", "title": "Software Engineer | Mobile App Developer" }
+                "maher": {
+                    "name": "Ahmed Maher Algohary",
+                    "title": "Software Engineer | Web Designer & Developer"
+                },
+                "rashad": {
+                    "name": "Mohamed Rashad",
+                    "title": "Software Engineer | Mobile App Developer"
+                },
+                "essam": {
+                    "name": "Ahmed Essam",
+                    "title": "Software Engineer | Backend Developer"
+                },
+                "awadallah": {
+                    "name": "Mohamed Awadallah",
+                    "title": "Software Engineer | Mobile App Developer"
+                },
+                "yasser": {
+                    "name": "Yasser Eid",
+                    "title": "Software Engineer | Mobile App Developer"
+                }
             }
         },
         "faq": {
@@ -631,13 +692,34 @@
             "contact": "Still have questions? Email us at",
             "email": "inquiry@kashf.com",
             "items": {
-                "q1": { "q": "What is Kashf?", "a": "Kashf is an AI-powered electricity consumption assistant built for Egyptian households. It reads your meter, tracks your Sheriha tier in real time, forecasts your bill, and gives personalized Arabic-language recommendations to help you save money every month." },
-                "q2": { "q": "Is Kashf free to use?", "a": "Yes \u2014 Kashf is completely free during the beta period. No credit card required. Once we exit beta, a generous free tier will always remain available." },
-                "q3": { "q": "How does the meter scanning work?", "a": "You simply point your phone camera at your electricity meter. Kashf\u2019s OCR engine reads the digits in real time and stores the reading securely. No special hardware needed \u2014 any modern smartphone works." },
-                "q4": { "q": "What are Sheriha tiers?", "a": "Egypt\u2019s electricity pricing is divided into consumption tiers (\u0634\u0631\u0627\u0626\u062d). The more kWh you use, the higher your price per unit. Crossing into a higher tier mid-month can cost hundreds of extra pounds. Kashf tracks your exact position and warns you before you cross." },
-                "q5": { "q": "Does it work offline?", "a": "Yes. Kashf is a Progressive Web App (PWA) with offline-first architecture. You can log readings and view your dashboard without an internet connection. Data syncs automatically when you reconnect." },
-                "q6": { "q": "Is my data private and secure?", "a": "Absolutely. Your data is encrypted in transit and at rest. We never sell or share your consumption data with third parties. You can delete your account and all data at any time." },
-                "q7": { "q": "Can I install it without an app store?", "a": "Yes. Visit kashf.app in your browser, tap \u2018Add to Home Screen\u2019, and Kashf installs just like a native app \u2014 on iOS, Android, Windows, and macOS \u2014 with no app store required." }
+                "q1": {
+                    "q": "What is Kashf?",
+                    "a": "Kashf is an AI-powered electricity consumption assistant built for Egyptian households. It reads your meter, tracks your Sheriha tier in real time, forecasts your bill, and gives personalized Arabic-language recommendations to help you save money every month."
+                },
+                "q2": {
+                    "q": "Is Kashf free to use?",
+                    "a": "Yes — Kashf is completely free during the beta period. No credit card required. Once we exit beta, a generous free tier will always remain available."
+                },
+                "q3": {
+                    "q": "How does the meter connection work?",
+                    "a": "You simply connect the Kashf Smart Node to your electricity meter. Kashf’s embedded system streams the data in real time and stores the reading securely."
+                },
+                "q4": {
+                    "q": "What are Sheriha tiers?",
+                    "a": "Egypt’s electricity pricing is divided into consumption tiers (شرائح). The more kWh you use, the higher your price per unit. Crossing into a higher tier mid-month can cost hundreds of extra pounds. Kashf tracks your exact position and warns you before you cross."
+                },
+                "q5": {
+                    "q": "Does it work offline?",
+                    "a": "Yes. Kashf is a Progressive Web App (PWA) with offline-first architecture. You can log readings and view your dashboard without an internet connection. Data syncs automatically when you reconnect."
+                },
+                "q6": {
+                    "q": "Is my data private and secure?",
+                    "a": "Absolutely. Your data is encrypted in transit and at rest. We never sell or share your consumption data with third parties. You can delete your account and all data at any time."
+                },
+                "q7": {
+                    "q": "Can I install it without an app store?",
+                    "a": "Yes. Visit kashf.app in your browser, tap ‘Add to Home Screen’, and Kashf installs just like a native app — on iOS, Android, Windows, and macOS — with no app store required."
+                }
             }
         },
         "cta": {
@@ -1063,19 +1145,36 @@
                 "name": "Free",
                 "interval": "forever",
                 "description": "Perfect for tracking a single meter.",
-                "features": ["1 Electricity Meter", "50 AI Coins / month", "Basic Tier Tracking", "Community Support"]
+                "features": [
+                    "1 Electricity Meter",
+                    "50 AI Coins / month",
+                    "Basic Tier Tracking",
+                    "Community Support"
+                ]
             },
             "plus": {
                 "name": "Plus",
                 "interval": "per month",
                 "description": "Advanced analytics for power users.",
-                "features": ["Up to 2 Meters", "150 AI Coins / month", "Priority AI Tips", "Cost Forecasting", "Email Support"]
+                "features": [
+                    "Up to 2 Meters",
+                    "150 AI Coins / month",
+                    "Priority AI Tips",
+                    "Cost Forecasting",
+                    "Email Support"
+                ]
             },
             "family": {
                 "name": "Family",
                 "interval": "per month",
                 "description": "Complete coverage for multiple properties.",
-                "features": ["Up to 5 Meters", "300 AI Coins / month", "Family Member Access", "Custom PDF Reports", "24/7 Priority Support"]
+                "features": [
+                    "Up to 5 Meters",
+                    "300 AI Coins / month",
+                    "Family Member Access",
+                    "Custom PDF Reports",
+                    "24/7 Priority Support"
+                ]
             }
         }
     },
@@ -1116,7 +1215,14 @@
             "noBills": "No bills found."
         },
         "months": {
-            "jan": "Jan", "feb": "Feb", "mar": "Mar", "apr": "Apr", "may": "May", "jun": "Jun", "jul": "Jul", "aug": "Aug"
+            "jan": "Jan",
+            "feb": "Feb",
+            "mar": "Mar",
+            "apr": "Apr",
+            "may": "May",
+            "jun": "Jun",
+            "jul": "Jul",
+            "aug": "Aug"
         }
     },
     "analytics": {
@@ -1169,7 +1275,13 @@
         "heatmapTitle": "Peak Usage Heatmap (Time vs Day)",
         "time": "Time",
         "days": {
-            "mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri", "sat": "Sat", "sun": "Sun"
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri",
+            "sat": "Sat",
+            "sun": "Sun"
         },
         "low": "Low",
         "high": "High",

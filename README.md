@@ -1,11 +1,11 @@
 # Kashf ⚡- Smart Egyptian Electricity Consumption Assistant
 
-An AI-powered electricity management platform that helps Egyptian households monitor electricity consumption, avoid costly Sheriha (billing tier) jumps, and receive personalized energy-saving recommendations through smart meter and bill scanning. Features dedicated user and admin dashboards for consumption tracking, analytics, and management, and can be installed on mobile devices and desktops as a Progressive Web App (PWA) for a seamless app-like experience.
+An AI-powered electricity management platform that helps Egyptian households monitor electricity consumption, avoid costly Sheriha (billing tier) jumps, and receive personalized energy-saving recommendations through live smart meter integration. Features dedicated user and admin dashboards for consumption tracking, analytics, and management, and can be installed on mobile devices and desktops as a Progressive Web App (PWA) for a seamless app-like experience.
 
 
 Following the 2026 Egyptian electricity tariff increases, moving from one billing tier to another can significantly impact a household's electricity bill. Most consumers only discover they have crossed into a more expensive tier after receiving their monthly invoice. Kashf solves this problem by providing real-time consumption tracking, bill analysis, and proactive warnings before users exceed their current tier limits.
 
-The application allows users to scan electricity meters or upload electricity bills using their mobile devices. Advanced OCR and AI technologies extract consumption data, calculate the user's current billing tier, estimate costs, and provide localized energy-saving recommendations in Egyptian Arabic.
+The application allows users to connect Kashf Smart Nodes to their electricity meters. Advanced embedded systems and AI technologies extract consumption data, calculate the user's current billing tier, estimate costs, and provide localized energy-saving recommendations in Egyptian Arabic.
 
 ---
 
@@ -15,11 +15,11 @@ The application allows users to scan electricity meters or upload electricity bi
 
 ## 🚀 Key Features
 
-### 📸 Smart Meter & Bill Scanning
+### 🔌 Real-Time Smart Node Integration
 
-* Capture photos directly using the device camera.
-* Upload electricity bill images.
-* Automatic OCR extraction of meter readings and consumption data.
+* Connect embedded Smart Nodes directly to meters.
+* Continuous real-time data streaming.
+* Automatic sync of meter readings and consumption data.
 * Fast and accurate processing powered by AI.
 
 ### ⚡ Sheriha (Tier) Tracking
@@ -114,7 +114,7 @@ Many households are unaware of their current consumption status and receive no w
 ### AI Layer
 
 * Gemini API
-* OCR & Text Extraction
+* Real-time Data Sync
 * Electricity Consumption Analysis
 * Personalized Recommendation Generation
 
@@ -123,8 +123,8 @@ Many households are unaware of their current consumption status and receive no w
 ## 👤 User Workflow
 
 1. Open Kashf on a mobile device.
-2. Scan the electricity meter or upload an electricity bill image.
-3. AI extracts consumption information from the image.
+2. Connect the Kashf Smart Node to the electricity meter.
+3. The embedded system streams live consumption data.
 4. The backend calculates:
 
    * Current Sheriha
@@ -187,7 +187,7 @@ Many households are unaware of their current consumption status and receive no w
 
 Kashf empowers Egyptian households to make informed decisions about electricity consumption, helping them stay within affordable billing tiers, reduce monthly expenses, and adopt smarter energy usage habits.
 
-By combining OCR, AI, analytics, and a mobile-first experience, Kashf transforms complex electricity billing information into simple, actionable insights that every user can understand.
+By combining smart nodes, AI, analytics, and a mobile-first experience, Kashf transforms complex electricity billing information into simple, actionable insights that every user can understand.
 
 ---
 

@@ -61,7 +61,7 @@ const StatsSection = () => {
         },
         {
             value: t("stats.scans.value", { defaultValue: "15,000+" }),
-            label: t("stats.scans.label", { defaultValue: "Meter Scans" }),
+            label: t("stats.scans.label", { defaultValue: "Active Sensors" }),
         },
         {
             value: t("stats.savings.value", { defaultValue: "30%" }),
@@ -69,7 +69,7 @@ const StatsSection = () => {
         },
         {
             value: t("stats.accuracy.value", { defaultValue: "98%" }),
-            label: t("stats.accuracy.label", { defaultValue: "OCR Accuracy" }),
+            label: t("stats.accuracy.label", { defaultValue: "Sync Precision" }),
         },
     ];
 

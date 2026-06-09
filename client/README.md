@@ -1,10 +1,10 @@
 # Kashf — AI-Powered Electricity Management
 
-Egyptian households' smart electricity assistant: scan meters, track Sheriha tiers in real time, forecast bills, and get personalized Arabic-language recommendations to save money every month.
+Egyptian households' smart electricity assistant: connect smart nodes, track Sheriha tiers in real time, forecast bills, and get personalized Arabic-language recommendations to save money every month.
 
 ## Features
 
-- **Smart Meter Scanning** — OCR-powered instant meter reading via phone camera
+- **Real-Time Embedded Monitoring** — Smart embedded system instant meter syncing via Kashf Smart Node
 - **Sheriha Tier Tracking** — Real-time consumption monitoring with 48-hour cost forecasting
 - **AI Energy Assistant** — Personalized recommendations in Egyptian Arabic
 - **Progressive Web App** — Installable offline-first, works on iOS/Android/Windows/macOS without app store

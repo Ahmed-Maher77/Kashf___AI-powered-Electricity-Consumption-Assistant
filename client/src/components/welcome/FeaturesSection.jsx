@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { Camera, Brain, Zap, MonitorSmartphone } from "lucide-react";
+import { Cpu, Brain, Zap, MonitorSmartphone } from "lucide-react";
 import { motion } from "framer-motion";
 import SectionHeading from "./ui/SectionHeading";
 import { fadeUpVariants } from "../../utils/animations";
 
 const CAPABILITIES = [
-    { Icon: Camera, titleKey: "features.smartMeter", titleDef: "Smart Meter Scanning", descKey: "features.smartMeterDesc", descDef: "OCR-powered instant meter reading via your phone camera" },
+    { Icon: Cpu, titleKey: "features.smartMeter", titleDef: "Real-Time Embedded Monitoring", descKey: "features.smartMeterDesc", descDef: "Smart embedded system instant meter syncing via Kashf Smart Node" },
     { Icon: Brain, titleKey: "features.aiAnalysis", titleDef: "AI Consumption Analysis", descKey: "features.aiAnalysisDesc", descDef: "Machine learning models trained on Egyptian usage patterns" },
     { Icon: Zap, titleKey: "features.prediction", titleDef: "Sheriha Prediction Engine", descKey: "features.predictionDesc", descDef: "Real-time tier tracking with 48-hour cost forecasting" },
     { Icon: MonitorSmartphone, titleKey: "features.pwa", titleDef: "Installable PWA", descKey: "features.pwaDesc", descDef: "Works on mobile & desktop, even offline — no app store needed" },
