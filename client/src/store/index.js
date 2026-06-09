@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth/authSlice";
 import metersReducer from "./meters/metersSlice";
 import billsReducer from "./bills/billsSlice";
+import alertsReducer from "./alerts/alertsSlice";
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         meters: metersReducer,
         bills: billsReducer,
+        alerts: alertsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

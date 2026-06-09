@@ -92,14 +92,14 @@ const AiAdvisorPage = () => {
     ];
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto pb-10 h-[calc(100vh-120px)] flex flex-col">
+        <div className="space-y-6 max-w-7xl mx-auto pb-10 min-h-[calc(100vh-100px)] flex flex-col relative">
             {/* Header */}
             <PageHeader 
                 icon={Bot}
                 title={t('aiAdvisor.title')} 
                 subtitle={t('aiAdvisor.subtitle')}
             >
-                <div className={`flex items-center gap-2 px-3 py-1.5 ${isOnline ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'} border rounded-full`}>
+                <div className={`flex items-center gap-2 px-3 py-1.5 ${isOnline ? 'text-emerald-400' : 'text-red-400'}`}>
                     {isOnline ? <Wifi className="size-4" /> : <WifiOff className="size-4" />}
                     <span className="text-xs font-medium">
                         {isOnline ? t('aiAdvisor.onlineStatus', 'Online') : t('aiAdvisor.offlineStatus', 'Offline')}
@@ -107,13 +107,14 @@ const AiAdvisorPage = () => {
                 </div>
             </PageHeader>
 
-            <div className="flex-1 min-h-0 flex justify-center">
+
+            <div className="flex-1 flex justify-center">
                 
                 {/* Chat Interface */}
-                <div className="w-full max-w-4xl bg-kashf-surface border border-kashf-border rounded-2xl flex flex-col overflow-hidden">
+                <div className="w-full max-w-3xl flex flex-col px-4 sm:px-0">
                     
                     {/* Chat Messages */}
-                    <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-kashf-surface to-neutral-900/50">
+                    <div className="px-6 pt-6 pb-32 space-y-6">
                         {MOCK_CHAT.map((msg) => (
                             <div key={msg.id} className={`flex gap-4 ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                                 <div className="shrink-0">
@@ -125,36 +126,38 @@ const AiAdvisorPage = () => {
                                         <UserAvatar user={user} className="size-10" />
                                     )}
                                 </div>
-                                <div className={`max-w-[80%] rounded-2xl p-4 ${
+                                <div className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 sm:p-5 shadow-sm ${
                                     msg.sender === 'user' 
-                                    ? 'bg-kashf-blue text-kashf-bg rounded-tr-sm' 
-                                    : 'bg-neutral-800 border border-neutral-700 text-neutral-200 rounded-tl-sm'
+                                    ? 'bg-gradient-to-br from-kashf-light-blue to-kashf-blue text-kashf-bg rounded-tr-sm shadow-kashf-blue/20' 
+                                    : 'bg-neutral-900/80 backdrop-blur-sm border border-neutral-800 text-neutral-200 rounded-tl-sm shadow-black/40'
                                 }`} dir="rtl">
-                                    <p className="text-sm leading-relaxed">{msg.message}</p>
+                                    <p className={`text-sm sm:text-base leading-relaxed ${msg.sender === 'user' ? 'font-medium' : ''}`}>
+                                        {msg.message}
+                                    </p>
                                 </div>
                             </div>
                         ))}
                     </div>
 
                     {/* Chat Input Area */}
-                    <div className="p-4 border-t border-kashf-border bg-kashf-surface shrink-0">
-                        <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-hide">
+                    <div className="sticky bottom-0 pb-6 pt-12 shrink-0 mt-auto z-20 w-full bg-gradient-to-t from-[#121212] via-[#121212] to-transparent">
+                        <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-tight snap-x">
                             {SUGGESTED_QUESTIONS.map((q, i) => (
-                                <button key={i} className="shrink-0 px-4 py-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded-full text-xs text-neutral-300 transition-colors whitespace-nowrap">
+                                <button key={i} className="shrink-0 snap-start px-4 py-2 bg-neutral-900/80 hover:bg-kashf-blue/10 border border-neutral-800 hover:border-kashf-blue/30 rounded-full text-xs text-neutral-300 hover:text-kashf-light-blue transition-all whitespace-nowrap shadow-sm backdrop-blur-md">
                                     {q}
                                 </button>
                             ))}
                         </div>
-                        <div className="relative mt-2">
+                        <div className="relative group">
                             <input 
                                 type="text" 
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 placeholder={t('aiAdvisor.inputPlaceholder')}
-                                className="w-full bg-neutral-900 border border-neutral-800 text-white rounded-xl pl-4 pr-12 py-4 focus:outline-none focus:border-kashf-blue focus:ring-1 focus:ring-kashf-blue transition-all"
+                                className="w-full bg-neutral-900 border border-neutral-800 text-white rounded-2xl ps-6 pe-14 py-4 focus:outline-none focus:border-kashf-blue/50 focus:bg-neutral-800 focus:ring-4 focus:ring-kashf-blue/10 transition-all placeholder:text-neutral-600 shadow-xl"
                             />
-                            <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-kashf-blue hover:opacity-90 text-kashf-bg rounded-lg transition-opacity">
-                                <Send className="size-4" />
+                            <button className="absolute end-2 top-1/2 -translate-y-1/2 p-2.5 bg-kashf-blue group-focus-within:bg-kashf-light-blue hover:opacity-90 text-kashf-bg rounded-xl transition-all shadow-md">
+                                <Send className="size-4 -ms-0.5 mt-0.5" />
                             </button>
                         </div>
                         <p className="text-[10px] text-center text-neutral-500 mt-3 flex items-center justify-center gap-1">

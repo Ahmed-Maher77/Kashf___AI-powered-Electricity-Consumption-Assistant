@@ -91,6 +91,7 @@ Many households are unaware of their current consumption status and receive no w
 * React.js
 * Vite
 * Tailwind CSS v4
+* Redux Toolkit (State Management)
 * i18n (Arabic & English) with Full RTL Support
 * Progressive Web App (PWA)
 * Responsive Mobile-First Design
@@ -137,15 +138,18 @@ Many households are unaware of their current consumption status and receive no w
 
 ## 📈 Dashboard Features
 
-### User Dashboard (UI Mocked)
+### User Dashboard
 
 * Current consumption overview (Gauge visualizer)
 * Billing tier status
 * Remaining kilowatt-hours
 * Estimated monthly cost
 * Historical consumption trends (Line charts)
-* AI recommendations & advice (Simulated)
-* My Meters CRUD (Using local state data)
+* AI recommendations & advice
+* My Meters CRUD (Managed via Redux Toolkit state)
+* Advanced Consumption Analytics (Usage trends, AI forecast charts)
+* Bills Management (Forecasts and history tracking)
+* Interactive Alerts Timeline (Mark as read, delete, categorize)
 
 ### Admin Dashboard
 

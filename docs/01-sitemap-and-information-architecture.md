@@ -253,8 +253,7 @@
 **Components:**
 - `MeterFormModal`
 - `AIAdvicesModal`
-- `DeleteConfirmModal`
-- `StatCard` (Mock usage limits)
+- `MeterCard`
 
 **Displayed Data:**
 - Meter alias, reference number, type, active status
@@ -263,6 +262,76 @@
 **Error States:**
 - Dashboard data fetch failed → retry + partial cache if available
 - Stale scan data → banner prompting new scan
+
+---
+
+### Consumption Analytics Page
+
+**Route:** `/analytics`
+
+**Purpose:** Provide detailed breakdown of electricity usage patterns, AI forecast, and actionable observations based on current meter data.
+
+**Main Sections:**
+- Usage trends and history
+- Cumulative forecast against predicted usage
+- AI Observations and alerts
+
+**Components:**
+- `UsageTrendsChart`
+- `CumulativeForecastChart`
+- `AIObservations`
+- `StatCard`
+
+**Displayed Data:**
+- Average usage, latest period usage, total consumption
+- Bar chart of usage over time
+- Area chart for forecast vs actual
+- Timeline of AI observations (success, info, warning, alert)
+
+---
+
+### Bills Page
+
+**Route:** `/bills`
+
+**Purpose:** Track monthly billing estimates, forecast upcoming bills, and review historical bill components.
+
+**Main Sections:**
+- Estimated current bill forecast
+- Breakdown of charges and taxes
+- History of previous bills
+
+**Components:**
+- `BillForecastSection`
+- `BillsTableSection`
+- `BillModal`
+
+**Displayed Data:**
+- Forecasted EGP amount for current month
+- Tax breakdown and customer service fees
+- Searchable and paginated list of previous bills
+
+---
+
+### Alerts Page
+
+**Route:** `/alerts`
+
+**Purpose:** Central hub for notifications, tier warnings, billing anomalies, and system announcements.
+
+**Main Sections:**
+- Timeline of alerts
+- Read/Unread toggles
+- Alert actions (Delete, Mark as Read)
+
+**Components:**
+- `AlertTimeline` (Timeline-styled view)
+- `AlertItem`
+- Integration with `alertsSlice`
+
+**Displayed Data:**
+- Icon, title, description, timestamp per alert
+- Categorization (warning, info, tip)
 
 ---
 

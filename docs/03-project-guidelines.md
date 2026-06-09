@@ -473,11 +473,16 @@ export const login = async ({ email, password }) => {
 - Do not add new plain `.css` layout files without team agreement.
 - For Framer Motion animations, do not inline standard variants (like `fadeUpVariants`). Import them centrally from `src/utils/animations.js` to ensure consistent easing and timings across the app.
 
-### API calls (when integrated)
+### State Management & API Calls
 
 - Base URL from `import.meta.env.VITE_API_BASE_URL`.
 - Handle `{ error: string }` from backend.
 - Handle validation `400` with `details[]` for forms.
+- **Redux Toolkit**: Use Redux Toolkit for global state management and async API calls.
+  - Slices are located in `src/store/`.
+  - Common slices: `authSlice`, `alertsSlice`, `billsSlice`, `metersSlice`.
+  - Use `createAsyncThunk` for HTTP requests inside slices to handle `pending`, `fulfilled`, and `rejected` states.
+  - Access state using `useSelector` and dispatch actions using `useDispatch`.
 
 ### Components
 

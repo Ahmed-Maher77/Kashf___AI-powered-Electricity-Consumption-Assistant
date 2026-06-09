@@ -1,61 +1,31 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { 
     Bell, 
     AlertTriangle, 
     TrendingUp, 
     Sparkles, 
-    Settings,
-    CheckCircle2
+    CheckCircle2,
+    Trash2,
+    Check
 } from 'lucide-react';
 import PageHeader from '../components/layout/PageHeader';
+import { markAsRead, markAllAsRead, deleteAlert } from '../store/alerts/alertsSlice';
+
+const ICON_MAP = {
+    AlertTriangle,
+    TrendingUp,
+    Sparkles,
+    Bell
+};
 
 const AlertsPage = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isRTL = i18n.dir() === 'rtl';
+    const dispatch = useDispatch();
+    const { alerts, unreadCount } = useSelector((state) => state.alerts);
     const [activeTab, setActiveTab] = useState('all');
-
-    const ALERTS_DATA = [
-        {
-            id: 1,
-            type: 'warning',
-            title: t('alerts.data.alert1.title'),
-            message: t('alerts.data.alert1.message'),
-            time: t('alerts.data.alert1.time'),
-            icon: AlertTriangle,
-            color: 'text-amber-400',
-            bg: 'bg-amber-500/10'
-        },
-        {
-            id: 2,
-            type: 'critical',
-            title: t('alerts.data.alert2.title'),
-            message: t('alerts.data.alert2.message'),
-            time: t('alerts.data.alert2.time'),
-            icon: TrendingUp,
-            color: 'text-red-400',
-            bg: 'bg-red-500/10'
-        },
-        {
-            id: 3,
-            type: 'recommendation',
-            title: t('alerts.data.alert3.title'),
-            message: t('alerts.data.alert3.message'),
-            time: t('alerts.data.alert3.time'),
-            icon: Sparkles,
-            color: 'text-kashf-light-blue',
-            bg: 'bg-kashf-blue/10'
-        },
-        {
-            id: 4,
-            type: 'system',
-            title: t('alerts.data.alert4.title'),
-            message: t('alerts.data.alert4.message'),
-            time: t('alerts.data.alert4.time'),
-            icon: Bell,
-            color: 'text-neutral-400',
-            bg: 'bg-neutral-800'
-        }
-    ];
 
     const FILTER_TABS = [
         { key: 'all', label: t('alerts.filters.all') },
@@ -65,7 +35,7 @@ const AlertsPage = () => {
         { key: 'system', label: t('alerts.filters.system') }
     ];
 
-    const filteredAlerts = ALERTS_DATA.filter(alert => 
+    const filteredAlerts = alerts.filter(alert => 
         activeTab === 'all' ? true : alert.type === activeTab
     );
 
@@ -76,14 +46,19 @@ const AlertsPage = () => {
                 title={t('alerts.title')} 
                 subtitle={t('alerts.subtitle')}
             >
-                <button className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
-                    <CheckCircle2 className="size-4" />
-                    {t('alerts.markAllRead')}
-                </button>
+                {unreadCount > 0 && (
+                    <button 
+                        onClick={() => dispatch(markAllAsRead())}
+                        className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors bg-neutral-800/50 hover:bg-neutral-800 px-3 py-1.5 rounded-lg"
+                    >
+                        <CheckCircle2 className="size-4" />
+                        {t('alerts.markAllRead')}
+                    </button>
+                )}
             </PageHeader>
 
             {/* Filter Tabs */}
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide border-b border-kashf-border">
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide border-b border-kashf-border pb-px">
                 {FILTER_TABS.map(tab => (
                     <button 
                         key={tab.key}
@@ -99,34 +74,84 @@ const AlertsPage = () => {
                 ))}
             </div>
 
-            {/* Alerts List */}
-            <div className="space-y-3">
+            {/* Alerts Timeline */}
+            <div className="pt-6">
                 {filteredAlerts.length > 0 ? (
-                    filteredAlerts.map(alert => {
-                        const Icon = alert.icon;
-                        return (
-                            <div key={alert.id} className="p-4 sm:p-5 bg-kashf-surface border border-kashf-border hover:border-neutral-700 rounded-2xl flex gap-4 transition-colors group cursor-pointer">
-                                <div className={`shrink-0 p-3 rounded-xl h-fit ${alert.bg} ${alert.color}`}>
-                                    <Icon className="size-5" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 mb-1">
-                                        <h3 className="text-base font-semibold text-white truncate pr-4">{alert.title}</h3>
-                                        <span className="text-xs text-neutral-500 whitespace-nowrap">{alert.time}</span>
+                    <div className={`relative ${isRTL ? "pr-8" : "pl-8"}`}>
+                        {filteredAlerts.map((alert, index) => {
+                            const Icon = ICON_MAP[alert.iconName] || Bell;
+                            const isLast = index === filteredAlerts.length - 1;
+                            return (
+                                <div
+                                    key={alert.id}
+                                    className={`relative flex items-start gap-4 pb-8 group ${
+                                        !isLast
+                                            ? isRTL
+                                                ? "before:-right-4 before:top-12 before:bottom-0 before:w-0.5 before:bg-neutral-700/40 before:absolute"
+                                                : "before:-left-4 before:top-12 before:bottom-0 before:w-0.5 before:bg-neutral-700/40 before:absolute"
+                                            : ""
+                                    }`}
+                                >
+                                    {/* Icon bubble */}
+                                    <div
+                                        className={`absolute top-0 w-10 h-10 rounded-full border-2 border-kashf-surface z-10 flex items-center justify-center shrink-0 ring-2 ring-offset-2 ring-offset-kashf-surface ${
+                                            isRTL ? "-right-9" : "-left-9"
+                                        } ${alert.bg} ${alert.ring}`}
+                                    >
+                                        <Icon className={`w-4 h-4 ${alert.color}`} />
                                     </div>
-                                    <p className="text-sm text-neutral-400 leading-relaxed">{alert.message}</p>
+                                    
+                                    {/* Content Card (Seamless) */}
+                                    <div className={`flex-grow min-w-0 pt-1 transition-all ${isRTL ? "mr-6" : "ml-6"} ${alert.isRead ? 'opacity-60' : 'opacity-100'}`}>
+                                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-1.5">
+                                            <div className="flex items-center gap-2.5">
+                                                {!alert.isRead && (
+                                                    <span className="flex size-1.5 rounded-full bg-kashf-light-blue shadow-[0_0_8px_rgba(59,130,246,0.8)] shrink-0"></span>
+                                                )}
+                                                <h3 className={`text-sm font-medium ${alert.isRead ? 'text-neutral-400' : 'text-white group-hover:text-kashf-light-blue transition-colors'}`}>
+                                                    {t(alert.titleKey)}
+                                                </h3>
+                                            </div>
+                                            <span className="text-xs text-neutral-500 whitespace-nowrap font-medium font-mono shrink-0">
+                                                {t(alert.timeKey)}
+                                            </span>
+                                        </div>
+                                        
+                                        <p className="text-sm text-neutral-400 leading-relaxed mb-3">
+                                            {t(alert.messageKey)}
+                                        </p>
+
+                                        {/* Actions */}
+                                        <div className="flex items-center gap-4 transition-opacity focus-within:opacity-100">
+                                            {!alert.isRead && (
+                                                <button 
+                                                    onClick={() => dispatch(markAsRead(alert.id))}
+                                                    className="flex items-center gap-1.5 text-xs font-medium text-kashf-light-blue hover:text-white transition-colors"
+                                                >
+                                                    <Check className="size-3.5" />
+                                                    {t('alerts.markAsRead', 'Mark as read')}
+                                                </button>
+                                            )}
+                                            <button 
+                                                onClick={() => dispatch(deleteAlert(alert.id))}
+                                                className="flex items-center gap-1.5 text-xs font-medium text-neutral-500 hover:text-red-400 transition-colors"
+                                            >
+                                                <Trash2 className="size-3.5" />
+                                                {t('common.delete', 'Delete')}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="shrink-0 flex items-center self-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <div className="size-2.5 rounded-full bg-kashf-blue"></div>
-                                </div>
-                            </div>
-                        );
-                    })
+                            );
+                        })}
+                    </div>
                 ) : (
-                    <div className="py-20 text-center flex flex-col items-center justify-center border-2 border-dashed border-neutral-800 rounded-2xl">
-                        <Bell className="size-10 text-neutral-600 mb-3" />
-                        <h3 className="text-lg font-medium text-white mb-1">{t('alerts.emptyState.title')}</h3>
-                        <p className="text-sm text-neutral-500">{t('alerts.emptyState.subtitle')}</p>
+                    <div className="py-20 text-center flex flex-col items-center justify-center border-2 border-dashed border-neutral-800 rounded-2xl bg-neutral-900/20">
+                        <div className="size-16 rounded-full bg-neutral-900 flex items-center justify-center mb-4">
+                            <Bell className="size-8 text-neutral-600" />
+                        </div>
+                        <h3 className="text-lg font-medium text-white mb-2">{t('alerts.emptyState.title')}</h3>
+                        <p className="text-sm text-neutral-500 max-w-sm">{t('alerts.emptyState.subtitle')}</p>
                     </div>
                 )}
             </div>

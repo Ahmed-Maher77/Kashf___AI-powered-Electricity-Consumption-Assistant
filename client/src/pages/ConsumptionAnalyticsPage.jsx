@@ -12,11 +12,18 @@ import {
     Sparkles,
     AlertCircle,
     ChevronDown
-} from 'lucide-react';
 import {
-  BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend
-} from 'recharts';
+    BarChart2,
+    Zap,
+    CalendarDays,
+    AlertCircle,
+    ChevronDown
+} from 'lucide-react';
 import PageHeader from '../components/layout/PageHeader';
+import StatCard from '../components/common/StatCard';
+import UsageTrendsChart from '../components/analytics/UsageTrendsChart';
+import CumulativeForecastChart from '../components/analytics/CumulativeForecastChart';
+import AIObservations from '../components/analytics/AIObservations';
 
 const ConsumptionAnalyticsPage = () => {
     const { t } = useTranslation();
@@ -185,19 +192,19 @@ const ConsumptionAnalyticsPage = () => {
 
             {/* Top Metrics Row */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <MetricCard 
+                <StatCard 
                     title={t('analytics.avgDailyUsage', 'Avg Usage per Period')} 
                     value={avgUsage} 
                     unit="kWh" 
                     icon={Zap} 
                 />
-                <MetricCard 
+                <StatCard 
                     title={t('analytics.thisWeek', 'Latest Period')} 
                     value={thisPeriod} 
                     unit="kWh" 
                     icon={CalendarDays} 
                 />
-                <MetricCard 
+                <StatCard 
                     title={t('analytics.monthlyForecast', 'Total Consumption')} 
                     value={meter.consumption} 
                     unit="kWh" 
@@ -207,131 +214,16 @@ const ConsumptionAnalyticsPage = () => {
 
             {/* Main Charts Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                
-                {/* Usage Over Time (Derived from trend diffs) */}
-                <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6">
-                    <h3 className="text-sm font-medium text-white mb-6">{t('analytics.weeklyComparison', 'Usage Over Time')}</h3>
-                    <div className="w-full" dir="ltr">
-                        <ResponsiveContainer width="99%" height={300}>
-                            <BarChart data={weeklyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
-                                <XAxis dataKey="day" stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
-                                <RechartsTooltip 
-                                    contentStyle={{ backgroundColor: '#171717', borderColor: '#262626', borderRadius: '8px' }}
-                                    cursor={{fill: '#262626', opacity: 0.4}}
-                                />
-                                <Legend wrapperStyle={{ fontSize: '12px', color: '#a3a3a3', paddingTop: '10px' }} />
-                                <Bar dataKey="usage" name={t('analytics.usage', 'Usage')} fill="#3b82f6" radius={[4, 4, 0, 0]} />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-
-                {/* Cumulative Forecast Chart */}
-                <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6">
-                    <h3 className="text-sm font-medium text-white mb-6">{t('analytics.consumptionForecast', 'Cumulative Forecast')}</h3>
-                    <div className="w-full" dir="ltr">
-                        <ResponsiveContainer width="99%" height={300}>
-                            <AreaChart data={forecastData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                <defs>
-                                    <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                                    </linearGradient>
-                                    <linearGradient id="colorForecast" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3}/>
-                                        <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
-                                <XAxis dataKey="date" stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
-                                <RechartsTooltip 
-                                    contentStyle={{ backgroundColor: '#171717', borderColor: '#262626', borderRadius: '8px' }}
-                                />
-                                <Legend wrapperStyle={{ fontSize: '12px', color: '#a3a3a3', paddingTop: '10px' }} />
-                                <Area type="monotone" dataKey="actual" name={t('analytics.actualUsage', 'Actual')} stroke="#10b981" fillOpacity={1} fill="url(#colorActual)" strokeWidth={2} />
-                                <Area type="monotone" dataKey="forecast" name={t('analytics.aiForecast', 'Forecast')} stroke="#f59e0b" strokeDasharray="5 5" fillOpacity={1} fill="url(#colorForecast)" strokeWidth={2} />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
+                <UsageTrendsChart data={weeklyData} />
+                <CumulativeForecastChart data={forecastData} />
             </div>
 
             {/* Insights Panel */}
-            <div className="relative group pt-10">
-                <div className="absolute top-0 right-0 p-32 bg-indigo-500/5 rounded-full blur-3xl transition-colors duration-700 pointer-events-none"></div>
-                
-                <div className="flex items-center gap-3 mb-6 relative z-10">
-                    <div className="p-1  text-indigo-400">
-                        <Sparkles className="size-7" />
-                    </div>
-                    <h3 className="text-lg font-bold text-white">{t('analytics.aiObservationsTitle', 'AI Observations')}</h3>
-                </div>
-
-                <div className="space-y-0 relative z-10 pt-2">
-                    {observations.map((obs, idx) => {
-                        const styleMap = {
-                            success: { dot: "bg-emerald-500", line: "from-emerald-500/40 to-transparent", text: "text-emerald-500" },
-                            warning: { dot: "bg-amber-500", line: "from-amber-500/40 to-transparent", text: "text-amber-500" },
-                            alert:   { dot: "bg-red-500", line: "from-red-500/40 to-transparent", text: "text-red-500" },
-                            info:    { dot: "bg-kashf-light-blue", line: "from-kashf-light-blue/40 to-transparent", text: "text-kashf-light-blue" }
-                        };
-                        const color = styleMap[obs.type] || { dot: "bg-neutral-500", line: "from-neutral-500/40 to-transparent", text: "text-neutral-500" };
-
-                        return (
-                            <div key={idx} className="relative flex gap-4 sm:gap-6">
-                                {/* Connector line + dot */}
-                                <div className="flex flex-col items-center">
-                                    <div className={`w-3.5 h-3.5 rounded-full shrink-0 mt-1 z-10 ${color.dot} shadow-[0_0_8px_rgba(0,0,0,0.5)]`} />
-                                    {idx !== observations.length - 1 ? (
-                                        <div className={`w-0.5 flex-1 mt-2 mb-2 bg-gradient-to-b ${color.line} min-h-[40px]`} />
-                                    ) : (
-                                        <div className={`w-0.5 flex-1 mt-2 bg-gradient-to-b ${color.line} min-h-[40px] opacity-50`} />
-                                    )}
-                                </div>
-
-                                {/* Content */}
-                                <div className="pb-8">
-                                    {obs.date && <span className={`text-xs font-bold uppercase tracking-widest ${color.text}`}>{obs.date}</span>}
-                                    <h3 className="text-neutral-100 font-bold text-base mt-0.5 mb-1.5">{obs.title}</h3>
-                                    <p className="text-neutral-400 text-sm leading-relaxed">{obs.desc}</p>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
+            <AIObservations observations={observations} />
             </div>
         </div>
     );
 };
 
-const MetricCard = ({ title, value, unit, icon: Icon, trend, isPositive, subtext }) => (
-    <div className="bg-kashf-surface border border-kashf-border p-5 rounded-2xl flex flex-col justify-between">
-        <div className="flex justify-between items-start mb-3">
-            <h3 className="text-sm font-medium text-neutral-400">{title}</h3>
-            <div className="p-1 text-neutral-400">
-                <Icon className="size-5" />
-            </div>
-        </div>
-        <div>
-            <div className="flex items-baseline gap-1 mb-2">
-                <span className="text-2xl font-bold text-white">{value}</span>
-                {unit && <span className="text-sm text-neutral-500">{unit}</span>}
-            </div>
-            
-            {trend && (
-                <div className={`flex items-center gap-1 text-xs font-medium ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
-                    {isPositive ? <TrendingDown className="size-3" /> : <TrendingUp className="size-3" />}
-                    {trend}
-                </div>
-            )}
-            {subtext && (
-                <p className="text-xs text-neutral-500">{subtext}</p>
-            )}
-        </div>
-    </div>
-);
 
 export default ConsumptionAnalyticsPage;
