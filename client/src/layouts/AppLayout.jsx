@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import DashboardSidebar from "../components/common/DashboardSidebar";
 import AppHeader from "../components/common/AppHeader";
 import Loader from "../components/Loader/Loader";
+import Footer from "../components/common/Footer";
 
 const AppLayout = () => {
     const { pathname } = useLocation();
@@ -29,23 +30,28 @@ const AppLayout = () => {
                 </div>
                 
                 {/* Main Content Area */}
-                <main id="main-content" className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 bg-neutral-900/30">
-                    <Suspense fallback={<Loader />}>
-                        <AnimatePresence mode="wait">
-                            {currentOutlet && (
-                                <motion.div
-                                    key={pathname}
-                                    initial={{ opacity: 0, y: 15 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -15 }}
-                                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                                    className="h-full"
-                                >
-                                    {currentOutlet}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </Suspense>
+                <main id="main-content" className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 bg-neutral-900/30 flex flex-col">
+                    <div className="flex-1">
+                        <Suspense fallback={<Loader />}>
+                            <AnimatePresence mode="wait">
+                                {currentOutlet && (
+                                    <motion.div
+                                        key={pathname}
+                                        initial={{ opacity: 0, y: 15 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -15 }}
+                                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                                    >
+                                        {currentOutlet}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </Suspense>
+                    </div>
+                    
+                    <div className="mt-8">
+                        <Footer />
+                    </div>
                 </main>
             </div>
         </div>

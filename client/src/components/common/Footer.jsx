@@ -30,7 +30,14 @@ const Footer = () => {
                         {t("nav.about")}
                     </NavLink>
                     <button
-                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        onClick={() => {
+                            const mainContent = document.getElementById('main-content');
+                            if (mainContent) {
+                                mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+                            } else {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }
+                        }}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-kashf-surface text-kashf-light-blue text-xs font-medium transition-all duration-200 hover:bg-kashf-blue hover:text-kashf-bg cursor-pointer border border-kashf-border hover:border-kashf-blue hover:shadow-[0_0_15px_rgba(0,217,255,0.3)]"
                         aria-label={t("footer.backToTop")}
                     >

@@ -83,7 +83,7 @@ const AlertsPage = () => {
             </PageHeader>
 
             {/* Filter Tabs */}
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide border-b border-kashf-border">
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide border-b border-kashf-border">
                 {FILTER_TABS.map(tab => (
                     <button 
                         key={tab.key}

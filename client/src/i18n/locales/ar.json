@@ -13,8 +13,16 @@
     "enable": "تفعيل",
     "view": "عرض",
     "cancel": "إلغاء",
+    "delete": "حذف",
     "save": "حفظ",
+    "saving": "جاري الحفظ...",
+    "allYears": "كل السنوات",
+    "allStatus": "كل الحالات",
+    "previous": "السابق",
+    "next": "التالي",
+    "pageOf": "صفحة {{current}} من {{total}}",
     "close": "إغلاق",
+    "select": "اختر...",
     "pagination": {
       "prev": "السابق",
       "next": "التالي",
@@ -1078,6 +1086,16 @@
     "chartTitle": "مسار التكلفة والتوقع (جنيه)",
     "actualCost": "التكلفة الفعلية",
     "aiPrediction": "توقع الذكاء الاصطناعي",
+    "deleteConfirmTitle": "حذف الفاتورة؟",
+    "deleteConfirmDesc": "هل أنت متأكد من حذف هذه الفاتورة؟ لا يمكن التراجع عن هذا الإجراء.",
+    "addBill": "إضافة فاتورة",
+    "month": "الشهر / الفترة",
+    "consumption": "الاستهلاك (كيلوواط/س)",
+    "billingPeriod": "فترة الفاتورة",
+    "usageData": "بيانات الاستهلاك",
+    "financialSummary": "الملخص المالي",
+    "paymentStatus": "حالة الدفع",
+    "totalPayable": "إجمالي المبلغ المستحق",
     "history": {
       "title": "سجل الفواتير",
       "invoiceNo": "رقم الفاتورة",
@@ -1087,7 +1105,10 @@
       "amount": "المبلغ (جنيه)",
       "status": "الحالة",
       "action": "إجراء",
-      "paid": "مدفوعة"
+      "paid": "مدفوعة",
+      "pending": "قيد الانتظار",
+      "overdue": "متأخر",
+      "noBills": "لم يتم العثور على فواتير."
     },
     "months": {
       "jan": "يناير", "feb": "فبراير", "mar": "مارس", "apr": "أبريل", "may": "مايو", "jun": "يونيو", "jul": "يوليو", "aug": "أغسطس"

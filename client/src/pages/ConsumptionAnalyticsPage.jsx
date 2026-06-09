@@ -211,8 +211,8 @@ const ConsumptionAnalyticsPage = () => {
                 {/* Usage Over Time (Derived from trend diffs) */}
                 <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6">
                     <h3 className="text-sm font-medium text-white mb-6">{t('analytics.weeklyComparison', 'Usage Over Time')}</h3>
-                    <div className="h-[300px] w-full" dir="ltr">
-                        <ResponsiveContainer width="100%" height="100%">
+                    <div className="w-full" dir="ltr">
+                        <ResponsiveContainer width="99%" height={300}>
                             <BarChart data={weeklyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
                                 <XAxis dataKey="day" stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
@@ -231,8 +231,8 @@ const ConsumptionAnalyticsPage = () => {
                 {/* Cumulative Forecast Chart */}
                 <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6">
                     <h3 className="text-sm font-medium text-white mb-6">{t('analytics.consumptionForecast', 'Cumulative Forecast')}</h3>
-                    <div className="h-[300px] w-full" dir="ltr">
-                        <ResponsiveContainer width="100%" height="100%">
+                    <div className="w-full" dir="ltr">
+                        <ResponsiveContainer width="99%" height={300}>
                             <AreaChart data={forecastData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
