@@ -11,7 +11,7 @@ import userRoutes from "./src/modules/user.routes.js";
 import activityRoutes from "./src/modules/activity.routes.js";
 import meterRoutes from "./src/modules/meter.routes.js";
 import billRoutes from "./src/modules/bill.routes.js";
-
+import simulationRoutes from "./src/modules/simulation.routes.js";
 
 
 
@@ -59,6 +59,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/meters", meterRoutes);
 app.use("/api/bills", billRoutes);
+app.use("/api/simulations", simulationRoutes);
 
 
 
