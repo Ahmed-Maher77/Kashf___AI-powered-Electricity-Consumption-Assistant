@@ -29,3 +29,13 @@ export const updateDeviceSchema = Joi.object({
 export const updateCircuitSchema = Joi.object({
   name: Joi.string().trim().min(1).max(100),
 }).min(1);
+
+export const whatIfSchema = Joi.object({
+  toggleDevices: Joi.array().items(
+    Joi.object({
+      deviceId: Joi.string().required(),
+      isOn: Joi.boolean().required(),
+    })
+  ).min(1).required(),
+  durationMinutes: Joi.number().min(1).max(525600).default(60),
+});

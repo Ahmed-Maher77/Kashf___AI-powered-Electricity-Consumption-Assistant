@@ -2,6 +2,9 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import AppError from "../utils/AppError.js";
 import Simulation from "../../database/models/simulation.model.js";
 import * as engine from "../services/simulation.engine.js";
+import { getAdvice } from "../services/simulation.advisor.js";
+import { getPrediction } from "../services/simulation.predictor.js";
+import { getWhatIf } from "../services/simulation.whatif.js";
 import { addClient } from "../services/simulation.broadcaster.js";
 
 const DEFAULT_CIRCUITS = [
@@ -245,6 +248,40 @@ export const resetSimulation = asyncHandler(async (req, res) => {
   engine.resetSimulation(simulation._id.toString());
   const state = engine.getRuntimeState(simulation._id.toString());
   res.json({ success: true, data: { ...formatDoc(simulation), runtime: state } });
+});
+
+// ─── AI Advisor ────────────────────────────────────────────
+
+export const adviseSimulation = asyncHandler(async (req, res) => {
+  const simulation = await Simulation.findById(req.params.id);
+  if (!simulation) throw new AppError("Simulation not found", 404);
+  if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
+
+  const result = await getAdvice(simulation._id.toString());
+  res.json({ success: true, data: result });
+});
+
+// ─── Tier Prediction ──────────────────────────────────────
+
+export const predictSimulation = asyncHandler(async (req, res) => {
+  const simulation = await Simulation.findById(req.params.id);
+  if (!simulation) throw new AppError("Simulation not found", 404);
+  if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
+
+  const runtime = engine.getRuntimeState(simulation._id.toString());
+  const prediction = getPrediction(runtime);
+  res.json({ success: true, data: prediction });
+});
+
+// ─── What-If Simulation ───────────────────────────────────
+
+export const whatIfSimulation = asyncHandler(async (req, res) => {
+  const simulation = await Simulation.findById(req.params.id);
+  if (!simulation) throw new AppError("Simulation not found", 404);
+  if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
+
+  const result = await getWhatIf(simulation._id.toString(), req.body);
+  res.json({ success: true, data: result });
 });
 
 // ─── SSE Stream ──────────────────────────────────────────
