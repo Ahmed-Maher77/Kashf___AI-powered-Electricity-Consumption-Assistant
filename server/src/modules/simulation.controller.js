@@ -5,6 +5,9 @@ import * as engine from "../services/simulation.engine.js";
 import { getAdvice } from "../services/simulation.advisor.js";
 import { getPrediction } from "../services/simulation.predictor.js";
 import { getWhatIf } from "../services/simulation.whatif.js";
+import { chat } from "../services/simulation.chat.js";
+import { getAutoPilotStatus } from "../services/simulation.autopilot.js";
+import { getRecommendations } from "../services/simulation.recommender.js";
 import { addClient } from "../services/simulation.broadcaster.js";
 
 const DEFAULT_CIRCUITS = [
@@ -189,6 +192,7 @@ export const updateDevice = asyncHandler(async (req, res) => {
       if (req.body.name !== undefined) device.name = req.body.name;
       if (req.body.wattage !== undefined) device.wattage = req.body.wattage;
       if (req.body.isOn !== undefined) device.isOn = req.body.isOn;
+      if (req.body.essential !== undefined) device.essential = req.body.essential;
       found = true;
       break;
     }
@@ -281,6 +285,67 @@ export const whatIfSimulation = asyncHandler(async (req, res) => {
   if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
 
   const result = await getWhatIf(simulation._id.toString(), req.body);
+  res.json({ success: true, data: result });
+});
+
+// ─── Natural Language Chat ────────────────────────────────
+
+export const chatSimulation = asyncHandler(async (req, res) => {
+  const simulation = await Simulation.findById(req.params.id);
+  if (!simulation) throw new AppError("Simulation not found", 404);
+  if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
+
+  const result = await chat(simulation._id.toString(), req.body.message);
+  res.json({ success: true, data: result });
+});
+
+// ─── Auto-Pilot ────────────────────────────────────────────
+
+export const startAutoPilot = asyncHandler(async (req, res) => {
+  const simulation = await Simulation.findById(req.params.id);
+  if (!simulation) throw new AppError("Simulation not found", 404);
+  if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
+
+  if (req.body.monthlyKwhLimit) simulation.consumptionGoal.monthlyKwhLimit = req.body.monthlyKwhLimit;
+  if (req.body.targetBillEgp) simulation.consumptionGoal.targetBillEgp = req.body.targetBillEgp;
+  simulation.autoPilot.enabled = true;
+  simulation.autoPilot.startedAt = new Date();
+  simulation.autoPilot.actionsTaken = 0;
+  await simulation.save();
+
+  engine.syncConfig(simulation._id.toString(), simulation.toObject());
+  res.json({ success: true, data: getAutoPilotStatus(simulation.toObject()) });
+});
+
+export const stopAutoPilot = asyncHandler(async (req, res) => {
+  const simulation = await Simulation.findById(req.params.id);
+  if (!simulation) throw new AppError("Simulation not found", 404);
+  if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
+
+  simulation.autoPilot.enabled = false;
+  await simulation.save();
+
+  engine.syncConfig(simulation._id.toString(), simulation.toObject());
+  res.json({ success: true, data: getAutoPilotStatus(simulation.toObject()) });
+});
+
+export const getAutoPilot = asyncHandler(async (req, res) => {
+  const simulation = await Simulation.findById(req.params.id);
+  if (!simulation) throw new AppError("Simulation not found", 404);
+  if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
+
+  res.json({ success: true, data: getAutoPilotStatus(simulation.toObject()) });
+});
+
+// ─── Smart Recommendations ──────────────────────────────────
+
+export const recommendSimulation = asyncHandler(async (req, res) => {
+  const simulation = await Simulation.findById(req.params.id);
+  if (!simulation) throw new AppError("Simulation not found", 404);
+  if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
+
+  const runtime = engine.getRuntimeState(simulation._id.toString());
+  const result = await getRecommendations(simulation.toObject(), runtime);
   res.json({ success: true, data: result });
 });
 

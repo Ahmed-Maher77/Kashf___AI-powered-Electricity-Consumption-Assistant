@@ -1,6 +1,7 @@
 import Simulation from "../../database/models/simulation.model.js";
 import { computeTier, computeBill } from "../config/tier.constants.js";
 import { broadcast } from "./simulation.broadcaster.js";
+import { autoPilotTick } from "./simulation.autopilot.js";
 
 const TICK_RATE_MS = 1000;
 
@@ -47,6 +48,12 @@ function tick(simulationId) {
   rt.currentTier = computeTier(rt.totalKWh);
   rt.estimatedBill = computeBill(rt.totalKWh);
   rt.tickCount++;
+
+  const apAction = autoPilotTick(simulationId, rt);
+  if (apAction) {
+    rt.currentLoadW = computeCircuitsLoad(rt.config);
+    rt.estimatedBill = computeBill(rt.totalKWh);
+  }
 
   broadcast(simulationId, {
     totalKWh: +rt.totalKWh.toFixed(4),

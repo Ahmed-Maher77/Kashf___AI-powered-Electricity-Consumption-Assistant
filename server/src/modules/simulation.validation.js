@@ -4,6 +4,7 @@ const deviceFields = {
   name: Joi.string().trim().min(1).max(100),
   wattage: Joi.number().min(1).max(100000),
   isOn: Joi.boolean(),
+  essential: Joi.boolean(),
 };
 
 export const createSimulationSchema = Joi.object({
@@ -39,3 +40,12 @@ export const whatIfSchema = Joi.object({
   ).min(1).required(),
   durationMinutes: Joi.number().min(1).max(525600).default(60),
 });
+
+export const chatSchema = Joi.object({
+  message: Joi.string().trim().min(1).max(500).required(),
+});
+
+export const startAutoPilotSchema = Joi.object({
+  monthlyKwhLimit: Joi.number().min(1).max(100000),
+  targetBillEgp: Joi.number().min(1).max(100000),
+}).min(1);
