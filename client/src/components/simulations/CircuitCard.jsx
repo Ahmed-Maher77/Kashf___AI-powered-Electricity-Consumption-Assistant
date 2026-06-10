@@ -139,7 +139,8 @@ const CircuitCard = ({ circuit, onAddDevice, simulationId }) => {
             <DeleteConfirmModal
                 isOpen={isDeleteCircuitModalOpen}
                 onClose={() => setIsDeleteCircuitModalOpen(false)}
-                onConfirm={handleDeleteCircuit}
+                simulationId={simulationId}
+                circuitId={circuit._id || circuit.id}
                 title={t('simulations.deleteCircuit', 'Delete Circuit')}
                 message={t('simulations.deleteCircuitConfirm', 'Are you sure you want to delete this circuit?')}
             />
