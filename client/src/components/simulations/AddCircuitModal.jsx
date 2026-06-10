@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Zap } from 'lucide-react';
+import { addCircuitAsync } from '../../store/simulations/simulationSlice';
 
 const AddCircuitModal = ({ isOpen, onClose, simulationId }) => {
     const { t } = useTranslation();
@@ -18,15 +19,14 @@ const AddCircuitModal = ({ isOpen, onClose, simulationId }) => {
 
         setIsSubmitting(true);
         try {
-            // Simulated validation delay
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            console.log('Add Circuit UI Validated:', {
-                name,
-                breakerCapacity: Number(breakerCapacity)
-            });
-            // Backend integration will be handled by a colleague
-            
+
+            if (simulationId) {
+                await dispatch(addCircuitAsync({
+                    simulationId,
+                    data: { name }
+                })).unwrap();
+            }
+
             // Reset and close
             setName('');
             setBreakerCapacity(15);
@@ -42,15 +42,15 @@ const AddCircuitModal = ({ isOpen, onClose, simulationId }) => {
         <AnimatePresence>
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <motion.div 
-                        initial={{ opacity: 0 }} 
-                        animate={{ opacity: 1 }} 
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
                         onClick={onClose}
                     />
-                    
-                    <motion.div 
+
+                    <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -61,7 +61,7 @@ const AddCircuitModal = ({ isOpen, onClose, simulationId }) => {
                                 <Zap className="size-5 text-kashf-blue" />
                                 {t('simulations.addCircuit', "Add Circuit")}
                             </h2>
-                            <button 
+                            <button
                                 onClick={onClose}
                                 className="text-neutral-400 hover:text-white transition-colors"
                             >
@@ -75,7 +75,7 @@ const AddCircuitModal = ({ isOpen, onClose, simulationId }) => {
                                     <label className="block text-sm font-medium text-neutral-400 mb-1">
                                         {t('simulations.circuitName', "Circuit Name")}
                                     </label>
-                                    <input 
+                                    <input
                                         type="text"
                                         required
                                         value={name}
@@ -84,35 +84,20 @@ const AddCircuitModal = ({ isOpen, onClose, simulationId }) => {
                                         className="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-kashf-blue focus:ring-1 focus:ring-kashf-blue transition-all"
                                     />
                                 </div>
-                                
-                                <div>
-                                    <label className="block text-sm font-medium text-neutral-400 mb-1">
-                                        {t('simulations.breakerCapacity', "Breaker Capacity (Amps)")}
-                                    </label>
-                                    <input 
-                                        type="number"
-                                        required
-                                        min="5"
-                                        max="100"
-                                        value={breakerCapacity}
-                                        onChange={(e) => setBreakerCapacity(e.target.value)}
-                                        className="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-kashf-blue focus:ring-1 focus:ring-kashf-blue transition-all"
-                                    />
-                                    <p className="text-xs text-neutral-500 mt-2">
-                                        {t('simulations.breakerCapacityDesc', "Standard household circuits are typically 15A or 20A.")}
-                                    </p>
-                                </div>
+
+
+
                             </div>
 
                             <div className="mt-8 flex gap-3">
-                                <button 
+                                <button
                                     type="button"
                                     onClick={onClose}
                                     className="flex-1 py-3 bg-neutral-800 hover:bg-neutral-700 text-white rounded-xl font-medium transition-colors"
                                 >
                                     {t('common.cancel', "Cancel")}
                                 </button>
-                                <button 
+                                <button
                                     type="submit"
                                     disabled={isSubmitting || !name.trim()}
                                     className="flex-1 py-3 bg-kashf-blue hover:bg-opacity-90 disabled:opacity-50 disabled:hover:bg-kashf-blue text-kashf-bg rounded-xl font-bold transition-colors"
