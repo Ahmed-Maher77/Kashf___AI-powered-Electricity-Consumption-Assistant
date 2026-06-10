@@ -14,6 +14,14 @@ import {
   pauseSimulation,
   resetSimulation,
   streamSimulation,
+  adviseSimulation,
+  predictSimulation,
+  whatIfSimulation,
+  chatSimulation,
+  startAutoPilot,
+  stopAutoPilot,
+  getAutoPilot,
+  recommendSimulation,
 } from "./simulation.controller.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import { validateRequestBody } from "../middlewares/validateRequestBody.js";
@@ -23,6 +31,9 @@ import {
   addDeviceSchema,
   updateDeviceSchema,
   updateCircuitSchema,
+  whatIfSchema,
+  chatSchema,
+  startAutoPilotSchema,
 } from "./simulation.validation.js";
 
 const router = express.Router();
@@ -48,5 +59,16 @@ router.post("/:id/pause", isAuthenticated, pauseSimulation);
 router.post("/:id/reset", isAuthenticated, resetSimulation);
 
 router.get("/:id/stream", isAuthenticated, streamSimulation);
+
+router.post("/:id/advise", isAuthenticated, adviseSimulation);
+router.get("/:id/prediction", isAuthenticated, predictSimulation);
+router.post("/:id/what-if", isAuthenticated, validateRequestBody(whatIfSchema), whatIfSimulation);
+router.post("/:id/chat", isAuthenticated, validateRequestBody(chatSchema), chatSimulation);
+
+router.post("/:id/auto-pilot/start", isAuthenticated, validateRequestBody(startAutoPilotSchema), startAutoPilot);
+router.post("/:id/auto-pilot/stop", isAuthenticated, stopAutoPilot);
+router.get("/:id/auto-pilot", isAuthenticated, getAutoPilot);
+
+router.get("/:id/recommendations", isAuthenticated, recommendSimulation);
 
 export default router;
