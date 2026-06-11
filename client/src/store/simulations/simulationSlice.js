@@ -164,14 +164,28 @@ const simulationSlice = createSlice({
                 state.error = action.payload;
             })
             // Delete Simulation
+            .addCase(deleteSimulationAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(deleteSimulationAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.simulations = state.simulations.filter(s => s.id !== action.payload.id);
                 if (state.currentSimulation?.id === action.payload.id) {
                     state.currentSimulation = null;
                 }
             })
+            .addCase(deleteSimulationAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
             // Add Circuit
+            .addCase(addCircuitAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(addCircuitAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
                     state.simulations[index] = action.payload;
@@ -179,9 +193,18 @@ const simulationSlice = createSlice({
                 if (state.currentSimulation?.id === action.payload.id) {
                     state.currentSimulation = action.payload;
                 }
+            })
+            .addCase(addCircuitAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
             })
             // Delete Circuit
+            .addCase(deleteCircuitAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(deleteCircuitAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
                     state.simulations[index] = action.payload;
@@ -189,9 +212,18 @@ const simulationSlice = createSlice({
                 if (state.currentSimulation?.id === action.payload.id) {
                     state.currentSimulation = action.payload;
                 }
+            })
+            .addCase(deleteCircuitAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
             })
             // Add Device
+            .addCase(addDeviceAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(addDeviceAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
                     state.simulations[index] = action.payload;
@@ -200,7 +232,6 @@ const simulationSlice = createSlice({
                     state.currentSimulation = action.payload;
                 }
             })
-            // Delete Device
             .addCase(deleteDeviceAsync.fulfilled, (state, action) => {
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
@@ -211,7 +242,12 @@ const simulationSlice = createSlice({
                 }
             })
             // Start Simulation
+            .addCase(startSimulationAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(startSimulationAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
                     state.simulations[index] = action.payload;
@@ -219,9 +255,18 @@ const simulationSlice = createSlice({
                 if (state.currentSimulation?.id === action.payload.id) {
                     state.currentSimulation = action.payload;
                 }
+            })
+            .addCase(startSimulationAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
             })
             // Pause Simulation
+            .addCase(pauseSimulationAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(pauseSimulationAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
                     state.simulations[index] = action.payload;
@@ -230,8 +275,17 @@ const simulationSlice = createSlice({
                     state.currentSimulation = action.payload;
                 }
             })
+            .addCase(pauseSimulationAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
             // Reset Simulation
+            .addCase(resetSimulationAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(resetSimulationAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
                     state.simulations[index] = action.payload;
@@ -239,6 +293,10 @@ const simulationSlice = createSlice({
                 if (state.currentSimulation?.id === action.payload.id) {
                     state.currentSimulation = action.payload;
                 }
+            })
+            .addCase(resetSimulationAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
             });
     }
 });

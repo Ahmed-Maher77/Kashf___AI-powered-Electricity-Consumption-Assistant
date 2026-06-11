@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle } from 'lucide-react';
+import { deleteCircuitAsync } from '../../store/simulations/simulationSlice';
 
-const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
+const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, title, message, simulationId, circuitId }) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const [isDeleting, setIsDeleting] = useState(false);
 
     const handleConfirm = async () => {
         setIsDeleting(true);
         try {
-            await onConfirm();
+            if (simulationId && circuitId) {
+                await dispatch(deleteCircuitAsync({ simulationId, circuitId })).unwrap();
+            } else if (onConfirm) {
+                await onConfirm();
+            }
             onClose();
         } catch (error) {
-            console.error("Failed to confirm action:", error);
+            console.error("Failed to delete circuit:", error);
+            // Don't close modal on error so user can retry
         } finally {
             setIsDeleting(false);
         }
