@@ -70,7 +70,14 @@ export const addDeviceAsync = createAsyncThunk('simulations/addDevice', async ({
         return thunkAPI.rejectWithValue(error.message || error.toString());
     }
 });
-
+// Deletes a device from a simulation.
+export const deleteDeviceAsync = createAsyncThunk('simulations/deleteDevice', async ({ simulationId, deviceId }, thunkAPI) => {
+    try {
+        return await simulationService.deleteDevice(simulationId, deviceId);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message || error.toString());
+    }
+});
 // Starts the simulation engine for a given simulation.
 export const startSimulationAsync = createAsyncThunk('simulations/startSimulation', async (id, thunkAPI) => {
     try {
@@ -185,6 +192,16 @@ const simulationSlice = createSlice({
             })
             // Add Device
             .addCase(addDeviceAsync.fulfilled, (state, action) => {
+                const index = state.simulations.findIndex(s => s.id === action.payload.id);
+                if (index !== -1) {
+                    state.simulations[index] = action.payload;
+                }
+                if (state.currentSimulation?.id === action.payload.id) {
+                    state.currentSimulation = action.payload;
+                }
+            })
+            // Delete Device
+            .addCase(deleteDeviceAsync.fulfilled, (state, action) => {
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
                     state.simulations[index] = action.payload;

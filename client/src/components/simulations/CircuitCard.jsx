@@ -11,7 +11,7 @@ import {
     Sun,
     Tv
 } from 'lucide-react';
-import { deleteCircuitAsync } from '../../store/simulations/simulationSlice';
+import { deleteCircuitAsync, deleteDeviceAsync } from '../../store/simulations/simulationSlice';
 import DeleteConfirmModal from './DeleteConfirmModal';
 
 // A simple icon mapper
@@ -47,10 +47,10 @@ const CircuitCard = ({ circuit, onAddDevice, simulationId }) => {
     const handleDeleteDevice = async () => {
         if (!deviceToDelete) return;
         try {
-            // Simulated validation delay
-            await new Promise(resolve => setTimeout(resolve, 500));
-            console.log('Delete Device UI Triggered:', { circuitId: circuit.id, deviceId: deviceToDelete.id || deviceToDelete._id });
-            // Backend integration handled by colleague
+            await dispatch(deleteDeviceAsync({
+                simulationId,
+                deviceId: deviceToDelete._id || deviceToDelete.id,
+            })).unwrap();
             setDeviceToDelete(null);
         } catch (error) {
             console.error('Failed to delete device:', error);
