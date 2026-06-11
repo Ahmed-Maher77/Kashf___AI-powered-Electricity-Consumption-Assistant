@@ -12,6 +12,7 @@ import {
     Tv,
     Power
 } from 'lucide-react';
+import { addDeviceAsync } from '../../store/simulations/simulationSlice';
 
 const DEVICE_ICONS = [
     { id: 'lighting', icon: Sun, label: 'Lighting' },
@@ -37,25 +38,21 @@ const AddDeviceModal = ({ isOpen, onClose, circuit, simulationId }) => {
 
         setIsSubmitting(true);
         try {
-            // Simulated validation delay
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            console.log('Add Device UI Validated:', {
-                circuitId: circuit.id,
-                name,
-                power: Number(power),
-                icon: selectedIcon,
-                isOn: false
-            });
-            // Backend integration will be handled by a colleague
-            
-            // Reset and close
+            await dispatch(addDeviceAsync({
+                simulationId,
+                data: {
+                    circuitId: circuit._id || circuit.id,
+                    name: name.trim(),
+                    wattage: Number(power),
+                }
+            })).unwrap();
+
             setName('');
             setPower(100);
             setSelectedIcon('default');
             onClose();
         } catch (error) {
-            console.error("Failed to validate device:", error);
+            console.error("Failed to add device:", error);
         } finally {
             setIsSubmitting(false);
         }
