@@ -118,6 +118,118 @@ const resetSimulation = async (id) => {
     return parsed.data;
 };
 
+// SSE stream — uses fetch with auth headers (EventSource doesn't support custom headers)
+const streamSimulation = (id, onMessage, onError) => {
+    const controller = new AbortController();
+
+    const connect = async () => {
+        try {
+            const response = await apiFetch(
+                `${API_URL}/${id}/stream`,
+                {
+                    signal: controller.signal,
+                    headers: { Accept: "text/event-stream" },
+                },
+                { skipRefresh: true }
+            );
+
+            if (!response.ok) {
+                onError?.(new Error(`SSE connection failed: ${response.status}`));
+                return;
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = "";
+
+            const read = async () => {
+                try {
+                    const { done, value } = await reader.read();
+                    if (done) {
+                        onError?.({ message: "Stream closed" });
+                        return;
+                    }
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split("\n");
+                    buffer = lines.pop() || "";
+
+                    for (const line of lines) {
+                        if (line.startsWith("data: ")) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                onMessage(data);
+                            } catch {
+                                // skip malformed JSON
+                            }
+                        }
+                    }
+
+                    read();
+                } catch (error) {
+                    if (error.name !== "AbortError") {
+                        onError?.(error);
+                    }
+                }
+            };
+
+            read();
+        } catch (error) {
+            if (error.name !== "AbortError") {
+                onError?.(error);
+            }
+        }
+    };
+
+    connect();
+    return controller;
+};
+
+// Get AI-powered energy-saving advice for a simulation
+const getAdvice = async (simulationId) => {
+    const response = await apiFetch(`${API_URL}/${simulationId}/advise`, {
+        method: "POST",
+    });
+    const parsed = await parseApiResponse(response);
+    return parsed.data;
+};
+
+// Get tier prediction for a simulation
+const getPrediction = async (simulationId) => {
+    const response = await apiFetch(`${API_URL}/${simulationId}/prediction`);
+    const parsed = await parseApiResponse(response);
+    return parsed.data;
+};
+
+// What-If simulation — projects consumption with device toggles
+const getWhatIf = async (simulationId, toggleDevices, durationMinutes = 60) => {
+    const response = await apiFetch(`${API_URL}/${simulationId}/what-if`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ toggleDevices, durationMinutes }),
+    });
+    const parsed = await parseApiResponse(response);
+    return parsed.data;
+};
+
+// Get smart recommendations for a simulation
+const getRecommendations = async (simulationId) => {
+    const response = await apiFetch(`${API_URL}/${simulationId}/recommendations`);
+    const parsed = await parseApiResponse(response);
+    return parsed.data;
+};
+
+// NL Chat agent — sends a natural language message to the simulation
+const chat = async (simulationId, message) => {
+    const response = await apiFetch(`${API_URL}/${simulationId}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+    });
+    const parsed = await parseApiResponse(response);
+    return parsed.data;
+};
+
 const simulationService = {
     getSimulations,
     getSimulation,
@@ -131,7 +243,13 @@ const simulationService = {
     deleteDevice,
     startSimulation,
     pauseSimulation,
-    resetSimulation
+    resetSimulation,
+    streamSimulation,
+    getAdvice,
+    getPrediction,
+    getWhatIf,
+    getRecommendations,
+    chat,
 };
 
 export default simulationService;
