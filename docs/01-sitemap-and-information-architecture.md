@@ -10,61 +10,66 @@
 
 ```
 /
-├── Welcome
-├── Scan Meter
-├── Processing
-├── User Dashboard
-├── My Meters
-├── Consumption Analytics
-├── Bills
-├── AI Advisor
-├── Alerts
-├── Reports
-├── Billing
-├── Profile
-├── History
-├── Scan Details
-├── Tips & Recommendations
-├── About
-├── Admin
-│   ├── Dashboard
-│   ├── Users Management
-│   ├── Scan Management
-│   ├── Tier Management
-│   ├── AI Logs
-│   ├── Notifications
-│   └── System Settings
-└── 404
+├── Welcome (/)                    [Public]
+├── Auth / Register (/register)    [Guest]
+├── Pricing (/pricing)             [Public]
+├── About (/about)                 [Public]
+├── User App (Protected)
+│   ├── Dashboard (/dashboard)
+│   ├── My Meters (/meters)
+│   ├── Consumption Analytics (/analytics)
+│   ├── Bills (/bills)
+│   ├── AI Advisor (/ai-advisor)
+│   ├── Alerts (/alerts)
+│   ├── Reports (/reports)
+│   ├── Billing (/billing)
+│   ├── Profile (/profile)
+│   ├── Scan Meter (/scan)
+│   ├── Processing (/processing)
+│   ├── History (/history)
+│   ├── Scan Details (/history/:id)
+│   ├── Tips & Recommendations (/tips)
+│   └── Meter Simulation (/meters/:id/simulation)
+├── Admin App (/admin)
+│   ├── Dashboard (/admin/dashboard)
+│   ├── Users Management (/admin/users)
+│   ├── Scan Management (/admin/scans)
+│   ├── Tier Management (/admin/tiers)
+│   ├── AI Logs (/admin/ai-logs)
+│   ├── Notifications (/admin/notifications)
+│   └── System Settings (/admin/settings)
+└── 404 (*)
 ```
 
-| Route | Page |
-|-------|------|
-| `/` | Welcome |
-| `/login` | Login |
-| `/register` | Register |
-| `/dashboard` | User Dashboard |
-| `/meters` | My Meters |
-| `/analytics` | Consumption Analytics |
-| `/bills` | Bills |
-| `/ai-advisor` | AI Advisor |
-| `/alerts` | Alerts |
-| `/reports` | Reports |
-| `/billing` | Billing |
-| `/profile` | Profile |
-| `/scan` | Scan Meter |
-| `/processing` | Processing |
-| `/history` | History |
-| `/history/:id` | Scan Details |
-| `/tips` | Tips & Recommendations |
-| `/about` | About |
-| `/admin/dashboard` | Admin Dashboard |
-| `/admin/users` | Users Management |
-| `/admin/scans` | Scan Management |
-| `/admin/tiers` | Tier Management |
-| `/admin/ai-logs` | AI Logs |
-| `/admin/notifications` | Notifications |
-| `/admin/settings` | System Settings |
-| `*` | 404 |
+| Route | Page | Access |
+|-------|------|--------|
+| `/` | Welcome | Public |
+| `/register` | Login / Register (tabs) | Guest |
+| `/pricing` | Pricing | Public |
+| `/about` | About | Public |
+| `/dashboard` | User Dashboard | User, Admin |
+| `/meters` | My Meters | User, Admin |
+| `/analytics` | Consumption Analytics | User, Admin |
+| `/bills` | Bills | User, Admin |
+| `/ai-advisor` | AI Advisor | User, Admin |
+| `/alerts` | Alerts | User, Admin |
+| `/reports` | Reports | User, Admin |
+| `/billing` | Billing | User, Admin |
+| `/profile` | Profile | User, Admin |
+| `/scan` | Scan Meter | User, Admin |
+| `/processing` | Processing | User, Admin |
+| `/history` | History | User, Admin |
+| `/history/:id` | Scan Details | User, Admin |
+| `/tips` | Tips & Recommendations | User, Admin |
+| `/meters/:id/simulation` | Meter Simulation | User, Admin |
+| `/admin/dashboard` | Admin Dashboard | Admin |
+| `/admin/users` | Users Management | Admin |
+| `/admin/scans` | Scan Management | Admin |
+| `/admin/tiers` | Tier Management | Admin |
+| `/admin/ai-logs` | AI Logs | Admin |
+| `/admin/notifications` | Notifications Management | Admin |
+| `/admin/settings` | System Settings | Admin |
+| `*` | 404 | Public |
 
 ---
 
@@ -106,6 +111,74 @@
 **Error States:**
 - Failed to load localized content → fallback to default locale
 - Optional: degraded hero if assets fail to load
+
+---
+
+### AuthPage (Login / Register)
+
+**Route:** `/register`
+
+**Purpose:** Combined login and registration page with tabbed interface for user authentication.
+
+**Target User:** Unauthenticated users.
+
+**Main Sections:**
+- Login tab (email/password)
+- Register tab (name, email, password, confirm password)
+- Mode switcher between login/register
+- Link back to welcome page
+
+**Components:**
+- `AuthModeSwitch` (tab toggle)
+- `LoginForm`
+- `RegisterForm`
+
+**Actions:**
+- Switch between login/register modes
+- Submit login credentials
+- Submit registration form
+- Navigate back to `/` (welcome)
+
+**Displayed Data:**
+- Form fields with validation
+- Error messages for invalid credentials or registration conflicts
+- Loading states during submission
+
+**Empty States:** N/A (form-based page).
+
+**Error States:**
+- Invalid email/password → inline error
+- Email already registered → error with link to login
+- Network failure → toast with retry option
+- Validation errors (password mismatch, weak password, etc.)
+
+---
+
+### Pricing Page
+
+**Route:** `/pricing`
+
+**Purpose:** Display subscription plans and pricing tiers for Kashf premium features.
+
+**Target User:** All users (authenticated or not).
+
+**Main Sections:**
+- Plan comparison table
+- Feature breakdown per tier
+- CTA buttons for each plan
+
+**Components:**
+- `PricingSection` (shared with Welcome page)
+
+**Actions:**
+- Select plan → navigate to billing/subscription flow
+
+**Displayed Data:**
+- Plan names, prices (monthly/yearly), features list
+
+**Empty States:** N/A (static content).
+
+**Error States:** N/A.
 
 ---
 
@@ -418,6 +491,46 @@
 
 ---
 
+### Meter Simulation Page
+
+**Route:** `/meters/:id/simulation`
+
+**Purpose:** Run what-if scenarios and simulations for a specific meter to predict consumption, costs, and tier changes under different conditions.
+
+**Target User:** Authenticated user (meter owner); Admin.
+
+**Main Sections:**
+- Simulation controls
+- Parameter inputs (time range, consumption patterns, tariff changes)
+- Results visualization
+- Comparison with actual data
+
+**Components:**
+- `SimulationDashboardPage` (main container)
+- Simulation engine integration
+- Charts for projected consumption and costs
+
+**Actions:**
+- Configure simulation parameters
+- Run simulation
+- View projected tier changes and bill estimates
+- Compare scenarios
+
+**Displayed Data:**
+- Projected consumption over time
+- Estimated bills under simulated conditions
+- Sheriha tier progression
+- Savings/cost comparisons
+
+**Empty States:**
+- No simulation run yet → prompt to configure and run
+
+**Error States:**
+- Simulation engine error → error message with retry
+- Invalid meter ID → redirect to `/meters`
+
+---
+
 ### Tips & Recommendations Page
 
 **Route:** `/tips`
@@ -456,39 +569,57 @@
 
 ---
 
-### Settings Page
+### Profile Page (includes Settings)
 
-**Route:** `/settings`
+**Route:** `/profile`
 
-**Purpose:** Let users control language, notifications, and appearance.
+**Purpose:** User profile management with tabbed interface including account overview, connected meters, preferences (language, notifications, theme), security settings, subscription/billing, and activity history.
 
 **Target User:** Authenticated user.
 
-**Main Sections:**
-- Language settings
-- Notification settings
-- Theme settings
+**Main Sections (Tabs):**
+- **Overview**: Account summary, consumption goals, activity history
+- **Meters**: Connected meters management
+- **Preferences**: Personal information, notification preferences, PWA status
+- **Security**: Password change, 2FA, session management
+- **Subscription**: Billing plan management
 
 **Components:**
-- `LanguageSelector` (Arabic / English)
-- `NotificationToggles` (tier warning, bill estimate, new tips)
-- `ThemeSelector` (light / dark / system)
-- `SaveSettingsButton`
+- `ProfileHeader`
+- `Tabs` (premium tab component)
+- `AccountOverview`
+- `PersonalInformation`
+- `ConnectedMeters`
+- `NotificationPreferences`
+- `SecuritySettings`
+- `ActivityHistory`
+- `PWAStatus`
+- `Subscription`
+- `ConsumptionGoals`
 
 **Actions:**
-- Change locale → persist and reload strings
-- Enable/disable push or in-app notification types
-- Switch theme
+- Edit personal info (name, email, phone)
+- Change password, enable 2FA
+- Manage notification preferences
+- View/manage subscription
+- View consumption goals and activity history
+- Manage connected meters
 
 **Displayed Data:**
-- Current preferences
-- Optional: linked account email or phone (if auth exists)
+- User profile info (avatar, name, email, role, join date)
+- Consumption statistics and goals
+- Notification preferences state
+- Subscription plan and billing info
+- Recent activity log
 
-**Empty States:** N/A.
+**Empty States:**
+- No meters connected → CTA to add meter
+- No activity history → empty state illustration
 
 **Error States:**
 - Save failed → inline error + retry
-- Notification permission denied → explain how to enable in OS settings
+- Password change validation errors
+- Network errors during data fetch
 
 ---
 
@@ -786,7 +917,7 @@
 
 ### User Navigation
 
-Primary nav (persistent on authenticated user shell):
+Primary nav (persistent on authenticated user shell - `AppLayout`):
 
 | Label | Route | Icon role |
 |-------|-------|-----------|
@@ -800,15 +931,17 @@ Primary nav (persistent on authenticated user shell):
 | Reports | `/reports` | Detailed reports |
 | Alerts | `/alerts` | Notification center |
 | Billing | `/billing` | Subscription info |
-| Profile | `/profile` | User profile |
+| Profile | `/profile` | User profile & settings |
+
+Public routes (UserLayout): Welcome (`/`), Auth/Register (`/register`), Pricing (`/pricing`), About (`/about`)
 
 Secondary / footer links: About (`/about`), Welcome (`/`) for logged-out users.
 
-Mobile: bottom tab bar mirroring the five primary items; Scan emphasized as center FAB where applicable.
+Mobile: bottom tab bar mirroring primary items; Scan emphasized as center FAB where applicable.
 
 ### Admin Navigation
 
-Sidebar (collapsible on desktop, drawer on mobile):
+Sidebar (collapsible on desktop, drawer on mobile) - `AdminLayout`:
 
 | Label | Route |
 |-------|-------|
@@ -851,26 +984,32 @@ Admin entry: separate layout from user app; role guard on all `/admin/*` routes.
 
 ```mermaid
 flowchart LR
-  A[Welcome] --> B[Scan Meter]
-  B --> C[Processing]
-  C --> D[Dashboard]
-  D --> E[AI Recommendations]
-  E --> F[History]
-  D --> B
-  F --> G[Scan Details]
+  A[Welcome] --> B[Auth/Register]
+  B --> C[Scan Meter]
+  C --> D[Processing]
+  D --> E[Dashboard]
+  E --> F[AI Recommendations / Tips]
+  E --> G[History]
+  G --> H[Scan Details]
+  E --> I[My Meters]
+  I --> J[Meter Simulation]
+  E --> B
 ```
 
-1. **Welcome** — User lands on `/`, understands Kashf, taps CTA to scan.
-2. **Scan Meter** — User captures or uploads meter at `/scan`.
-3. **Processing** — System runs OCR and AI at `/processing`; user sees progress.
-4. **Dashboard** — On success, user sees consumption, Sheriha, bill estimate, and tier warning at `/dashboard`.
-5. **AI Recommendations** — User opens `/tips` or reads preview cards on dashboard for Egyptian Arabic saving advice.
-6. **History** — User reviews past scans and tier changes at `/history`; opens `/history/:id` for detail.
+1. **Welcome** — User lands on `/`, understands Kashf, taps CTA to get started.
+2. **Auth/Register** — User signs up or logs in at `/register` (tabbed login/register).
+3. **Scan Meter** — User captures or uploads meter at `/scan`.
+4. **Processing** — System runs OCR and AI at `/processing`; user sees progress.
+5. **Dashboard** — On success, user sees consumption, Sheriha, bill estimate, and tier warning at `/dashboard`.
+6. **AI Recommendations** — User opens `/tips` or `/ai-advisor` for Egyptian Arabic saving advice.
+7. **History** — User reviews past scans and tier changes at `/history`; opens `/history/:id` for detail.
+8. **My Meters** — User manages meters at `/meters`; can run simulations at `/meters/:id/simulation`.
 
 **Branching flows:**
 - Tier warning on dashboard → user scans again sooner → repeat Scan → Processing → Dashboard.
-- Settings (`/settings`) adjusts language and notifications anytime.
+- Profile (`/profile`) adjusts language, notifications, theme, security, subscription anytime.
 - About (`/about`) accessed from Welcome or footer for trust and privacy.
+- Pricing (`/pricing`) for subscription plan comparison.
 
 ### Admin flow
 
@@ -881,10 +1020,14 @@ flowchart LR
   AD --> S[Manage Scans]
   AD --> T[Manage Tiers]
   AD --> AI[Monitor AI Activity]
+  AD --> N[Notifications]
+  AD --> SYS[System Settings]
   U --> AD
   S --> AD
   T --> AD
   AI --> AD
+  N --> AD
+  SYS --> AD
 ```
 
 1. **Login** — Admin authenticates with elevated role; redirected to `/admin/dashboard`.
@@ -893,8 +1036,8 @@ flowchart LR
 4. **Manage Scans** — `/admin/scans`: audit OCR results, view images, delete invalid scans.
 5. **Manage Tiers** — `/admin/tiers`: keep Sheriha rules and pricing aligned with Egyptian tariff updates.
 6. **Monitor AI Activity** — `/admin/ai-logs`: investigate failures, latency, and prompt/response audit trail.
-
-**Supporting admin tasks:** Notifications (`/admin/notifications`) for announcements; System Settings (`/admin/settings`) for Gemini, OCR, and upload limits.
+7. **Notifications** — `/admin/notifications`: create and manage system announcements.
+8. **System Settings** — `/admin/settings`: configure Gemini API, OCR, upload limits, security.
 
 ---
 
@@ -902,11 +1045,15 @@ flowchart LR
 
 | Area | User | Admin |
 |------|------|-------|
-| `/`, `/about`, `/scan` (guest policy TBD) | ✓ | ✓ |
-| `/dashboard`, `/history`, `/tips`, `/settings` | ✓ | ✓ (as user preview optional) |
+| `/` (Welcome), `/about`, `/pricing` | ✓ | ✓ |
+| `/register` (Auth/Login) | ✓ (guest) | ✓ (guest) |
+| `/dashboard`, `/meters`, `/analytics`, `/bills`, `/ai-advisor`, `/alerts`, `/reports`, `/billing`, `/profile`, `/scan`, `/processing`, `/history`, `/history/:id`, `/tips`, `/meters/:id/simulation` | ✓ | ✓ |
 | `/admin/*` | ✗ | ✓ |
-| Scan delete | Own data policy TBD | ✓ |
+| Scan delete (own) | ✓ | ✓ |
+| Scan delete (any) | ✗ | ✓ |
 | Tier CRUD | ✗ | ✓ |
+| User management | ✗ | ✓ |
+| System settings | ✗ | ✓ |
 
 ---
 
