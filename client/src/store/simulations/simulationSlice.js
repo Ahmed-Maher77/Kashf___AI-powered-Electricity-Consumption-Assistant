@@ -218,6 +218,7 @@ const simulationSlice = createSlice({
             .addCase(fetchSimulation.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.currentSimulation = action.payload;
+                state.streamData = action.payload.runtime || null;
                 // Also update in the array if it exists
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
@@ -323,49 +324,46 @@ const simulationSlice = createSlice({
             })
             // Start Simulation
             .addCase(startSimulationAsync.pending, (state) => {
-                state.isLoading = true;
                 state.error = null;
             })
             .addCase(startSimulationAsync.fulfilled, (state, action) => {
-                state.isLoading = false;
-                const index = state.simulations.findIndex(s => s.id === action.payload.id);
-                if (index !== -1) {
-                    state.simulations[index] = action.payload;
+                // action.payload is the new engine runtime state
+                state.streamData = action.payload;
+                if (state.currentSimulation) {
+                    state.currentSimulation.runtime = action.payload;
                 }
-                if (state.currentSimulation?.id === action.payload.id) {
-                    state.currentSimulation = action.payload;
+                const index = state.simulations.findIndex(s => s.id === state.currentSimulation?.id);
+                if (index !== -1) {
+                    state.simulations[index].runtime = action.payload;
                 }
             })
             .addCase(startSimulationAsync.rejected, (state, action) => {
-                state.isLoading = false;
                 state.error = action.payload;
             })
             // Pause Simulation
             .addCase(pauseSimulationAsync.pending, (state) => {
-                state.isLoading = true;
                 state.error = null;
             })
             .addCase(pauseSimulationAsync.fulfilled, (state, action) => {
-                state.isLoading = false;
-                const index = state.simulations.findIndex(s => s.id === action.payload.id);
-                if (index !== -1) {
-                    state.simulations[index] = action.payload;
+                // action.payload is the engine runtime state
+                state.streamData = action.payload;
+                if (state.currentSimulation) {
+                    state.currentSimulation.runtime = action.payload;
                 }
-                if (state.currentSimulation?.id === action.payload.id) {
-                    state.currentSimulation = action.payload;
+                const index = state.simulations.findIndex(s => s.id === state.currentSimulation?.id);
+                if (index !== -1) {
+                    state.simulations[index].runtime = action.payload;
                 }
             })
             .addCase(pauseSimulationAsync.rejected, (state, action) => {
-                state.isLoading = false;
                 state.error = action.payload;
             })
             // Reset Simulation
             .addCase(resetSimulationAsync.pending, (state) => {
-                state.isLoading = true;
                 state.error = null;
             })
             .addCase(resetSimulationAsync.fulfilled, (state, action) => {
-                state.isLoading = false;
+                // action.payload is the full simulation doc with the reset runtime state
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
                     state.simulations[index] = action.payload;
@@ -373,9 +371,9 @@ const simulationSlice = createSlice({
                 if (state.currentSimulation?.id === action.payload.id) {
                     state.currentSimulation = action.payload;
                 }
+                state.streamData = action.payload.runtime;
             })
             .addCase(resetSimulationAsync.rejected, (state, action) => {
-                state.isLoading = false;
                 state.error = action.payload;
             })
             // Fetch AI Advice
