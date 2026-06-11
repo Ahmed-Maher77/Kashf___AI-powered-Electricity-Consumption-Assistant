@@ -6,6 +6,20 @@ const initialState = {
     currentSimulation: null,
     isLoading: false,
     error: null,
+    streamData: null,
+    isStreamConnected: false,
+    adviceData: null,
+    adviceLoading: false,
+    adviceError: null,
+    predictionData: null,
+    predictionLoading: false,
+    predictionError: null,
+    whatIfData: null,
+    whatIfLoading: false,
+    whatIfError: null,
+    recommendationsData: null,
+    recommendationsLoading: false,
+    recommendationsError: null,
 };
 
 // Fetches all simulations available to the user.
@@ -105,6 +119,42 @@ export const resetSimulationAsync = createAsyncThunk('simulations/resetSimulatio
     }
 });
 
+// Fetches AI-powered energy-saving advice for a simulation.
+export const fetchAdviceAsync = createAsyncThunk('simulations/fetchAdvice', async (simulationId, thunkAPI) => {
+    try {
+        return await simulationService.getAdvice(simulationId);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message || error.toString());
+    }
+});
+
+// Fetches tier prediction for a simulation.
+export const fetchPredictionAsync = createAsyncThunk('simulations/fetchPrediction', async (simulationId, thunkAPI) => {
+    try {
+        return await simulationService.getPrediction(simulationId);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message || error.toString());
+    }
+});
+
+// Fetches What-If simulation projection.
+export const fetchWhatIfAsync = createAsyncThunk('simulations/fetchWhatIf', async ({ simulationId, toggleDevices, durationMinutes }, thunkAPI) => {
+    try {
+        return await simulationService.getWhatIf(simulationId, toggleDevices, durationMinutes);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message || error.toString());
+    }
+});
+
+// Fetches smart recommendations for a simulation.
+export const fetchRecommendationsAsync = createAsyncThunk('simulations/fetchRecommendations', async (simulationId, thunkAPI) => {
+    try {
+        return await simulationService.getRecommendations(simulationId);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message || error.toString());
+    }
+});
+
 // Redux slice handling electrical simulation state, including circuits, devices, and engine status (running/paused).
 const simulationSlice = createSlice({
     name: 'simulations',
@@ -113,7 +163,37 @@ const simulationSlice = createSlice({
         clearSimulations: (state) => {
             state.simulations = [];
             state.currentSimulation = null;
-        }
+        },
+        setStreamData: (state, action) => {
+            state.streamData = action.payload;
+        },
+        setStreamConnected: (state, action) => {
+            state.isStreamConnected = action.payload;
+        },
+        clearStreamData: (state) => {
+            state.streamData = null;
+            state.isStreamConnected = false;
+        },
+        clearAdvice: (state) => {
+            state.adviceData = null;
+            state.adviceLoading = false;
+            state.adviceError = null;
+        },
+        clearRecommendations: (state) => {
+            state.recommendationsData = null;
+            state.recommendationsLoading = false;
+            state.recommendationsError = null;
+        },
+        clearPrediction: (state) => {
+            state.predictionData = null;
+            state.predictionLoading = false;
+            state.predictionError = null;
+        },
+        clearWhatIf: (state) => {
+            state.whatIfData = null;
+            state.whatIfLoading = false;
+            state.whatIfError = null;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -297,10 +377,62 @@ const simulationSlice = createSlice({
             .addCase(resetSimulationAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
+            })
+            // Fetch AI Advice
+            .addCase(fetchAdviceAsync.pending, (state) => {
+                state.adviceLoading = true;
+                state.adviceError = null;
+            })
+            .addCase(fetchAdviceAsync.fulfilled, (state, action) => {
+                state.adviceLoading = false;
+                state.adviceData = action.payload;
+            })
+            .addCase(fetchAdviceAsync.rejected, (state, action) => {
+                state.adviceLoading = false;
+                state.adviceError = action.payload;
+            })
+            // Fetch Tier Prediction
+            .addCase(fetchPredictionAsync.pending, (state) => {
+                state.predictionLoading = true;
+                state.predictionError = null;
+            })
+            .addCase(fetchPredictionAsync.fulfilled, (state, action) => {
+                state.predictionLoading = false;
+                state.predictionData = action.payload;
+            })
+            .addCase(fetchPredictionAsync.rejected, (state, action) => {
+                state.predictionLoading = false;
+                state.predictionError = action.payload;
+            })
+            // Fetch What-If
+            .addCase(fetchWhatIfAsync.pending, (state) => {
+                state.whatIfLoading = true;
+                state.whatIfError = null;
+            })
+            .addCase(fetchWhatIfAsync.fulfilled, (state, action) => {
+                state.whatIfLoading = false;
+                state.whatIfData = action.payload;
+            })
+            .addCase(fetchWhatIfAsync.rejected, (state, action) => {
+                state.whatIfLoading = false;
+                state.whatIfError = action.payload;
+            })
+            // Fetch Recommendations
+            .addCase(fetchRecommendationsAsync.pending, (state) => {
+                state.recommendationsLoading = true;
+                state.recommendationsError = null;
+            })
+            .addCase(fetchRecommendationsAsync.fulfilled, (state, action) => {
+                state.recommendationsLoading = false;
+                state.recommendationsData = action.payload;
+            })
+            .addCase(fetchRecommendationsAsync.rejected, (state, action) => {
+                state.recommendationsLoading = false;
+                state.recommendationsError = action.payload;
             });
     }
 });
 
-export const { clearSimulations } = simulationSlice.actions;
+export const { clearSimulations, setStreamData, setStreamConnected, clearStreamData, clearAdvice, clearPrediction, clearWhatIf, clearRecommendations } = simulationSlice.actions;
 
 export default simulationSlice.reducer;
