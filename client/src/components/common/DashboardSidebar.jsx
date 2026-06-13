@@ -9,12 +9,12 @@ import {
     Receipt, 
     Sparkles, 
     Bell, 
-    FileText, 
     CreditCard, 
     User, 
     LogOut,
     ChevronLeft,
-    ChevronRight
+    ChevronRight,
+    Gauge
 } from "lucide-react";
 
 import UserAvatar from "./UserAvatar";
@@ -41,11 +41,11 @@ const DashboardSidebar = () => {
     const navItems = [
         { to: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
         { to: "/meters", label: t("nav.meters"), icon: Zap },
+        { to: "/meters", label: t("nav.simulationOverview"), icon: Gauge },
         { to: "/analytics", label: t("nav.analytics"), icon: BarChart2 },
         { to: "/bills", label: t("nav.bills"), icon: Receipt },
         { to: "/ai-advisor", label: t("nav.aiAdvisor"), icon: Sparkles },
         { to: "/alerts", label: t("nav.alerts"), icon: Bell },
-        { to: "/reports", label: t("nav.reports"), icon: FileText },
         { to: "/billing", label: t("nav.billing"), icon: CreditCard },
         { to: "/profile", label: t("nav.profile"), icon: User },
     ];

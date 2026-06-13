@@ -22,6 +22,7 @@
         "previous": "Previous",
         "next": "Next",
         "pageOf": "Page {{current}} of {{total}}",
+        "open": "Open",
         "close": "Close",
         "select": "Select...",
         "pagination": {
@@ -325,6 +326,7 @@
         "history": "History",
         "tips": "Tips",
         "meters": "My Meters",
+        "simulationOverview": "Simulation Overview",
         "analytics": "Analytics",
         "bills": "Bills & Predictions",
         "aiAdvisor": "AI Advisor",
@@ -1084,7 +1086,7 @@
             "all": "All",
             "warnings": "Warnings",
             "critical": "Critical",
-            "recommendations": "Recommendations",
+        "recommendations": "Recommendations",
             "system": "System"
         },
         "data": {
@@ -1354,7 +1356,8 @@
         "simModeCustomDesc": "Start with an empty simulation profile. You can add circuits and devices later.",
         "simModeSkip": "Skip for now",
         "simModeSkipDesc": "Just create the meter. I'll setup the simulation later.",
-        "manageSimulation": "Manage Simulation"
+        "manageSimulation": "Manage Simulation",
+        "simulationOverview": "Simulation Overview"
     },
     "simulations": {
         "dashboardTitle": "Simulation Dashboard",
@@ -1425,12 +1428,21 @@
         "estHours": "Est. Hours Left",
         "hours": "hrs",
         "tierProgress": "Tier Progress",
+        "overviewTitle": "Simulation Overview",
+        "goToDashboard": "Go to Dashboard",
+        "devices": "Devices",
+        "totalLoad": "Total Load",
+        "active": "Active",
+        "aiFeatures": "AI Features",
         "aiAdvice": "AI Energy Advice",
+        "aiAdviceDesc": "Get personalized, actionable advice to reduce your electricity bill and save energy.",
         "aiAdviceTitle": "AI Energy Advisor",
         "aiAdviceLoading": "Getting AI advice...",
         "aiSavings": "Potential savings",
         "aiNoAdvice": "No specific tips available for your current setup.",
         "aiGeneratedAt": "Generated at",
+        "recommendationsDesc": "Get AI-powered optimization tips tailored to your consumption patterns.",
+        "whatIfDesc": "Simulate changes to devices, usage hours, or add new appliances and see the impact on your bill.",
         "whatIf": "What-If",
         "whatIfTitle": "What-If Analysis",
         "whatIfDuration": "Project over",
