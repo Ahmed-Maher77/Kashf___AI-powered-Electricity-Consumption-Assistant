@@ -1,24 +1,24 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { fetchSimulations, fetchSimulation, setStreamData, setStreamConnected, clearStreamData, fetchAdviceAsync, clearAdvice, fetchRecommendationsAsync } from '../store/simulations/simulationSlice';
-import { fetchMeters } from '../store/meters/metersSlice';
-import simulationService from '../services/simulationService';
 import {
+    AlertCircle,
     ArrowLeft,
     ArrowRight,
     Plus,
-    AlertCircle,
 } from 'lucide-react';
-import CircuitCard from '../components/simulations/CircuitCard';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import AddCircuitModal from '../components/simulations/AddCircuitModal';
 import AddDeviceModal from '../components/simulations/AddDeviceModal';
-import EngineControlPanel from '../components/simulations/EngineControlPanel';
-import EmptyCircuitsState from '../components/simulations/EmptyCircuitsState';
-import WhatIfModal from '../components/simulations/WhatIfModal';
-import RecommendationsModal from '../components/simulations/RecommendationsModal';
 import AIAdviceModal from '../components/simulations/AIAdviceModal';
+import CircuitCard from '../components/simulations/CircuitCard';
+import EmptyCircuitsState from '../components/simulations/EmptyCircuitsState';
+import EngineControlPanel from '../components/simulations/EngineControlPanel';
+import RecommendationsModal from '../components/simulations/RecommendationsModal';
+import WhatIfModal from '../components/simulations/WhatIfModal';
+import simulationService from '../services/simulationService';
+import { fetchMeters } from '../store/meters/metersSlice';
+import { clearAdvice, clearStreamData, fetchAdviceAsync, fetchSimulation, fetchSimulations, setStreamConnected, setStreamData } from '../store/simulations/simulationSlice';
 
 
 // Fetches real-time data and calculates aggregate power usage across circuits and devices.
@@ -116,14 +116,14 @@ const SimulationDashboardPage = () => {
     // Aggregates live power draw across all active devices in all circuits.
     // Used as fallback when streamData is not yet available.
     const totalPower = currentSimulation.circuits?.reduce((sum, circuit) => {
-        return sum + (circuit.devices?.reduce((deviceSum, d) => deviceSum + (d.isOn ? d.power : 0), 0) || 0);
+        return sum + (circuit.devices?.reduce((deviceSum, d) => deviceSum + (d.isOn ? (d.wattage ?? d.power ?? 0) : 0), 0) || 0);
     }, 0) || 0;
 
     return (
         <div className="space-y-6 max-w-7xl mx-auto pb-10 rtl:leading-relaxed">
             {/* Header */}
             <div className="flex items-start gap-4 mb-2">
-                <button 
+                <button
                     onClick={() => navigate(-1)}
                     className="p-1 text-neutral-400 hover:text-white rounded-xl transition-colors"
                 >
@@ -139,7 +139,7 @@ const SimulationDashboardPage = () => {
                 </div>
             </div>
 
-            <EngineControlPanel 
+            <EngineControlPanel
                 simulationId={currentSimulation.id}
                 streamData={streamData}
                 totalPower={totalPower}
@@ -151,7 +151,7 @@ const SimulationDashboardPage = () => {
                     {t('simulations.circuits', 'Electrical Circuits')}
                     <span className="bg-neutral-800 text-neutral-400 w-8 h-8 flex items-center justify-center py-0.5 px-2 mx-2 rounded-full font-mono">{currentSimulation.circuits?.length || 0}</span>
                 </h2>
-                <button 
+                <button
                     onClick={() => setIsAddCircuitOpen(true)}
                     className="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
@@ -163,9 +163,9 @@ const SimulationDashboardPage = () => {
             {/* Circuits Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentSimulation.circuits?.map((circuit, index) => (
-                    <CircuitCard 
-                        key={circuit._id || circuit.id || index} 
-                        circuit={circuit} 
+                    <CircuitCard
+                        key={circuit._id || circuit.id || index}
+                        circuit={circuit}
                         onAddDevice={() => setSelectedCircuitForDevice(circuit)}
                         simulationId={currentSimulation.id}
                     />
@@ -188,7 +188,7 @@ const SimulationDashboardPage = () => {
                 circuits={currentSimulation.circuits}
             />
 
-            <AIAdviceModal 
+            <AIAdviceModal
                 isOpen={isAdviceOpen}
                 onClose={() => { setIsAdviceOpen(false); dispatch(clearAdvice()); }}
                 adviceData={adviceData}
@@ -197,15 +197,15 @@ const SimulationDashboardPage = () => {
                 onRetry={() => dispatch(fetchAdviceAsync(currentSimulation.id))}
             />
 
-            <AddCircuitModal 
-                isOpen={isAddCircuitOpen} 
-                onClose={() => setIsAddCircuitOpen(false)} 
-                simulationId={currentSimulation.id} 
+            <AddCircuitModal
+                isOpen={isAddCircuitOpen}
+                onClose={() => setIsAddCircuitOpen(false)}
+                simulationId={currentSimulation.id}
             />
 
-            <AddDeviceModal 
-                isOpen={!!selectedCircuitForDevice} 
-                onClose={() => setSelectedCircuitForDevice(null)} 
+            <AddDeviceModal
+                isOpen={!!selectedCircuitForDevice}
+                onClose={() => setSelectedCircuitForDevice(null)}
                 circuit={selectedCircuitForDevice}
                 simulationId={currentSimulation.id}
             />
