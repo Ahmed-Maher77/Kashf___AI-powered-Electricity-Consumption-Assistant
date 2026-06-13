@@ -1,20 +1,19 @@
-import React, { useState, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import {
-    X,
-    Zap,
-    Clock,
-    TrendingDown,
-    TrendingUp,
-    Minus,
-    Plus,
     AlertCircle,
     BarChart3,
-    Power,
+    Clock,
+    Minus,
+    Plus,
+    TrendingDown,
+    TrendingUp,
+    X,
+    Zap
 } from 'lucide-react';
-import { fetchWhatIfAsync, clearWhatIf } from '../../store/simulations/simulationSlice';
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearWhatIf, fetchWhatIfAsync } from '../../store/simulations/simulationSlice';
 
 const DurationControl = ({ value, onChange }) => (
     <div className="flex items-center gap-2">
@@ -56,9 +55,8 @@ const ComparisonRow = ({ label, currentVal, whatIfVal, unit, formatter, diff }) 
             <span className="text-sm font-mono text-white text-right">{formatter ? formatter(whatIfVal) : whatIfVal}<span className="text-[10px] text-neutral-500 ml-1">{unit}</span></span>
             {(diff !== undefined || valDiff !== 0) && (
                 <div className="col-span-4 flex justify-end">
-                    <span className={`text-xs font-medium flex items-center gap-1 ${
-                        isBetter ? 'text-emerald-400' : isWorse ? 'text-red-400' : 'text-neutral-500'
-                    }`}>
+                    <span className={`text-xs font-medium flex items-center gap-1 ${isBetter ? 'text-emerald-400' : isWorse ? 'text-red-400' : 'text-neutral-500'
+                        }`}>
                         {isBetter ? <TrendingDown className="size-3" /> : isWorse ? <TrendingUp className="size-3" /> : <Minus className="size-3" />}
                         {(diff !== undefined ? diff : valDiff) > 0 ? '+' : ''}{(diff !== undefined ? diff : valDiff).toFixed(2)} {unit}
                     </span>
@@ -181,11 +179,10 @@ const WhatIfModal = ({ isOpen, onClose, simulationId, circuits }) => {
                                     <button
                                         key={deviceKey}
                                         onClick={() => toggleDevice(deviceKey, device.isOn)}
-                                        className={`w-full flex items-center justify-between p-2.5 rounded-xl text-sm transition-all ${
-                                            isChanged
+                                        className={`w-full flex items-center justify-between p-2.5 rounded-xl text-sm transition-all ${isChanged
                                                 ? 'bg-amber-500/10 border border-amber-500/30'
                                                 : 'bg-neutral-800/30 border border-transparent hover:bg-neutral-800/60'
-                                        }`}
+                                            }`}
                                     >
                                         <div className="flex items-center gap-2.5 min-w-0">
                                             <div className={`p-1 rounded-lg ${targetOn ? 'bg-amber-500/10 text-amber-400' : 'bg-neutral-800 text-neutral-500'}`}>
@@ -193,13 +190,12 @@ const WhatIfModal = ({ isOpen, onClose, simulationId, circuits }) => {
                                             </div>
                                             <div className="text-left min-w-0">
                                                 <p className="font-medium text-white truncate">{device.name}</p>
-                                                <p className="text-[10px] text-neutral-500">{device.circuitName} · {device.power}W</p>
+                                                <p className="text-[10px] text-neutral-500">{device.circuitName} · {device.wattage ?? device.power ?? 0}W</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2 shrink-0">
-                                            <span className={`text-[10px] font-bold uppercase tracking-wider ${
-                                                targetOn ? 'text-emerald-400' : 'text-neutral-500'
-                                            }`}>
+                                            <span className={`text-[10px] font-bold uppercase tracking-wider ${targetOn ? 'text-emerald-400' : 'text-neutral-500'
+                                                }`}>
                                                 {targetOn ? t('simulations.on', 'ON') : t('simulations.off', 'OFF')}
                                             </span>
                                             {isChanged && (

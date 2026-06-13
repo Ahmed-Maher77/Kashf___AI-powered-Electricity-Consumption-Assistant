@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import {
+    Coffee,
+    LoaderCircle,
+    Monitor,
+    Plus,
+    Power,
+    Sun,
+    Trash2,
+    Tv,
+    Wind
+} from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { 
-    Trash2, 
-    Power,
-    Plus,
-    Monitor,
-    Coffee,
-    Wind,
-    Sun,
-    Tv
-} from 'lucide-react';
-import { deleteCircuitAsync, deleteDeviceAsync } from '../../store/simulations/simulationSlice';
+import { deleteDeviceAsync, updateDeviceAsync } from '../../store/simulations/simulationSlice';
 import DeleteConfirmModal from './DeleteConfirmModal';
 
 // A simple icon mapper
@@ -31,6 +32,7 @@ const CircuitCard = ({ circuit, onAddDevice, simulationId }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isDeleteCircuitModalOpen, setIsDeleteCircuitModalOpen] = useState(false);
     const [deviceToDelete, setDeviceToDelete] = useState(null);
+    const [updatingDeviceId, setUpdatingDeviceId] = useState(null);
 
     const handleDeleteCircuit = async () => {
         try {
@@ -57,11 +59,31 @@ const CircuitCard = ({ circuit, onAddDevice, simulationId }) => {
         }
     };
 
+    const handleToggleDevice = async (device) => {
+        const deviceId = device._id || device.id;
+        if (!deviceId) return;
+
+        setUpdatingDeviceId(deviceId);
+        try {
+            await dispatch(updateDeviceAsync({
+                simulationId,
+                deviceId,
+                data: {
+                    isOn: !device.isOn,
+                },
+            })).unwrap();
+        } catch (error) {
+            console.error('Failed to toggle device:', error);
+        } finally {
+            setUpdatingDeviceId(null);
+        }
+    };
+
     // Calculate total power
-    const circuitPower = circuit.devices?.reduce((sum, d) => sum + (d.isOn ? d.power : 0), 0) || 0;
+    const circuitPower = circuit.devices?.reduce((sum, d) => sum + (d.isOn ? (d.wattage ?? d.power ?? 0) : 0), 0) || 0;
 
     return (
-        <div 
+        <div
             className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-5 hover:border-neutral-700 transition-colors flex flex-col h-full"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -90,15 +112,26 @@ const CircuitCard = ({ circuit, onAddDevice, simulationId }) => {
                                 </div>
                                 <div>
                                     <p className="text-sm font-medium text-white">{t(`simulations.defaults.${device.name}`, device.name)}</p>
-                                    <p className="text-xs text-neutral-500"><bdi>{device.power || 0} W</bdi></p>
+                                    <p className="text-xs text-neutral-500"><bdi>{device.wattage ?? device.power ?? 0} W</bdi></p>
                                 </div>
                             </div>
-                            
+
                             <div className="flex items-center gap-2">
-                                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full ${device.isOn ? 'bg-emerald-500/10 text-emerald-400' : 'bg-neutral-800 text-neutral-500'}`}>
+                                <button
+                                    type="button"
+                                    onClick={() => handleToggleDevice(device)}
+                                    disabled={updatingDeviceId === (device._id || device.id)}
+                                    className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-colors disabled:opacity-60 ${device.isOn ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20' : 'bg-neutral-800 text-neutral-500 hover:bg-neutral-700 hover:text-neutral-300'}`}
+                                    title={device.isOn ? t('simulations.turnOffDevice', 'Turn off device') : t('simulations.turnOnDevice', 'Turn on device')}
+                                >
+                                    {updatingDeviceId === (device._id || device.id) ? (
+                                        <LoaderCircle className="size-3.5 animate-spin" />
+                                    ) : (
+                                        <Power className="size-3.5" />
+                                    )}
                                     {device.isOn ? t('simulations.on', 'ON') : t('simulations.off', 'OFF')}
-                                </span>
-                                <button 
+                                </button>
+                                <button
                                     onClick={() => setDeviceToDelete(device)}
                                     className="p-1.5 text-neutral-500 hover:bg-red-500/10 hover:text-red-400 rounded-lg transition-all"
                                     title={t('simulations.deleteDevice', 'Delete Device')}
@@ -109,7 +142,7 @@ const CircuitCard = ({ circuit, onAddDevice, simulationId }) => {
                         </div>
                     );
                 })}
-                
+
                 {(!circuit.devices || circuit.devices.length === 0) && (
                     <div className="py-4 text-center text-sm text-neutral-500">
                         {t('simulations.noDevices', 'No devices connected')}
@@ -119,14 +152,14 @@ const CircuitCard = ({ circuit, onAddDevice, simulationId }) => {
 
             {/* Circuit Footer Actions */}
             <div className="mt-4 pt-4 border-t border-neutral-800 flex gap-2">
-                <button 
+                <button
                     onClick={onAddDevice}
                     className="flex-1 bg-kashf-blue/10 hover:bg-kashf-blue/20 text-kashf-light-blue py-2 rounded-xl text-sm font-medium transition-colors flex items-center justify-center gap-2"
                 >
                     <Plus className="size-4" />
                     {t('simulations.addDeviceBtn', 'Add Device')}
                 </button>
-                <button 
+                <button
                     onClick={() => setIsDeleteCircuitModalOpen(true)}
                     className="p-2 border border-neutral-700 hover:bg-red-500/10 hover:border-red-500/30 hover:text-red-400 text-neutral-400 rounded-xl transition-colors"
                     title={t('simulations.deleteCircuit', 'Delete Circuit')}

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import simulationService from '../../services/simulationService';
 
 const initialState = {
@@ -80,6 +80,14 @@ export const deleteCircuitAsync = createAsyncThunk('simulations/deleteCircuit', 
 export const addDeviceAsync = createAsyncThunk('simulations/addDevice', async ({ simulationId, data }, thunkAPI) => {
     try {
         return await simulationService.addDevice(simulationId, data);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message || error.toString());
+    }
+});
+// Updates a device inside a simulation.
+export const updateDeviceAsync = createAsyncThunk('simulations/updateDevice', async ({ simulationId, deviceId, data }, thunkAPI) => {
+    try {
+        return await simulationService.updateDevice(simulationId, deviceId, data);
     } catch (error) {
         return thunkAPI.rejectWithValue(error.message || error.toString());
     }
@@ -304,6 +312,16 @@ const simulationSlice = createSlice({
                 state.error = null;
             })
             .addCase(addDeviceAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
+                const index = state.simulations.findIndex(s => s.id === action.payload.id);
+                if (index !== -1) {
+                    state.simulations[index] = action.payload;
+                }
+                if (state.currentSimulation?.id === action.payload.id) {
+                    state.currentSimulation = action.payload;
+                }
+            })
+            .addCase(updateDeviceAsync.fulfilled, (state, action) => {
                 state.isLoading = false;
                 const index = state.simulations.findIndex(s => s.id === action.payload.id);
                 if (index !== -1) {
