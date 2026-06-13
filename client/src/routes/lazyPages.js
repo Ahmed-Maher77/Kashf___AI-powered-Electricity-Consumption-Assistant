@@ -2,13 +2,7 @@ import { lazy } from "react";
 
 export const WelcomePage = lazy(() => import("../pages/user/WelcomePage"));
 export const AuthPage = lazy(() => import("../pages/user/AuthPage"));
-export const PricingPage = lazy(() => import("../pages/user/PricingPage"));
-export const ScanMeterPage = lazy(() => import("../pages/user/ScanMeterPage"));
-export const ProcessingPage = lazy(() => import("../pages/user/ProcessingPage"));
 export const DashboardPage = lazy(() => import("../pages/user/DashboardPage"));
-export const HistoryPage = lazy(() => import("../pages/user/HistoryPage"));
-export const ScanDetailsPage = lazy(() => import("../pages/user/ScanDetailsPage"));
-export const TipsPage = lazy(() => import("../pages/user/TipsPage"));
 export const ProfilePage = lazy(() => import("../pages/user/ProfilePage"));
 export const AboutPage = lazy(() => import("../pages/user/AboutPage"));
 export const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
@@ -18,9 +12,9 @@ export const ConsumptionAnalyticsPage = lazy(() => import("../pages/ConsumptionA
 export const BillsPage = lazy(() => import("../pages/BillsPage"));
 export const AiAdvisorPage = lazy(() => import("../pages/AiAdvisorPage"));
 export const AlertsPage = lazy(() => import("../pages/AlertsPage"));
-export const ReportsPage = lazy(() => import("../pages/ReportsPage"));
 export const BillingPage = lazy(() => import("../pages/BillingPage"));
 export const SimulationDashboardPage = lazy(() => import("../pages/SimulationDashboardPage"));
+export const SimulationOverviewPage = lazy(() => import("../pages/SimulationOverviewPage"));
 export const AdminDashboardPage = lazy(() =>
     import("../pages/admin/AdminDashboardPage")
 );

@@ -54,9 +54,6 @@ const DashboardMetersPreview = ({ hasMeters, registeredMeters }) => {
                         <Link to="/meters" className="px-6 py-2.5 bg-kashf-blue hover:opacity-90 text-kashf-bg rounded-xl text-sm font-semibold transition-opacity">
                             {t('dashboardOverview.addMeterCta')}
                         </Link>
-                        <Link to="/scan" className="px-6 py-2.5 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-white rounded-xl text-sm font-medium transition-colors">
-                            {t('dashboardOverview.scanMeterCta')}
-                        </Link>
                     </div>
                 </div>
             )}

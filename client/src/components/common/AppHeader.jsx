@@ -36,11 +36,11 @@ const AppHeader = () => {
     const navItems = [
         { to: "/dashboard", label: t("nav.dashboard") },
         { to: "/meters", label: t("nav.meters") },
+        { to: "/meters", label: t("nav.simulationOverview") },
         { to: "/analytics", label: t("nav.analytics") },
         { to: "/bills", label: t("nav.bills") },
         { to: "/ai-advisor", label: t("nav.aiAdvisor") },
         { to: "/alerts", label: t("nav.alerts") },
-        { to: "/reports", label: t("nav.reports") },
         { to: "/billing", label: t("nav.billing") },
     ];
 

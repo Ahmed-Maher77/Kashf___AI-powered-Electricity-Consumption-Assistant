@@ -10,7 +10,8 @@ import {
     Calendar,
     Sparkles,
     Activity,
-    Zap
+    Zap,
+    BarChart3,
 } from 'lucide-react';
 import { AreaChart, Area, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -76,6 +77,13 @@ const MeterCard = ({ meter, onEdit, onDelete, onViewAI }) => {
                                         >
                                             <Zap className="size-4 text-amber-400" />
                                             {t('meters.manageSimulation', "Manage Simulation")}
+                                        </button>
+                                        <button 
+                                            onClick={() => { setIsDropdownOpen(false); navigate(`/simulation-overview/${meter.id}`); }}
+                                            className="w-full text-start px-4 py-3 text-sm text-neutral-300 hover:bg-neutral-800 hover:text-white transition-colors flex items-center gap-3"
+                                        >
+                                            <BarChart3 className="size-4 text-kashf-light-blue" />
+                                            {t('meters.simulationOverview', "Simulation Overview")}
                                         </button>
                                         <button 
                                             onClick={() => { setIsDropdownOpen(false); onDelete(); }}

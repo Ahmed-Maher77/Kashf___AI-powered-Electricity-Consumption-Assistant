@@ -166,7 +166,7 @@ const Subscription = () => {
             variant="primary"
             size="md"
             className="flex-1 flex items-center justify-center gap-2"
-            onClick={() => navigate("/pricing")}
+            onClick={() => navigate("/billing")}
           >
             {t("profile.subscription.upgradePlan")}
             <ArrowUpRight className={`w-4 h-4 ${isRTL ? "rotate-270" : ""}`} />
@@ -179,7 +179,7 @@ const Subscription = () => {
               variant="primary"
               size="md"
               className="flex items-center justify-center gap-2"
-              onClick={() => navigate("/pricing")}
+              onClick={() => navigate("/billing")}
             >
               {t("profile.subscription.upgradeToFamily", { defaultValue: "Upgrade to Family" })}
               <ArrowUpRight className={`w-4 h-4 ${isRTL ? "rotate-180" : ""}`} />
@@ -188,7 +188,7 @@ const Subscription = () => {
               variant="secondary"
               size="md"
               className="flex items-center justify-center gap-2"
-              onClick={() => navigate("/pricing")}
+              onClick={() => navigate("/billing")}
             >
               <Settings className="w-4 h-4" />
               {t("profile.subscription.manageSubscription")}
@@ -201,7 +201,7 @@ const Subscription = () => {
             variant="secondary"
             size="md"
             className="flex items-center justify-center gap-2"
-            onClick={() => navigate("/pricing")}
+            onClick={() => navigate("/billing")}
           >
             <Settings className="w-4 h-4" />
             {t("profile.subscription.manageSubscription")}

@@ -8,13 +8,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import {
     WelcomePage,
     AuthPage,
-    PricingPage,
-    ScanMeterPage,
-    ProcessingPage,
     DashboardPage,
-    HistoryPage,
-    ScanDetailsPage,
-    TipsPage,
     ProfilePage,
     AboutPage,
     NotFoundPage,
@@ -30,9 +24,9 @@ import {
     BillsPage,
     AiAdvisorPage,
     AlertsPage,
-    ReportsPage,
     BillingPage,
-    SimulationDashboardPage
+    SimulationDashboardPage,
+    SimulationOverviewPage
 } from "./lazyPages";
 
 export const router = createBrowserRouter([
@@ -52,7 +46,6 @@ export const router = createBrowserRouter([
                 ),
             },
             { path: "about", element: <AboutPage /> },
-            { path: "pricing", element: <PricingPage /> },
         ],
     },
     {
@@ -67,15 +60,10 @@ export const router = createBrowserRouter([
                     { path: "bills", element: <BillsPage /> },
                     { path: "ai-advisor", element: <AiAdvisorPage /> },
                     { path: "alerts", element: <AlertsPage /> },
-                    { path: "reports", element: <ReportsPage /> },
                     { path: "billing", element: <BillingPage /> },
                     { path: "profile", element: <ProfilePage /> },
-                    { path: "scan", element: <ScanMeterPage /> },
-                    { path: "processing", element: <ProcessingPage /> },
-                    { path: "history", element: <HistoryPage /> },
-                    { path: "history/:id", element: <ScanDetailsPage /> },
-                    { path: "tips", element: <TipsPage /> },
                     { path: "meters/:id/simulation", element: <SimulationDashboardPage /> },
+                    { path: "simulation-overview/:id", element: <SimulationOverviewPage /> },
                 ],
             },
         ],
