@@ -49,20 +49,19 @@ const AboutStory = () => {
                             badge={<SectionBadge>{t("about.story.badge")}</SectionBadge>}
                             title={t("about.story.title")}
                             accent={t("about.story.titleAccent")}
-                            baseDelay={0}
                         />
 
                         <div className="flex flex-col gap-5 text-neutral-400 text-base leading-relaxed">
-                            <motion.p variants={fadeUpVariants} custom={0}>{t("about.story.body1")}</motion.p>
-                            <motion.p variants={fadeUpVariants} custom={1}>{t("about.story.body2")}</motion.p>
-                            <motion.p variants={fadeUpVariants} custom={2}>{t("about.story.body3")}</motion.p>
+                            <motion.p variants={fadeUpVariants} >{t("about.story.body1")}</motion.p>
+                            <motion.p variants={fadeUpVariants} >{t("about.story.body2")}</motion.p>
+                            <motion.p variants={fadeUpVariants} >{t("about.story.body3")}</motion.p>
                         </div>
                     </div>
 
                     {/* ── Right: timeline ── */}
                     <div className="flex flex-col gap-0 pt-2 w-fit">
                         {timelineKeys.map((key, i) => (
-                            <motion.div key={key} variants={fadeUpVariants} custom={i + 3}>
+                            <motion.div key={key} variants={fadeUpVariants} >
                                 <TimelineItem
                                     year={t(`about.story.timeline.${key}.year`)}
                                     label={t(`about.story.timeline.${key}.label`)}

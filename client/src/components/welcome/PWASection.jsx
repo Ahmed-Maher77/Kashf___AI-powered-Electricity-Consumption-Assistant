@@ -50,12 +50,10 @@ const PWASection = () => {
                                 defaultValue:
                                     "Kashf is a Progressive Web App — install it directly from your browser on any phone or desktop. Works offline, gets push notifications, feels like a native app.",
                             })}
-                            baseDelay={0}
                         />
 
                         <motion.div 
                             variants={fadeUpVariants} 
-                            custom={0}
                             initial="hidden"
                             whileInView="show"
                             viewport={{ once: true, margin: "-50px" }}
@@ -66,7 +64,6 @@ const PWASection = () => {
                         {/* Platform pills */}
                         <motion.div 
                             variants={fadeUpVariants} 
-                            custom={1} 
                             initial="hidden"
                             whileInView="show"
                             viewport={{ once: true, margin: "-50px" }}
@@ -86,7 +83,6 @@ const PWASection = () => {
                     {/* ── Right: phone mockup + install toast ── */}
                     <motion.div 
                         variants={fadeUpVariants} 
-                        custom={2} 
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: true, margin: "-50px" }}

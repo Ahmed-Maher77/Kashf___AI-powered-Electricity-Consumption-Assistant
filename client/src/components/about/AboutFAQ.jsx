@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { fadeUpVariants } from "../../utils/animations";
 import { ChevronDown } from "lucide-react";
-import SectionBadge from "../welcome/ui/SectionBadge";
+
 import SectionHeading from "../welcome/ui/SectionHeading";
 
 const FAQ_KEYS = ["q1", "q2", "q3", "q4", "q5", "q6", "q7"];
@@ -56,12 +56,11 @@ const AboutFAQ = () => {
                     accent={t("about.faq.titleAccent")}
                     subtitle={t("about.faq.subtitle")}
                     className="mb-12"
-                    baseDelay={0}
                 />
 
                 <div className="flex flex-col gap-3 mt-14">
-                    {FAQ_KEYS.map((key, i) => (
-                        <motion.div key={key} variants={fadeUpVariants} custom={i}>
+                    {FAQ_KEYS.map((key) => (
+                        <motion.div key={key} variants={fadeUpVariants} >
                             <FAQItem
                                 q={t(`about.faq.items.${key}.q`)}
                                 a={t(`about.faq.items.${key}.a`)}
@@ -70,7 +69,7 @@ const AboutFAQ = () => {
                     ))}
                 </div>
 
-                <motion.p variants={fadeUpVariants} custom={FAQ_KEYS.length} className="text-center text-neutral-500 text-sm mt-10">
+                <motion.p variants={fadeUpVariants} className="text-center text-neutral-500 text-sm mt-10">
                     {t("about.faq.contact")}{" "}
                     <a href="mailto:ahmedmaher.dev1@gmail.com" className="text-kashf-blue hover:underline">
                         {t("about.faq.email")}

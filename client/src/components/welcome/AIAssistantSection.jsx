@@ -80,12 +80,10 @@ const AIAssistantSection = () => {
                                 defaultValue:
                                     "Kashf's AI analyzes your usage profile and gives you actionable steps in plain Egyptian Arabic — not generic tips, but recommendations based on your actual home behavior.",
                             })}
-                            baseDelay={0}
                         />
 
                         <motion.div 
-                            variants={fadeUpVariants} 
-                            custom={0}
+                            variants={fadeUpVariants}
                             initial="hidden"
                             whileInView="show"
                             viewport={{ once: true, margin: "-50px" }}
@@ -96,8 +94,7 @@ const AIAssistantSection = () => {
 
                     {/* ── Right: chat UI ── */}
                     <motion.div 
-                        variants={fadeUpVariants} 
-                        custom={1} 
+                        variants={fadeUpVariants}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: true, margin: "-50px" }}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { fadeUpVariants as itemVariants, containerVariants } from "../../utils/animations";
+import { fadeUpVariants } from "../../utils/animations";
 
 // Gap between cards in px — must match the gap-6 class (1.5rem = 24px)
 const CARD_GAP = 24;
@@ -241,17 +241,13 @@ const TestimonialsSection = () => {
     );
 
     return (
-        <motion.section 
+        <section 
             id="testimonials" 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-50px" }}
             className="py-16 md:py-24 border-t border-kashf-border"
         >
             <div className="max-w-6xl mx-auto px-5 sm:px-8">
                 {/* Heading */}
-                <motion.div variants={itemVariants} className="text-center mb-12">
+                <motion.div variants={fadeUpVariants} className="text-center mb-12">
                     <h2 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-extrabold text-neutral-100 tracking-tight line-height-15">
                         {t("testimonials.title", { defaultValue: "Egyptians who got their bills under control" })}
                     </h2>
@@ -261,7 +257,7 @@ const TestimonialsSection = () => {
                 </motion.div>
 
                 {/* Slider */}
-                <motion.div variants={itemVariants} className="relative">
+                <motion.div variants={fadeUpVariants} className="relative">
                     <div
                         ref={scrollContainerRef}
                         className="overflow-x-auto scrollbar-hide select-none"
@@ -336,7 +332,7 @@ const TestimonialsSection = () => {
                     display: none;
                 }
             `}</style>
-        </motion.section>
+        </section>
     );
 };
 

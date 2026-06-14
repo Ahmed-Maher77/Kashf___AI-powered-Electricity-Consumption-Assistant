@@ -1,8 +1,6 @@
-import "./PricingSection.css";
-import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { fadeUpVariants as itemVariants, containerVariants } from "../../utils/animations";
+import { fadeUpVariants } from "../../utils/animations";
 import {
     Zap,
     Check,
@@ -12,7 +10,6 @@ import {
     Bell,
     TrendingUp,
     Users,
-    ShieldCheck,
     History,
     Headphones,
     ScanLine,
@@ -24,31 +21,19 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/auth/authSlice";
 
-/* ─────────────────────────────────────────────
-   DATA
-───────────────────────────────────────────── */
 const plans = [
     {
         key: "free",
         price: null,
-        accentClass: "plan-accent--free",
         badgeKey: null,
         Icon: Layers,
         features: [
             { key: "feat.oneMeter", def: "1 electricity meter", Icon: Layers },
             { key: "feat.freeCoins", def: "50 Coins per month", Icon: Zap },
             { key: "feat.meterScan", def: "Meter scanning", Icon: ScanLine },
-            {
-                key: "feat.consumTrack",
-                def: "Consumption tracking",
-                Icon: ActivitySquare,
-            },
+            { key: "feat.consumTrack", def: "Consumption tracking", Icon: ActivitySquare },
             { key: "feat.sheriha", def: "Sheriha monitoring", Icon: Bell },
-            {
-                key: "feat.dashboard",
-                def: "Basic dashboard",
-                Icon: LayoutDashboard,
-            },
+            { key: "feat.dashboard", def: "Basic dashboard", Icon: LayoutDashboard },
             { key: "feat.history", def: "Monthly history", Icon: CalendarDays },
         ],
         ctaKey: "pricing.cta.free",
@@ -58,38 +43,17 @@ const plans = [
     {
         key: "plus",
         price: 49,
-        accentClass: "plan-accent--plus",
         badgeKey: "pricing.badge.popular",
         badgeDef: "Most Popular",
         Icon: Zap,
         features: [
             { key: "feat.twoMeters", def: "Up to 2 electricity meters", Icon: Layers },
             { key: "feat.plusCoins", def: "150 Coins per month", Icon: Zap },
-            {
-                key: "feat.everythingFree",
-                def: "Everything in Free",
-                Icon: Check,
-            },
-            {
-                key: "feat.aiRecs",
-                def: "AI-powered recommendations",
-                Icon: Star,
-            },
-            {
-                key: "feat.billForecast",
-                def: "Bill forecasting",
-                Icon: TrendingUp,
-            },
-            {
-                key: "feat.earlyAlerts",
-                def: "Early Sheriha alerts",
-                Icon: Bell,
-            },
-            {
-                key: "feat.analytics",
-                def: "Advanced analytics",
-                Icon: BarChart2,
-            },
+            { key: "feat.everythingFree", def: "Everything in Free", Icon: Check },
+            { key: "feat.aiRecs", def: "AI-powered recommendations", Icon: Star },
+            { key: "feat.billForecast", def: "Bill forecasting", Icon: TrendingUp },
+            { key: "feat.earlyAlerts", def: "Early Sheriha alerts", Icon: Bell },
+            { key: "feat.analytics", def: "Advanced analytics", Icon: BarChart2 },
             { key: "feat.push", def: "Push notifications", Icon: Bell },
             { key: "feat.pwa", def: "Installable PWA", Icon: Layers },
         ],
@@ -100,33 +64,16 @@ const plans = [
     {
         key: "family",
         price: 99,
-        accentClass: "plan-accent--family",
         badgeKey: null,
         Icon: Users,
         features: [
             { key: "feat.fiveMeters", def: "Up to 5 electricity meters", Icon: Layers },
             { key: "feat.familyCoins", def: "300 Coins per month", Icon: Zap },
-            {
-                key: "feat.everythingPlus",
-                def: "Everything in Plus",
-                Icon: Check,
-            },
-            {
-                key: "feat.familyReports",
-                def: "Family usage reports",
-                Icon: BarChart2,
-            },
+            { key: "feat.everythingPlus", def: "Everything in Plus", Icon: Check },
+            { key: "feat.familyReports", def: "Family usage reports", Icon: BarChart2 },
             { key: "feat.sharedAccess", def: "Shared access", Icon: Users },
-            {
-                key: "feat.extHistory",
-                def: "Extended consumption history",
-                Icon: History,
-            },
-            {
-                key: "feat.prioritySupport",
-                def: "Priority support",
-                Icon: Headphones,
-            },
+            { key: "feat.extHistory", def: "Extended consumption history", Icon: History },
+            { key: "feat.prioritySupport", def: "Priority support", Icon: Headphones },
         ],
         ctaKey: "pricing.cta.family",
         ctaDef: "Choose Family",
@@ -134,15 +81,12 @@ const plans = [
     },
 ];
 
-/* ─────────────────────────────────────────────
-   SUB-COMPONENTS
-───────────────────────────────────────────── */
 const FeatureItem = ({ Icon, label }) => (
-    <li className="feature-item">
-        <span className="feature-icon-wrap" aria-hidden="true">
-            <Icon className="feature-icon" />
+    <li className="flex items-center gap-2.5">
+        <span className="size-6 flex items-center justify-center shrink-0" aria-hidden="true">
+            <Icon className="size-3.5 text-kashf-blue" strokeWidth={2.5} />
         </span>
-        <span className="feature-label">{label}</span>
+        <span className="text-sm text-neutral-300 leading-relaxed">{label}</span>
     </li>
 );
 
@@ -157,7 +101,6 @@ const PlanCard = ({ plan, t }) => {
         badgeKey,
         badgeDef,
         featured,
-        accentClass,
     } = plan;
     const titleKey = `pricing.plan.${key}.title`;
     const descKey = `pricing.plan.${key}.desc`;
@@ -186,49 +129,53 @@ const PlanCard = ({ plan, t }) => {
 
     return (
         <motion.div
-            variants={plan.variants}
-            className={`plan-card ${featured ? "plan-card--featured" : ""} ${accentClass}`}
+            variants={fadeUpVariants}
+            className={`relative rounded-2xl border p-7 pt-8 flex flex-col gap-6 ${
+                featured 
+                    ? "border-kashf-blue/40 bg-kashf-blue/[0.04] pt-11 before:absolute before:inset-0 before:rounded-2xl before:pointer-events-none before:bg-gradient-to-br before:from-kashf-blue/[0.07] before:to-transparent" 
+                    : "border-kashf-border bg-white/[0.03] hover:border-white/15"
+            }`}
         >
             {featured && (
-                <div className="plan-badge-wrap">
-                    <span className="plan-badge">
-                        <Star className="plan-badge-icon" aria-hidden="true" />
+                <div className="absolute top-0 left-1/2 -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1 px-4 py-1.5 bg-kashf-blue text-kashf-bg text-xs font-bold tracking-wide rounded-b-xl whitespace-nowrap">
+                        <Star className="size-3 fill-kashf-bg stroke-none" aria-hidden="true" />
                         {t(badgeKey, { defaultValue: badgeDef })}
                     </span>
                 </div>
             )}
 
-            <div className="plan-header">
-                <span className="plan-icon-wrap" aria-hidden="true">
-                    <Icon className="plan-icon" />
+            <div className="flex items-center gap-3">
+                <span className="size-10 flex items-center justify-center shrink-0" aria-hidden="true">
+                    <Icon className="size-5 text-kashf-blue" strokeWidth={1.75} />
                 </span>
                 <div>
-                    <h3 className="plan-title">
+                    <h3 className="text-lg font-bold text-neutral-100">
                         {t(titleKey, { defaultValue: titleDefs[key] })}
                     </h3>
-                    <p className="plan-desc">
+                    <p className="text-xs text-neutral-500 leading-tight">
                         {t(descKey, { defaultValue: descDefs[key] })}
                     </p>
                 </div>
             </div>
 
-            <div className="plan-price">
+            <div className="flex items-baseline gap-1.5 pb-5 border-b border-white/10">
                 {price ? (
                     <>
-                        <span className="price-currency">EGP</span>
-                        <span className="price-amount">{price}</span>
-                        <span className="price-period">
-                            /{t("pricing.month", { defaultValue: "month" })}
+                        <span className="text-sm font-semibold text-neutral-400 tracking-wide">EGP</span>
+                        <span className={`text-5xl font-extrabold leading-none tracking-tight ${featured ? 'text-kashf-blue' : 'text-neutral-100'}`}>
+                            {price}
                         </span>
+                        <span className="text-sm text-neutral-500">/{t("pricing.month", { defaultValue: "month" })}</span>
                     </>
                 ) : (
-                    <span className="price-free">
+                    <span className="text-5xl font-extrabold leading-none tracking-tight text-neutral-100">
                         {t("pricing.free", { defaultValue: "Free" })}
                     </span>
                 )}
             </div>
 
-            <ul className="feature-list">
+            <ul className="flex flex-col gap-2.5 flex-1">
                 {features.map((f) => (
                     <FeatureItem
                         key={f.key}
@@ -238,11 +185,15 @@ const PlanCard = ({ plan, t }) => {
                 ))}
             </ul>
 
-             <div className="plan-cta-wrap">
+            <div className="mt-auto">
                 <button
                     onClick={handleCtaClick}
                     disabled={isDisabled}
-                    className={`plan-cta ${featured ? "plan-cta--featured" : ""} ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                    className={`w-full py-3 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                        featured
+                            ? "bg-kashf-blue text-kashf-bg hover:bg-kashf-light-blue active:scale-[0.98]"
+                            : "bg-transparent border border-white/20 text-neutral-200 hover:bg-white/10 hover:border-white/30 active:scale-[0.98]"
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                     {isCurrent 
                         ? t("billing.currentPlanBtn", { defaultValue: "Current Plan" }) 
@@ -253,59 +204,49 @@ const PlanCard = ({ plan, t }) => {
     );
 };
 
-/* ─────────────────────────────────────────────
-   MAIN SECTION
-───────────────────────────────────────────── */
 const PricingSection = () => {
     const { t } = useTranslation();
 
     return (
-        <motion.section 
-            className="pricing-section" 
+        <section 
+            className="relative py-20 md:py-24 overflow-hidden border-t border-kashf-border
+                before:pointer-events-none before:absolute before:w-[520px] before:h-[520px] before:top-[-80px] before:inset-x-[-120px] before:rounded-full before:blur-[80px] before:opacity-[0.12] before:bg-kashf-accent
+                after:pointer-events-none after:absolute after:w-[400px] after:h-[400px] after:bottom-[-60px] after:inset-x-[-80px] after:rounded-full after:blur-[80px] after:opacity-[0.12] after:bg-sky-500" 
             id="pricing"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-50px" }}
         >
-            <motion.div variants={itemVariants} className="pricing-header px-4 sm:px-6">
-                <span className="pricing-eyebrow">
-                    <Zap />
+            <div className="relative z-10 text-center max-w-xl mx-auto mb-16 px-4 sm:px-6">
+                <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-kashf-accent/35 bg-kashf-accent/10 text-kashf-accent text-xs font-semibold uppercase tracking-wider mb-8">
+                    <Zap className="size-3.5" />
                     {t("pricing.eyebrow", { defaultValue: "Simple Pricing" })}
                 </span>
-                <h2 className="pricing-headline">
-                    {t("pricing.headline", {
-                        defaultValue: "Start Saving on Your",
-                    })}{" "}
-                    <span>
-                        {t("pricing.headlineAccent", {
-                            defaultValue: "Electricity Bill Today",
-                        })}
+                <h2 className="text-[clamp(2rem,4vw,2.9rem)] font-extrabold leading-snish text-neutral-100 tracking-tight mb-4">
+                    {t("pricing.headline", { defaultValue: "Start Saving on Your" })}{" "}
+                    <span className="text-kashf-blue">
+                        {t("pricing.headlineAccent", { defaultValue: "Electricity Bill Today" })}
                     </span>
                 </h2>
-                <p className="pricing-subline">
+                <p className="text-base text-neutral-400 leading-relaxed">
                     {t("pricing.subline", {
-                        defaultValue:
-                            "Everything you need to monitor consumption, avoid costly Sheriha jumps, and receive AI-powered recommendations.",
+                        defaultValue: "Everything you need to monitor consumption, avoid costly Sheriha jumps, and receive AI-powered recommendations.",
                     })}
                 </p>
-            </motion.div>
+            </div>
 
-            <div className="pricing-grid px-4 sm:px-6">
+            <div className="relative z-10 grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5 max-w-[1080px] mx-auto px-4 sm:px-6 items-start">
                 {plans.map((plan) => (
-                    <PlanCard key={plan.key} plan={{...plan, variants: itemVariants}} t={t} />
+                    <PlanCard key={plan.key} plan={plan} t={t} />
                 ))}
             </div>
 
-            <motion.p variants={itemVariants} className="pricing-footnote px-4 sm:px-6">
+            <p className="relative z-10 text-center mt-10 text-xs text-neutral-500 px-4 sm:px-6">
                 {t("pricing.footnote", {
                     defaultValue: "No credit card required · Cancel anytime ·",
                 })}{" "}
-                <NavLink to="/about#about-faq" className="pricing-faq-link">
+                <NavLink to="/about#about-faq" className="text-kashf-blue hover:underline no-underline">
                     {t("pricing.faqLink", { defaultValue: "Read the FAQ" })}
                 </NavLink>
-            </motion.p>
-        </motion.section>
+            </p>
+        </section>
     );
 };
 

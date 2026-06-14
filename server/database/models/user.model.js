@@ -91,6 +91,11 @@ const userSchema = new mongoose.Schema(
             emailNotifications: { type: Boolean, default: true  },
             smsNotifications:   { type: Boolean, default: false },
         },
+        // ─── Admin fields ──────────────────────────────────────────────────
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
         // ─── Security fields ───────────────────────────────────────────────
         twoFactorEnabled: {
             type: Boolean,

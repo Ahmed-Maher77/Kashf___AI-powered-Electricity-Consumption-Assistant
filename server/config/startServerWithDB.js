@@ -1,6 +1,8 @@
 import dbConnect from "../database/dbConnect.js";
 import cron from "node-cron";
 import { checkExpiredSubscriptions } from "../src/services/subscription.service.js";
+import seedTiers from "../database/seed/tier.seed.js";
+import seedSystemConfig from "../database/seed/systemConfig.seed.js";
 
 const MAX_RETRIES = 5;
 let retryCount = 0;
@@ -9,6 +11,8 @@ let retryCount = 0;
 const startServerWithDB = async (app, port) => {
     try {
         await dbConnect();
+        await seedTiers();
+        await seedSystemConfig();
 
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);

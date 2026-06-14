@@ -1,10 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
 import { 
     LayoutDashboard, 
-    Zap, 
     BarChart2, 
     Receipt, 
     Sparkles, 
@@ -24,7 +22,7 @@ import { useLogout } from "../../hooks/auth/useLogout";
 
 const DashboardSidebar = () => {
     const navigate = useNavigate();
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
     const { t, i18n } = useTranslation();
     const isRtl = i18n.dir() === "rtl";
     const user = useSelector(selectUser);
@@ -41,7 +39,6 @@ const DashboardSidebar = () => {
 
     const navItems = [
         { to: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
-        // { to: "/meters", label: t("nav.meters"), icon: Zap },
         { to: "/meters", label: t("nav.simulationOverview"), icon: Gauge },
         { to: "/analytics", label: t("nav.analytics"), icon: BarChart2 },
         { to: "/bills", label: t("nav.bills"), icon: Receipt },
@@ -52,78 +49,54 @@ const DashboardSidebar = () => {
     ];
 
     const navLinkClass = ({ isActive }) =>
-        `flex items-center gap-3 py-2 rounded-lg text-sm font-medium transition-all overflow-hidden ${
+        `flex items-center gap-3 py-2 rounded-lg text-sm font-medium transition-colors ${
             isActive 
             ? "bg-kashf-blue/10 text-kashf-light-blue" 
-            : "text-neutral-400 hover:bg-neutral-800/50 hover:text-neutral-100"
+            : "text-neutral-400 hover:bg-kashf-hover hover:text-neutral-100"
         } ${isCollapsed ? "justify-center px-0 mx-2" : "px-3"}`;
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.05 }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, x: isRtl ? 20 : -20 },
-        show: { opacity: 1, x: 0, transition: { duration: 0.3, ease: "easeOut" } }
-    };
 
     return (
         <aside className={`${isCollapsed ? 'w-20' : 'w-64'} transition-all duration-300 flex-shrink-0 border-e border-kashf-border bg-kashf-bg flex flex-col h-full overflow-y-auto scrollbar-tight`}>
-            <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col h-full w-full">
-                <motion.div variants={itemVariants} className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} px-4 pt-4 pb-2 shrink-0`}>
+            <div className="flex flex-col h-full w-full">
+                <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} px-4 pt-4 pb-2 shrink-0`}>
                     {!isCollapsed && (
                         <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider select-none">
                             {t("nav.mainMenu", { defaultValue: "Main Menu" })}
                         </span>
                     )}
-                    <button onClick={() => setIsCollapsed(!isCollapsed)} className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors">
+                    <button onClick={() => setIsCollapsed(!isCollapsed)} className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-kashf-hover transition-colors">
                         {isCollapsed 
                             ? (isRtl ? <ChevronLeft className="size-5" /> : <ChevronRight className="size-5" />) 
                             : (isRtl ? <ChevronRight className="size-5" /> : <ChevronLeft className="size-5" />)}
                     </button>
-                </motion.div>
+                </div>
 
-                {/* Navigation */}
                 <nav className={`flex-1 py-6 space-y-1 ${isCollapsed ? 'px-2' : 'px-4'}`}>
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         return (
-                            <motion.div key={`${item.to}-${item.label}`} variants={itemVariants}>
-                                <NavLink to={item.to} className={navLinkClass} title={isCollapsed ? item.label : undefined}>
-                                    <div className="relative flex items-center justify-center shrink-0">
-                                        <Icon className="size-5 shrink-0" />
-                                        {item.to === "/alerts" && unreadCount > 0 && (
-                                            <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white px-1 shadow-md">
-                                                {unreadCount}
-                                            </span>
-                                        )}
-                                    </div>
-                                    {!isCollapsed && <span className="truncate flex-1">{item.label}</span>}
-                                    {!isCollapsed && item.to === "/alerts" && unreadCount > 0 && (
-                                        <span className={`flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white px-1.5 ${isRtl ? "mr-auto" : "ml-auto"}`}>
+                            <NavLink key={item.to} to={item.to} className={navLinkClass} title={isCollapsed ? item.label : undefined}>
+                                <div className="relative flex items-center justify-center shrink-0">
+                                    <Icon className="size-5 shrink-0" />
+                                    {item.to === "/alerts" && unreadCount > 0 && (
+                                        <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white px-1 shadow-md">
                                             {unreadCount}
                                         </span>
                                     )}
-                                </NavLink>
-                            </motion.div>
+                                </div>
+                                {!isCollapsed && <span className="truncate flex-1">{item.label}</span>}
+                            </NavLink>
                         );
                     })}
                 </nav>
 
-                {/* Bottom Section */}
                 <div className={`p-4 border-t border-kashf-border space-y-4 shrink-0 flex flex-col ${isCollapsed ? 'items-center' : ''}`}>
-                    {/* Plan Indicator */}
                     {!isCollapsed && (
-                        <motion.div variants={itemVariants} className="p-3 bg-neutral-900 rounded-lg border border-neutral-800 transition-all">
+                        <div className="p-3 bg-neutral-900 rounded-lg border border-neutral-800">
                             <div className="flex justify-between items-center mb-2">
                                 <span className="text-xs text-neutral-400">{t('nav.currentPlan')}</span>
                                 <span className="text-[10px] font-bold text-kashf-light-blue bg-kashf-blue/10 px-2 py-0.5 rounded uppercase tracking-wider">{planName}</span>
                             </div>
-                            {/* Usage Indicator */}
                             <div className="space-y-1">
                                 <div className="flex justify-between text-xs">
                                     <span className="text-neutral-400">{t('nav.coinsUsage')}</span>
@@ -133,14 +106,12 @@ const DashboardSidebar = () => {
                                     <div className="h-full bg-kashf-blue rounded-full transition-all duration-500" style={{ width: `${usagePercentage}%` }}></div>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     )}
 
-                    {/* Profile Actions */}
-                    <motion.div 
-                        variants={itemVariants} 
+                    <div 
                         onClick={() => navigate('/profile')}
-                        className={`flex items-center cursor-pointer hover:bg-neutral-800/50 p-2 -mx-2 rounded-lg transition-colors ${isCollapsed ? 'justify-center' : 'gap-3 w-full'}`}
+                        className={`flex items-center cursor-pointer hover:bg-kashf-hover p-2 -mx-2 rounded-lg transition-colors ${isCollapsed ? 'justify-center' : 'gap-3 w-full'}`}
                         title={t("nav.profile")}
                     >
                         <UserAvatar user={user} className="size-9 shrink-0" />
@@ -150,14 +121,14 @@ const DashboardSidebar = () => {
                                 {user?.email && <p className="truncate text-[10px] text-neutral-500">{user.email}</p>}
                             </div>
                         )}
-                    </motion.div>
+                    </div>
                     
-                    <motion.div variants={itemVariants} className="w-full flex justify-center">
+                    <div className="w-full flex justify-center">
                         <button
                             type="button"
                             disabled={logoutMutation.isPending}
                             onClick={() => logoutMutation.mutate()}
-                            className={`flex items-center text-red-400 hover:bg-red-400/10 transition-colors cursor-pointer ${
+                            className={`flex items-center text-red-400 hover:bg-red-400/10 transition-colors ${
                                 isCollapsed ? 'justify-center p-2 rounded-lg' : 'w-full gap-3 px-3 py-2 rounded-lg text-sm font-medium'
                             }`}
                             title={isCollapsed ? t("auth.logout", { defaultValue: "Log out" }) : undefined}
@@ -165,9 +136,9 @@ const DashboardSidebar = () => {
                             <LogOut className="size-5 shrink-0" />
                             {!isCollapsed && <span className="truncate">{logoutMutation.isPending ? t("auth.logoutSubmitting", { defaultValue: "Logging out..." }) : t("auth.logout", { defaultValue: "Log out" })}</span>}
                         </button>
-                    </motion.div>
+                    </div>
                 </div>
-            </motion.div>
+            </div>
         </aside>
     );
 };

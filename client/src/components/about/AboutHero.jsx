@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { fadeUpVariants, containerVariants } from "../../utils/animations";
-import { Zap } from "lucide-react";
+import { fadeUpVariants } from "../../utils/animations";
 
 const AboutHero = () => {
     const { t } = useTranslation();
@@ -29,20 +28,20 @@ const AboutHero = () => {
                 }}
             />
 
-            <motion.div variants={containerVariants} initial="hidden" animate="show" className="relative max-w-4xl mx-auto flex flex-col items-center gap-7 py-24 md:py-32">
+            <motion.div className="relative max-w-4xl mx-auto flex flex-col items-center gap-7 py-24 md:py-32">
                 {/* Heading */}
-                <motion.h1 custom={0.1} variants={fadeUpVariants} className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight rtl:leading-[1.5] text-neutral-100">
+                <motion.h1 variants={fadeUpVariants} initial="hidden" animate="show" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight rtl:leading-[1.5] text-neutral-100">
                     {t("about.hero.title")}{" "}
                     <span className="text-kashf-blue">{t("about.hero.titleAccent")}</span>
                 </motion.h1>
 
                 {/* Description */}
-                <motion.p custom={0.3} variants={fadeUpVariants} className="text-neutral-400 text-base  md:text-lg leading-[1.3] rtl:leading-relaxed max-w-2xl">
+                <motion.p variants={fadeUpVariants} initial="hidden" animate="show" className="text-neutral-400 text-base  md:text-lg leading-[1.3] rtl:leading-relaxed max-w-2xl">
                     {t("about.hero.desc")}
                 </motion.p>
 
                 {/* CTA */}
-                <motion.div custom={0.5} variants={fadeUpVariants}>
+                <motion.div variants={fadeUpVariants} initial="hidden" animate="show">
                     <Link
                         to="/register"
                         className="mt-2 inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-kashf-blue text-black font-bold text-sm hover:brightness-110 transition-all duration-200 no-underline"
@@ -52,7 +51,7 @@ const AboutHero = () => {
                 </motion.div>
 
                 {/* Animated scroll hint */}
-                <motion.div custom={0.7} variants={fadeUpVariants} className="absolute bottom-8 left-1/2 -translate-x-1/2">
+                <motion.div variants={fadeUpVariants} initial="hidden" animate="show" className="absolute bottom-8 left-1/2 -translate-x-1/2">
                     <button
                         onClick={scrollToNext}
                         aria-label="Scroll to next section"

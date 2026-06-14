@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { fadeUpVariants } from "../../utils/animations";
 import { Target, Globe, Users, Zap } from "lucide-react";
-import SectionBadge from "../welcome/ui/SectionBadge";
 import SectionHeading from "../welcome/ui/SectionHeading";
 
 const ICONS = [Target, Globe, Users, Zap];
@@ -35,12 +34,11 @@ const AboutValues = () => {
                     accent={t("about.values.titleAccent")}
                     subtitle={t("about.values.subtitle")}
                     className="mb-14"
-                    baseDelay={0}
-                />
+                        />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-18">
                     {VALUE_KEYS.map((key, i) => (
-                        <motion.div key={key} variants={fadeUpVariants} custom={i} className="h-full">
+                        <motion.div key={key} variants={fadeUpVariants} className="h-full">
                             <ValueCard
                                 icon={ICONS[i]}
                                 title={t(`about.values.${key}.title`)}

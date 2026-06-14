@@ -1,166 +1,127 @@
 import { Suspense, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink, useOutlet, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { NavLink, useNavigate, useOutlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import {
+    LayoutDashboard,
+    Users,
+    Monitor,
+    Layers,
+    Bell,
+    Settings,
+    ChevronLeft,
+    ChevronRight,
+    LogOut,
+} from "lucide-react";
 import Loader from "../components/Loader/Loader";
-
-const adminNavLinkClass = ({ isActive }) =>
-    `rounded-md px-3 py-2 text-sm no-underline transition-colors ${
-        isActive
-            ? "bg-kashf-muted text-kashf-light-blue"
-            : "text-neutral-500 hover:bg-kashf-muted hover:text-kashf-light-blue"
-    }`;
+import UserAvatar from "../components/common/UserAvatar";
+import { selectUser } from "../store/auth/authSlice";
+import { useLogout } from "../hooks/auth/useLogout";
 
 const AdminLayout = () => {
     const { t, i18n } = useTranslation();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const navigate = useNavigate();
+    const [isCollapsed, setIsCollapsed] = useState(false);
     const isRtl = i18n.dir() === "rtl";
-    const { pathname } = useLocation();
     const currentOutlet = useOutlet();
+    const user = useSelector(selectUser);
+    const logoutMutation = useLogout();
 
-    const adminNavItems = [
-        { to: "/admin/dashboard", label: t("adminNav.dashboard") },
-        { to: "/admin/users", label: t("adminNav.users") },
-        { to: "/admin/scans", label: t("adminNav.scans") },
-        { to: "/admin/tiers", label: t("adminNav.tiers") },
-        { to: "/admin/ai-logs", label: t("adminNav.aiLogs") },
-        { to: "/admin/notifications", label: t("adminNav.notifications") },
-        { to: "/admin/settings", label: t("adminNav.settings") },
+    const navItems = [
+        { to: "/admin/dashboard", label: t("adminNav.dashboard"), icon: LayoutDashboard },
+        { to: "/admin/users", label: t("adminNav.users"), icon: Users },
+        { to: "/admin/scans", label: t("adminNav.scans"), icon: Monitor },
+        { to: "/admin/tiers", label: t("adminNav.tiers"), icon: Layers },
+        { to: "/admin/notifications", label: t("adminNav.notifications"), icon: Bell },
+        { to: "/admin/settings", label: t("adminNav.settings"), icon: Settings },
     ];
 
-    // Close sidebar on Escape key press
-    useEffect(() => {
-        if (!isSidebarOpen) return;
-        const handleKeyDown = (e) => {
-            if (e.key === "Escape") {
-                setIsSidebarOpen(false);
-            }
-        };
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isSidebarOpen]);
+    const navLinkClass = ({ isActive }) =>
+        `flex items-center gap-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+            isActive
+                ? "bg-kashf-blue/10 text-kashf-light-blue"
+                : "text-neutral-400 hover:bg-kashf-hover hover:text-neutral-100"
+        } ${isCollapsed ? "justify-center px-0 mx-2" : "px-3"}`;
 
-    // Prevent body scroll when sidebar is open
     useEffect(() => {
-        if (isSidebarOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, [isSidebarOpen]);
+        const main = document.getElementById("admin-main-content");
+        if (main) main.scrollTo(0, 0);
+    });
 
     return (
-        <div className="flex min-h-screen flex-col bg-kashf-bg text-neutral-100 sm:flex-row">
-            {/* Mobile Top Bar */}
-            <header className="flex h-16 shrink-0 items-center justify-between border-b border-kashf-border bg-kashf-surface px-6 sm:hidden">
-                <NavLink
-                    to="/admin/dashboard"
-                    className="text-base font-bold text-kashf-blue no-underline"
-                >
-                    {t("common.brandAdmin")}
-                </NavLink>
-                <button
-                    type="button"
-                    onClick={() => setIsSidebarOpen(true)}
-                    className="rounded-md p-1.5 text-neutral-400 hover:bg-kashf-muted hover:text-neutral-100 cursor-pointer"
-                    aria-label="Open admin menu"
-                >
-                    <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </header>
+        <div className="flex h-screen bg-kashf-bg text-neutral-100 overflow-hidden">
+            <aside className={`${isCollapsed ? "w-20" : "w-64"} transition-all duration-300 flex-shrink-0 border-e border-kashf-border bg-kashf-bg flex flex-col h-full overflow-y-auto scrollbar-tight`}>
+                <div className="flex flex-col h-full w-full">
+                    <div className={`flex items-center ${isCollapsed ? "justify-center" : "justify-between"} px-4 pt-4 pb-2 shrink-0`}>
+                        {!isCollapsed && (
+                            <NavLink to="/admin/dashboard" className="text-xs font-bold text-kashf-blue uppercase tracking-wider no-underline select-none">
+                                {t("common.brandAdmin")}
+                            </NavLink>
+                        )}
+                        <button onClick={() => setIsCollapsed(!isCollapsed)} className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-kashf-hover transition-colors">
+                            {isCollapsed
+                                ? (isRtl ? <ChevronLeft className="size-5" /> : <ChevronRight className="size-5" />)
+                                : (isRtl ? <ChevronRight className="size-5" /> : <ChevronLeft className="size-5" />)}
+                        </button>
+                    </div>
 
-            {/* Mobile Drawer Backdrop */}
-            <div
-                className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-xs transition-opacity duration-300 sm:hidden ${
-                    isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-                }`}
-                onClick={() => setIsSidebarOpen(false)}
-            />
+                    <nav className={`flex-1 py-6 space-y-1 ${isCollapsed ? "px-2" : "px-4"}`}>
+                        {navItems.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <NavLink key={item.to} to={item.to} className={navLinkClass} title={isCollapsed ? item.label : undefined}>
+                                    <Icon className="size-5 shrink-0" />
+                                    {!isCollapsed && <span className="truncate flex-1">{item.label}</span>}
+                                </NavLink>
+                            );
+                        })}
+                    </nav>
 
-            {/* Admin Sidebar / Mobile Drawer */}
-            <aside
-                className={`
-                    fixed inset-y-0 end-0 z-50 w-64 max-w-[80vw] bg-kashf-surface p-6 shadow-xl border-s border-kashf-border transition-transform duration-300 flex flex-col gap-6
-                    sm:static sm:z-0 sm:w-56 sm:max-w-none sm:translate-x-0 sm:border-e sm:border-s-0 sm:border-b-0 sm:p-6 sm:shadow-none
-                    ${isSidebarOpen ? "translate-x-0" : isRtl ? "-translate-x-full" : "translate-x-full"}
-                `}
-            >
-                {/* Mobile Drawer Header */}
-                <div className="flex items-center justify-between sm:hidden">
-                    <span className="text-base font-bold text-kashf-blue">
-                        {t("common.brandAdmin")}
-                    </span>
-                    <button
-                        type="button"
-                        onClick={() => setIsSidebarOpen(false)}
-                        className="rounded-md p-1.5 text-neutral-400 hover:bg-kashf-muted hover:text-neutral-100 cursor-pointer"
-                        aria-label="Close admin menu"
-                    >
-                        <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                {/* Desktop Logo */}
-                <NavLink
-                    to="/admin/dashboard"
-                    className="hidden sm:block text-base font-bold text-kashf-blue no-underline"
-                >
-                    {t("common.brandAdmin")}
-                </NavLink>
-
-                {/* Navigation Links */}
-                <nav
-                    className="flex flex-col gap-1.5"
-                    aria-label={t("adminNav.aria")}
-                >
-                    {adminNavItems.map(({ to, label }) => (
+                    <div className={`p-4 border-t border-kashf-border space-y-4 shrink-0 flex flex-col ${isCollapsed ? "items-center" : ""}`}>
                         <NavLink
-                            key={to}
-                            to={to}
-                            onClick={() => setIsSidebarOpen(false)}
-                            className={adminNavLinkClass}
+                            to="/"
+                            className={`flex items-center text-sm text-neutral-600 hover:text-kashf-light-blue transition-colors ${isCollapsed ? "justify-center p-2 rounded-lg" : "gap-2 px-2 py-1.5"}`}
+                            title={isCollapsed ? t("adminNav.backToApp") : undefined}
                         >
-                            {label}
+                            <ChevronLeft className="size-4 shrink-0" />
+                            {!isCollapsed && <span>{t("adminNav.backToApp")}</span>}
                         </NavLink>
-                    ))}
-                </nav>
 
-                {/* Back to App Link */}
-                <NavLink
-                    to="/"
-                    onClick={() => setIsSidebarOpen(false)}
-                    className="text-sm text-neutral-600 no-underline transition-colors hover:text-kashf-light-blue mt-auto pt-4 border-t border-kashf-border sm:border-0 sm:pt-0"
-                >
-                    {t("adminNav.backToApp")}
-                </NavLink>
+                        <div
+                            onClick={() => navigate("/profile")}
+                            className={`flex items-center cursor-pointer hover:bg-kashf-hover p-2 -mx-2 rounded-lg transition-colors ${isCollapsed ? "justify-center" : "gap-3 w-full"}`}
+                            title={t("nav.profile")}
+                        >
+                            <UserAvatar user={user} className="size-9 shrink-0" />
+                            {!isCollapsed && (
+                                <div className="min-w-0 flex-1">
+                                    <p className="truncate text-sm font-semibold text-neutral-100">{user?.username || t("profileMenu.fallbackName")}</p>
+                                    {user?.email && <p className="truncate text-[10px] text-neutral-500">{user.email}</p>}
+                                </div>
+                            )}
+                        </div>
+
+                        <button
+                            type="button"
+                            disabled={logoutMutation.isPending}
+                            onClick={() => logoutMutation.mutate()}
+                            className={`flex items-center text-red-400 hover:bg-red-400/10 transition-colors ${
+                                isCollapsed ? "justify-center p-2 rounded-lg" : "w-full gap-3 px-3 py-2 rounded-lg text-sm font-medium"
+                            }`}
+                            title={isCollapsed ? t("auth.logout") : undefined}
+                        >
+                            <LogOut className="size-5 shrink-0" />
+                            {!isCollapsed && <span className="truncate">{logoutMutation.isPending ? t("auth.logoutSubmitting") : t("auth.logout")}</span>}
+                        </button>
+                    </div>
+                </div>
             </aside>
 
-            {/* Main Content Pane */}
-            <div className="flex-1 overflow-auto">
+            <main id="admin-main-content" className="flex-1 overflow-y-auto bg-neutral-900/30">
                 <Suspense fallback={<Loader />}>
-                    <AnimatePresence mode="wait">
-                        {currentOutlet && (
-                            <motion.div
-                                key={pathname}
-                                initial={{ opacity: 0, y: 15 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -15 }}
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
-                                className="h-full w-full"
-                            >
-                                {currentOutlet}
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                    {currentOutlet}
                 </Suspense>
-            </div>
+            </main>
         </div>
     );
 };
