@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -12,16 +12,35 @@ import {
     Activity,
     Zap,
     BarChart3,
+    Power
 } from 'lucide-react';
-import { AreaChart, Area, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
-import ChartTooltip from '../common/ChartTooltip';
+import {
+    flattenDevicesWithConsumption,
+    computeTotalConsumptionKWh,
+    formatKWh,
+} from '../../utils/consumption';
 
-const MeterCard = ({ meter, onEdit, onDelete, onViewAI }) => {
+const MeterCard = ({ meter, simulation, onEdit, onDelete, onViewAI }) => {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const isPrimary = meter.tier > 1;
+
+    const devices = useMemo(
+        () => flattenDevicesWithConsumption(simulation?.circuits, simulation?.runtime),
+        [simulation]
+    );
+
+    const totalConsumption = useMemo(() => {
+        if (simulation?.circuits) {
+            return computeTotalConsumptionKWh(simulation.circuits, simulation.runtime);
+        }
+        return meter.consumption ?? 0;
+    }, [simulation, meter.consumption]);
+
+    const displayTier = simulation?.runtime?.currentTier ?? meter.tier;
+    const isPrimary = displayTier > 1;
     const chartData = meter.trend.map((val, i) => ({ day: `Day ${i*5}`, usage: val }));
 
     return (
@@ -105,13 +124,13 @@ const MeterCard = ({ meter, onEdit, onDelete, onViewAI }) => {
                 <div>
                     <p className="text-xs text-neutral-500 mb-1">{t('meters.consumption')}</p>
                     <p className="text-lg sm:text-xl font-bold text-white flex items-baseline gap-1 rtl:justify-end whitespace-nowrap" dir="ltr">
-                        {meter.consumption} <span className="text-[10px] sm:text-xs text-neutral-500 font-normal">kWh</span>
+                        {formatKWh(totalConsumption)} <span className="text-[10px] sm:text-xs text-neutral-500 font-normal">kWh</span>
                     </p>
                 </div>
                 <div>
                     <p className="text-xs text-neutral-500 mb-1">{t('meters.currentTier')}</p>
                     <p className="text-lg sm:text-xl font-bold text-amber-400 whitespace-nowrap">
-                        {t('common.tier', { tier: meter.tier || '--' })}
+                        {t('common.tier', { tier: displayTier || '--' })}
                     </p>
                 </div>
                 <div>
@@ -122,6 +141,64 @@ const MeterCard = ({ meter, onEdit, onDelete, onViewAI }) => {
                     </p>
                 </div>
             </div>
+
+            {/* Linked simulation devices */}
+            {simulation && (
+                <div className="mb-6">
+                    <div className="flex items-center justify-between mb-2">
+                        <p className="text-xs text-neutral-500 uppercase tracking-wider">{t('meters.linkedDevices', 'Linked Devices')}</p>
+                        {simulation.runtime?.running && (
+                            <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-medium uppercase tracking-wider">
+                                <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                {t('simulations.running', 'Running')}
+                            </span>
+                        )}
+                    </div>
+                    <div className="space-y-1 max-h-36 overflow-y-auto rounded-xl border border-neutral-800/80 bg-neutral-900/30 p-1">
+                        {devices.length > 0 ? devices.map((device) => (
+                            <div
+                                key={device.id}
+                                className="flex items-center justify-between py-2 px-2 rounded-lg hover:bg-neutral-800/30 transition-colors"
+                            >
+                                <div className="flex items-center gap-2.5 min-w-0">
+                                    <div className={`${device.isOn ? 'text-amber-500' : 'text-neutral-500'}`}>
+                                        <Power className="size-4 shrink-0" />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-medium text-white truncate">
+                                            {t(`simulations.defaults.${device.name}`, device.name)}
+                                        </p>
+                                        <p className="text-[10px] text-neutral-500 truncate">
+                                            {t(`simulations.defaults.${device.circuitName}`, device.circuitName)} · <bdi>{device.wattage} W</bdi>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="text-end shrink-0 ms-2">
+                                    <p className="text-xs font-bold text-white" dir="ltr">
+                                        {formatKWh(device.consumptionKWh)}
+                                        <span className="text-[10px] text-neutral-500 font-normal ms-1">kWh</span>
+                                    </p>
+                                    <span className={`text-[10px] font-bold uppercase tracking-wider ${device.isOn ? 'text-emerald-400' : 'text-neutral-500'}`}>
+                                        {device.isOn ? t('simulations.on', 'ON') : t('simulations.off', 'OFF')}
+                                    </span>
+                                </div>
+                            </div>
+                        )) : (
+                            <p className="text-xs text-neutral-500 text-center py-4">
+                                {t('meters.noLinkedDevices', 'No devices in the linked simulation yet.')}
+                            </p>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {!simulation && (
+                <div className="mb-6 rounded-xl border border-dashed border-neutral-800 bg-neutral-900/20 px-4 py-3">
+                    <p className="text-xs text-neutral-500 text-center rtl:leading-relaxed">
+                        {t('meters.noSimulationLinked', 'No simulation linked. Manage simulation to track device consumption.')}
+                    </p>
+                </div>
+            )}
 
             {/* Mini Chart */}
             <div className="h-24 w-full mb-6">

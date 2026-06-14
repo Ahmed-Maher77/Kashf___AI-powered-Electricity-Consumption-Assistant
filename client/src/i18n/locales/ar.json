@@ -1355,7 +1355,10 @@
         "simModeSkip": "تخطى الآن",
         "simModeSkipDesc": "قم بإنشاء العداد فقط. سأقوم بإعداد المحاكاة لاحقًا.",
         "manageSimulation": "إدارة المحاكاة",
-        "simulationOverview": "نظرة عامة على المحاكاة"
+        "simulationOverview": "نظرة عامة على المحاكاة",
+        "linkedDevices": "الأجهزة المرتبطة",
+        "noLinkedDevices": "لا توجد أجهزة في المحاكاة المرتبطة بعد.",
+        "noSimulationLinked": "لا توجد محاكاة مرتبطة. قم بإدارة المحاكاة لتتبع استهلاك الأجهزة."
     },
     "simulations": {
         "dashboardTitle": "لوحة التحكم في المحاكاة",

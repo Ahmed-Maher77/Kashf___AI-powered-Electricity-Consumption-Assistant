@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { fetchMeters, createMeterAsync, updateMeterAsync, deleteMeterAsync } from '../store/meters/metersSlice';
+import { fetchSimulations } from '../store/simulations/simulationSlice';
 import { Plus } from 'lucide-react';
 
 import PageHeader from '../components/layout/PageHeader';
@@ -20,11 +21,34 @@ const MyMetersPage = () => {
 
     const dispatch = useDispatch();
     const { meters, isLoading, error } = useSelector(state => state.meters);
-    
-    // Fetch user meters on initial mount
+    const { simulations } = useSelector(state => state.simulations);
+
+    const refreshSimulations = useCallback(() => {
+        dispatch(fetchSimulations());
+    }, [dispatch]);
+
+    // Fetch user meters and linked simulations on initial mount
     useEffect(() => {
         dispatch(fetchMeters());
-    }, [dispatch]);
+        refreshSimulations();
+    }, [dispatch, refreshSimulations]);
+
+    const hasRunningSimulation = useMemo(
+        () => simulations.some(s => s.runtime?.running),
+        [simulations]
+    );
+
+    // Poll simulation runtime while any engine is running
+    useEffect(() => {
+        if (!hasRunningSimulation) return undefined;
+
+        const intervalId = setInterval(refreshSimulations, 5000);
+        return () => clearInterval(intervalId);
+    }, [hasRunningSimulation, refreshSimulations]);
+
+    const getSimulationForMeter = useCallback((meter) => {
+        return simulations.find(s => s.name === meter.name) || null;
+    }, [simulations]);
     
     // Modal states for adding/editing meters, viewing AI insights, and deletion confirmation
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -92,7 +116,8 @@ const MyMetersPage = () => {
                 {meters.map((meter) => (
                     <MeterCard 
                         key={meter.id} 
-                        meter={meter} 
+                        meter={meter}
+                        simulation={getSimulationForMeter(meter)}
                         onEdit={() => openEditModal(meter)}
                         onDelete={() => handleDeleteClick(meter)}
                         onViewAI={() => openAIModal(meter)}

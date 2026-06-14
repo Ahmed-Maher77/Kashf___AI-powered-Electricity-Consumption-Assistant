@@ -1357,7 +1357,10 @@
         "simModeSkip": "Skip for now",
         "simModeSkipDesc": "Just create the meter. I'll setup the simulation later.",
         "manageSimulation": "Manage Simulation",
-        "simulationOverview": "Simulation Overview"
+        "simulationOverview": "Simulation Overview",
+        "linkedDevices": "Linked Devices",
+        "noLinkedDevices": "No devices in the linked simulation yet.",
+        "noSimulationLinked": "No simulation linked. Manage simulation to track device consumption."
     },
     "simulations": {
         "dashboardTitle": "Simulation Dashboard",
