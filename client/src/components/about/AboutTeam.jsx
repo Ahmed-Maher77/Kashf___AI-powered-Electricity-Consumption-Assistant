@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { fadeUpVariants } from "../../utils/animations";
-import SectionBadge from "../welcome/ui/SectionBadge";
 import SectionHeading from "../welcome/ui/SectionHeading";
 import teamAhmed from "../../assets/images/team_members/ahmed-maher-algohary.jpg";
 import teamRashad from "../../assets/images/team_members/mohamed-rashad.jpeg";
@@ -87,12 +86,11 @@ const AboutTeam = () => {
                     accent={t("about.team.titleAccent")}
                     subtitle={t("about.team.subtitle")}
                     className="mb-14"
-                    baseDelay={0}
                 />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mt-20">
-                    {MEMBERS.map((member, i) => (
-                        <motion.div key={member.key} variants={fadeUpVariants} custom={i} className="h-full">
+                    {MEMBERS.map((member) => (
+                        <motion.div key={member.key} variants={fadeUpVariants} className="h-full">
                             <TeamCard member={member} />
                         </motion.div>
                     ))}

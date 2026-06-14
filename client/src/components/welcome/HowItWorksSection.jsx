@@ -38,7 +38,6 @@ const HowItWorksSection = () => {
                     accent={t("howItWorks.titleAccent")}
                     subtitle={t("howItWorks.subtitle")}
                     className="mb-16"
-                    baseDelay={0}
                 />
 
                 {/* Steps grid */}
@@ -49,24 +48,12 @@ const HowItWorksSection = () => {
                     viewport={{ once: true, margin: "-50px" }}
                 >
                     {STEP_KEYS.map((key, index) => (
-                        <motion.div key={key} variants={fadeUpVariants} custom={index} className="h-full">
+                        <motion.div key={key} variants={fadeUpVariants} className="h-full">
                             <div
-                                className="relative group flex flex-col gap-4 rounded-2xl border border-neutral-800 bg-[#0d0d12] p-6 transition-all duration-500 hover:border-kashf-blue/40 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(6,182,212,0.12)] h-full"
+                                className="group flex flex-col gap-4 rounded-2xl border border-kashf-border bg-kashf-surface/50 p-6 transition-colors hover:border-kashf-blue/40 hover:bg-kashf-muted/50 h-full"
                             >
-                            {/* Hover glow */}
-                            <span
-                                aria-hidden
-                                className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br from-kashf-blue/8 via-kashf-light-blue/5 to-emerald-400/5"
-                            />
-                            {/* Top line accent */}
-                            <span
-                                aria-hidden
-                                className="pointer-events-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-kashf-blue/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                            />
-
-                            {/* Icon + step number row */}
                             <div className="flex items-center gap-3">
-                                <span className="flex size-10 items-center justify-center rounded-xl bg-kashf-blue/10 border border-kashf-blue/20 transition-all duration-500 group-hover:scale-110 shrink-0">
+                                <span className="flex size-10 items-center justify-center rounded-xl bg-kashf-blue/10 border border-kashf-blue/20 shrink-0">
                                     {STEP_ICONS[index]}
                                 </span>
                                 <span className="text-3xl font-extrabold text-neutral-700 select-none">
@@ -74,14 +61,13 @@ const HowItWorksSection = () => {
                                 </span>
                             </div>
 
-                            <h3 className="relative z-10 text-base font-semibold text-neutral-100 mt-1 transition-colors duration-300 group-hover:text-kashf-light-blue">
+                            <h3 className="text-base font-semibold text-neutral-100 mt-1 transition-colors group-hover:text-kashf-light-blue">
                                 {t(`howItWorks.steps.${key}.title`)}
                             </h3>
-                            <p className="relative z-10 text-sm text-neutral-500 leading-relaxed mt-auto transition-colors duration-300 group-hover:text-neutral-300">
+                            <p className="text-sm text-neutral-500 leading-relaxed mt-auto transition-colors group-hover:text-neutral-300">
                                 {t(`howItWorks.steps.${key}.desc`)}
                             </p>
 
-                            {/* Connector chevron (desktop only, hidden on last) */}
                             {index < STEP_KEYS.length - 1 && (
                                 <span
                                     aria-hidden

@@ -12,19 +12,14 @@ const CAPABILITIES = [
 ];
 
 const FeatureCard = ({ Icon, title, desc }) => (
-    <div className="group relative overflow-hidden rounded-2xl border border-neutral-800 bg-[#0d0d12] p-6 flex flex-col gap-3 transition-all duration-500 ease-out cursor-pointer hover:border-kashf-blue/40 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(6,182,212,0.15)]">
-        {/* Hover glow blob */}
-        <span aria-hidden className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br from-kashf-blue/8 via-kashf-light-blue/5 to-emerald-400/5" />
-        {/* Top line accent */}
-        <span aria-hidden className="pointer-events-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-kashf-blue/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-        <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-xl text-kashf-light-blue transition-all duration-500 group-hover:scale-110">
+    <div className="group rounded-2xl border border-kashf-border bg-kashf-surface/50 p-6 flex flex-col gap-3 transition-colors hover:border-kashf-blue/40 hover:bg-kashf-muted/50">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl text-kashf-light-blue">
             <Icon className="size-6" strokeWidth={1.5} aria-hidden="true" />
         </div>
-        <h3 className="relative z-10 text-base font-semibold text-neutral-100 mt-1 transition-colors duration-300 group-hover:text-kashf-light-blue">
+        <h3 className="text-base font-semibold text-neutral-100 mt-1 transition-colors group-hover:text-kashf-light-blue">
             {title}
         </h3>
-        <p className="relative z-10 text-sm text-neutral-500 leading-relaxed mt-auto transition-colors duration-300 group-hover:text-neutral-300">
+        <p className="text-sm text-neutral-500 leading-relaxed mt-auto transition-colors group-hover:text-neutral-300">
             {desc}
         </p>
     </div>
@@ -39,13 +34,12 @@ const FeaturesSection = () => {
             className="mb-10 scroll-mt-24 py-16 md:py-24 overflow-hidden"
         >
             <div className="max-w-6xl mx-auto px-5 sm:px-8">
-                <SectionHeading
-                    align="center"
-                    title={t("welcome.coreCapabilities", { defaultValue: "Core Capabilities" })}
-                    subtitle={t("welcome.featuresText")}
-                    className="mb-16"
-                    baseDelay={0}
-                />
+                    <SectionHeading
+                        align="center"
+                        title={t("welcome.coreCapabilities", { defaultValue: "Core Capabilities" })}
+                        subtitle={t("welcome.featuresText")}
+                        className="mb-16"
+                    />
 
                 <motion.div 
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
@@ -53,8 +47,8 @@ const FeaturesSection = () => {
                     whileInView="show"
                     viewport={{ once: true, margin: "-50px" }}
                 >
-                    {CAPABILITIES.map((c, index) => (
-                        <motion.div key={c.titleKey} variants={fadeUpVariants} custom={index} className="h-full">
+                    {CAPABILITIES.map((c) => (
+                        <motion.div key={c.titleKey} variants={fadeUpVariants} className="h-full">
                             <FeatureCard
                                 Icon={c.Icon}
                                 title={t(c.titleKey, { defaultValue: c.titleDef })}

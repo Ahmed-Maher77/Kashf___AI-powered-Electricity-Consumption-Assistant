@@ -2,12 +2,14 @@
 @import "tailwindcss";
 
 @theme {
-    --color-kashf-blue: #00d9ff;
-    --color-kashf-light-blue: #66ecff;
-    --color-kashf-bg: #0d0d0d;
-    --color-kashf-surface: #111118;
-    --color-kashf-border: #1f1f2e;
-    --color-kashf-muted: #1a1a2e;
+    --color-kashf-blue: #06b6d4;
+    --color-kashf-light-blue: #22d3ee;
+    --color-kashf-accent: #2dd4bf;
+    --color-kashf-bg: #0a0a0f;
+    --color-kashf-surface: #12121a;
+    --color-kashf-border: #1e1e2d;
+    --color-kashf-muted: #181825;
+    --color-kashf-hover: #2a2a3a;
 }
 
 @layer base {
