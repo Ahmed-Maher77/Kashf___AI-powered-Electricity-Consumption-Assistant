@@ -60,8 +60,8 @@ const ActiveDevicesModal = ({ isOpen, onClose, currentSessionId }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/75 backdrop-blur-sm">
-      <div className="bg-neutral-900/95 border border-neutral-800 backdrop-blur-md shadow-2xl rounded-2xl max-w-md w-full p-6 relative">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-neutral-950/75 backdrop-blur-sm flex items-start justify-center p-4">
+      <div className="bg-neutral-900/95 border border-neutral-800 backdrop-blur-md shadow-2xl rounded-2xl max-w-lg w-full p-6 relative my-auto">
         <button onClick={handleClose} className={`absolute top-4 ${isRTL ? "left-4" : "right-4"} text-neutral-400 hover:text-neutral-200 transition-colors`}>
           <X className="w-5 h-5" />
         </button>
@@ -75,7 +75,7 @@ const ActiveDevicesModal = ({ isOpen, onClose, currentSessionId }) => {
         ) : devices.length === 0 ? (
           <p className="text-center text-sm text-neutral-400 py-6">{t("security.devicesModal.empty") || "No active devices found."}</p>
         ) : (
-          <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
+          <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
             {devices.map((device, idx) => {
               const isCurrent = currentSessionId ? (currentSessionId === device._id) : (idx === 0);
               return (

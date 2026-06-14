@@ -41,7 +41,7 @@ const AddCircuitModal = ({ isOpen, onClose, simulationId }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-50 overflow-y-auto flex items-start justify-center p-4">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -54,7 +54,7 @@ const AddCircuitModal = ({ isOpen, onClose, simulationId }) => {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-md bg-kashf-surface border border-kashf-border rounded-2xl shadow-2xl overflow-hidden"
+                        className="relative w-full max-w-md bg-kashf-surface border border-kashf-border rounded-2xl shadow-2xl overflow-hidden my-auto"
                     >
                         <div className="flex justify-between items-center p-6 border-b border-neutral-800">
                             <h2 className="text-xl font-bold text-white flex items-center gap-2">

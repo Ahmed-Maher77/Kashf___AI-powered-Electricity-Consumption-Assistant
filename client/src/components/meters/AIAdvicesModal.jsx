@@ -26,7 +26,7 @@ const AIAdvicesModal = ({ isOpen, onClose, meter }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-50 overflow-y-auto flex items-start justify-center p-4">
                     <motion.div 
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -36,7 +36,7 @@ const AIAdvicesModal = ({ isOpen, onClose, meter }) => {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-lg bg-kashf-surface border border-kashf-border rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
+                        className="relative w-full max-w-lg bg-kashf-surface border border-kashf-border rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh] my-auto"
                     >
                         <div className="flex justify-between items-center p-6 border-b border-neutral-800 bg-kashf-blue/5">
                             <div className="flex items-start gap-3">

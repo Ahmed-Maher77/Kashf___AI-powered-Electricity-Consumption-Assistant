@@ -9,8 +9,8 @@ const CancelSubscriptionModal = ({ isOpen, onClose, onConfirm, loading, error })
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/80 backdrop-blur-sm">
-            <div className="bg-neutral-900 border border-neutral-800 shadow-2xl rounded-2xl max-w-md w-full overflow-hidden">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-neutral-950/80 backdrop-blur-sm flex items-start justify-center p-4">
+            <div className="bg-neutral-900 border border-neutral-800 shadow-2xl rounded-2xl max-w-md w-full overflow-hidden my-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center px-6 py-4 border-b border-neutral-800 relative">
                     <div className="flex items-center gap-2">

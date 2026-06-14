@@ -106,8 +106,8 @@ const BillModal = ({ isOpen, onClose, initialData }) => {
 
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm">
-            <div className="flex min-h-full items-center justify-center p-4">
-                <div className="bg-kashf-bg border border-kashf-border rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden my-8">
+            <div className="flex min-h-full items-start justify-center p-4">
+                <div className="bg-kashf-bg border border-kashf-border rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden my-auto">
                 <div className="flex justify-between items-center p-6 border-b border-kashf-border bg-neutral-900/30">
                     <div className="flex items-center gap-3">
                         <div className="p-1 text-kashf-light-blue">

@@ -95,14 +95,14 @@ const TwoFactorAuthModal = ({ isOpen, onClose, user }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/75 backdrop-blur-sm">
-      <div className="bg-neutral-900/95 border border-neutral-800 backdrop-blur-md shadow-2xl rounded-2xl max-w-md w-full p-6 relative">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-neutral-950/75 backdrop-blur-sm flex items-start justify-center p-4">
+      <div className="bg-neutral-900/95 border border-neutral-800 backdrop-blur-md shadow-2xl rounded-2xl max-w-lg w-full p-6 relative my-auto">
         <button onClick={handleClose} className={`absolute top-4 ${isRTL ? "left-4" : "right-4"} text-neutral-400 hover:text-neutral-200 transition-colors`}>
           <X className="w-5 h-5" />
         </button>
-        <h3 className="text-lg font-semibold text-white mb-4 text-center">{t("security.twoFactorModal.title")}</h3>
+        <h3 className="text-lg font-semibold text-white mb-5 text-center">{t("security.twoFactorModal.title")}</h3>
 
-        {error && <div className="p-3 mb-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">{error}</div>}
+        {error && <div className="p-3 mb-5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">{error}</div>}
         {success && (
           <div className="p-3 mb-4 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm flex items-center justify-center gap-2">
             <CheckCircle className="w-4 h-4" />
@@ -112,12 +112,12 @@ const TwoFactorAuthModal = ({ isOpen, onClose, user }) => {
 
         {!user.twoFactorEnabled ? (
           <form onSubmit={handleEnable2fa} className="space-y-4 text-center">
-            <p className="text-sm text-neutral-300 mb-4">{t("security.twoFactorModal.enableInstructions")}</p>
+            <p className="text-sm text-neutral-300 mb-5">{t("security.twoFactorModal.enableInstructions")}</p>
 
             {loading && !twoFactorSecret ? (
               <div className="flex justify-center p-6"><Loader2 className="w-6 h-6 text-kashf-blue animate-spin" /></div>
             ) : (
-              <div className="p-4 bg-neutral-950 border border-neutral-800 rounded-xl mb-4">
+              <div className="p-4 bg-neutral-950 border border-neutral-800 rounded-xl mb-7">
                 <span className="block text-xs text-neutral-400 mb-1">{t("security.twoFactorModal.secretKey")}</span>
                 <span className="font-mono text-white text-sm select-all tracking-wider">{twoFactorSecret}</span>
               </div>

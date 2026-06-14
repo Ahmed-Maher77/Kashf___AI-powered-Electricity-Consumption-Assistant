@@ -44,13 +44,32 @@ const ConnectedMeters = () => {
     }
   };
 
+  const getLocalizedErrorMessage = (errMsg, t) => {
+    if (!errMsg) return '';
+    const errMsgStr = typeof errMsg === 'string' ? errMsg : String(errMsg);
+    if (errMsgStr.includes("maximum number of meters allowed")) {
+      const match = errMsgStr.match(/\((\d+)\)/);
+      const limit = match ? match[1] : '';
+      return t("meters.maxMetersError", { 
+        limit, 
+        defaultValue: `You have reached the maximum number of meters allowed for your plan (${limit}). Please upgrade your plan to register more meters.` 
+      });
+    }
+    if (errMsgStr.includes("already exists")) {
+      return t("meters.alreadyExistsError", { 
+        defaultValue: "Meter with this number already exists for this user." 
+      });
+    }
+    return t("meters.errorLoading", "Failed to load meters. Please try again.");
+  };
+
   return (
     <div className="mb-6 relative">
       {showError && error && (
         <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-sm text-red-400 flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex items-center gap-2">
             <AlertCircle className="size-4 shrink-0" />
-            <span>{t("meters.errorLoading", "Failed to load meters. Please try again.")}</span>
+            <span>{getLocalizedErrorMessage(error, t)}</span>
           </div>
           <button 
             onClick={() => setShowError(false)} 

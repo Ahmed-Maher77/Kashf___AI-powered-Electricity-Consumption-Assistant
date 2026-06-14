@@ -9,7 +9,7 @@ const DeleteMeterModal = ({ isOpen, onClose, onConfirm }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-50 overflow-y-auto flex items-start justify-center p-4">
                     <motion.div 
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -19,7 +19,7 @@ const DeleteMeterModal = ({ isOpen, onClose, onConfirm }) => {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-sm bg-kashf-surface border border-kashf-border rounded-2xl shadow-2xl p-6 flex flex-col items-center text-center"
+                        className="relative w-full max-w-sm bg-kashf-surface border border-kashf-border rounded-2xl shadow-2xl p-6 flex flex-col items-center text-center my-auto"
                     >
                         <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-4 text-red-500">
                             <Trash2 className="size-8" />

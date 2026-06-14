@@ -54,8 +54,8 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/75 backdrop-blur-sm">
-      <div className="bg-neutral-900/95 border border-red-900/35 backdrop-blur-md shadow-2xl rounded-2xl max-w-md w-full p-6 relative">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-neutral-950/75 backdrop-blur-sm flex items-start justify-center p-4">
+      <div className="bg-neutral-900/95 border border-red-900/35 backdrop-blur-md shadow-2xl rounded-2xl max-w-md w-full p-6 relative my-auto">
         <button onClick={handleClose} className={`absolute top-4 ${isRTL ? "left-4" : "right-4"} text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer`}>
           <X className="w-5 h-5" />
         </button>

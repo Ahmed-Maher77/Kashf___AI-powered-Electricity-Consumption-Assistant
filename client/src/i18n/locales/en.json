@@ -1353,6 +1353,7 @@
         "subtitle": "Manage and monitor all your connected electricity meters.",
         "errorLoading": "Failed to load meters. Please try again.",
         "failedToSave": "Failed to save meter. Please check your plan limits.",
+        "maxMetersError": "You have reached the maximum number of meters allowed for your plan ({{limit}}). Please upgrade your plan to register more meters.",
         "addMeter": "Add New Meter",
         "registerMeter": "Register New Meter",
         "registerMeterDesc": "Add another property or sub-meter to track its consumption.",

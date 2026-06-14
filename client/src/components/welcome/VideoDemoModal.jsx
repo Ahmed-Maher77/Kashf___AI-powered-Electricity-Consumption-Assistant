@@ -1,16 +1,29 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const VideoDemoModal = ({ isOpen, onClose }) => {
     const { t } = useTranslation();
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
         <div
-            className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/30 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-[2000] overflow-y-auto bg-black/30 backdrop-blur-sm flex items-start justify-center p-4"
             onClick={onClose}
         >
             <div
-                className="relative w-full max-w-3xl overflow-hidden rounded-xl border border-kashf-border bg-kashf-surface shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+                className="relative w-full max-w-3xl overflow-hidden rounded-xl border border-kashf-border bg-kashf-surface shadow-2xl animate-in fade-in zoom-in-95 duration-200 my-auto"
                 onClick={(e) => e.stopPropagation()}
             >
                 <button

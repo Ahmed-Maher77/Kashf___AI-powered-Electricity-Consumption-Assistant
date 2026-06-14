@@ -60,6 +60,37 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
         setStep(1);
     };
 
+    // Prevent body scroll when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isOpen]);
+
+    const getLocalizedErrorMessage = (errMsg) => {
+        if (!errMsg) return '';
+        const errMsgStr = typeof errMsg === 'string' ? errMsg : String(errMsg);
+        if (errMsgStr.includes("maximum number of meters allowed")) {
+            const match = errMsgStr.match(/\((\d+)\)/);
+            const limit = match ? match[1] : '';
+            return t("meters.maxMetersError", { 
+                limit, 
+                defaultValue: `You have reached the maximum number of meters allowed for your plan (${limit}). Please upgrade your plan to register more meters.` 
+            });
+        }
+        if (errMsgStr.includes("already exists")) {
+            return t("meters.alreadyExistsError", { 
+                defaultValue: "Meter with this number already exists for this user." 
+            });
+        }
+        return errMsgStr;
+    };
+
     // Handles final form submission.
     const handleSubmit = async () => {
         setIsSaving(true);
@@ -80,7 +111,7 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
             }
         } catch (err) {
             console.error("Failed to save:", err);
-            setError(err.message || err || t("meters.failedToSave", "Failed to save meter. Please check your plan limits."));
+            setError(getLocalizedErrorMessage(err.message || err || t("meters.failedToSave", "Failed to save meter. Please check your plan limits.")));
         } finally {
             setIsSaving(false);
         }
@@ -89,17 +120,17 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-50 overflow-y-auto flex items-start justify-center p-4">
                     <motion.div 
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
                         onClick={onClose}
                     />
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-xl bg-kashf-surface border border-kashf-border rounded-2xl shadow-2xl overflow-hidden"
+                        className="relative w-full max-w-xl bg-kashf-surface border border-kashf-border rounded-2xl shadow-2xl overflow-hidden my-auto"
                     >
                         <div className="flex justify-between items-center p-6 border-b border-neutral-800">
                             <h2 className="text-xl font-bold text-white flex items-center gap-2">
