@@ -18,6 +18,12 @@ const AppLayout = () => {
     useEffect(() => {
         dispatch(fetchMeters());
         dispatch(fetchAlerts());
+        
+        const interval = setInterval(() => {
+            dispatch(fetchAlerts());
+        }, 60000);
+        
+        return () => clearInterval(interval);
     }, [dispatch]);
 
     // Scroll to top on route change
