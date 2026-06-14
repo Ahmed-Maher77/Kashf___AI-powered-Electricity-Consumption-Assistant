@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { X, Receipt, AlertCircle } from "lucide-react";
 import { addBillAsync, editBillAsync } from "../../store/bills/billsSlice";
+import { fetchMeters } from "../../store/meters/metersSlice";
 import BillingPeriodSection from "./BillingPeriodSection";
 import UsageDataSection from "./UsageDataSection";
 import FinancialSummarySection from "./FinancialSummarySection";
@@ -10,6 +11,7 @@ import FinancialSummarySection from "./FinancialSummarySection";
 const BillModal = ({ isOpen, onClose, initialData }) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const { meters } = useSelector((state) => state.meters);
 
     useEffect(() => {
         const mainContent = document.getElementById("main-content");
@@ -23,6 +25,12 @@ const BillModal = ({ isOpen, onClose, initialData }) => {
         };
     }, [isOpen]);
 
+    useEffect(() => {
+        if (isOpen) {
+            dispatch(fetchMeters());
+        }
+    }, [isOpen, dispatch]);
+
     const [formData, setFormData] = useState({
         month: "",
         consumption: "",
@@ -30,6 +38,7 @@ const BillModal = ({ isOpen, onClose, initialData }) => {
         amount: "",
         status: "pending",
         dueDate: "",
+        meter: "",
     });
 
     useEffect(() => {
@@ -41,6 +50,7 @@ const BillModal = ({ isOpen, onClose, initialData }) => {
                 amount: initialData.amount || "",
                 status: initialData.status || "pending",
                 dueDate: initialData.dueDate ? new Date(initialData.dueDate).toISOString().split('T')[0] : "",
+                meter: initialData.meter ? (initialData.meter.id || initialData.meter._id || initialData.meter) : "",
             });
         } else {
             setFormData({
@@ -50,6 +60,7 @@ const BillModal = ({ isOpen, onClose, initialData }) => {
                 amount: "",
                 status: "pending",
                 dueDate: "",
+                meter: "",
             });
         }
     }, [initialData, isOpen]);
@@ -73,6 +84,7 @@ const BillModal = ({ isOpen, onClose, initialData }) => {
                 consumption: Number(formData.consumption),
                 tier: Number(formData.tier),
                 amount: Number(formData.amount),
+                meter: formData.meter || undefined,
             };
 
             if (initialData) {
@@ -124,7 +136,7 @@ const BillModal = ({ isOpen, onClose, initialData }) => {
                     <div className="space-y-8">
                         {/* Period & Usage Grid */}
                         <div className="grid grid-cols-1 gap-8">
-                            <BillingPeriodSection formData={formData} handleChange={handleChange} />
+                            <BillingPeriodSection formData={formData} handleChange={handleChange} meters={meters} />
                             <UsageDataSection formData={formData} handleChange={handleChange} />
                         </div>
 

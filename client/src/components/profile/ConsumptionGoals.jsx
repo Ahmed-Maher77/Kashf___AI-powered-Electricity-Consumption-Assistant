@@ -7,10 +7,22 @@ import Button from "../premium/Button";
 import { selectUser, setUser } from "../../store/auth/authSlice";
 import { updateGoals } from "../../services/goalsService";
 
+const calculateEstimatedBill = (kwh) => {
+  if (!kwh || kwh <= 0) return 0;
+  if (kwh <= 50) return Math.round(kwh * 0.58);
+  if (kwh <= 100) return Math.round(50 * 0.58 + (kwh - 50) * 0.68);
+  if (kwh <= 200) return Math.round(kwh * 0.83);
+  if (kwh <= 350) return Math.round(200 * 0.83 + (kwh - 200) * 1.25);
+  if (kwh <= 650) return Math.round(350 * 1.25 + (kwh - 350) * 1.40);
+  if (kwh <= 1000) return Math.round(650 * 1.40 + (kwh - 650) * 1.50);
+  return Math.round(1000 * 1.50 + (kwh - 1000) * 1.65);
+};
+
 const ConsumptionGoals = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const { meters } = useSelector((state) => state.meters);
   const goals = user?.consumptionGoals ?? { monthlyKwhLimit: 400, targetBillEgp: 700, targetSheriha: 4 };
 
   const [editMode, setEditMode] = useState(false);
@@ -27,9 +39,12 @@ const ConsumptionGoals = () => {
     return t("common.tier", { tier, defaultValue: `Tier ${tier}` });
   };
 
-  // No real scan data yet — show 0 progress
-  const CURRENT_KWH  = 0;
-  const CURRENT_BILL = 0;
+  const CURRENT_KWH  = meters.reduce((sum, m) => sum + (m.consumption || 0), 0);
+  const CURRENT_BILL = meters.reduce((sum, m) => sum + calculateEstimatedBill(m.consumption || 0), 0);
+
+  const activeMeters = meters.filter(m => m.status === "active");
+  const maxTier = activeMeters.length > 0 ? Math.max(...activeMeters.map(m => m.tier || 1)) : (meters.length > 0 ? Math.max(...meters.map(m => m.tier || 1)) : 0);
+  const sherihaProgress = goals.targetSheriha > 0 ? Math.min(100, Math.round((maxTier / goals.targetSheriha) * 100)) : 0;
 
   const kwhPercent  = goals.monthlyKwhLimit  > 0 ? Math.min(100, Math.round((CURRENT_KWH  / goals.monthlyKwhLimit)  * 100)) : 0;
   const billPercent = goals.targetBillEgp    > 0 ? Math.min(100, Math.round((CURRENT_BILL / goals.targetBillEgp)    * 100)) : 0;
@@ -118,7 +133,7 @@ const ConsumptionGoals = () => {
 
             {/* Target Sheriha */}
             <div className="flex flex-col items-center">
-              <CircularProgress value={0} size={120}>
+              <CircularProgress value={sherihaProgress} size={120}>
                 <div className="text-center">
                   <Zap className="w-6 h-6 text-kashf-blue mx-auto" />
                   <p className="text-xs text-neutral-400 mt-1">{t("profile.consumptionGoals.target")}</p>
@@ -131,9 +146,11 @@ const ConsumptionGoals = () => {
             </div>
           </div>
 
-          <p className="text-center text-xs text-neutral-500 mt-12 italic">
-            {t("profile.consumptionGoals.noScanData", { defaultValue: "Consumption data will appear here once you scan your meter." })}
-          </p>
+          {meters.length === 0 && (
+            <p className="text-center text-xs text-neutral-500 mt-12 italic">
+              {t("profile.consumptionGoals.noScanData", { defaultValue: "Consumption data will appear here once you scan your meter." })}
+            </p>
+          )}
         </>
       ) : (
         <div className="space-y-5 max-w-md mx-auto">

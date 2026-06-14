@@ -1,4 +1,6 @@
 import dbConnect from "../database/dbConnect.js";
+import cron from "node-cron";
+import { checkExpiredSubscriptions } from "../src/services/subscription.service.js";
 
 const MAX_RETRIES = 5;
 let retryCount = 0;
@@ -10,6 +12,17 @@ const startServerWithDB = async (app, port) => {
 
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
+            
+            // Schedule daily subscription expiration checks at midnight
+            cron.schedule("0 0 * * *", async () => {
+                console.log("Running daily subscription expiration check...");
+                try {
+                    await checkExpiredSubscriptions();
+                } catch (err) {
+                    console.error("Error running subscription expiration cron job:", err);
+                }
+            });
+            console.log("Daily subscription expiration cron job scheduled.");
         });
     } catch (error) {
         if (retryCount < MAX_RETRIES) {

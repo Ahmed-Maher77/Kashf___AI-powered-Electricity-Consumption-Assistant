@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Zap, ChevronDown, Check, ArrowRight, ArrowLeft, Home, Settings } from 'lucide-react';
+import { X, Zap, ChevronDown, Check, ArrowRight, ArrowLeft, Home, Settings, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { createSimulationAsync } from '../../store/simulations/simulationSlice';
@@ -16,6 +16,7 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
     const dispatch = useDispatch();
 
     const [step, setStep] = useState(1); // 1: Meter Info, 2: Simulation Mode
+    const [error, setError] = useState(null);
     
     // Step 1: Basic Meter Details
     const [formData, setFormData] = useState({
@@ -31,6 +32,7 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
 
     // Reset form state when the modal opens or the selected meter changes
     useEffect(() => {
+        setError(null);
         if (meter) {
             setFormData({
                 name: meter.name,
@@ -61,6 +63,7 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
     // Handles final form submission.
     const handleSubmit = async () => {
         setIsSaving(true);
+        setError(null);
         try {
             // First save meter via parent callback (creates/updates meter in DB)
             await onSave(formData);
@@ -73,14 +76,13 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
                     name: formData.name, 
                     autoGenerate 
                 })).unwrap();
-            }
-        } catch (error) {
-            console.error("Failed to save:", error);
-        } finally {
-            setIsSaving(false);
-            if (!meter && simMode !== 'none') {
                 onClose();
             }
+        } catch (err) {
+            console.error("Failed to save:", err);
+            setError(err.message || err || t("meters.failedToSave", "Failed to save meter. Please check your plan limits."));
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -120,6 +122,13 @@ const MeterFormModal = ({ isOpen, onClose, onSave, meter }) => {
                         )}
                         
                         <div className="p-6 space-y-4">
+                            {error && (
+                                <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-sm text-red-400 flex items-center gap-2">
+                                    <AlertCircle className="size-4 shrink-0" />
+                                    <span>{error}</span>
+                                </div>
+                            )}
+
                             {step === 1 && (
                                 <MeterInfoStep formData={formData} setFormData={setFormData} />
                             )}

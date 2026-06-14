@@ -10,6 +10,10 @@ export const normalizeUserProfile = (user) => {
         username: user.username ?? "",
         email: user.email ?? "",
         subscriptionPlan: user.subscriptionPlan ?? "free",
+        subscriptionRenewalDate: user.subscriptionRenewalDate ?? null,
+        stripeCustomerId: user.stripeCustomerId ?? null,
+        coins: user.coins ?? 50,
+        hasPaymentMethod: user.hasPaymentMethod ?? false,
         picture: user.picture ?? null,
         // Profile extras
         phone: user.phone ?? null,

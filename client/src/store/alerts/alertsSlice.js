@@ -1,86 +1,128 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { AlertTriangle, TrendingUp, Sparkles, Bell } from 'lucide-react';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { apiFetch } from '../../services/apiClient';
 
-const INITIAL_ALERTS = [
-    {
-        id: 1,
-        type: 'warning',
-        titleKey: 'alerts.data.alert1.title',
-        messageKey: 'alerts.data.alert1.message',
-        timeKey: 'alerts.data.alert1.time',
-        iconName: 'AlertTriangle',
-        color: 'text-amber-400',
-        bg: 'bg-amber-500/10',
-        ring: 'ring-amber-500/30',
-        isRead: false
-    },
-    {
-        id: 2,
-        type: 'critical',
-        titleKey: 'alerts.data.alert2.title',
-        messageKey: 'alerts.data.alert2.message',
-        timeKey: 'alerts.data.alert2.time',
-        iconName: 'TrendingUp',
-        color: 'text-red-400',
-        bg: 'bg-red-500/10',
-        ring: 'ring-red-500/30',
-        isRead: false
-    },
-    {
-        id: 3,
-        type: 'recommendation',
-        titleKey: 'alerts.data.alert3.title',
-        messageKey: 'alerts.data.alert3.message',
-        timeKey: 'alerts.data.alert3.time',
-        iconName: 'Sparkles',
-        color: 'text-kashf-light-blue',
-        bg: 'bg-kashf-blue/10',
-        ring: 'ring-kashf-blue/30',
-        isRead: true
-    },
-    {
-        id: 4,
-        type: 'system',
-        titleKey: 'alerts.data.alert4.title',
-        messageKey: 'alerts.data.alert4.message',
-        timeKey: 'alerts.data.alert4.time',
-        iconName: 'Bell',
-        color: 'text-neutral-400',
-        bg: 'bg-neutral-800',
-        ring: 'ring-neutral-500/30',
-        isRead: true
+// Thunks
+export const fetchAlerts = createAsyncThunk(
+    'alerts/fetchAlerts',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await apiFetch('/api/alerts');
+            const data = await response.json();
+            if (!response.ok) {
+                return rejectWithValue(data.message || 'Failed to fetch alerts');
+            }
+            return data.data; // The alerts list is in data.data
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
     }
-];
+);
+
+export const markAsRead = createAsyncThunk(
+    'alerts/markAsRead',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await apiFetch(`/api/alerts/${id}/read`, {
+                method: 'PUT'
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                return rejectWithValue(data.message || 'Failed to mark alert as read');
+            }
+            return data.data; // Returns { id, isRead }
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const markAllAsRead = createAsyncThunk(
+    'alerts/markAllAsRead',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await apiFetch('/api/alerts/read-all', {
+                method: 'PUT'
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                return rejectWithValue(data.message || 'Failed to mark all alerts as read');
+            }
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const deleteAlert = createAsyncThunk(
+    'alerts/deleteAlert',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await apiFetch(`/api/alerts/${id}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                return rejectWithValue(data.message || 'Failed to delete alert');
+            }
+            return data.data; // Returns { id }
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 const alertsSlice = createSlice({
     name: 'alerts',
     initialState: {
-        alerts: INITIAL_ALERTS,
-        unreadCount: INITIAL_ALERTS.filter(a => !a.isRead).length
+        alerts: [],
+        unreadCount: 0,
+        loading: false,
+        error: null
     },
-    reducers: {
-        markAsRead: (state, action) => {
-            const alert = state.alerts.find(a => a.id === action.payload);
-            if (alert && !alert.isRead) {
-                alert.isRead = true;
-                state.unreadCount -= 1;
-            }
-        },
-        markAllAsRead: (state) => {
-            state.alerts.forEach(alert => {
-                alert.isRead = true;
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            // fetchAlerts
+            .addCase(fetchAlerts.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchAlerts.fulfilled, (state, action) => {
+                state.loading = false;
+                state.alerts = action.payload;
+                state.unreadCount = action.payload.filter(a => !a.isRead).length;
+            })
+            .addCase(fetchAlerts.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Failed to fetch alerts';
+            })
+            // markAsRead
+            .addCase(markAsRead.fulfilled, (state, action) => {
+                const updated = action.payload;
+                const alert = state.alerts.find(a => a.id === updated.id);
+                if (alert && !alert.isRead) {
+                    alert.isRead = true;
+                    state.unreadCount = Math.max(0, state.unreadCount - 1);
+                }
+            })
+            // markAllAsRead
+            .addCase(markAllAsRead.fulfilled, (state) => {
+                state.alerts.forEach(a => {
+                    a.isRead = true;
+                });
+                state.unreadCount = 0;
+            })
+            // deleteAlert
+            .addCase(deleteAlert.fulfilled, (state, action) => {
+                const { id } = action.payload;
+                const alert = state.alerts.find(a => a.id === id);
+                if (alert && !alert.isRead) {
+                    state.unreadCount = Math.max(0, state.unreadCount - 1);
+                }
+                state.alerts = state.alerts.filter(a => a.id !== id);
             });
-            state.unreadCount = 0;
-        },
-        deleteAlert: (state, action) => {
-            const alert = state.alerts.find(a => a.id === action.payload);
-            if (alert && !alert.isRead) {
-                state.unreadCount -= 1;
-            }
-            state.alerts = state.alerts.filter(a => a.id !== action.payload);
-        }
     }
 });
 
-export const { markAsRead, markAllAsRead, deleteAlert } = alertsSlice.actions;
 export default alertsSlice.reducer;

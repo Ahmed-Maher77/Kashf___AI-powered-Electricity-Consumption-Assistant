@@ -20,7 +20,9 @@ import {
     LayoutDashboard,
     CalendarDays,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/auth/authSlice";
 
 /* ─────────────────────────────────────────────
    DATA
@@ -166,6 +168,22 @@ const PlanCard = ({ plan, t }) => {
         family: "For multiple properties and households",
     };
 
+    const user = useSelector(selectUser);
+    const navigate = useNavigate();
+    
+    const currentPlan = user?.subscriptionPlan || 'free';
+    const isCurrent = user && currentPlan === key;
+    const canChoose = !user || (key !== 'free' && (currentPlan === 'free' || (currentPlan === 'plus' && key === 'family')));
+    const isDisabled = user && (isCurrent || !canChoose);
+
+    const handleCtaClick = () => {
+        if (!user) {
+            navigate("/register", { state: { from: `/checkout/${key}` } });
+        } else if (canChoose) {
+            navigate(`/checkout/${key}`);
+        }
+    };
+
     return (
         <motion.div
             variants={plan.variants}
@@ -220,11 +238,15 @@ const PlanCard = ({ plan, t }) => {
                 ))}
             </ul>
 
-            <div className="plan-cta-wrap">
+             <div className="plan-cta-wrap">
                 <button
-                    className={`plan-cta ${featured ? "plan-cta--featured" : ""}`}
+                    onClick={handleCtaClick}
+                    disabled={isDisabled}
+                    className={`plan-cta ${featured ? "plan-cta--featured" : ""} ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                 >
-                    {t(ctaKey, { defaultValue: ctaDef })}
+                    {isCurrent 
+                        ? t("billing.currentPlanBtn", { defaultValue: "Current Plan" }) 
+                        : t(ctaKey, { defaultValue: ctaDef })}
                 </button>
             </div>
         </motion.div>

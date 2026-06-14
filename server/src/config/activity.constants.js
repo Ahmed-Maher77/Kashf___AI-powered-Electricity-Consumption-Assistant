@@ -15,6 +15,9 @@ export const ACTIVITY_TYPES = {
     PASSWORD_CHANGED: "password_changed",
     TWO_FACTOR_ENABLED: "two_factor_enabled",
     TWO_FACTOR_DISABLED: "two_factor_disabled",
+    SUBSCRIPTION_SUCCESS: "subscription_success",
+    SUBSCRIPTION_EXPIRED: "subscription_expired",
+    SUBSCRIPTION_CANCELED: "subscription_canceled",
 };
 
 export const ACTIVITY_TYPE_VALUES = Object.values(ACTIVITY_TYPES);

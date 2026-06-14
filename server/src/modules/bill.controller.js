@@ -1,5 +1,6 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Bill from "../../database/models/bill.model.js";
+import AppError from "../utils/AppError.js";
 
 // @desc    Get all bills for logged in user (with pagination and filtering)
 // @route   GET /api/bills
@@ -26,6 +27,7 @@ export const getBills = asyncHandler(async (req, res) => {
 
     const totalBills = await Bill.countDocuments(query);
     const bills = await Bill.find(query)
+        .populate("meter")
         .sort({ dueDate: -1 })
         .skip(skip)
         .limit(limit);
@@ -34,6 +36,9 @@ export const getBills = asyncHandler(async (req, res) => {
     const formattedBills = bills.map(bill => {
         const b = bill.toObject();
         b.id = b.billId || b._id.toString(); // Use custom INV- id or fallback to _id
+        if (b.meter && b.meter._id) {
+            b.meter.id = b.meter._id.toString();
+        }
         delete b.__v;
         return b;
     });
@@ -50,10 +55,11 @@ export const getBills = asyncHandler(async (req, res) => {
 // @route   POST /api/bills
 // @access  Private
 export const addBill = asyncHandler(async (req, res) => {
-    const { month, consumption, tier, amount, status, dueDate } = req.body;
+    const { month, consumption, tier, amount, status, dueDate, meter } = req.body;
 
     const bill = await Bill.create({
         user: req.user.id,
+        meter: meter || undefined,
         month,
         consumption,
         tier,
@@ -82,8 +88,7 @@ export const deleteBill = asyncHandler(async (req, res) => {
     const bill = await Bill.findOne(query);
 
     if (!bill) {
-        res.status(404);
-        throw new Error("Bill not found");
+        throw new AppError("Bill not found", 404);
     }
 
     await bill.deleteOne();
@@ -94,7 +99,7 @@ export const deleteBill = asyncHandler(async (req, res) => {
 // @route   PUT /api/bills/:id
 // @access  Private
 export const updateBill = asyncHandler(async (req, res) => {
-    const { month, consumption, tier, amount, status, dueDate } = req.body;
+    const { month, consumption, tier, amount, status, dueDate, meter } = req.body;
 
     const query = { user: req.user.id };
     if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -105,8 +110,7 @@ export const updateBill = asyncHandler(async (req, res) => {
     const bill = await Bill.findOne(query);
 
     if (!bill) {
-        res.status(404);
-        throw new Error("Bill not found");
+        throw new AppError("Bill not found", 404);
     }
 
     bill.month = month || bill.month;
@@ -115,6 +119,9 @@ export const updateBill = asyncHandler(async (req, res) => {
     bill.amount = amount !== undefined ? amount : bill.amount;
     bill.status = status || bill.status;
     bill.dueDate = dueDate || bill.dueDate;
+    if (meter !== undefined) {
+        bill.meter = meter || null;
+    }
 
     const updatedBill = await bill.save();
     

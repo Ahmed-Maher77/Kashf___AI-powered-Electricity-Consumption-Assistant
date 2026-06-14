@@ -1109,6 +1109,18 @@
                 "title": "Bill Estimated",
                 "message": "Your June bill estimate has been updated to 412 EGP based on current trajectory.",
                 "time": "2 days ago"
+            },
+            "subSuccess": {
+                "title": "Subscription Upgraded",
+                "message": "Congratulations! Your plan has been upgraded to the {{plan}} plan successfully. Enjoy your premium benefits and credited coins!"
+            },
+            "subExpired": {
+                "title": "Subscription Expired",
+                "message": "Your subscription has expired and you have been downgraded to the Free plan. To restore access to premium features, please renew your subscription."
+            },
+            "subCanceled": {
+                "title": "Subscription Canceled",
+                "message": "Your subscription to the {{plan}} plan has been canceled. You have reverted to the Free plan, and your coins have been reset to 50."
             }
         }
     },
@@ -1121,17 +1133,51 @@
         "billingCycle": "Billing Cycle",
         "monthly": "Monthly",
         "monthlyCost": "Monthly Cost",
+        "month": "month",
         "paymentMethod": "Payment Method",
         "defaultCard": "Default Card",
         "update": "Update",
         "noPaymentMethod": "No payment method on file.",
         "upgradeToAddCard": "Upgrade your plan to add a card.",
+        "deleteCardConfirm": "Are you sure you want to delete this payment method?",
+        "deleteCardBtn": "Delete Card",
+        "deleteCardCancel": "Cancel",
+        "cancelSubscription": "Cancel Subscription",
+        "cancelSubscriptionTitle": "Cancel Subscription?",
+        "cancelSubscriptionWarning": "Are you sure you want to cancel your premium subscription and revert to the Free plan?",
+        "cancelSubscriptionDetail1": "Your account will be immediately downgraded to the Free plan.",
+        "cancelSubscriptionDetail2": "Your coins balance will reset to the default 50 coins immediately, and you will lose any extra coins.",
+        "cancelSubscriptionDetail3": "No refund will be provided for any unused time in your billing period.",
+        "cancelSubscriptionDetail4": "You will be limited to 1 meter (if you have more, extra meters will be disabled or read-only).",
+        "cancelSubscriptionConfirm": "Yes, Revert to Free",
+        "cancelSubscriptionCancel": "No, Keep My Plan",
         "default": "Default",
         "expires": "Expires",
         "availablePlans": "Available Plans",
         "mostPopular": "Most Popular",
         "currentPlanBtn": "Current Plan",
         "upgradeBtn": "Upgrade Plan",
+        "freePlanBtn": "Free Plan",
+        "downgradeBtn": "Downgrade",
+        "unavailableBtn": "Unavailable",
+        "paymentSuccessMsg": "Success! Your payment was processed and your plan is now active.",
+        "paymentCanceledMsg": "Payment was canceled.",
+        "checkout": {
+            "invalidPlan": "Invalid Plan selected",
+            "invalidPlanDesc": "Please select a valid plan from the available list.",
+            "backToBilling": "Back to Billing",
+            "title": "Confirm Plan Upgrade",
+            "subtitle": "Review your selected plan and proceed to secure checkout.",
+            "targetPlan": "Selected Plan",
+            "alreadySubscribed": "You are already subscribed to this plan.",
+            "errorGeneric": "Failed to initiate payment. Please try again.",
+            "summary": "Order Summary",
+            "total": "Total Due",
+            "processing": "Redirecting to Stripe...",
+            "currentActive": "Current Active Plan",
+            "payNow": "Pay with Card (Stripe)",
+            "terms": "By upgrading, you agree to our terms of service. Secure payment is processed via Stripe."
+        },
         "history": {
             "title": "Billing History",
             "date": "Date",
@@ -1140,7 +1186,8 @@
             "status": "Status",
             "invoice": "Invoice",
             "paid": "Paid",
-            "pdf": "PDF"
+            "pdf": "PDF",
+            "empty": "No billing records found."
         },
         "plans": {
             "free": {
@@ -1195,6 +1242,8 @@
         "deleteConfirmTitle": "Delete Bill?",
         "deleteConfirmDesc": "Are you sure you want to delete this bill? This action cannot be undone.",
         "addBill": "Add Bill",
+        "associatedMeter": "Associated Meter",
+        "noMeterSelected": "Select a Meter (Optional)",
         "month": "Month / Period",
         "consumption": "Consumption (kWh)",
         "billingPeriod": "Billing Period",
@@ -1302,6 +1351,8 @@
         "title": "My Meters",
         "meter": "Meter",
         "subtitle": "Manage and monitor all your connected electricity meters.",
+        "errorLoading": "Failed to load meters. Please try again.",
+        "failedToSave": "Failed to save meter. Please check your plan limits.",
         "addMeter": "Add New Meter",
         "registerMeter": "Register New Meter",
         "registerMeterDesc": "Add another property or sub-meter to track its consumption.",
@@ -1524,5 +1575,33 @@
         "dangerZone": "Danger Zone",
         "deleteWarning": "Once you delete your account, there is no going back. Please be certain.",
         "deleteAccount": "Delete Account"
+    },
+    "feat": {
+        "oneMeter": "1 electricity meter",
+        "freeCoins": "50 Coins per month",
+        "meterScan": "Meter scanning",
+        "consumTrack": "Consumption tracking",
+        "sheriha": "Sheriha monitoring",
+        "dashboard": "Basic dashboard",
+        "history": "Monthly history",
+        "twoMeters": "Up to 2 electricity meters",
+        "plusCoins": "150 Coins per month",
+        "everythingFree": "Everything in Free",
+        "aiRecs": "AI-powered recommendations",
+        "billForecast": "Bill forecasting",
+        "earlyAlerts": "Early Sheriha alerts",
+        "analytics": "Advanced analytics",
+        "push": "Push notifications",
+        "pwa": "Installable PWA",
+        "fiveMeters": "Up to 5 electricity meters",
+        "familyCoins": "300 Coins per month",
+        "everythingPlus": "Everything in Plus",
+        "familyReports": "Family usage reports",
+        "sharedAccess": "Shared access",
+        "extHistory": "Extended consumption history",
+        "prioritySupport": "Priority support"
+    },
+    "subscription": {
+        "includes": "What's included"
     }
 }

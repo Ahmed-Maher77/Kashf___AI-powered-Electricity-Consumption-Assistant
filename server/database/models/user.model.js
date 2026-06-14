@@ -30,6 +30,18 @@ const userSchema = new mongoose.Schema(
             enum: Object.values(SUBSCRIPTION_PLANS),
             default: DEFAULT_SUBSCRIPTION_PLAN,
         },
+        subscriptionRenewalDate: {
+            type: Date,
+            default: null,
+        },
+        stripeCustomerId: {
+            type: String,
+            default: null,
+        },
+        hasPaymentMethod: {
+            type: Boolean,
+            default: false,
+        },
         picture: {
             type: String,
             default: null,

@@ -7,6 +7,7 @@ import { ACTIVITY_TYPES } from "../config/activity.constants.js";
 import { deleteFromCloudinary, uploadToCloudinary } from "../config/cloudinary.js";
 import AppError from "../utils/AppError.js";
 import { toPublicUser } from "../utils/userMapper.js";
+import { checkUserSubscription } from "./subscription.service.js";
 import { generateSecret, verifyTOTP } from "../utils/totp.js";
 import {
     clearAuthCookies,
@@ -219,6 +220,8 @@ export const refreshToken = async ({ refreshTokenValue, res }) => {
         throw new AppError("Invalid refresh token.", 401);
     }
 
+    await checkUserSubscription(user);
+
     const { accessToken, refreshToken: newRefreshToken } = buildTokens(user, decoded.sessionId);
     setAuthCookies(res, { accessToken, refreshToken: newRefreshToken });
 
@@ -231,6 +234,8 @@ export const getMe = async ({ userId }) => {
     if (!user) {
         throw new AppError("User not found.", 404);
     }
+
+    await checkUserSubscription(user);
 
     return toPublicUser(user);
 };

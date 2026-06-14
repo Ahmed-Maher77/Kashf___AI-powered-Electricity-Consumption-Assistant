@@ -46,11 +46,11 @@ const MyMetersPage = () => {
 
     // Handles saving a new or edited meter to the Redux store.
     // Routes to either a CREATE or UPDATE thunk based on whether `editingMeter` exists.
-    const handleSaveMeter = (meterData) => {
+    const handleSaveMeter = async (meterData) => {
         if (editingMeter) {
-            dispatch(updateMeterAsync({ id: editingMeter.id, data: meterData }));
+            await dispatch(updateMeterAsync({ id: editingMeter.id, data: meterData })).unwrap();
         } else {
-            dispatch(createMeterAsync(meterData));
+            await dispatch(createMeterAsync(meterData)).unwrap();
         }
         setIsFormModalOpen(false);
         setEditingMeter(null);

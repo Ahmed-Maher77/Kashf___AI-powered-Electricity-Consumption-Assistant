@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { fetchMeters } from "../../store/meters/metersSlice";
 import ProfileHeader from "../../components/profile/ProfileHeader";
 import AccountOverview from "../../components/profile/AccountOverview";
 import PersonalInformation from "../../components/profile/PersonalInformation";
@@ -15,7 +17,12 @@ import Tabs from "../../components/premium/Tabs";
 
 const ProfilePage = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState("overview");
+
+    useEffect(() => {
+        dispatch(fetchMeters());
+    }, [dispatch]);
 
     const tabs = [
         { id: "overview", label: t("profile.tabs.overview") },

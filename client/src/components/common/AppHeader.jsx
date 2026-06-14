@@ -29,6 +29,7 @@ const AppHeader = () => {
     const isRtl = i18n.dir() === "rtl";
 
     const user = useSelector(selectUser);
+    const { unreadCount } = useSelector((state) => state.alerts);
     useAuthProfile();
     const logoutMutation = useLogout();
     const displayName = user?.username || t("profileMenu.fallbackName");
@@ -131,13 +132,18 @@ const AppHeader = () => {
                     {/* Mobile Navigation Links */}
                     <nav className="flex flex-col gap-1.5" aria-label={t("nav.mainAria")}>
                         {navItems.map(({ to, label }) => (
-                            <motion.div key={to} variants={itemVariants}>
+                            <motion.div key={`${to}-${label}`} variants={itemVariants}>
                                 <NavLink
                                     to={to}
                                     onClick={() => setIsSidebarOpen(false)}
                                     className={navLinkClassMobile}
                                 >
-                                    {label}
+                                    <span className="truncate flex-1">{label}</span>
+                                    {to === "/alerts" && unreadCount > 0 && (
+                                        <span className={`flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white px-1.5 ${isRtl ? "mr-auto" : "ml-auto"}`}>
+                                            {unreadCount}
+                                        </span>
+                                    )}
                                 </NavLink>
                             </motion.div>
                         ))}

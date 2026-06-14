@@ -12,6 +12,9 @@ import activityRoutes from "./src/modules/activity.routes.js";
 import meterRoutes from "./src/modules/meter.routes.js";
 import billRoutes from "./src/modules/bill.routes.js";
 import simulationRoutes from "./src/modules/simulation.routes.js";
+import paymentRoutes from "./src/modules/payment.routes.js";
+import alertRoutes from "./src/modules/alert.routes.js";
+import { stripeWebhook } from "./src/modules/payment.controller.js";
 
 
 
@@ -29,6 +32,10 @@ const __dirname = dirname(__filename);
 
 
 // ======= Middlewares =======
+
+// Stripe webhook requires raw body buffer for signature validation.
+// This must be declared BEFORE express.json() parser.
+app.post("/api/payments/webhook", express.raw({ type: "application/json" }), stripeWebhook);
 
 app.use(express.json());
 
@@ -60,6 +67,8 @@ app.use("/api/activity", activityRoutes);
 app.use("/api/meters", meterRoutes);
 app.use("/api/bills", billRoutes);
 app.use("/api/simulations", simulationRoutes);
+app.use("/api/payments", paymentRoutes);
+app.use("/api/alerts", alertRoutes);
 
 
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, Zap, Shield, Users } from 'lucide-react';
 
 const AvailablePlans = ({ currentPlan }) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const PLANS = [
         {
@@ -23,7 +25,7 @@ const AvailablePlans = ({ currentPlan }) => {
             ],
             icon: Zap,
             color: 'text-neutral-400',
-            bg: 'bg-neutral-800'
+            bg: ''
         },
         {
             id: 'plus',
@@ -44,7 +46,7 @@ const AvailablePlans = ({ currentPlan }) => {
             ],
             icon: Shield,
             color: 'text-kashf-light-blue',
-            bg: 'bg-kashf-blue/20',
+            bg: '',
             popular: true
         },
         {
@@ -64,7 +66,7 @@ const AvailablePlans = ({ currentPlan }) => {
             ],
             icon: Users,
             color: 'text-amber-400',
-            bg: 'bg-amber-500/20'
+            bg: ''
         }
     ];
 
@@ -75,6 +77,8 @@ const AvailablePlans = ({ currentPlan }) => {
                 {PLANS.map((plan) => {
                     const Icon = plan.icon;
                     const isCurrent = currentPlan === plan.id;
+                    const canChoose = plan.id !== 'free' && (currentPlan === 'free' || (currentPlan === 'plus' && plan.id === 'family'));
+                    const isDisabled = isCurrent || !canChoose;
                     
                     return (
                         <div key={plan.id} className={`relative bg-kashf-surface border rounded-2xl p-6 flex flex-col ${
@@ -87,8 +91,8 @@ const AvailablePlans = ({ currentPlan }) => {
                             )}
                             
                             <div className="flex items-center gap-3 mb-4">
-                                <div className={`p-2 rounded-lg ${plan.bg} ${plan.color}`}>
-                                    <Icon className="size-5" />
+                                <div className={`p-1 rounded-lg ${plan.bg} ${plan.color}`}>
+                                    <Icon className="size-6" />
                                 </div>
                                 <h4 className="text-lg font-bold text-white">{plan.name}</h4>
                             </div>
@@ -109,14 +113,24 @@ const AvailablePlans = ({ currentPlan }) => {
                                 ))}
                             </ul>
                             
-                            <button disabled={isCurrent} className={`w-full py-2.5 rounded-xl font-medium transition-colors ${
-                                isCurrent 
-                                ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed' 
-                                : plan.popular 
-                                    ? 'bg-kashf-blue hover:opacity-90 text-kashf-bg shadow-lg shadow-kashf-blue/20' 
-                                    : 'bg-neutral-800 hover:bg-neutral-700 text-white'
-                            }`}>
-                                {isCurrent ? t('billing.currentPlanBtn') : t('billing.upgradeBtn')}
+                            <button 
+                                onClick={() => navigate(`/checkout/${plan.id}`)}
+                                disabled={isDisabled} 
+                                className={`w-full py-2.5 rounded-xl font-medium transition-colors ${
+                                    isDisabled 
+                                    ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed border border-neutral-700' 
+                                    : plan.popular 
+                                        ? 'bg-kashf-blue hover:opacity-90 text-kashf-bg cursor-pointer' 
+                                        : 'bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer'
+                                }`}
+                            >
+                                {isCurrent 
+                                    ? t('billing.currentPlanBtn') 
+                                    : plan.id === 'free' 
+                                        ? t('billing.freePlanBtn') 
+                                        : currentPlan === 'family' || (currentPlan === 'plus' && plan.id === 'plus')
+                                            ? t('billing.unavailableBtn')
+                                            : t('billing.upgradeBtn')}
                             </button>
                         </div>
                     );

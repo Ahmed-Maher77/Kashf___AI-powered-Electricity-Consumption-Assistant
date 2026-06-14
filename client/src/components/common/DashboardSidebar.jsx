@@ -28,6 +28,7 @@ const DashboardSidebar = () => {
     const { t, i18n } = useTranslation();
     const isRtl = i18n.dir() === "rtl";
     const user = useSelector(selectUser);
+    const { unreadCount } = useSelector((state) => state.alerts);
     const logoutMutation = useLogout();
     const displayName = user?.username || t("profileMenu.fallbackName");
     const planName = user?.subscriptionPlan === "family" ? t("nav.plan.family") : user?.subscriptionPlan === "plus" ? t("nav.plan.plus") : t("nav.plan.free");
@@ -40,7 +41,7 @@ const DashboardSidebar = () => {
 
     const navItems = [
         { to: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
-        { to: "/meters", label: t("nav.meters"), icon: Zap },
+        // { to: "/meters", label: t("nav.meters"), icon: Zap },
         { to: "/meters", label: t("nav.simulationOverview"), icon: Gauge },
         { to: "/analytics", label: t("nav.analytics"), icon: BarChart2 },
         { to: "/bills", label: t("nav.bills"), icon: Receipt },
@@ -91,10 +92,22 @@ const DashboardSidebar = () => {
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         return (
-                            <motion.div key={item.to} variants={itemVariants}>
+                            <motion.div key={`${item.to}-${item.label}`} variants={itemVariants}>
                                 <NavLink to={item.to} className={navLinkClass} title={isCollapsed ? item.label : undefined}>
-                                    <Icon className="size-5 shrink-0" />
-                                    {!isCollapsed && <span className="truncate">{item.label}</span>}
+                                    <div className="relative flex items-center justify-center shrink-0">
+                                        <Icon className="size-5 shrink-0" />
+                                        {item.to === "/alerts" && unreadCount > 0 && (
+                                            <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white px-1 shadow-md">
+                                                {unreadCount}
+                                            </span>
+                                        )}
+                                    </div>
+                                    {!isCollapsed && <span className="truncate flex-1">{item.label}</span>}
+                                    {!isCollapsed && item.to === "/alerts" && unreadCount > 0 && (
+                                        <span className={`flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white px-1.5 ${isRtl ? "mr-auto" : "ml-auto"}`}>
+                                            {unreadCount}
+                                        </span>
+                                    )}
                                 </NavLink>
                             </motion.div>
                         );

@@ -13,6 +13,7 @@ export const BillsPage = lazy(() => import("../pages/BillsPage"));
 export const AiAdvisorPage = lazy(() => import("../pages/AiAdvisorPage"));
 export const AlertsPage = lazy(() => import("../pages/AlertsPage"));
 export const BillingPage = lazy(() => import("../pages/BillingPage"));
+export const CheckoutPage = lazy(() => import("../pages/CheckoutPage"));
 export const SimulationDashboardPage = lazy(() => import("../pages/SimulationDashboardPage"));
 export const SimulationOverviewPage = lazy(() => import("../pages/SimulationOverviewPage"));
 export const AdminDashboardPage = lazy(() =>

@@ -25,6 +25,7 @@ import {
     AiAdvisorPage,
     AlertsPage,
     BillingPage,
+    CheckoutPage,
     SimulationDashboardPage,
     SimulationOverviewPage
 } from "./lazyPages";
@@ -61,6 +62,7 @@ export const router = createBrowserRouter([
                     { path: "ai-advisor", element: <AiAdvisorPage /> },
                     { path: "alerts", element: <AlertsPage /> },
                     { path: "billing", element: <BillingPage /> },
+                    { path: "checkout/:planId", element: <CheckoutPage /> },
                     { path: "profile", element: <ProfilePage /> },
                     { path: "meters/:id/simulation", element: <SimulationDashboardPage /> },
                     { path: "simulation-overview/:id", element: <SimulationOverviewPage /> },

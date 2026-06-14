@@ -7,15 +7,17 @@ import AppHeader from "../components/common/AppHeader";
 import Loader from "../components/Loader/Loader";
 import Footer from "../components/common/Footer";
 import { fetchMeters } from "../store/meters/metersSlice";
+import { fetchAlerts } from "../store/alerts/alertsSlice";
 
 const AppLayout = () => {
     const { pathname } = useLocation();
     const currentOutlet = useOutlet();
     const dispatch = useDispatch();
 
-    // Fetch meters globally for all authenticated pages
+    // Fetch meters and alerts globally for all authenticated pages
     useEffect(() => {
         dispatch(fetchMeters());
+        dispatch(fetchAlerts());
     }, [dispatch]);
 
     // Scroll to top on route change

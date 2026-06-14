@@ -66,8 +66,12 @@ const Subscription = () => {
   const plan = useSelector(selectSubscriptionPlan) ?? "free";
   const config = PLAN_CONFIG[plan] ?? PLAN_CONFIG.free;
 
-  const renewalDate = user?.subscriptionRenewal
-    ? new Date(user.subscriptionRenewal).toLocaleDateString()
+  const renewalDate = user?.subscriptionRenewalDate
+    ? new Date(user.subscriptionRenewalDate).toLocaleDateString(user.preferredLanguage === 'ar' ? 'ar-EG' : 'en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
     : t("profile.subscription.notApplicable", { defaultValue: "N/A" });
 
   return (
