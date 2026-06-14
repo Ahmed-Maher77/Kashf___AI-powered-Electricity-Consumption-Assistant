@@ -35,7 +35,12 @@ const ComparisonCard = ({ borderColor, bgColor, emoji, title, items, checkIcon, 
 
 
 const TheProblemSection = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isReady = i18n?.isInitialized && typeof t === 'function';
+
+    if (!isReady) {
+        return <div className="h-[400px] animate-pulse bg-neutral-900/50 rounded-xl" />;
+    }
 
     const withoutItems = [
         t("problem.without.1", { defaultValue: "Electricity bill arrives — 847 EGP instead of expected 350 EGP" }),

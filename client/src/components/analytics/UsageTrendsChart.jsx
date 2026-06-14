@@ -3,7 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const UsageTrendsChart = ({ data }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isReady = i18n?.isInitialized && typeof t === 'function';
+
+    if (!isReady) {
+        return <div className="h-[300px] animate-pulse bg-neutral-900/50 rounded-xl" />;
+    }
 
     return (
         <div className="bg-kashf-surface border border-kashf-border rounded-2xl p-6">

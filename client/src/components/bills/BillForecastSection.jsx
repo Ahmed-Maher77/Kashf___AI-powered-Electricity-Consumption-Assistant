@@ -6,8 +6,13 @@ import {
 } from 'recharts';
 
 const BillForecastSection = () => {
-    const { t } = useTranslation();
-    
+    const { t, i18n } = useTranslation();
+    const isReady = i18n?.isInitialized && typeof t === 'function';
+
+    if (!isReady) {
+        return <div className="h-[300px] animate-pulse bg-neutral-900/50 rounded-xl" />;
+    }
+
     const forecastData = [
       { month: t('bills.months.jan'), cost: 295, projected: null },
       { month: t('bills.months.feb'), cost: 245, projected: null },
