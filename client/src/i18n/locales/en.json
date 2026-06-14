@@ -1354,7 +1354,10 @@
         "simModeCustomDesc": "Start with an empty simulation profile. You can add circuits and devices later.",
         "simModeSkip": "Skip for now",
         "simModeSkipDesc": "Just create the meter. I'll setup the simulation later.",
-        "manageSimulation": "Manage Simulation"
+        "manageSimulation": "Manage Simulation",
+        "linkedDevices": "Linked Devices",
+        "noLinkedDevices": "No devices in the linked simulation yet.",
+        "noSimulationLinked": "No simulation linked. Manage simulation to track device consumption."
     },
     "simulations": {
         "dashboardTitle": "Simulation Dashboard",
