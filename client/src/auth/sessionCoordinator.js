@@ -13,6 +13,11 @@ export const attemptTokenRefresh = async () => {
 
     inflightRefresh = requestRefreshToken()
         .then((data) => {
+            if (data?.expired) {
+                store.dispatch(logout());
+                return false;
+            }
+
             const accessToken = data?.data?.accessToken;
 
             if (!accessToken) {

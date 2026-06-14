@@ -9,5 +9,9 @@ export const requestRefreshToken = async () => {
         credentials: "include",
     });
 
+    if (response.status === 401) {
+        return { expired: true };
+    }
+
     return parseApiResponse(response, "Session refresh failed.");
 };

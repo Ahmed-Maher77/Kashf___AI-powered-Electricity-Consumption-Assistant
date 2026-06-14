@@ -6,7 +6,12 @@ import {
 import ChartTooltip from '../common/ChartTooltip';
 
 const DashboardTrendChart = ({ hasMeters }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isReady = i18n?.isInitialized && typeof t === 'function';
+
+    if (!isReady) {
+        return <div className="h-[250px] animate-pulse bg-neutral-900/50 rounded-xl" />;
+    }
 
     const trendData = hasMeters ? [
         { month: t('dashboardOverview.months.jan'), consumption: 320 },

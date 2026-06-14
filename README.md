@@ -1,6 +1,6 @@
 # Kashf ⚡- Smart Egyptian Electricity Consumption Assistant
 
-An AI-powered electricity management platform that helps Egyptian households monitor electricity consumption, avoid costly Sheriha (billing tier) jumps, and receive personalized energy-saving recommendations through live smart meter integration. Features dedicated user and admin dashboards for consumption tracking, analytics, and management, and can be installed on mobile devices and desktops as a Progressive Web App (PWA) for a seamless app-like experience.
+An AI-powered electricity management platform that helps Egyptian households monitor electricity consumption, avoid costly Sheriha (billing tier) jumps, and receive personalized energy-saving recommendations through live smart meter integration. Features dedicated user and admin dashboards for consumption tracking, analytics, and management
 
 
 Following the 2026 Egyptian electricity tariff increases, moving from one billing tier to another can significantly impact a household's electricity bill. Most consumers only discover they have crossed into a more expensive tier after receiving their monthly invoice. Kashf solves this problem by providing real-time consumption tracking, bill analysis, and proactive warnings before users exceed their current tier limits.
@@ -57,7 +57,7 @@ The application allows users to connect Kashf Smart Nodes to their electricity m
 * Tariff configuration management.
 * System activity tracking.
 
-### 📱 Progressive Web App (PWA)
+### 📱 Progressive Web App (PWA) - *Planned*
 
 * Installable on Android and iOS devices.
 * Mobile app-like experience.
@@ -93,7 +93,6 @@ Many households are unaware of their current consumption status and receive no w
 * Tailwind CSS v4
 * Redux Toolkit (State Management)
 * i18n (Arabic & English) with Full RTL Support
-* Progressive Web App (PWA)
 * Responsive Mobile-First Design
 * Dashboard & Analytics Interface
 
@@ -173,13 +172,10 @@ Many households are unaware of their current consumption status and receive no w
 
 ## 🌟 Future Enhancements
 
+* Progressive Web App (PWA) - Installable on mobile/desktop with offline support
 * Smart home device integration
-* Electricity consumption forecasting
 * Monthly budget planning
 * Voice assistant support
-* Smart notifications and reminders
-* Utility company integration
-* Community energy-saving challenges
 
 ---
 
