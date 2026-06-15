@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     babel({ 
       presets: [reactCompilerPreset()],
-      exclude: 'node_modules/**'
+      include: [/[\\/]src[\\/].*\.[jt]sx?$/]
     }),
     tailwindcss()
   ],
