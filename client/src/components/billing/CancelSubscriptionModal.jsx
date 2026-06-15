@@ -40,6 +40,18 @@ const CancelSubscriptionModal = ({ isOpen, onClose, onConfirm, loading, error })
                         {t("billing.cancelSubscriptionWarning", "Are you sure you want to cancel your premium subscription and revert to the Free plan?")}
                     </p>
 
+                    <div className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400">
+                        <AlertTriangle className="size-5 shrink-0 mt-0.5 text-red-400" />
+                        <div className="space-y-1">
+                            <h4 className="text-sm font-semibold text-red-300">
+                                {t("billing.lossOfFundsWarningTitle", "Financial Loss Warning")}
+                            </h4>
+                            <p className="text-xs leading-relaxed text-red-400/90">
+                                {t("billing.lossOfFundsWarningMessage", "You will lose the money of the current active plan immediately. No refunds will be provided for any unused time in your billing period.")}
+                            </p>
+                        </div>
+                    </div>
+
                     <div className="space-y-3 bg-neutral-950/40 p-4 rounded-xl border border-neutral-800/60">
                         <div className="flex gap-2.5 items-start">
                             <span className="text-xs text-amber-500 mt-1 select-none">•</span>
@@ -51,12 +63,6 @@ const CancelSubscriptionModal = ({ isOpen, onClose, onConfirm, loading, error })
                             <span className="text-xs text-amber-500 mt-1 select-none">•</span>
                             <p className="text-xs text-neutral-400">
                                 {t("billing.cancelSubscriptionDetail2", "Your coins balance will reset to the default 50 coins immediately, and you will lose any extra coins.")}
-                            </p>
-                        </div>
-                        <div className="flex gap-2.5 items-start">
-                            <span className="text-xs text-amber-500 mt-1 select-none">•</span>
-                            <p className="text-xs text-neutral-400">
-                                {t("billing.cancelSubscriptionDetail3", "No refund will be provided for any unused time in your billing period.")}
                             </p>
                         </div>
                         <div className="flex gap-2.5 items-start">

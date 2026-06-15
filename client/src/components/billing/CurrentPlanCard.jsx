@@ -41,7 +41,7 @@ const CurrentPlanCard = ({ currentPlan, user }) => {
     };
     
     return (
-        <div className="rounded-2xl py-8 px-6 relative overflow-hidden bg-neutral-900 border border-neutral-800">
+        <div className="py-8 px-6 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-24 bg-kashf-blue/5 rounded-full blur-2xl"></div>
             
             <div className="flex justify-between items-start mb-6 relative z-10">

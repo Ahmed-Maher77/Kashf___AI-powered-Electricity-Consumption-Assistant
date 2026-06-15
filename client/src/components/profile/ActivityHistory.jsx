@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import {
   LogIn, LogOut, UserPlus, UserCog, Camera, Target, Bell,
   ScanLine, Upload, AlertTriangle, Download, Plus, Trash2, Clock, RefreshCw,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, CheckCircle2, XCircle, AlertCircle
 } from "lucide-react";
 import useActivity from "../../hooks/useActivity";
 
@@ -21,6 +21,10 @@ const ACTIVITY_ICON_MAP = {
   report_downloaded:          { icon: Download,      bg: "bg-neutral-500/20",  color: "text-neutral-400",   ring: "ring-neutral-500/30" },
   meter_added:                { icon: Plus,          bg: "bg-emerald-500/20",  color: "text-emerald-400",   ring: "ring-emerald-500/30" },
   meter_removed:              { icon: Trash2,        bg: "bg-red-500/20",      color: "text-red-400",       ring: "ring-red-500/30" },
+  subscription_success:       { icon: CheckCircle2,  bg: "bg-emerald-500/20",  color: "text-emerald-400",   ring: "ring-emerald-500/30" },
+  subscription_canceled:      { icon: XCircle,       bg: "bg-red-500/20",      color: "text-red-400",       ring: "ring-red-500/30" },
+  subscription_expired:       { icon: AlertTriangle, bg: "bg-amber-500/20",    color: "text-amber-400",     ring: "ring-amber-500/30" },
+  subscription_failed:        { icon: AlertCircle,   bg: "bg-red-500/20",      color: "text-red-400",       ring: "ring-red-500/30" },
 };
 
 const DEFAULT_ICON = { icon: Clock, bg: "bg-neutral-500/20", color: "text-neutral-400", ring: "ring-neutral-500/30" };

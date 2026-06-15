@@ -901,7 +901,11 @@
                 "alert_received": "Received Sheriha Alert",
                 "report_downloaded": "Downloaded Monthly Report",
                 "meter_added": "Added New Meter",
-                "meter_removed": "Removed Meter"
+                "meter_removed": "Removed Meter",
+                "subscription_success": "Subscription Upgraded",
+                "subscription_canceled": "Subscription Canceled",
+                "subscription_expired": "Subscription Expired",
+                "subscription_failed": "Subscription Payment Failed"
             },
             "empty": "No activity yet.",
             "loadingMore": "Loading..."
@@ -1234,6 +1238,10 @@
             "subCanceled": {
                 "title": "Subscription Canceled",
                 "message": "Your subscription to the {{plan}} plan has been canceled. You have reverted to the Free plan, and your coins have been reset to 50."
+            },
+            "subFailed": {
+                "title": "Payment Failed",
+                "message": "We couldn't process the payment for the {{plan}} plan. Please check your card details or try again."
             }
         }
     },
@@ -1264,6 +1272,8 @@
         "cancelSubscriptionDetail4": "You will be limited to 1 meter (if you have more, extra meters will be disabled or read-only).",
         "cancelSubscriptionConfirm": "Yes, Revert to Free",
         "cancelSubscriptionCancel": "No, Keep My Plan",
+        "lossOfFundsWarningTitle": "Financial Loss Warning",
+        "lossOfFundsWarningMessage": "You will lose the money of the current active plan immediately. No refunds will be provided for any unused time in your billing period.",
         "default": "Default",
         "expires": "Expires",
         "availablePlans": "Available Plans",

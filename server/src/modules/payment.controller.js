@@ -213,6 +213,21 @@ export const stripeWebhook = asyncHandler(async (req, res) => {
                 payment.paymentStatus = "failed";
                 payment.paymentInfo = paymentIntent;
                 await payment.save();
+
+                // Log Activity
+                logActivity(payment.userId, "subscription_failed", { 
+                    plan: payment.targetPlan, 
+                    amount: payment.amount 
+                });
+
+                // Create System Alert
+                createAlert({
+                    userId: payment.userId,
+                    type: "critical",
+                    titleKey: "alerts.data.subFailed.title",
+                    messageKey: "alerts.data.subFailed.message",
+                    messageParams: { plan: payment.targetPlan }
+                });
             }
         } catch (err) {
             console.error(`Error processing payment failure webhook: ${err.message}`);
@@ -327,6 +342,21 @@ export const verifyCheckout = asyncHandler(async (req, res) => {
             payment.paymentStatus = "failed";
             payment.paymentInfo = session;
             await payment.save();
+
+            // Log Activity
+            logActivity(payment.userId, "subscription_failed", { 
+                plan: payment.targetPlan, 
+                amount: payment.amount 
+            });
+
+            // Create System Alert
+            createAlert({
+                userId: payment.userId,
+                type: "critical",
+                titleKey: "alerts.data.subFailed.title",
+                messageKey: "alerts.data.subFailed.message",
+                messageParams: { plan: payment.targetPlan }
+            });
         }
     }
 
