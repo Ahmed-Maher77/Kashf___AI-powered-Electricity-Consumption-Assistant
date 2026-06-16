@@ -22,7 +22,7 @@ import {
 import PageHeader from '../components/layout/PageHeader';
 import UserAvatar from '../components/common/UserAvatar';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser } from '../store/auth/authSlice';
+import { selectUser, setUser } from '../store/auth/authSlice';
 import { fetchSimulations } from '../store/simulations/simulationSlice';
 import simulationService from '../services/simulationService';
 
@@ -80,12 +80,16 @@ const AiAdvisorPage = () => {
         const msg = (text || message).trim();
         if (!msg || sending || !selectedSim) return;
 
-        setMessages(prev => [...prev, { id: Date.now(), sender: 'user', text: msg }]);
+        const msgId = Date.now().toString();
+        setMessages(prev => [...prev, { id: Number(msgId), sender: 'user', text: msg }]);
         setMessage('');
         setSending(true);
 
         try {
-            const result = await simulationService.chat(selectedSim.id, msg);
+            const result = await simulationService.chat(selectedSim.id, msg, msgId);
+            if (result.coins !== undefined) {
+                dispatch(setUser({ ...user, coins: result.coins, rolloverCoins: result.rolloverCoins }));
+            }
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
                 sender: 'ai',

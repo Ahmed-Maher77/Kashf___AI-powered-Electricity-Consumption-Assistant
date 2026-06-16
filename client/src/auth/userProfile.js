@@ -13,6 +13,8 @@ export const normalizeUserProfile = (user) => {
         subscriptionRenewalDate: user.subscriptionRenewalDate ?? null,
         stripeCustomerId: user.stripeCustomerId ?? null,
         coins: user.coins ?? 50,
+        rolloverCoins: user.rolloverCoins ?? 0,
+        lastCoinResetDate: user.lastCoinResetDate ?? null,
         hasPaymentMethod: user.hasPaymentMethod ?? false,
         picture: user.picture ?? null,
         // Profile extras

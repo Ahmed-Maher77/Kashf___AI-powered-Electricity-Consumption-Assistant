@@ -292,11 +292,27 @@ Intent classifier (Gemini):
 | `auto_pilot` | "خلّي البيت يوفر لنفسه" | Enable auto-pilot |
 | `set_goal` | "عاوز الفاتورة متعديش 200 جنيه" | Update consumption goal |
 
+### Chatbot Coin Deduction & Concurrency Control
+
+Each chatbot message sent to `/api/simulations/:id/chat` consumes **1 AI Coin**.
+1. **Deduction Priority:** Coins are first deducted from the user's base monthly `coins` balance. If exhausted, they are deducted from the accumulated `rolloverCoins` balance.
+2. **Pre-Flight Validation:** If the user has a total coin balance (`coins` + `rolloverCoins`) of `< 1`, the API throws a `400 Bad Request` with an "Insufficient coins" message.
+3. **Idempotency (Deduplication):** To prevent multiple coin deductions for duplicate or retried requests, the client generates a unique `messageId` per message. The backend caches the result of each processed message for 5 minutes. If a duplicate `messageId` is received, the cached response is returned immediately without re-invoking the AI model or deducting further coins.
+4. **Race Condition Prevention:** Requests are serialized per user using an in-memory lock queues. This ensures concurrent requests from the same user are queued and processed sequentially, eliminating race conditions or out-of-order balance modifications.
+
 ### Proposed endpoint
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `POST` | `/api/simulations/:id/chat` | Natural language interaction |
+
+**Request Body:**
+```json
+{
+  "message": "شغل التكييف في غرفة النوم",
+  "messageId": "1718534012345"
+}
+```
 
 ### Response shape
 
@@ -307,11 +323,13 @@ Intent classifier (Gemini):
     "reply": "تم تشغيل مكيف غرفة النوم. الاستهلاك الحالي: 3700 واط",
     "intent": "toggle_device",
     "actionTaken": true,
-    "state": {
-      "totalKWh": 150.5,
-      "currentTier": 3,
-      "currentLoadW": 3700
-    }
+    "actionResult": {
+      "device": "AC Unit",
+      "isOn": true,
+      "loadW": 3700
+    },
+    "coins": 49,
+    "rolloverCoins": 12
   }
 }
 ```

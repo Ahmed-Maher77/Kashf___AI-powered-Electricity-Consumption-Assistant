@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
+import fs from 'fs'
 
 
 const esToolkitRoot = path.resolve('node_modules/es-toolkit')
@@ -31,6 +32,26 @@ export default defineConfig({
       }
     }
   ],
+  optimizeDeps: {
+    esbuildOptions: {
+      plugins: [
+        {
+          name: 'es-toolkit-default-export-esbuild',
+          setup(build) {
+            build.onLoad({ filter: /es-toolkit\/dist\/compat\/.*\.mjs$/ }, async (args) => {
+              let code = await fs.promises.readFile(args.path, 'utf-8')
+              const exportMatch = code.match(/export\s+\{\s*(\w[\w$]*)\s*\};?\s*$/)
+              if (exportMatch) {
+                const name = exportMatch[1]
+                code += `\nexport { ${name} as default };`
+              }
+              return { contents: code, loader: 'js' }
+            })
+          }
+        }
+      ]
+    }
+  },
   resolve: {
     alias: esToolkitEsm
   },

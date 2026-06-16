@@ -33,7 +33,7 @@ const DashboardSidebar = () => {
     const displayName = user?.username || t("profileMenu.fallbackName");
     const planName = user?.subscriptionPlan === "family" ? t("nav.plan.family") : user?.subscriptionPlan === "plus" ? t("nav.plan.plus") : t("nav.plan.free");
     
-    const planBaseCoins = user?.subscriptionPlan === "family" ? 150 : user?.subscriptionPlan === "plus" ? 150 : 50;
+    const planBaseCoins = user?.subscriptionPlan === "family" ? 300 : user?.subscriptionPlan === "plus" ? 150 : 50;
     const totalCoins = planBaseCoins + (user?.rolloverCoins || 0);
     const remainingCoins = user?.coins ?? 50;
     const usedCoins = Math.max(0, totalCoins - remainingCoins);

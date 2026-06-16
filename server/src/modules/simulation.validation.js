@@ -43,6 +43,7 @@ export const whatIfSchema = Joi.object({
 
 export const chatSchema = Joi.object({
   message: Joi.string().trim().min(1).max(500).required(),
+  messageId: Joi.string().trim().max(100).optional(),
 });
 
 export const startAutoPilotSchema = Joi.object({

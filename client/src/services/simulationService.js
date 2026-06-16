@@ -220,11 +220,11 @@ const getRecommendations = async (simulationId) => {
 };
 
 // NL Chat agent — sends a natural language message to the simulation
-const chat = async (simulationId, message) => {
+const chat = async (simulationId, message, messageId) => {
     const response = await apiFetch(`${API_URL}/${simulationId}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, messageId }),
     });
     const parsed = await parseApiResponse(response);
     return parsed.data;

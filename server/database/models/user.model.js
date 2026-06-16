@@ -50,10 +50,12 @@ const userSchema = new mongoose.Schema(
         coins: {
             type: Number,
             default: 50, // Free plan default
+            min: 0,
         },
         rolloverCoins: {
             type: Number,
             default: 0,
+            min: 0,
         },
         lastCoinResetDate: {
             type: Date,

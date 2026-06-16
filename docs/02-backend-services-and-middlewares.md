@@ -328,6 +328,13 @@ const allowedOrigins = [
 | `setAuthCookies(res, { accessToken, refreshToken })` | Sets two `HttpOnly`, `SameSite=None`, `Secure` cookies |
 | `clearAuthCookies(res)` | Clears both auth cookies |
 
+### coin.service.js
+
+| Export | Purpose |
+|--------|---------|
+| `checkAndResetCoins(user)` | Monthly reset check: rolls over remaining coins and resets base plan coins |
+| `deductCoins(user, amount)` | Validates and deducts coins (from base, then rollover) and saves changes |
+
 ---
 
 ## 6. Database
@@ -340,7 +347,22 @@ const allowedOrigins = [
 | `email` | String | Required, unique, lowercase |
 | `password` | String | Required, selected out by default (`select: false`) |
 | `role` | String | `"user"` or `"admin"`, default `"user"` |
+| `subscriptionPlan` | String | `"free"`, `"plus"`, `"family"`, default `"free"` |
+| `subscriptionRenewalDate` | Date | Expiry date of the premium subscription |
+| `stripeCustomerId` | String | Customer ID for Stripe billing integration |
+| `hasPaymentMethod` | Boolean | Whether a payment card is configured |
 | `picture` | String | Cloudinary URL or null |
+| `coins` | Number | Active AI coin balance (min: 0, default 50) |
+| `rolloverCoins` | Number | Accrued unused coins rolled over from previous cycles (min: 0) |
+| `lastCoinResetDate` | Date | Date when the monthly coin balance was last reset |
+| `phone` | String | User's phone number |
+| `governorate` | String | Egyptian governorate (for localized analytics) |
+| `preferredLanguage` | String | `"ar"` or `"en"`, default `"ar"` |
+| `consumptionGoals` | Object | Target limits: `monthlyKwhLimit`, `targetBillEgp`, `targetSheriha` |
+| `notificationPreferences` | Object | Toggles for warnings, forecast, AI advice, email, push, etc. |
+| `isActive` | Boolean | Account status |
+| `twoFactorEnabled` | Boolean | 2FA status |
+| `twoFactorSecret` | String | Secret for TOTP authenticator |
 | `createdAt` | Date | Auto (timestamps) |
 | `updatedAt` | Date | Auto (timestamps) |
 

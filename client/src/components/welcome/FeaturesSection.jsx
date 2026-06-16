@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Cpu, Brain, Zap, MonitorSmartphone } from "lucide-react";
 import { motion } from "framer-motion";
 import SectionHeading from "./ui/SectionHeading";
+import KashfCard from "./ui/KashfCard";
 import { fadeUpVariants } from "../../utils/animations";
 
 const CAPABILITIES = [
@@ -12,12 +13,7 @@ const CAPABILITIES = [
 ];
 
 const FeatureCard = ({ Icon, title, desc }) => (
-    <div className="group relative overflow-hidden rounded-2xl border border-neutral-800 bg-[#0d0d12] p-6 flex flex-col gap-3 transition-all duration-500 ease-out cursor-pointer hover:border-kashf-blue/40 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(6,182,212,0.15)]">
-        {/* Hover glow blob */}
-        <span aria-hidden className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br from-kashf-blue/8 via-kashf-light-blue/5 to-emerald-400/5" />
-        {/* Top line accent */}
-        <span aria-hidden className="pointer-events-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-kashf-blue/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
+    <KashfCard onClick={() => {}} className="gap-3">
         <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-xl text-kashf-light-blue transition-all duration-500 group-hover:scale-110">
             <Icon className="size-6" strokeWidth={1.5} aria-hidden="true" />
         </div>
@@ -27,7 +23,7 @@ const FeatureCard = ({ Icon, title, desc }) => (
         <p className="relative z-10 text-sm text-neutral-500 leading-relaxed mt-auto transition-colors duration-300 group-hover:text-neutral-300">
             {desc}
         </p>
-    </div>
+    </KashfCard>
 );
 
 const FeaturesSection = () => {

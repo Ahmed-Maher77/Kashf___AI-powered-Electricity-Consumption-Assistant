@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { fadeUpVariants } from "../../utils/animations";
 import SectionBadge from "./ui/SectionBadge";
 import SectionHeading from "./ui/SectionHeading";
+import KashfCard from "./ui/KashfCard";
 
 const STEP_ICONS = [
     <svg key="scan" className="size-6 text-kashf-light-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -50,53 +51,40 @@ const HowItWorksSection = () => {
                 >
                     {STEP_KEYS.map((key, index) => (
                         <motion.div key={key} variants={fadeUpVariants} custom={index} className="h-full">
-                            <div
-                                className="relative group flex flex-col gap-4 rounded-2xl border border-neutral-800 bg-[#0d0d12] p-6 transition-all duration-500 hover:border-kashf-blue/40 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(6,182,212,0.12)] h-full"
-                            >
-                            {/* Hover glow */}
-                            <span
-                                aria-hidden
-                                className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br from-kashf-blue/8 via-kashf-light-blue/5 to-emerald-400/5"
-                            />
-                            {/* Top line accent */}
-                            <span
-                                aria-hidden
-                                className="pointer-events-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-kashf-blue/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                            />
+                            <KashfCard className="gap-4 h-full relative">
+                                {/* Icon + step number row */}
+                                <div className="flex items-center gap-3">
+                                    <span className="flex size-10 items-center justify-center rounded-xl bg-kashf-blue/10 border border-kashf-blue/20 transition-all duration-500 group-hover:scale-110 shrink-0">
+                                        {STEP_ICONS[index]}
+                                    </span>
+                                    <span className="text-3xl font-extrabold text-neutral-700 select-none">
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
+                                </div>
 
-                            {/* Icon + step number row */}
-                            <div className="flex items-center gap-3">
-                                <span className="flex size-10 items-center justify-center rounded-xl bg-kashf-blue/10 border border-kashf-blue/20 transition-all duration-500 group-hover:scale-110 shrink-0">
-                                    {STEP_ICONS[index]}
-                                </span>
-                                <span className="text-3xl font-extrabold text-neutral-700 select-none">
-                                    {String(index + 1).padStart(2, "0")}
-                                </span>
-                            </div>
+                                <h3 className="relative z-10 text-base font-semibold text-neutral-100 mt-1 transition-colors duration-300 group-hover:text-kashf-light-blue">
+                                    {t(`howItWorks.steps.${key}.title`)}
+                                </h3>
+                                <p className="relative z-10 text-sm text-neutral-500 leading-relaxed mt-auto transition-colors duration-300 group-hover:text-neutral-300">
+                                    {t(`howItWorks.steps.${key}.desc`)}
+                                </p>
 
-                            <h3 className="relative z-10 text-base font-semibold text-neutral-100 mt-1 transition-colors duration-300 group-hover:text-kashf-light-blue">
-                                {t(`howItWorks.steps.${key}.title`)}
-                            </h3>
-                            <p className="relative z-10 text-sm text-neutral-500 leading-relaxed mt-auto transition-colors duration-300 group-hover:text-neutral-300">
-                                {t(`howItWorks.steps.${key}.desc`)}
-                            </p>
-
-                            {/* Connector chevron (desktop only, hidden on last) */}
-                            {index < STEP_KEYS.length - 1 && (
-                                <span
-                                    aria-hidden
-                                    className="hidden lg:flex absolute -end-3.5 top-1/2 -translate-y-1/2 z-10 size-7 items-center justify-center rounded-full bg-kashf-surface border border-neutral-800 text-neutral-600"
-                                >
-                                    <svg className="size-3.5 rtl:rotate-180" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            )}
-                            </div>
+                                {/* Connector chevron (desktop only, hidden on last) */}
+                                {index < STEP_KEYS.length - 1 && (
+                                    <span
+                                        aria-hidden
+                                        className="hidden lg:flex absolute -end-3.5 top-1/2 -translate-y-1/2 z-10 size-7 items-center justify-center rounded-full bg-kashf-surface border border-neutral-800 text-neutral-600"
+                                    >
+                                        <svg className="size-3.5 rtl:rotate-180" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    </span>
+                                )}
+                            </KashfCard>
                         </motion.div>
                     ))}
                 </motion.div>

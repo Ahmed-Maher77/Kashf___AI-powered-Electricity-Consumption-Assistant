@@ -1,6 +1,7 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import AppError from "../utils/AppError.js";
 import Simulation from "../../database/models/simulation.model.js";
+import User from "../../database/models/user.model.js";
 import * as engine from "../services/simulation.engine.js";
 import { getAdvice } from "../services/simulation.advisor.js";
 import { getPrediction } from "../services/simulation.predictor.js";
@@ -9,6 +10,8 @@ import { chat } from "../services/simulation.chat.js";
 import { getAutoPilotStatus } from "../services/simulation.autopilot.js";
 import { getRecommendations } from "../services/simulation.recommender.js";
 import { addClient } from "../services/simulation.broadcaster.js";
+import { deductCoins } from "../services/coin.service.js";
+import { runWithUserLock } from "../utils/userLock.js";
 
 const DEFAULT_CIRCUITS = [
   {
@@ -288,14 +291,82 @@ export const whatIfSimulation = asyncHandler(async (req, res) => {
   res.json({ success: true, data: result });
 });
 
-// ─── Natural Language Chat ────────────────────────────────
+// Idempotency cache for chat messages
+const processedMessages = new Map();
+const IDEMPOTENCY_CLEANUP_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, val] of processedMessages.entries()) {
+    if (now - val.timestamp > IDEMPOTENCY_CLEANUP_INTERVAL) {
+      processedMessages.delete(key);
+    }
+  }
+}, IDEMPOTENCY_CLEANUP_INTERVAL).unref();
+
+const getMessageKey = (userId, message, messageId) => {
+  if (messageId) {
+    return `${userId}:${messageId}`;
+  }
+  const timeWindow = Math.floor(Date.now() / 5000);
+  const sanitizedMsg = (message || "").trim().toLowerCase();
+  return `${userId}:${sanitizedMsg}:${timeWindow}`;
+};
 
 export const chatSimulation = asyncHandler(async (req, res) => {
   const simulation = await Simulation.findById(req.params.id);
   if (!simulation) throw new AppError("Simulation not found", 404);
   if (simulation.user.toString() !== req.user.id) throw new AppError("Not authorized", 403);
 
-  const result = await chat(simulation._id.toString(), req.body.message);
+  const { message, messageId } = req.body;
+  const key = getMessageKey(req.user.id, message, messageId);
+
+  // Check idempotency cache
+  if (processedMessages.has(key)) {
+    const cached = processedMessages.get(key);
+    return res.json({
+      success: true,
+      data: {
+        ...cached.result,
+        coins: cached.coins,
+        rolloverCoins: cached.rolloverCoins,
+      },
+    });
+  }
+
+  // Deduct coins and execute chat under user lock
+  const result = await runWithUserLock(req.user.id, async () => {
+    // Reload user from database inside lock to ensure most fresh balance
+    const user = await User.findById(req.user.id);
+    if (!user) throw new AppError("User not found", 404);
+
+    // Check balance before calling LLM
+    const totalCoins = (user.coins || 0) + (user.rolloverCoins || 0);
+    if (totalCoins < 1) {
+      throw new AppError("Insufficient coins. Please upgrade your plan or wait for renewal.", 400);
+    }
+
+    // Call chat service
+    const chatResult = await chat(simulation._id.toString(), message);
+
+    // Deduct 1 coin
+    await deductCoins(user, 1);
+
+    // Store in idempotency cache
+    processedMessages.set(key, {
+      timestamp: Date.now(),
+      result: chatResult,
+      coins: user.coins,
+      rolloverCoins: user.rolloverCoins,
+    });
+
+    return {
+      ...chatResult,
+      coins: user.coins,
+      rolloverCoins: user.rolloverCoins,
+    };
+  });
+
   res.json({ success: true, data: result });
 });
 
