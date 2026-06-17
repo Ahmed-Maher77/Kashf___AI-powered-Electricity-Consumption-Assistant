@@ -11,6 +11,7 @@
         "ai-powered",
         "ocr",
         "gemini-api",
+        "groq-api",
         "pwa",
         "progressive-web-app",
         "react",

@@ -112,7 +112,7 @@ Many households are unaware of their current consumption status and receive no w
 
 ### AI Layer
 
-* Gemini API
+* Groq API
 * Real-time Data Sync
 * Electricity Consumption Analysis
 * Personalized Recommendation Generation

@@ -444,7 +444,7 @@ server.js
 |---------|--------|
 | Admin routes & controllers | Route file exists; handlers stubbed |
 | Scan / meter OCR upload | Not yet implemented |
-| AI / Gemini tips generation | Not yet implemented |
+| AI / Groq tips generation | Not yet implemented |
 | Dashboard aggregation API | Not yet implemented |
 | History / scan detail API | Not yet implemented |
 | Notification system | Not yet implemented |

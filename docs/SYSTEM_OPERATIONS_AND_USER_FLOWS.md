@@ -20,11 +20,12 @@ This document describes every significant user-facing operation in Kashf — ste
 3. [App Bootstrap Flow](#3-app-bootstrap-flow)
 4. [Welcome Page Flow](#4-welcome-page-flow)
 5. [About Page Flow](#5-about-page-flow)
-6. [Scan Meter Flow](#6-scan-meter-flow)
+6. [Meter & Bill Flow](#6-meter--bill-flow)
 7. [Dashboard Flow](#7-dashboard-flow)
-8. [History Flow](#8-history-flow)
-9. [AI Tips Flow](#9-ai-tips-flow)
-10. [Admin Flows](#10-admin-flows) *(planned)*
+8. [Simulation Sandbox Flow](#8-simulation-sandbox-flow)
+9. [AI Features Flow](#9-ai-features-flow)
+10. [History Flow](#10-history-flow)
+11. [Admin Flows](#11-admin-flows) *(planned)*
 
 ---
 
@@ -409,35 +410,86 @@ User actions:
 
 ---
 
-## 6. Scan Meter Flow
+## 6. Meter & Bill Flow
 
-**Entry point:** `/scan`
+**Entry point:** `/meters` (user dashboard) or `/bills`
+
+Consumption data enters the system through manual bill entry linked to meters. There is no automated OCR or hardware pipeline.
+
+### 6.1 Create a Meter
 
 ```
-[PLANNED]
-User opens scan page
+USER opens My Meters page → clicks "Add Meter"
   │
   ▼
-Camera/upload component
-  ├── user captures photo → canvas frame
-  └── user uploads image → file picker
+CLIENT shows create meter form (name, number, type, status)
   │
   ▼
-CLIENT sends POST /api/scans (multipart/form-data)
-  └── image file + optional metadata
+CLIENT sends POST /api/meters
   │
   ▼
-SERVER (to be built):
-  ├── uploadImage middleware (multer)
-  ├── OCR service: Gemini Vision API → extract kWh reading
-  ├── Tier calculation: compare kWh to Sheriha thresholds
-  ├── Bill estimate: kWh × price per tier bracket
-  ├── AI tips: Gemini → personalized recommendations
-  └── Scan document saved to MongoDB
+SERVER: isAuthenticated → req.user
   │
   ▼
-Redirect to /dashboard with fresh data
+SERVER: meterController.createMeter()
+  ├── Validates name and number (required)
+  ├── Checks meter limit by plan (free=1, plus=2, family=5)
+  ├── Checks duplicate meter number for this user
+  ├── Meter.create({ user, name, number, type, status })
+  └── Returns created meter
+  │
+  ▼
+CLIENT adds meter to Redux store → list re-renders
 ```
+
+### 6.2 View Meters (with consumption)
+
+```
+CLIENT sends GET /api/meters
+  │
+  ▼
+SERVER: meterController.getMeters()
+  ├── Finds all meters for user
+  ├── For each meter:
+  │     ├── Query linked bills sorted by dueDate
+  │     ├── If bills exist → use latest bill.consumption + bill.tier
+  │     │                    and trend = all bill consumptions
+  │     └── If no bills  → generate synthetic 5-point trend
+  │                        based on meter type (residential/commercial/vacation)
+  │                        and derive tier from consumption
+  └── Returns formatted meters with consumption, tier, trend, lastReading
+  │
+  ▼
+CLIENT renders meter cards with gauge, trend chart, tier badge
+```
+
+### 6.3 Add a Bill (Manual Entry)
+
+```
+USER navigates to Bills page → clicks "Add Bill"
+  │
+  ▼
+CLIENT shows bill form (month, consumption kWh, tier, amount, status, dueDate, meter)
+  │
+  ▼
+CLIENT sends POST /api/bills
+  │
+  ▼
+SERVER: billController.addBill()
+  ├── Bill.create({ user, meter, month, consumption, tier, amount, status, dueDate })
+  └── Returns created bill
+  │
+  ▼
+CLIENT adds bill to list → consumption updates on meter cards
+```
+
+#### Error paths
+
+| Error | HTTP | User sees |
+|-------|------|-----------|
+| Missing name/number for meter | 400 | "Please provide name and number for the meter" |
+| Duplicate meter number | 400 | "Meter with this number already exists" |
+| Plan meter limit reached | 400 | "You have reached the maximum number of meters..." |
 
 ---
 
@@ -473,42 +525,195 @@ Data rendered visually using Recharts (Analytics), tables (Bills/History), etc.
 
 ---
 
-## 8. History Flow
+## 8. Simulation Sandbox Flow
 
-**Entry point:** `/history`
+**Entry point:** `/simulations` — virtual appliance sandbox for what-if analysis and AI advice
+
+### 8.1 Create & Configure Simulation
 
 ```
-[PLANNED]
-GET /api/scans?page=1&limit=20
-  └── returns paginated scan list for authenticated user
+USER opens Simulations → clicks "New Simulation"
   │
   ▼
-User opens scan → GET /api/scans/:id
-  └── returns full scan: image URL, OCR result, calculations, tips
+CLIENT sends POST /api/simulations { name, autoGenerate }
+  │
+  ▼
+SERVER creates Simulation document with circuits & devices
+  ├── autoGenerate=true → pre-populated with 5 circuits (Kitchen, Living Room,
+  │                        Bedroom, Bathroom, Office) and default appliances
+  └── autoGenerate=false → empty circuits, user adds manually
+  │
+  ▼
+USER can add/remove circuits and devices
+  ├── POST /api/simulations/:id/circuits
+  ├── DELETE /api/simulations/:id/circuits/:cid
+  ├── POST /api/simulations/:id/devices
+  ├── PATCH /api/simulations/:id/devices/:did  (toggle isOn, set essential flag)
+  └── DELETE /api/simulations/:id/devices/:did
+```
+
+### 8.2 Run Simulation
+
+```
+USER clicks "Start"
+  │
+  ▼
+CLIENT sends POST /api/simulations/:id/start
+  │
+  ▼
+SERVER: Engine tick loop starts
+  ├── Every 1 second: totalKWh += totalWatts / 3600
+  ├── Tracks currentTier, estimatedBill based on active devices
+  ├── Runtime state kept in-memory (Map<simId, Runtime>)
+  └── SSE stream broadcasts state to subscribed clients
+  │
+  ▼
+CLIENT connects to GET /api/simulations/:id/stream (SSE)
+  └── Receives real-time: totalKWh, tier, bill, circuit loads, device states
+  │
+  ▼
+USER can pause (POST /pause), reset (POST /reset), or toggle devices live
+```
+
+### 8.3 Tier Prediction
+
+```
+CLIENT sends GET /api/simulations/:id/prediction
+  │
+  ▼
+SERVER (pure math, no AI):
+  ├── Calculates remaining kWh before next tier threshold
+  ├── Hours until next tier at current consumption rate
+  └── Warning level: green / yellow / orange / red
+```
+
+### 8.4 What-If Analysis
+
+```
+USER requests what-if projection
+  │
+  ▼
+CLIENT sends POST /api/simulations/:id/what-if
+Body: { deviceId: "...", turnOff: true }
+  │
+  ▼
+SERVER clones current runtime, applies toggle,
+projects kWh/bill/tier differences
+  └── Returns comparison: current vs projected
 ```
 
 ---
 
-## 9. AI Tips Flow
+## 9. AI Features Flow
 
-**Entry point:** `/tips`
+AI features are powered by **Groq** (Llama 3.3 70B) via an OpenAI-compatible client, focused on the simulation sandbox.
+
+### 9.1 AI Consumption Advisor
+
+**Entry point:** Simulation detail page → "Get Advice" button
 
 ```
-[PLANNED - Currently UI Mocked in MyMetersPage]
-GET /api/tips
-  └── returns personalized tips based on user's consumption profile
+CLIENT sends POST /api/simulations/:id/advise
   │
   ▼
-Gemini API generates:
-  ├── Category (AC, lighting, appliances)
-  ├── Tip body in Egyptian Arabic
-  ├── Estimated kWh / EGP saving
-  └── Priority score
+SERVER builds prompt from simulation state:
+  ├── totalKWh, currentTier, estimatedBill
+  ├── Circuits table with loadW per circuit
+  └── User consumption goals
+  │
+  ▼
+SERVER calls Groq API (groq.js → generateAdvice)
+  └── Returns 3 parsed tips: { device, advice, savings }
+  │
+  ▼
+CLIENT displays tips in Egyptian Arabic (Ammiya)
+```
+
+### 9.2 Smart Recommendations
+
+```
+CLIENT sends POST /api/simulations/:id/recommend
+  │
+  ▼
+SERVER performs deep analysis:
+  ├── Load distribution across circuits
+  ├── Device profile breakdown (high-load vs essential vs non-essential)
+  ├── Tier progression risk
+  └── Calls Groq with structured context
+  │
+  ▼
+Returns categorized findings + quick-wins + priority rating
+```
+
+### 9.3 Natural Language Chat
+
+```
+USER types a message (Arabic or English)
+  │
+  ▼
+CLIENT sends POST /api/simulations/:id/chat
+Body: { message: "شغل التكييف في غرفة النوم" }
+  │
+  ▼
+SERVER:
+  ├── Checks coin balance (1 coin per message)
+  ├── Calls Groq for intent classification
+  │     └── Detects intent: toggle_device | query_state | advise | what_if | unknown
+  ├── Executes action (toggle device, run what-if, fetch prediction, etc.)
+  ├── Deducts 1 coin
+  └── Returns response in Arabic
+  │
+  ▼
+CLIENT displays chat response
+```
+
+#### Error paths
+
+| Error | HTTP | User sees |
+|-------|------|-----------|
+| Insufficient coins | 400 | "Insufficient coins. Please upgrade..." |
+| Idempotent duplicate (same message within 5s) | 200 | Cached response, no coin deducted |
+
+### 9.4 Auto-Pilot
+
+```
+USER sets consumption goal and enables Auto-Pilot
+  │
+  ▼
+CLIENT sends POST /api/simulations/:id/auto-pilot/start
+Body: { monthlyKwhLimit, targetBillEgp }
+  │
+  ▼
+SERVER:
+  ├── Saves consumption goal on simulation
+  ├── Enables autoPilot flag
+  └── Engine tick loop checks:
+        If projected consumption exceeds goal →
+        turns off non-essential devices automatically
 ```
 
 ---
 
-## 10. Admin Flows *(planned)*
+## 10. History Flow
+
+**Entry point:** `/bills`
+
+```
+GET /api/bills?page=1&limit=10&status=all&year=2026
+  │
+  ▼
+SERVER: billController.getBills()
+  ├── Filters by user, optional status and year
+  ├── Paginated results sorted by dueDate desc
+  └── Returns bills with populated meter data
+  │
+  ▼
+CLIENT renders bill list with status badges, edit/delete actions
+```
+
+---
+
+## 11. Admin Flows *(planned)*
 
 ### Admin Login
 
@@ -533,10 +738,9 @@ isAdmin → req.user.role === "admin"
 |-----------|----------|-------|
 | List users | `GET /api/admin/users` | Paginated |
 | Disable user | `PATCH /api/admin/users/:id/disable` | Sets user.active = false |
-| List all scans | `GET /api/admin/scans` | |
-| Delete scan | `DELETE /api/admin/scans/:id` | |
+| List all bills | `GET /api/admin/bills` | |
 | Manage tiers | `GET/POST/PATCH/DELETE /api/admin/tiers` | Sheriha pricing rules |
-| View AI logs | `GET /api/admin/ai-logs` | OCR + Gemini audit trail |
+| View AI logs | `GET /api/admin/ai-logs` | Groq prompt/response audit trail |
 
 ---
 

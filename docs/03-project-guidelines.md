@@ -94,8 +94,8 @@ VITE_API_BASE_URL=http://localhost:3000
 ### Planned (add when feature is implemented)
 
 ```env
-# AI — Gemini
-GEMINI_API_KEY=
+# AI — Groq
+GROQ_API_KEY=
 
 # Stripe (payments)
 STRIPE_SECRET_KEY=
@@ -410,7 +410,7 @@ app.use("/api/scans", scanRoutes);
 
 ### Services (`server/src/services/`)
 
-- All business rules, hashing, JWT, external APIs (Gemini, OCR).
+- All business rules, hashing, JWT, external APIs (Groq, OCR).
 - Throw `AppError` for expected failures.
 - Return plain data objects to controllers.
 

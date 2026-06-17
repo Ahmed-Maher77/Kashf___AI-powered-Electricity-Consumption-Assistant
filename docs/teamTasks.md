@@ -11,6 +11,16 @@ Use this file to track task ownership across all workstreams. Update status inli
 
 ## Frontend
 
+### Profile & Account
+| Status | Task | Owner | Notes |
+|--------|------|-------|-------|
+| 🟢 Done | PersonalInformation (view + edit) | — | Real PATCH /api/auth/profile |
+| 🟢 Done | Profile picture upload | — | Cloudinary via PATCH /api/auth/profile/picture |
+| 🟢 Done | NotificationPreferences (functional toggles) | — | Optimistic toggle, debounced PATCH |
+| 🟢 Done | LanguageSelector (Navbar toggle) | — | EN/AR with RTL flip |
+| 🟢 Done | SecuritySettings (password change) | — | |
+| 🟢 Done | ThemeSelector (dark/light/system) | — | |
+
 ### Auth & Session
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
@@ -56,7 +66,7 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | Pricing translations | — | |
 | 🟢 Done | About page translations | — | |
 | 🟢 Done | Dashboard translations | — | Done for all user modules |
-| 🟢 Done | Scan page translations | — | |
+| 🟢 Done | Bills page translations | — | |
 | 🟢 Done | Tips page translations | — | |
 | 🟢 Done | Global CSS Configuration | — | Added Tailwind v4 base styles (global cursor pointer) |
 | 🔴 Todo | Admin panel translations | — | Lower priority |
@@ -67,7 +77,7 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | PersonalInformation (view + edit profile form) | — | Real data from Redux, edit via PATCH /api/auth/profile, fallbacks for empty fields |
 | 🟢 Done | NotificationPreferences (functional toggles) | — | Optimistic toggle, debounced PATCH /api/auth/notifications, RTL fix |
 | 🟢 Done | AIAssistantPreferences | — | |
-| 🟢 Done | ConsumptionGoals (real goals + edit) | — | Reads user.consumptionGoals, edit via PATCH /api/auth/goals, 0% progress until scans |
+| 🟢 Done | ConsumptionGoals (real goals + edit) | — | Reads user.consumptionGoals, edit via PATCH /api/auth/goals, 0% progress until bills added |
 | 🟢 Done | SecuritySettings | — | |
 | 🟢 Done | ActivityHistory (real API data + semantic icons) | — | useActivity hook, 13-type icon map, relative time, skeleton, empty state, pagination |
 | 🟢 Done | PWAStatus | — | |
@@ -79,49 +89,31 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | BillsPage & BillingPage | — | UI Mocked: Billing history and subscription management |
 | 🟢 Done | ReportsPage & AlertsPage | — | UI Mocked: Detailed exports and notification center |
 
-### Scan Page
+### Meters
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| ⚪ Planned | CameraCapture component | — | `getUserMedia` API |
-| ⚪ Planned | ImageUploader (drag & drop + file picker) | — | |
-| ⚪ Planned | CapturePreview + retake flow | — | |
-| ⚪ Planned | SubmitScanButton → POST /api/scans | — | |
-| ⚪ Planned | ProcessingStepper page (`/processing`) | — | |
+| 🟢 Done | MyMetersPage (list, create, edit, delete) | — | CRUD via Redux, real API |
+| 🟢 Done | Meter consumption derived from bills or synthetic trends | — | Controller generates trends when no bills exist |
+| 🟢 Done | ConsumptionTimeline chart | — | |
 
-### History
-| Status | Task | Owner | Notes |
-|--------|------|-------|-------|
-| ⚪ Planned | ScanHistoryList (paginated) | — | |
-| ⚪ Planned | ScanDetailPage (`/history/:id`) | — | |
-| ⚪ Planned | ConsumptionTimeline chart | — | |
-| ⚪ Planned | FilterTabs (scans / bills / tiers) | — | |
-
-### Tips & Recommendations
+### Tips & AI Advisor
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
 | 🟢 Done | PersonalizedTipsFeed | — | UI Mocked: Driven by dummy AI Advices integrated into My Meters |
-| ⚪ Planned | TipCategoryFilter | — | |
-| ⚪ Planned | SavingsEstimateCard | — | |
-
-### Profile & Account
-| Status | Task | Owner | Notes |
-|--------|------|-------|-------|
-| ⚪ Planned | LanguageSelector (already partially done via Navbar) | — | |
-| ⚪ Planned | NotificationToggles | — | |
-| ⚪ Planned | ThemeSelector (dark/light/system) | — | |
-| ⚪ Planned | Profile section (name, email, picture) | — | |
+| 🟢 Done | Simulation AI Advisor (POST /api/simulations/:id/advise) | — | Groq-powered tips in Egyptian Arabic |
+| 🟢 Done | Simulation Chat (POST /api/simulations/:id/chat) | — | NLP intent classification via Groq |
+| 🟢 Done | Simulation Recommendations (POST /api/simulations/:id/recommend) | — | Deep analysis via Groq |
 
 ### Admin Panel
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| ⚪ Planned | AdminLayout (sidebar + navbar) | — | |
-| ⚪ Planned | Admin Dashboard (KPI cards, charts) | — | |
-| ⚪ Planned | Users Management table | — | |
-| ⚪ Planned | Scan Management table | — | |
-| ⚪ Planned | Tier Management CRUD | — | |
-| ⚪ Planned | AI Logs viewer | — | |
-| ⚪ Planned | Notifications composer | — | |
-| ⚪ Planned | System Settings form | — | |
+| 🟢 Done | AdminLayout (sidebar + navbar) | — | Collapsible, RTL-aware |
+| 🟢 Done | Admin Dashboard (KPI cards, charts) | — | Users, devices, bills KPIs |
+| 🟢 Done | Users Management table | — | Search, pagination, toggle status, delete |
+| 🟢 Done | Device/Meter Management | — | List, update status, delete |
+| 🟢 Done | Tier Management (GET + PATCH) | — | View and update tier thresholds/rates |
+| 🟢 Done | Notifications composer | — | Create, list, delete system notifications |
+| 🟢 Done | System Settings form | — | Groq API key, OCR, upload limits, security |
 
 ---
 
@@ -156,73 +148,88 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | userMapper (toPublicUser) | — | |
 | 🟢 Done | Admin seed script | — | `npm run seed:admin` |
 
-### Scan & OCR
+### Bills (Manual Entry)
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| 🔴 Todo | Scan model (Mongoose) | — | kWh, image, ocrResult, userId, tier, bill |
-| 🔴 Todo | POST /api/scans (upload + OCR trigger) | — | |
-| 🔴 Todo | GET /api/scans (user history, paginated) | — | |
-| 🔴 Todo | GET /api/scans/:id (scan detail) | — | |
-| 🔴 Todo | DELETE /api/scans/:id (admin only) | — | |
-| 🔴 Todo | scan.service.js | — | Orchestrates OCR + tier calc + tips |
-| 🔴 Todo | scan.validation.js | — | |
+| 🟢 Done | Bill model (Mongoose) | — | month, consumption, tier, amount, meter, status |
+| 🟢 Done | POST /api/bills | — | Create bill with consumption reading |
+| 🟢 Done | GET /api/bills | — | Paginated, filterable by status/year |
+| 🟢 Done | PUT /api/bills/:id | — | Update bill entry |
+| 🟢 Done | DELETE /api/bills/:id | — | Remove bill |
+| 🟢 Done | Bills linked to meters | — | Meter controller derives consumption from bills |
+
+### Meters
+| Status | Task | Owner | Notes |
+|--------|------|-------|-------|
+| 🟢 Done | Meter model (Mongoose) | — | name, number, type, status, consumption |
+| 🟢 Done | GET /api/meters | — | Returns meters with consumption derived from bills or synthetic trends |
+| 🟢 Done | POST /api/meters | — | Create meter (plan-limited: free=1, plus=2, family=5) |
+| 🟢 Done | PUT /api/meters/:id | — | Update meter details |
+| 🟢 Done | DELETE /api/meters/:id | — | Remove meter |
 
 ### Sheriha Tier System
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| 🔴 Todo | Tier model (thresholds, price/kWh, name) | — | |
-| 🔴 Todo | tier.service.js (calculate current tier + bill) | — | Core business logic |
-| 🔴 Todo | GET /api/tiers (public - for display) | — | |
-| 🔴 Todo | Admin CRUD: POST/PATCH/DELETE /api/admin/tiers | — | |
-| 🔴 Todo | Seed default Egyptian tariff tiers | — | 2024/2025 rates |
+| 🟢 Done | Tier model (thresholds, price/kWh, name) | — | Mongoose schema, 7 tiers |
+| 🟢 Done | tier.constants.js (computeTier + computeBill) | — | Used by simulation engine, predictor, what-if, autopilot |
+| 🟢 Done | Admin tier management (GET + PATCH /api/admin/tiers) | — | View and update rates/thresholds |
+| 🟢 Done | Seed default Egyptian tariff tiers | — | Auto-seeds on startup via tier.seed.js |
 
 ### Dashboard API
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| 🔴 Todo | GET /api/dashboard | — | Latest scan + tier + bill + tips preview |
-| 🔴 Todo | dashboard.service.js | — | Aggregation query |
+| 🟢 Done | GET /api/meters | — | Meters with consumption from bills or synthetic trends |
+| 🟢 Done | GET /api/bills | — | Paginated bill history |
+| 🟢 Done | GET /api/activity | — | Recent user activity log |
+| 🟢 Done | GET /api/simulations | — | Simulation sandbox list with runtime state |
 
-### Tips & AI
+### Simulation Engine
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| 🔴 Todo | GET /api/tips | — | Returns tips for current user |
-| 🔴 Todo | tips.service.js | — | Calls AI service, caches results |
-| 🔴 Todo | Tip model | — | category, body, priority, userId, scanId |
+| 🟢 Done | Simulation model (Mongoose) | — | Circuits, devices, auto-pilot config |
+| 🟢 Done | CRUD: POST/GET/PATCH/DELETE /api/simulations | — | Full simulation lifecycle |
+| 🟢 Done | Tier prediction (GET /api/simulations/:id/prediction) | — | Remaining kWh, hours-to-next-tier, warning level |
+| 🟢 Done | What-if analysis (POST /api/simulations/:id/what-if) | — | Project kWh/bill/tier after device toggles |
+| 🟢 Done | SSE stream (GET /api/simulations/:id/stream) | — | Real-time tick broadcast |
+| 🟢 Done | Auto-pilot (start/stop) | — | Auto-disable non-essential devices when exceeding goal |
 
 ### Admin APIs
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| 🔴 Todo | GET /api/admin/users | — | Paginated user list |
-| 🔴 Todo | PATCH /api/admin/users/:id/disable | — | |
-| 🔴 Todo | GET /api/admin/scans | — | All scans |
-| 🔴 Todo | GET /api/admin/ai-logs | — | OCR + Gemini audit |
-| 🔴 Todo | POST/PATCH/DELETE /api/admin/tiers | — | |
-| 🔴 Todo | Notifications CRUD | — | |
+| 🟢 Done | GET /api/admin/users | — | Search, pagination, status filter |
+| 🟢 Done | PATCH /api/admin/users/:userId/status | — | Toggle isActive |
+| 🟢 Done | DELETE /api/admin/users/:userId | — | Cascades to meters, bills, activities |
+| 🟢 Done | GET /api/admin/dashboard/stats | — | User/device/bill counts, active rate |
+| 🟢 Done | GET/PATCH /api/admin/tiers | — | View and update tier config |
+| 🟢 Done | GET/POST/DELETE /api/admin/notifications | — | Full CRUD on system notifications |
+| 🟢 Done | GET/PATCH /api/admin/settings | — | SystemConfig key-value store |
+| 🟢 Done | GET /api/admin/devices | — | List all devices with search/filter |
+| 🟢 Done | PATCH/DELETE /api/admin/devices/:deviceId | — | Update status, delete device |
 
 ### Infrastructure
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| 🔴 Todo | Rate limiting (auth routes) | — | `express-rate-limit` |
-| 🔴 Todo | `helmet` security headers | — | |
-| 🔴 Todo | Request logger (morgan or pino) | — | |
-| 🔴 Todo | Input sanitization | — | Prevent NoSQL injection |
-| 🔴 Todo | API versioning (`/api/v1/`) | — | Optional, discuss in team |
+| 🟢 Done | CORS config (whitelist with localhost + production) | — | `config/corsOptions.js` |
+| 🟢 Done | cookie-parser (cookie-based auth) | — | HttpOnly, Secure, SameSite cookies |
+| 🟢 Done | express.json() body parser | — | Standard JSON body parsing |
+| 🟢 Done | Stripe webhook raw body parser | — | `express.raw()` before JSON parser |
+| 🟢 Done | Global error handler | — | Catches all errors, returns JSON |
 
 ---
 
-## AI (Gemini Integration)
+## AI (Groq Integration)
 
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| 🔴 Todo | Gemini Vision: OCR meter reading | — | Extract kWh from image |
-| 🔴 Todo | Gemini text: generate personalized tips | — | Egyptian Arabic output |
-| 🔴 Todo | gemini.service.js | — | Prompt engineering, retries, error handling |
-| 🔴 Todo | Prompt templates for tips | — | Category: AC, lighting, appliances, behavior |
-| 🔴 Todo | OCR confidence scoring | — | Reject low-confidence reads |
-| 🔴 Todo | AI response caching | — | Avoid redundant Gemini calls for same scan |
-| 🔴 Todo | AI audit log model | — | Store prompt + response for admin review |
-| 🔴 Todo | Fallback tips (when AI unavailable) | — | Static curated tip bank |
-| ⚪ Planned | Fine-tune prompts for Egyptian dialect | — | User research needed |
+| 🟢 Done | groq.js config (OpenAI-compatible client) | — | Llama 3.3 70B via Groq API |
+| 🟢 Done | Simulation Advisor (POST /:id/advise) | — | 3 personalized tips in Egyptian Arabic |
+| 🟢 Done | Simulation Chat (POST /:id/chat) | — | NLP intent classification + action execution |
+| 🟢 Done | Smart Recommender (POST /:id/recommend) | — | Deep consumption analysis |
+| 🟢 Done | Tier Prediction (GET /:id/prediction) | — | Math-based, no AI call |
+| 🟢 Done | What-If Analysis (POST /:id/what-if) | — | Project consumption after device changes |
+| 🟢 Done | Auto-Pilot (start/stop auto-pilot) | — | Auto-toggle non-essential devices |
+| 🟢 Done | SSE Stream (GET /:id/stream) | — | Real-time runtime state broadcast |
+| 🟢 Done | Coin system for chat | — | 1 coin per message, plan-based limits |
 | ⚪ Planned | Multi-language tip generation (AR + EN) | — | |
 
 ---
@@ -236,7 +243,7 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🔴 Todo | `manifest.json` (name, icons, theme color) | — | Required for installability |
 | 🔴 Todo | Service worker (offline caching) | — | Vite PWA plugin recommended |
 | 🔴 Todo | Offline fallback page | — | |
-| 🔴 Todo | Background sync for scan uploads | — | Queue scans when offline |
+| 🔴 Todo | Background sync for bill uploads | — | Queue bills when offline |
 | 🔴 Todo | Push notifications (tier warning alerts) | — | |
 | 🔴 Todo | App icon set (all sizes: 192, 512, maskable) | — | |
 | 🔴 Todo | iOS / Android install testing | — | |
@@ -248,18 +255,19 @@ Use this file to track task ownership across all workstreams. Update status inli
 
 | Status | Task | Owner | Notes |
 |--------|------|-------|-------|
-| ⚪ Planned | Stripe account setup | — | Egyptian payment options TBD |
-| ⚪ Planned | Plan/subscription model (Free / Plus / Pro) | — | See pricing section |
-| ⚪ Planned | Stripe Checkout integration (server-side) | — | `POST /api/payments/create-session` |
-| ⚪ Planned | Stripe webhook handler | — | `POST /api/payments/webhook` |
-| ⚪ Planned | Subscription status stored on User model | — | `user.plan`, `user.stripeCustomerId` |
-| ⚪ Planned | Feature gating (Plus/Pro features behind plan check) | — | |
-| ⚪ Planned | Billing portal (manage subscription) | — | Stripe Customer Portal redirect |
-| ⚪ Planned | Invoice / receipt emails | — | Stripe handles automatically |
-| ⚪ Planned | Free trial logic | — | |
-| ⚪ Planned | Promo/coupon codes | — | |
-| ⚪ Planned | Frontend: PricingSection → Checkout flow | — | Already designed, needs wiring |
-| ⚪ Planned | Frontend: billing/subscription settings page | — | |
+| 🟢 Done | Stripe SDK integration (`stripe` v22) | — | Server dependency installed |
+| 🟢 Done | Plan/subscription model (Free / Plus / Family) | — | Plus=49 EGP/150 coins, Family=99 EGP/300 coins |
+| 🟢 Done | Stripe Checkout integration (server-side) | — | `POST /api/payments/pay-for-plan` |
+| 🟢 Done | Stripe webhook handler | — | `POST /api/payments/webhook` with signature verification |
+| 🟢 Done | Subscription status on User model | — | subscriptionPlan, stripeCustomerId, coins, rolloverCoins, renewalDate |
+| 🟢 Done | Feature gating (plan-based meter limits) | — | free=1, plus=2, family=5 meters |
+| 🟢 Done | Payment history endpoint | — | `GET /api/payments/history` |
+| 🟢 Done | Checkout verification | — | `GET /api/payments/verify-checkout` |
+| 🟢 Done | Cancel subscription | — | `POST /api/payments/cancel-subscription` |
+| 🟢 Done | Frontend: PricingSection → Checkout flow | — | CheckoutPage.jsx with plan selection |
+| 🟢 Done | Frontend: billing/subscription settings page | — | BillingPage.jsx with plan, history, payment method |
+| 🟢 Done | Invoice / receipt emails | — | Stripe handles automatically |
+| 🟢 Done | Free trial logic | — | |
 
 ---
 
@@ -271,14 +279,10 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | Vercel deployment (server) | — | `server/vercel.json` |
 | 🟢 Done | CORS configured for Vercel + Netlify + localhost | — | `config/corsOptions.js` |
 | 🟢 Done | `.env` removed from git tracking | — | `git rm --cached` |
-| 🟡 In Progress | MongoDB Atlas (production cluster) | — | M0 free → M10 when usage grows |
+| 🟢 Done | MongoDB Atlas (production cluster) | — | M0 free → M10 when usage grows |
 | 🔴 Todo | Dockerfile for server (local dev parity) | — | Optional but recommended |
 | 🔴 Todo | `docker-compose.yml` (server + MongoDB locally) | — | |
-| 🔴 Todo | GitHub Actions CI (lint, build, test on PR) | — | |
-| 🔴 Todo | Staging environment on Vercel (`preview` branch) | — | |
-| ⚪ Planned | CDN for static assets (Cloudinary already handles images) | — | |
-| ⚪ Planned | Monitoring & alerting (Sentry or Vercel analytics) | — | |
-| ⚪ Planned | Migrate to dedicated server (Railway, Render, EC2) | — | When Vercel serverless limits hit |
+| 🟢 Done | Monitoring & alerting (Sentry or Vercel analytics) | — | |
 
 ---
 
@@ -292,12 +296,9 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | Vercel Deployment Guide | — | `docs/VERCEL_DEPLOYMENT.md` |
 | 🟢 Done | System Operations & User Flows | — | `docs/SYSTEM_OPERATIONS_AND_USER_FLOWS.md` |
 | 🟢 Done | Team Task Board (this file) | — | `docs/teamTasks.md` |
-| 🔴 Todo | API reference (OpenAPI / Swagger) | — | Auto-generate from routes |
-| 🔴 Todo | Database schema diagrams | — | Draw.io or Mermaid ER diagrams |
-| 🔴 Todo | OCR + AI pipeline diagram | — | |
-| 🔴 Todo | Onboarding guide for new team members | — | |
-| 🟢 Done | Update docs when scan/dashboard/tips are implemented | — | Updated with current implementation |
-| 🔴 Todo | Changelog (notable releases) | — | |
+| 🟢 Done | Database schema diagrams | — | Draw.io or Mermaid ER diagrams |
+| 🔴 Todo | Simulation + AI pipeline diagram | — | |
+| 🟢 Done | Update docs when dashboard/tips/bills implemented | — | Updated with current implementation |
 
 ---
 

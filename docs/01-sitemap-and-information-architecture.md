@@ -812,7 +812,7 @@
 
 **Route:** `/admin/ai-logs`
 
-**Purpose:** Debug and audit OCR and generative AI requests (e.g. Gemini) for compliance and reliability.
+**Purpose:** Debug and audit OCR and generative AI requests (e.g. Groq) for compliance and reliability.
 
 **Target User:** Admin.
 
@@ -884,7 +884,7 @@
 **Target User:** Admin.
 
 **Main Sections:**
-- Gemini API configuration
+- Groq API configuration
 - OCR settings
 - Upload limits
 - Security settings
@@ -1037,7 +1037,7 @@ flowchart LR
 5. **Manage Tiers** — `/admin/tiers`: keep Sheriha rules and pricing aligned with Egyptian tariff updates.
 6. **Monitor AI Activity** — `/admin/ai-logs`: investigate failures, latency, and prompt/response audit trail.
 7. **Notifications** — `/admin/notifications`: create and manage system announcements.
-8. **System Settings** — `/admin/settings`: configure Gemini API, OCR, upload limits, security.
+8. **System Settings** — `/admin/settings`: configure Groq API, OCR, upload limits, security.
 
 ---
 
