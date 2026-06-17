@@ -100,6 +100,14 @@ npm run lint
 npm run preview
 ```
 
+### Vite 8 & Dependency Optimization (Rolldown)
+
+Vite 8 uses **Rolldown** (a Rust-based bundler) for dependency pre-bundling and optimization, replacing the deprecated `optimizeDeps.esbuildOptions`. 
+
+To support packages like `recharts` that require custom shimming of sub-dependencies (specifically exporting `default` on `es-toolkit/compat` modules), the dependency optimization plugins are configured under `optimizeDeps.rolldownOptions.plugins` in `vite.config.js`.
+
+Any new custom pre-bundling plugins should target `rolldownOptions` using Rollup-style `transform(code, id)` hooks rather than esbuild-specific loaders.
+
 ## Environment Variables
 
 Create `.env` from `.env.example`:

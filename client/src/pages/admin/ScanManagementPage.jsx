@@ -89,8 +89,8 @@ const ScanManagementPage = () => {
     return (
         <>
             <Helmet>
-                <title>إدارة الأجهزة — كشف</title>
-                <meta name="description" content="إدارة أجهزة كشف — مراقبة حالة الأجهزة، استهلاكها، وإعداداتها." />
+                <title>{t("adminHelmet.deviceManagement.title")}</title>
+                <meta name="description" content={t("adminHelmet.deviceManagement.description")} />
             </Helmet>
             <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <PageHeader
@@ -141,7 +141,7 @@ const ScanManagementPage = () => {
                 {isLoading ? (
                     <div className="p-12 text-center text-neutral-500 text-sm">{t("common.loading")}</div>
                 ) : isError ? (
-                    <div className="p-12 text-center text-red-400 text-sm">{error?.message || "Error loading devices."}</div>
+                    <div className="p-12 text-center text-red-400 text-sm">{error?.message || t("deviceManagement.loadError")}</div>
                 ) : devices.length === 0 ? (
                     <div className="p-12 text-center text-neutral-500 text-sm">
                         {t("deviceManagement.noDevices")}
@@ -177,7 +177,9 @@ const ScanManagementPage = () => {
                                                 </div>
                                             </td>
                                             <td className="px-5 py-3.5 text-neutral-400 font-mono text-xs">{device.number}</td>
-                                            <td className="px-5 py-3.5 text-neutral-400 text-xs capitalize">{device.type}</td>
+                                            <td className="px-5 py-3.5 text-neutral-400 text-xs capitalize">
+                                                {t(`deviceManagement.type${device.type.charAt(0).toUpperCase() + device.type.slice(1)}`)}
+                                            </td>
                                             <td className="px-5 py-3.5">
                                                 <div className="text-sm text-neutral-300 truncate max-w-[150px]">
                                                     {device.user?.username || "—"}
@@ -189,7 +191,7 @@ const ScanManagementPage = () => {
                                             <td className="px-5 py-3.5">
                                                 <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${statusColors[device.status] || "text-neutral-400"}`}>
                                                     <span className={`size-1.5 rounded-full ${statusColors[device.status] ? `bg-current` : "bg-neutral-500"}`} />
-                                                    {device.status}
+                                                    {t(`deviceManagement.status${device.status.charAt(0).toUpperCase() + device.status.slice(1)}`)}
                                                 </span>
                                             </td>
                                             <td className="px-5 py-3.5 text-neutral-300">

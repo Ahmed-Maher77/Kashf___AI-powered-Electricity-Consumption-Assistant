@@ -111,8 +111,8 @@ const TierManagementPage = () => {
     return (
         <>
             <Helmet>
-                <title>إدارة الشرائح — كشف</title>
-                <meta name="description" content="إدارة شرائح الكهرباء — تعديل حدود الاستهلاك والأسعار لكل شريحة." />
+                <title>{t("adminHelmet.tierManagement.title")}</title>
+                <meta name="description" content={t("adminHelmet.tierManagement.description")} />
             </Helmet>
             <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <PageHeader
@@ -124,7 +124,7 @@ const TierManagementPage = () => {
                 {isLoading ? (
                     <div className="p-12 text-center text-neutral-500 text-sm">{t("common.loading")}</div>
                 ) : isError ? (
-                    <div className="p-12 text-center text-red-400 text-sm">{error?.message || "Error loading tiers."}</div>
+                    <div className="p-12 text-center text-red-400 text-sm">{error?.message || t("tierManagement.loadError")}</div>
                 ) : tiers.length === 0 ? (
                     <div className="p-12 text-center text-neutral-500 text-sm">{t("tierManagement.noTiers")}</div>
                 ) : (
@@ -156,10 +156,10 @@ const TierManagementPage = () => {
             {!isLoading && !isError && tiers.length > 0 && (
                 <div className="bg-kashf-surface border border-kashf-border rounded-xl p-5">
                     <h4 className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-3">
-                        {t("pages.tierManagement.description")}
+                        {t("tierManagement.infoTitle")}
                     </h4>
                     <p className="text-sm text-neutral-400 leading-relaxed">
-                        Tier {tiers.length} (above {tiers[tiers.length - 1]?.threshold?.toLocaleString()} kWh) uses the highest rate for all consumption above the last threshold.
+                        {t("tierManagement.infoText", { last: tiers.length, threshold: tiers[tiers.length - 1]?.threshold?.toLocaleString() })}
                     </p>
                 </div>
             )}

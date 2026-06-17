@@ -107,8 +107,8 @@ const NotificationsManagementPage = () => {
     return (
         <>
             <Helmet>
-                <title>إدارة الإشعارات — كشف</title>
-                <meta name="description" content="إدارة وإرسال الإشعارات للمستخدمين في كشف." />
+                <title>{t("adminHelmet.notificationsManagement.title")}</title>
+                <meta name="description" content={t("adminHelmet.notificationsManagement.description")} />
             </Helmet>
             <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -137,7 +137,7 @@ const NotificationsManagementPage = () => {
                                 value={formData.userIds}
                                 onChange={(e) => setFormData({ ...formData, userIds: e.target.value })}
                                 className="w-full bg-kashf-muted border border-kashf-border rounded-lg px-3 py-2 text-sm text-neutral-100 focus:outline-none focus:border-kashf-blue/50"
-                                placeholder="64byte..."
+                                                placeholder={t("notificationsManagement.formPlaceholderUserIds")}
                                 required
                             />
                         </div>
@@ -232,7 +232,7 @@ const NotificationsManagementPage = () => {
                 {isLoading ? (
                     <div className="p-12 text-center text-neutral-500 text-sm">{t("common.loading")}</div>
                 ) : isError ? (
-                    <div className="p-12 text-center text-red-400 text-sm">{error?.message || "Error loading notifications."}</div>
+                    <div className="p-12 text-center text-red-400 text-sm">{error?.message || t("notificationsManagement.loadError")}</div>
                 ) : notifications.length === 0 ? (
                     <div className="p-12 text-center text-neutral-500 text-sm">{t("notificationsManagement.noNotifications")}</div>
                 ) : (
@@ -262,7 +262,7 @@ const NotificationsManagementPage = () => {
                                             <td className="px-5 py-3.5">
                                                 <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${color}`}>
                                                     <Icon className="size-4" />
-                                                    {notif.type}
+                                                    {t(`notificationsManagement.type${notif.type.charAt(0).toUpperCase() + notif.type.slice(1)}`)}
                                                 </span>
                                             </td>
                                             <td className="px-5 py-3.5 text-neutral-300 text-xs max-w-[200px] truncate">

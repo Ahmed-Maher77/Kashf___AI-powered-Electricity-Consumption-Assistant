@@ -489,6 +489,17 @@ export const login = async ({ email, password }) => {
 - Keep pages thin; extract reusable pieces to `components/`.
 - Use `PagePlaceholder` only for unfinished pages — replace with real UI when implementing.
 
+### Vite 8 & Rolldown Build System
+
+Vite 8 uses **Rolldown** for dependency optimization instead of esbuild. As a result, older configurations utilizing `optimizeDeps.esbuildOptions` are deprecated and ignored.
+
+#### Custom Dependency Optimization
+To implement custom code transforms during dependency pre-bundling (such as adding default exports for compatible CommonJS modules like `es-toolkit/compat` imported by Recharts):
+1. **Never use `optimizeDeps.esbuildOptions.plugins`**.
+2. Instead, use **`optimizeDeps.rolldownOptions.plugins`**.
+3. Create Rollup-compatible plugins using the standard `transform(code, id)` hook (returning `{ code, map: null }`).
+4. Ensure path matching filters (e.g. `id.includes()`) support both Windows backslashes `\\` and standard forward slashes `/`.
+
 ---
 
 ## 9. Git & collaboration

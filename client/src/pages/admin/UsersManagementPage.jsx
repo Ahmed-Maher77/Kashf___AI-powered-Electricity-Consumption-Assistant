@@ -72,8 +72,8 @@ const UsersManagementPage = () => {
     return (
         <>
             <Helmet>
-                <title>إدارة المستخدمين — كشف</title>
-                <meta name="description" content="إدارة المستخدمين — بحث، تصفية، تفعيل/تعطيل، وحذف حسابات المستخدمين." />
+                <title>{t("adminHelmet.usersManagement.title")}</title>
+                <meta name="description" content={t("adminHelmet.usersManagement.description")} />
             </Helmet>
             <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <PageHeader
@@ -124,7 +124,7 @@ const UsersManagementPage = () => {
                 {isLoading ? (
                     <div className="p-12 text-center text-neutral-500 text-sm">{t("common.loading")}</div>
                 ) : isError ? (
-                    <div className="p-12 text-center text-red-400 text-sm">{error?.message || "Error loading users."}</div>
+                    <div className="p-12 text-center text-red-400 text-sm">{error?.message || t("usersManagement.loadError")}</div>
                 ) : users.length === 0 ? (
                     <div className="p-12 text-center text-neutral-500 text-sm">
                         {t("usersManagement.noUsers")}

@@ -43,8 +43,8 @@ const AdminDashboardPage = () => {
     return (
         <>
             <Helmet>
-                <title>لوحة تحكم الإدارة — كشف</title>
-                <meta name="description" content="لوحة تحكم المشرف — إدارة المستخدمين، الأجهزة، الفواتير، وإعدادات النظام في كشف." />
+                <title>{t("adminHelmet.adminDashboard.title")}</title>
+                <meta name="description" content={t("adminHelmet.adminDashboard.description")} />
             </Helmet>
             <div className="space-y-10 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <PageHeader

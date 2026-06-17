@@ -355,6 +355,36 @@
         "settings": "Settings",
         "backToApp": "Back to app"
     },
+    "adminHelmet": {
+        "adminDashboard": {
+            "title": "Admin Dashboard — Kashf",
+            "description": "Admin panel — manage users, devices, bills, and system settings for Kashf."
+        },
+        "usersManagement": {
+            "title": "Users Management — Kashf",
+            "description": "Users management — search, filter, enable/disable, and delete user accounts."
+        },
+        "deviceManagement": {
+            "title": "Device Management — Kashf",
+            "description": "Device management — monitor device status, consumption, and settings."
+        },
+        "tierManagement": {
+            "title": "Tier Management — Kashf",
+            "description": "Tier management — edit consumption thresholds and rates per tier."
+        },
+        "notificationsManagement": {
+            "title": "Notifications Management — Kashf",
+            "description": "Create and manage system notifications for users."
+        },
+        "systemSettings": {
+            "title": "System Settings — Kashf",
+            "description": "Configure API keys, upload limits, session timeout, and maintenance mode."
+        },
+        "aiLogs": {
+            "title": "AI Logs — Kashf",
+            "description": "AI query logs — track and analyze assistant interactions."
+        }
+    },
     "notFound": {
         "goWelcome": "Go to Welcome",
         "goDashboard": "Go to Dashboard"
@@ -1065,7 +1095,8 @@
         "userDeleted": "User deleted",
         "noUsers": "No users found matching your search.",
         "active": "Active",
-        "disabled": "Disabled"
+        "disabled": "Disabled",
+        "loadError": "Error loading users."
     },
     "deviceManagement": {
         "searchPlaceholder": "Search by device name or number...",
@@ -1086,7 +1117,11 @@
         "deleteConfirm": "Delete this device? This action cannot be undone.",
         "deviceDeleted": "Device deleted",
         "noDevices": "No devices found matching your search.",
-        "statusUpdated": "Device status updated"
+        "statusUpdated": "Device status updated",
+        "loadError": "Error loading devices.",
+        "typeResidential": "Residential",
+        "typeCommercial": "Commercial",
+        "typeVacation": "Vacation Home"
     },
     "tierManagement": {
         "tier": "Tier",
@@ -1099,7 +1134,10 @@
         "saved": "Tier updated",
         "edit": "Edit",
         "cancel": "Cancel",
-        "noTiers": "No tiers configured."
+        "noTiers": "No tiers configured.",
+        "loadError": "Error loading tiers.",
+        "infoTitle": "Important Note",
+        "infoText": "Tier {{last}} (above {{threshold}} kWh) uses the highest rate for all consumption above the last threshold."
     },
     "notificationsManagement": {
         "sendNew": "Send Notification",
@@ -1129,7 +1167,9 @@
         "formSend": "Send",
         "formCancel": "Cancel",
         "formSending": "Sending...",
-        "sent": "Notification sent."
+        "sent": "Notification sent.",
+        "loadError": "Error loading notifications.",
+        "formPlaceholderUserIds": "64byte..."
     },
     "systemSettings": {
         "sectionApi": "API Configuration",

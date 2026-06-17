@@ -113,8 +113,8 @@ const SystemSettingsPage = () => {
     return (
         <>
             <Helmet>
-                <title>إعدادات النظام — كشف</title>
-                <meta name="description" content="إعدادات نظام كشف — إدارة مفاتيح API، حدود الرفع، المهلات، ووضع الصيانة." />
+                <title>{t("adminHelmet.systemSettings.title")}</title>
+                <meta name="description" content={t("adminHelmet.systemSettings.description")} />
             </Helmet>
             <div className="space-y-8 max-w-4xl mx-auto pb-12 px-6 pt-8">
             <PageHeader

@@ -97,7 +97,7 @@ Many households are unaware of their current consumption status and receive no w
 ### Frontend
 
 * React.js + React Compiler
-* Vite
+* Vite 8 + Rolldown (Optimized dependency pre-bundling)
 * Tailwind CSS v4
 * Redux Toolkit (State Management)
 * TanStack React Query

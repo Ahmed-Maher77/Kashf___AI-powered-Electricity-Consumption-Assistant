@@ -20,9 +20,17 @@ server/
 │   └── startServerWithDB.js         # DB connect + app.listen with retry
 ├── database/
 │   ├── dbConnect.js                 # Mongoose connection helper
-│   └── models/
-│       ├── user.model.js            # User schema (auth + profile + goals + notif prefs)
-│       └── activity.model.js        # Activity log schema (userId, type, metadata, 90-day TTL)
+│   └── models/                      # MongoDB models/schemas:
+│       ├── activity.model.js        # Audit logs with 90-day TTL
+│       ├── alert.model.js           # Multi-category user alerts with i18n
+│       ├── bill.model.js            # Monthly bills (consumption, tier, EGP)
+│       ├── meter.model.js           # Electric meters (derived trends)
+│       ├── payment.model.js         # Stripe Checkout metadata
+│       ├── session.model.js         # Active sessions with 7-day TTL
+│       ├── simulation.model.js      # Virtual appliances configuration
+│       ├── systemConfig.model.js    # Settings key-value store
+│       ├── tier.model.js            # Billing tier constants/rules
+│       └── user.model.js            # Accounts overview + goals
 ├── public/
 │   └── views/
 │       ├── home.html                # GET / static page
@@ -31,29 +39,35 @@ server/
 │   └── seedAdmin.js                 # One-time admin seed script
 └── src/
     ├── config/
-    │   ├── auth.constants.js        # AUTH_COOKIE_KEYS, USER_ROLES, SUBSCRIPTION_PLANS
-    │   ├── activity.constants.js    # ACTIVITY_TYPES enum (13 types) + ACTIVITY_TYPE_VALUES
-    │   └── cloudinary.js            # uploadToCloudinary / deleteFromCloudinary helpers
+    │   ├── auth.constants.js        # Auth tokens, roles, and plan limits
+    │   ├── activity.constants.js    # Activity event types enum (13 types)
+    │   └── cloudinary.js            # Cloudinary media upload helpers
     ├── middlewares/
     │   ├── asyncHandler.js          # Wraps async controllers → next(err)
     │   ├── isAuthenticated.js       # JWT access-token guard → req.user
     │   ├── isAdmin.js               # Role guard: req.user.role === "admin"
     │   ├── uploadProfilePicture.js  # Multer memory-storage, image MIME filter
     │   └── validateRequestBody.js   # Joi body validation factory
-    ├── modules/
-    │   ├── user.routes.js           # Auth + user profile routes (8 endpoints)
-    │   ├── user.controller.js       # Thin controllers → authService
-    │   ├── user.validation.js       # loginSchema, signupSchema (Joi)
+    ├── modules/                     # Controllers, routes, and validation schemas:
     │   ├── activity.routes.js       # GET /api/activity
-    │   ├── activity.controller.js   # Reads page/limit, calls activityService
-    │   └── admin.routes.js          # Admin route stubs (in progress)
+    │   ├── admin.routes.js          # /api/admin endpoints (dashboard stats, moderation, tiers)
+    │   ├── alert.routes.js          # /api/alerts (mark read, delete)
+    │   ├── bill.routes.js           # /api/bills CRUD
+    │   ├── meter.routes.js          # /api/meters CRUD
+    │   ├── payment.routes.js        # /api/payments (pay, cancel, history)
+    │   ├── simulation.routes.js     # /api/simulations (what-if, chat, advisor)
+    │   └── user.routes.js           # /api/auth (login, profile, security settings, 2FA)
     ├── services/
-    │   ├── auth.service.js          # register, login, logout, refresh, getMe, updateProfilePicture, updateProfile, updateGoals, updateNotificationPrefs
-    │   ├── activity.service.js      # logActivity (non-critical) + getUserActivity (paginated)
-    │   └── token.service.js         # signAccessToken, signRefreshToken, verifyRefreshToken, setAuthCookies, clearAuthCookies
+    │   ├── auth.service.js          # Hashing, token issuance, profile updates
+    │   ├── activity.service.js      # Log action to DB
+    │   ├── coin.service.js          # Coin validation, rollover, reset
+    │   ├── token.service.js         # JWT generation, verification, cookies
+    │   ├── simulation.engine.js     # In-memory virtual meter runtime
+    │   ├── simulation.broadcaster.js # Server-Sent Events SSE registry
+    │   └── payment.service.js       # Stripe billing session, verification, refund
     └── utils/
-        ├── AppError.js              # Operational error class
-        └── userMapper.js            # toPublicUser() — public shape including all new fields
+        ├── AppError.js              # Custom HTTP error class
+        └── userMapper.js            # Sanitizes user responses
 ```
 
 ### Route organization
@@ -62,6 +76,11 @@ server/
 - Auth routes are mounted at `/api/auth` via `app.use("/api/auth", userRoutes)`.
 - Admin routes are mounted at `/api/admin` via `app.use("/api/admin", adminRoutes)`.
 - Activity routes are mounted at `/api/activity` via `app.use("/api/activity", activityRoutes)`.
+- Meters routes are mounted at `/api/meters` via `app.use("/api/meters", meterRoutes)`.
+- Bills routes are mounted at `/api/bills` via `app.use("/api/bills", billRoutes)`.
+- Simulations routes are mounted at `/api/simulations` via `app.use("/api/simulations", simulationRoutes)`.
+- Payments routes are mounted at `/api/payments` via `app.use("/api/payments", paymentRoutes)`.
+- Alerts routes are mounted at `/api/alerts` via `app.use("/api/alerts", alertRoutes)`.
 - `GET /` serves a static HTML home page; unmatched routes return `404.html`.
 
 ---
@@ -70,21 +89,115 @@ server/
 
 ### Auth & User Routes (`/api/auth`)
 
-| Method | Route | Auth Required | Middlewares | Controller |
-|--------|-------|--------------|-------------|------------|
-| `POST` | `/api/auth/register` | No | `uploadProfilePicture`, `validateRequestBody(signupSchema)` | `register` |
-| `POST` | `/api/auth/login` | No | `validateRequestBody(loginSchema)` | `login` |
-| `POST` | `/api/auth/logout` | No | — | `logout` |
-| `GET` | `/api/auth/me` | Yes (JWT) | `isAuthenticated` | `me` |
-| `PATCH` | `/api/auth/profile/picture` | Yes (JWT) | `isAuthenticated`, `uploadProfilePicture` | `updateProfilePicture` |
-| `POST` | `/api/auth/refresh-token` | No (reads cookie) | — | `refreshToken` |
+| Method | Route | Auth Required | Middlewares | Description |
+|--------|-------|--------------|-------------|-------------|
+| `POST` | `/api/auth/register` | No | `uploadProfilePicture`, `validateRequestBody(signupSchema)` | Register new user account |
+| `POST` | `/api/auth/login` | No | `validateRequestBody(loginSchema)` | Authenticate user and set cookies |
+| `POST` | `/api/auth/logout` | No | — | Clear authentication cookies |
+| `GET`  | `/api/auth/me` | Yes (JWT) | `isAuthenticated` | Fetch current user profile |
+| `PATCH`| `/api/auth/profile/picture` | Yes (JWT) | `isAuthenticated`, `uploadProfilePicture` | Update profile avatar (Cloudinary) |
+| `POST` | `/api/auth/refresh-token` | No (cookie) | — | Refresh access and refresh tokens |
+| `PATCH`| `/api/auth/profile` | Yes (JWT) | `isAuthenticated` | Update name, phone, locale, governorate |
+| `PATCH`| `/api/auth/goals` | Yes (JWT) | `isAuthenticated` | Update consumption target thresholds |
+| `PATCH`| `/api/auth/notifications` | Yes (JWT) | `isAuthenticated` | Update notification preferences |
+| `POST` | `/api/auth/security/change-password` | Yes (JWT) | `isAuthenticated` | Change password with old/new validation |
+| `POST` | `/api/auth/security/2fa/setup` | Yes (JWT) | `isAuthenticated` | Generate 2FA secret and QR code |
+| `POST` | `/api/auth/security/2fa/enable` | Yes (JWT) | `isAuthenticated` | Verify token and enable 2FA on account |
+| `POST` | `/api/auth/security/2fa/disable` | Yes (JWT) | `isAuthenticated` | Disable 2FA on account |
+| `POST` | `/api/auth/security/2fa/verify` | No | — | Verify 2FA token on login step |
+| `GET`  | `/api/auth/security/devices` | Yes (JWT) | `isAuthenticated` | Get active login sessions |
+| `DELETE`| `/api/auth/security/devices/:id` | Yes (JWT) | `isAuthenticated` | Revoke specific session (logout device) |
+| `GET`  | `/api/auth/security/login-history` | Yes (JWT) | `isAuthenticated` | Get paginated log of login events |
+| `POST` | `/api/auth/security/delete-account` | Yes (JWT) | `isAuthenticated` | Soft/hard delete user account |
 
-### Static Routes
+### Meters & Bills (`/api/meters`, `/api/bills`)
 
-| Method | Route | Handler |
-|--------|-------|---------|
-| `GET` | `/` | `public/views/home.html` |
-| `*` | Any unmatched | `public/views/404.html` (status 404) |
+| Method | Route | Auth Required | Middlewares | Description |
+|--------|-------|--------------|-------------|-------------|
+| `GET`  | `/api/meters` | Yes (JWT) | `isAuthenticated` | List meters with latest readings/trends |
+| `POST` | `/api/meters` | Yes (JWT) | `isAuthenticated` | Create a new meter (free/plus/family limits) |
+| `PUT`  | `/api/meters/:id` | Yes (JWT) | `isAuthenticated` | Edit meter details |
+| `DELETE`| `/api/meters/:id` | Yes (JWT) | `isAuthenticated` | Remove meter |
+| `GET`  | `/api/bills` | Yes (JWT) | `isAuthenticated` | Fetch paginated/filtered bill history |
+| `POST` | `/api/bills` | Yes (JWT) | `isAuthenticated` | Manually log a meter bill reading |
+| `PUT`  | `/api/bills/:id` | Yes (JWT) | `isAuthenticated` | Edit logged bill data |
+| `DELETE`| `/api/bills/:id` | Yes (JWT) | `isAuthenticated` | Delete bill |
+
+### Simulations & AI Sandbox (`/api/simulations`)
+
+| Method | Route | Auth Required | Middlewares | Description |
+|--------|-------|--------------|-------------|-------------|
+| `GET`  | `/api/simulations` | Yes (JWT) | `isAuthenticated` | List simulation sessions |
+| `POST` | `/api/simulations` | Yes (JWT) | `isAuthenticated`, `validateRequestBody(createSimulationSchema)` | Create or auto-generate smart home config |
+| `GET`  | `/api/simulations/:id` | Yes (JWT) | `isAuthenticated` | Get simulation state & details |
+| `DELETE`| `/api/simulations/:id` | Yes (JWT) | `isAuthenticated` | Remove simulation session |
+| `POST` | `/api/simulations/:id/circuits` | Yes (JWT) | `isAuthenticated`, `validateRequestBody(addCircuitSchema)` | Add room/circuit to simulation |
+| `PATCH`| `/api/simulations/:id/circuits/:cid` | Yes (JWT) | `isAuthenticated`, `validateRequestBody(updateCircuitSchema)` | Rename circuit |
+| `DELETE`| `/api/simulations/:id/circuits/:cid` | Yes (JWT) | `isAuthenticated` | Delete circuit and its devices |
+| `POST` | `/api/simulations/:id/devices` | Yes (JWT) | `isAuthenticated`, `validateRequestBody(addDeviceSchema)` | Add virtual device |
+| `PATCH`| `/api/simulations/:id/devices/:did` | Yes (JWT) | `isAuthenticated`, `validateRequestBody(updateDeviceSchema)` | Toggle power state or modify wattage |
+| `DELETE`| `/api/simulations/:id/devices/:did` | Yes (JWT) | `isAuthenticated` | Remove device |
+| `POST` | `/api/simulations/:id/start` | Yes (JWT) | `isAuthenticated` | Start tick loop (accumulate energy) |
+| `POST` | `/api/simulations/:id/pause` | Yes (JWT) | `isAuthenticated` | Pause tick loop |
+| `POST` | `/api/simulations/:id/reset` | Yes (JWT) | `isAuthenticated` | Reset kWh usage to zero |
+| `GET`  | `/api/simulations/:id/stream` | Yes (JWT) | `isAuthenticated` | Connect SSE live updates stream |
+| `POST` | `/api/simulations/:id/advise` | Yes (JWT) | `isAuthenticated` | Generate 3 Arabic tips (Groq) |
+| `GET`  | `/api/simulations/:id/prediction` | Yes (JWT) | `isAuthenticated` | Predict hours remaining to next tier |
+| `POST` | `/api/simulations/:id/what-if` | Yes (JWT) | `isAuthenticated`, `validateRequestBody(whatIfSchema)` | Project usage with changes |
+| `POST` | `/api/simulations/:id/chat` | Yes (JWT) | `isAuthenticated`, `validateRequestBody(chatSchema)` | Chat with AI advisor (consumes 1 coin) |
+| `POST` | `/api/simulations/:id/auto-pilot/start` | Yes (JWT) | `isAuthenticated`, `validateRequestBody(startAutoPilotSchema)` | Enable automated appliance shutoff |
+| `POST` | `/api/simulations/:id/auto-pilot/stop` | Yes (JWT) | `isAuthenticated` | Disable auto-pilot |
+| `GET`  | `/api/simulations/:id/auto-pilot` | Yes (JWT) | `isAuthenticated` | Get auto-pilot stats and actions taken |
+| `GET`  | `/api/simulations/:id/recommendations` | Yes (JWT) | `isAuthenticated` | Run passive observations recommendations |
+
+### Payments & Stripe (`/api/payments`)
+
+| Method | Route | Auth Required | Middlewares | Description |
+|--------|-------|--------------|-------------|-------------|
+| `POST` | `/api/payments/pay-for-plan` | Yes (JWT) | `isAuthenticated` | Initialize Stripe subscription checkout |
+| `GET`  | `/api/payments/history` | Yes (JWT) | `isAuthenticated` | Get subscription payment logs |
+| `GET`  | `/api/payments/verify-checkout` | Yes (JWT) | `isAuthenticated` | Verify successful checkout session |
+| `DELETE`| `/api/payments/payment-method` | Yes (JWT) | `isAuthenticated` | Remove payment method |
+| `POST` | `/api/payments/cancel-subscription` | Yes (JWT) | `isAuthenticated` | Cancel plan subscription renewal |
+| `POST` | `/api/payments/webhook` | No | `express.raw()` raw body | Stripe webhook event receiver |
+
+### Activity & Alerts (`/api/activity`, `/api/alerts`)
+
+| Method | Route | Auth Required | Middlewares | Description |
+|--------|-------|--------------|-------------|-------------|
+| `GET`  | `/api/activity` | Yes (JWT) | `isAuthenticated` | Get current user's activity logs |
+| `GET`  | `/api/alerts` | Yes (JWT) | `isAuthenticated` | List user notification alerts |
+| `PUT`  | `/api/alerts/read-all` | Yes (JWT) | `isAuthenticated` | Mark all alerts as read |
+| `PUT`  | `/api/alerts/:id/read` | Yes (JWT) | `isAuthenticated` | Mark specific alert as read |
+| `DELETE`| `/api/alerts/:id` | Yes (JWT) | `isAuthenticated` | Dismiss alert |
+
+### Admin Moderation (`/api/admin`)
+
+| Method | Route | Auth Required | Middlewares | Description |
+|--------|-------|--------------|-------------|-------------|
+| `GET`  | `/api/admin/health` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Check admin panel system status |
+| `GET`  | `/api/admin/dashboard/stats` | Yes (Admin) | `isAuthenticated`, `isAdmin` | KPI summaries (users, bills, active rate) |
+| `GET`  | `/api/admin/users/recent` | Yes (Admin) | `isAuthenticated`, `isAdmin` | List newly registered accounts |
+| `GET`  | `/api/admin/users` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Get paginated/searchable list of all users |
+| `PATCH`| `/api/admin/users/:id/status` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Toggle account active/inactive |
+| `DELETE`| `/api/admin/users/:id` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Delete user and related cascade docs |
+| `GET`  | `/api/admin/devices` | Yes (Admin) | `isAuthenticated`, `isAdmin` | List all connected devices/meters |
+| `PATCH`| `/api/admin/devices/:id/status` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Update device active/standby status |
+| `DELETE`| `/api/admin/devices/:id` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Remove device from platform |
+| `GET`  | `/api/admin/tiers` | Yes (Admin) | `isAuthenticated`, `isAdmin` | List current Sheriha rules |
+| `PATCH`| `/api/admin/tiers/:id` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Edit tariff rate or threshold |
+| `GET`  | `/api/admin/notifications` | Yes (Admin) | `isAuthenticated`, `isAdmin` | List system notifications |
+| `POST` | `/api/admin/notifications` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Send/create system broadcast |
+| `DELETE`| `/api/admin/notifications/:id` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Dismiss notification broadcast |
+| `GET`  | `/api/admin/settings` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Fetch platform configs |
+| `PATCH`| `/api/admin/settings` | Yes (Admin) | `isAuthenticated`, `isAdmin` | Update platform configs |
+
+### Static & Fallbacks
+
+| Method | Route | Handler | Description |
+|--------|-------|---------|-------------|
+| `GET`  | `/` | `public/views/home.html` | Base website home screen |
+| `*`    | Any unmatched | `public/views/404.html` (404) | Fallback not found page |
 
 ---
 
@@ -440,18 +553,13 @@ server.js
 
 ## 10. Planned / In Progress
 
-| Feature | Status |
-|---------|--------|
-| Admin routes & controllers | Route file exists; handlers stubbed |
-| Scan / meter OCR upload | Not yet implemented |
-| AI / Groq tips generation | Not yet implemented |
-| Dashboard aggregation API | Not yet implemented |
-| History / scan detail API | Not yet implemented |
-| Notification system | Not yet implemented |
-| Tier management API | Not yet implemented |
-| Rate limiting (`express-rate-limit`) | Planned |
-| `helmet` security headers | Planned |
-| Structured logging | Planned |
+| Feature | Status | Description |
+|---------|--------|-------------|
+| Progressive Web App (PWA) manifest | Planned | Complete installability config |
+| Service worker | Planned | Asset caching and offline pages |
+| Rate limiting (`express-rate-limit`) | Planned | Protect API endpoints from DDoS |
+| `helmet` security headers | Planned | Enable HTTP security headers |
+| Structured logging | Planned | Integrate Winston/Morgan logging |
 
 ---
 

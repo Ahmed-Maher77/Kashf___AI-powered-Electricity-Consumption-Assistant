@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Loader from "../components/Loader/Loader";
 import UserAvatar from "../components/common/UserAvatar";
+import AdminHeader from "../components/common/AdminHeader";
 import { selectUser } from "../store/auth/authSlice";
 import { useLogout } from "../hooks/auth/useLogout";
 
@@ -49,8 +50,14 @@ const AdminLayout = () => {
     });
 
     return (
-        <div className="flex h-screen bg-kashf-bg text-neutral-100 overflow-hidden">
-            <aside className={`${isCollapsed ? "w-20" : "w-64"} transition-all duration-300 flex-shrink-0 border-e border-kashf-border bg-kashf-bg flex flex-col h-full overflow-y-auto scrollbar-tight`}>
+        <div className="flex flex-col h-screen bg-kashf-bg overflow-hidden text-neutral-100">
+            <div className="z-20 shadow-sm border-b border-kashf-border relative">
+                <AdminHeader />
+            </div>
+
+            <div className="flex flex-1 overflow-hidden relative">
+                <div className="hidden lg:flex z-10 shadow-2xl shadow-black/50">
+                    <aside className={`${isCollapsed ? "w-20" : "w-64"} transition-all duration-300 flex-shrink-0 border-e border-kashf-border bg-kashf-bg flex flex-col h-full overflow-y-auto scrollbar-tight`}>
                 <div className="flex flex-col h-full w-full">
                     <div className={`flex items-center ${isCollapsed ? "justify-center" : "justify-between"} px-4 pt-4 pb-2 shrink-0`}>
                         {!isCollapsed && (
@@ -116,13 +123,15 @@ const AdminLayout = () => {
                     </div>
                 </div>
             </aside>
-
-            <main id="admin-main-content" className="flex-1 overflow-y-auto bg-neutral-900/30">
-                <Suspense fallback={<Loader />}>
-                    {currentOutlet}
-                </Suspense>
-            </main>
         </div>
+
+        <main id="admin-main-content" className="flex-1 overflow-y-auto bg-neutral-900/30 p-4 md:p-6 lg:p-8">
+            <Suspense fallback={<Loader />}>
+                {currentOutlet}
+            </Suspense>
+        </main>
+    </div>
+    </div>
     );
 };
 
