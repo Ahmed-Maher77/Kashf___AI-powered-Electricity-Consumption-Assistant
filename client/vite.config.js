@@ -33,20 +33,21 @@ export default defineConfig({
     }
   ],
   optimizeDeps: {
-    esbuildOptions: {
+    rolldownOptions: {
       plugins: [
         {
-          name: 'es-toolkit-default-export-esbuild',
-          setup(build) {
-            build.onLoad({ filter: /es-toolkit\/dist\/compat\/.*\.mjs$/ }, async (args) => {
-              let code = await fs.promises.readFile(args.path, 'utf-8')
+          name: 'es-toolkit-default-export-rolldown',
+          transform(code, id) {
+            if (id.endsWith('.mjs') && (id.includes('es-toolkit/dist/compat/') || id.includes('es-toolkit\\dist\\compat\\'))) {
               const exportMatch = code.match(/export\s+\{\s*(\w[\w$]*)\s*\};?\s*$/)
               if (exportMatch) {
                 const name = exportMatch[1]
-                code += `\nexport { ${name} as default };`
+                return {
+                  code: code + `\nexport { ${name} as default };`,
+                  map: null
+                }
               }
-              return { contents: code, loader: 'js' }
-            })
+            }
           }
         }
       ]
