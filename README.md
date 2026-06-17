@@ -13,6 +13,14 @@ The application allows users to connect Kashf Smart Nodes to their electricity m
 
 ---
 
+## 📸 Website Preview (UI Mockup)
+
+<a href="https://kashf-smart-electricity-assistant.netlify.app" target="_blank" rel="noopener noreferrer" title="demo">
+  <img src="https://github.com/user-attachments/assets/b31ad397-ee52-45ba-9484-0b4df796f2f1" alt="website preview - demo - UI Mockup" width="400">
+</a>
+
+---
+
 ## 🚀 Key Features
 
 ### 🔌 Real-Time Smart Node Integration
