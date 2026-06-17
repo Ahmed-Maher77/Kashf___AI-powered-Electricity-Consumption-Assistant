@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Smartphone, Monitor, Cloud, CheckCircle, XCircle } from "lucide-react";
+import { Smartphone, Monitor, Cloud, CheckCircle, XCircle, Download } from "lucide-react";
 import Badge from "../premium/Badge";
+import usePWAInstall from "../../hooks/usePWAInstall";
 
 const PWAStatus = () => {
   const { t } = useTranslation();
+  const { isInstallable, install } = usePWAInstall();
   const [platform, setPlatform] = useState({ id: "unknown", icon: Monitor });
   const [isInstalled, setIsInstalled] = useState(false);
 
@@ -78,7 +80,17 @@ const PWAStatus = () => {
                         <p className="text-xs text-neutral-400">{t("profile.pwa.offlineSync")}</p>
                     </>
                 ) : (
-                    <p className="text-xs text-neutral-400">{t("profile.pwa.installPrompt")}</p>
+                    <>
+                        <p className="text-xs text-neutral-400 mb-3">{t("profile.pwa.installPrompt")}</p>
+                        <button
+                            onClick={install}
+                            disabled={!isInstallable}
+                            className="w-full py-2 rounded-xl bg-kashf-blue hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 text-black font-bold text-xs flex items-center justify-center gap-2"
+                        >
+                            <Download className="w-4 h-4" />
+                            {t("pwa.install", { defaultValue: "Install" })}
+                        </button>
+                    </>
                 )}
             </div>
           </div>

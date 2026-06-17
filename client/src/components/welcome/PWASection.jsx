@@ -1,11 +1,12 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { fadeUpVariants } from "../../utils/animations";
-import { WifiOff, Bell, RefreshCw, MonitorSmartphone, Download } from "lucide-react";
+import { WifiOff, Bell, RefreshCw, MonitorSmartphone, Download, CheckCircle } from "lucide-react";
 import appMockup from "../../assets/images/installable-app.png";
 import SectionBadge from "./ui/SectionBadge";
 import SectionHeading from "./ui/SectionHeading";
 import FeatureList from "./ui/FeatureList";
+import usePWAInstall from "../../hooks/usePWAInstall";
 
 const PLATFORMS = ["iOS", "Android", "Windows", "macOS"];
 
@@ -18,6 +19,7 @@ const FEATURE_DEFS = [
 
 const PWASection = () => {
     const { t } = useTranslation();
+    const { isInstallable, isInstalled, install } = usePWAInstall();
 
     const featureItems = FEATURE_DEFS.map((f) => ({
         icon: f.icon,
@@ -114,10 +116,21 @@ const PWASection = () => {
                                         {t("pwa.installDesc", { defaultValue: "Install Kashf for the best experience" })}
                                     </p>
                                 </div>
-                                <button className="w-full py-2 rounded-xl bg-kashf-blue hover:brightness-110 transition-all duration-200 text-black font-bold text-sm flex items-center justify-center gap-2 cursor-pointer">
-                                    <Download className="w-4 h-4" />
-                                    {t("pwa.install", { defaultValue: "Install" })}
-                                </button>
+                                {isInstalled ? (
+                                    <div className="w-full py-2 rounded-xl bg-emerald-500/15 text-emerald-400 font-bold text-sm flex items-center justify-center gap-2">
+                                        <CheckCircle className="w-4 h-4" />
+                                        {t("profile.pwa.installed", { defaultValue: "Installed" })}
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={install}
+                                        disabled={!isInstallable}
+                                        className="w-full py-2 rounded-xl bg-kashf-blue hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 text-black font-bold text-sm flex items-center justify-center gap-2 cursor-pointer"
+                                    >
+                                        <Download className="w-4 h-4" />
+                                        {t("pwa.install", { defaultValue: "Install" })}
+                                    </button>
+                                )}
                             </div>
 
                         </div>
