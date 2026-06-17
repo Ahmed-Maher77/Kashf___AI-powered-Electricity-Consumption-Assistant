@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { Helmet } from "react-helmet-async";
 import { selectUser } from '../store/auth/authSlice';
 import PageHeader from '../components/layout/PageHeader';
 import { CreditCard, ArrowLeft, Shield, Users } from 'lucide-react';
@@ -108,7 +109,12 @@ const CheckoutPage = () => {
     };
 
     return (
-        <div className="space-y-8 max-w-5xl mx-auto pb-10">
+        <>
+            <Helmet>
+                <title>إتمام الدفع — كشف</title>
+                <meta name="description" content="مراجعة وترقية باقتك في كشف — عملية دفع آمنة عبر Stripe." />
+            </Helmet>
+            <div className="space-y-8 max-w-5xl mx-auto pb-10">
             {/* Back button */}
             <button 
                 onClick={() => navigate('/billing')} 
@@ -136,6 +142,7 @@ const CheckoutPage = () => {
                 />
             </div>
         </div>
+        </>
     );
 };
 

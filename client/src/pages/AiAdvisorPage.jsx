@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from "react-helmet-async";
 import {
     Bot,
     Send,
@@ -157,7 +158,12 @@ const AiAdvisorPage = () => {
     const hasMessages = messages.length > 0;
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto pb-10 min-h-[calc(100vh-100px)] flex flex-col relative">
+        <>
+            <Helmet>
+                <title>المستشار الذكي — كشف</title>
+                <meta name="description" content="تحدث مع مساعد كشف الذكي — احصل على نصائح لتوفير الطاقة، توقع الشريحة، وحاكي سيناريوهات what-if." />
+            </Helmet>
+            <div className="space-y-6 max-w-7xl mx-auto pb-10 min-h-[calc(100vh-100px)] flex flex-col relative">
             {/* Header */}
             <PageHeader
                 icon={Bot}
@@ -389,6 +395,7 @@ const AiAdvisorPage = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

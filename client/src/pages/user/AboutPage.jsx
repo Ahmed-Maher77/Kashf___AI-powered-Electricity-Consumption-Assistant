@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import AboutHero   from "../../components/about/AboutHero";
 import AboutStory  from "../../components/about/AboutStory";
 import AboutValues from "../../components/about/AboutValues";
@@ -19,7 +20,12 @@ const AboutPage = () => {
     }, [location.hash]);
 
     return (
-        <div className="min-h-screen bg-kashf-bg text-neutral-100">
+        <>
+            <Helmet>
+                <title>عن كشف — Kashf</title>
+                <meta name="description" content="تعرف على فريق كشف وقصتنا وقيمنا. مهمتنا هي مساعدة الأسر المصرية على إدارة استهلاك الكهرباء بذكاء." />
+            </Helmet>
+            <div className="min-h-screen bg-kashf-bg text-neutral-100">
             <AboutHero />
             <ScrollSection><AboutStory /></ScrollSection>
             <ScrollSection><AboutValues /></ScrollSection>
@@ -27,6 +33,7 @@ const AboutPage = () => {
             <ScrollSection><AboutFAQ /></ScrollSection>
             <ScrollSection><AboutCTA /></ScrollSection>
         </div>
+        </>
     );
 };
 

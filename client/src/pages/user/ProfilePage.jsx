@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import { fetchMeters } from "../../store/meters/metersSlice";
 import ProfileHeader from "../../components/profile/ProfileHeader";
 import AccountOverview from "../../components/profile/AccountOverview";
@@ -80,13 +81,19 @@ const ProfilePage = () => {
     };
 
     return (
-        <main className="w-full mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
+        <>
+            <Helmet>
+                <title>الملف الشخصي — كشف</title>
+                <meta name="description" content="إدارة ملفك الشخصي، العدادت المتصلة، الإعدادات، والأمان في كشف." />
+            </Helmet>
+            <main className="w-full mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
             <ProfileHeader />
             <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
             <div className="mt-6 min-h-[60vh]">
                 {renderTabContent()}
             </div>
         </main>
+        </>
     );
 };
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 import { Pencil, Check, X } from "lucide-react";
 import PageHeader from "../../components/layout/PageHeader";
 import adminService from "../../services/adminService";
@@ -108,7 +109,12 @@ const TierManagementPage = () => {
     const tiers = data?.data?.tiers ?? [];
 
     return (
-        <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
+        <>
+            <Helmet>
+                <title>إدارة الشرائح — كشف</title>
+                <meta name="description" content="إدارة شرائح الكهرباء — تعديل حدود الاستهلاك والأسعار لكل شريحة." />
+            </Helmet>
+            <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <PageHeader
                 title={t("pages.tierManagement.title")}
                 subtitle={t("pages.tierManagement.description")}
@@ -158,6 +164,7 @@ const TierManagementPage = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

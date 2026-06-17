@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 import { Key, Upload, Shield, Save } from "lucide-react";
 import PageHeader from "../../components/layout/PageHeader";
 import adminService from "../../services/adminService";
@@ -110,7 +111,12 @@ const SystemSettingsPage = () => {
     }
 
     return (
-        <div className="space-y-8 max-w-4xl mx-auto pb-12 px-6 pt-8">
+        <>
+            <Helmet>
+                <title>إعدادات النظام — كشف</title>
+                <meta name="description" content="إعدادات نظام كشف — إدارة مفاتيح API، حدود الرفع، المهلات، ووضع الصيانة." />
+            </Helmet>
+            <div className="space-y-8 max-w-4xl mx-auto pb-12 px-6 pt-8">
             <PageHeader
                 title={t("pages.systemSettings.title")}
                 subtitle={t("pages.systemSettings.description")}
@@ -186,6 +192,7 @@ const SystemSettingsPage = () => {
                 </button>
             </div>
         </div>
+        </>
     );
 };
 

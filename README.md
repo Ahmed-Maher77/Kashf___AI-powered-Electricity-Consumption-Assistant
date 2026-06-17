@@ -96,11 +96,14 @@ Many households are unaware of their current consumption status and receive no w
 
 ### Frontend
 
-* React.js
+* React.js + React Compiler
 * Vite
 * Tailwind CSS v4
 * Redux Toolkit (State Management)
+* TanStack React Query
+* React Helmet Async (Dynamic Document Head)
 * i18n (Arabic & English) with Full RTL Support
+* React Router v7
 * Responsive Mobile-First Design
 * Dashboard & Analytics Interface
 

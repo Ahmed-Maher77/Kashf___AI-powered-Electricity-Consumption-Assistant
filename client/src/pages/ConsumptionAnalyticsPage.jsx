@@ -2,6 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { Helmet } from "react-helmet-async";
 import { fetchMeters } from '../store/meters/metersSlice';
 import { 
     BarChart2, 
@@ -160,7 +161,12 @@ const ConsumptionAnalyticsPage = () => {
     // We remove Heatmap and Peak Hour since we don't have hourly granular data.
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto pb-10">
+        <>
+            <Helmet>
+                <title>تحليلات الاستهلاك — كشف</title>
+                <meta name="description" content="تحليلات متقدمة لاستهلاك الكهرباء — الرسوم البيانية، التوقعات، والملاحظات الذكية من كشف." />
+            </Helmet>
+            <div className="space-y-6 max-w-7xl mx-auto pb-10">
             {/* Header */}
             <PageHeader 
                 title={t('analytics.title')} 
@@ -215,6 +221,7 @@ const ConsumptionAnalyticsPage = () => {
             {/* Insights Panel */}
             <AIObservations observations={observations} />
         </div>
+        </>
     );
 };
 

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
     Users,
     Monitor,
@@ -40,7 +41,12 @@ const AdminDashboardPage = () => {
     const users = recentUsers?.data ?? [];
 
     return (
-        <div className="space-y-10 max-w-7xl mx-auto pb-12 px-6 pt-8">
+        <>
+            <Helmet>
+                <title>لوحة تحكم الإدارة — كشف</title>
+                <meta name="description" content="لوحة تحكم المشرف — إدارة المستخدمين، الأجهزة، الفواتير، وإعدادات النظام في كشف." />
+            </Helmet>
+            <div className="space-y-10 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <PageHeader
                 title={t("pages.adminDashboard.title")}
                 subtitle={t("pages.adminDashboard.description")}
@@ -133,6 +139,7 @@ const AdminDashboardPage = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

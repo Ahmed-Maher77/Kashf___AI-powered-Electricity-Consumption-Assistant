@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from "react-helmet-async";
 import CurrentPlanCard from '../components/billing/CurrentPlanCard';
 import PaymentMethodCard from '../components/billing/PaymentMethodCard';
 import AvailablePlans from '../components/billing/AvailablePlans';
@@ -70,7 +71,12 @@ const BillingPage = () => {
     }, [searchParams, setSearchParams, dispatch, t]);
 
     return (
-        <div className="space-y-8 max-w-7xl mx-auto pb-10">
+        <>
+            <Helmet>
+                <title>الفواتير والاشتراك — كشف</title>
+                <meta name="description" content="إدارة اشتراكك في كشف — اختر الباقة المناسبة، شاهد سجل الفوترة، وقم بالترقية." />
+            </Helmet>
+            <div className="space-y-8 max-w-7xl mx-auto pb-10">
             {/* Header */}
             <PageHeader 
                 title={t('billing.title')} 
@@ -107,6 +113,7 @@ const BillingPage = () => {
             {/* Billing History */}
             <BillingHistory currentPlan={currentPlan} user={user} />
         </div>
+        </>
     );
 };
 

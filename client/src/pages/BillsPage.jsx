@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { Helmet } from "react-helmet-async";
 import { 
     Download, 
     AlertCircle,
@@ -72,7 +73,12 @@ const BillsPage = () => {
 
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto pb-10 relative">
+        <>
+            <Helmet>
+                <title>الفواتير — كشف</title>
+                <meta name="description" content="إدارة فواتير الكهرباء — عرض سجل الفواتير، التوقعات، وتصدير الملخصات في كشف." />
+            </Helmet>
+            <div className="space-y-6 max-w-7xl mx-auto pb-10 relative">
             <BillModal 
                 isOpen={isAddModalOpen || !!billToEdit} 
                 onClose={() => { setIsAddModalOpen(false); setBillToEdit(null); }} 
@@ -151,6 +157,7 @@ const BillsPage = () => {
                 setBillToDelete={setBillToDelete}
             />
         </div>
+        </>
     );
 };
 

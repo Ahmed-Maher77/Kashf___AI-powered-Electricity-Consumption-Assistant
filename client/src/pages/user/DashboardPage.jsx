@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from "react-helmet-async";
 import PageHeader from '../../components/layout/PageHeader';
 
 import DashboardStats from '../../components/dashboard/DashboardStats';
@@ -15,7 +16,12 @@ const DashboardPage = () => {
     const hasMeters = registeredMeters.length > 0;
 
     return (
-        <div className="space-y-10 max-w-7xl mx-auto pb-12">
+        <>
+            <Helmet>
+                <title>لوحة التحكم — كشف</title>
+                <meta name="description" content="لوحة تحكم كشف — استعرض استهلاكك الحالي، حالة الشريحة، التوقعات، والتوصيات الذكية لتوفير الكهرباء." />
+            </Helmet>
+            <div className="space-y-10 max-w-7xl mx-auto pb-12">
             {/* Header */}
             <PageHeader 
                 title={t('dashboardOverview.title')} 
@@ -57,6 +63,7 @@ const DashboardPage = () => {
             {/* Charts Row */}
             <DashboardTrendChart hasMeters={hasMeters} />
         </div>
+        </>
     );
 };
 

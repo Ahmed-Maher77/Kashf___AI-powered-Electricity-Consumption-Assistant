@@ -4,6 +4,7 @@ const allowedOrigins = [
     "https://kashf-smart-electricity-assistant.netlify.app",
     // Local development
     "http://localhost:5173",  // Vite dev server
+    "http://localhost:5174",  // Vite dev server (fallback)
     "http://localhost:4173",  // Vite preview
 ];
 const corsOptions = {

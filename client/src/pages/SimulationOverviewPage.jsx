@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from "react-helmet-async";
 import { motion } from 'framer-motion';
 import { fetchSimulations, fetchSimulation, fetchAdviceAsync, clearAdvice, fetchPredictionAsync, fetchRecommendationsAsync } from '../store/simulations/simulationSlice';
 import { fetchMeters } from '../store/meters/metersSlice';
@@ -135,7 +136,12 @@ const SimulationOverviewPage = () => {
     }
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto pb-10 rtl:leading-relaxed">
+        <>
+            <Helmet>
+                <title>نظرة عامة على المحاكاة — كشف</title>
+                <meta name="description" content="نظرة عامة على محاكاة استهلاك الكهرباء — توقع الشريحة، التوصيات الذكية، وتحليل what-if." />
+            </Helmet>
+            <div className="space-y-6 max-w-7xl mx-auto pb-10 rtl:leading-relaxed">
             {/* Header with navigation to dashboard */}
             <div className="flex items-start justify-between gap-4">
                 <div className="flex items-start gap-4">
@@ -267,6 +273,7 @@ const SimulationOverviewPage = () => {
                 onRetry={() => dispatch(fetchAdviceAsync(currentSimulation.id))}
             />
         </div>
+        </>
     );
 };
 

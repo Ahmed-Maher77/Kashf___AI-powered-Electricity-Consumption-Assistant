@@ -1,12 +1,18 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import BrandLogo from "../components/common/BrandLogo";
 
 const NotFoundPage = () => {
     const { t } = useTranslation();
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12 bg-kashf-bg text-neutral-100">
+        <>
+            <Helmet>
+                <title>الصفحة غير موجودة — كشف</title>
+                <meta name="description" content="عذراً، الصفحة التي تبحث عنها غير موجودة." />
+            </Helmet>
+            <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12 bg-kashf-bg text-neutral-100">
             <div className="w-full max-w-2xl text-center">
                 {/* Logo */}
                 <div className="mb-8">
@@ -48,6 +54,7 @@ const NotFoundPage = () => {
                 </div>
             </div>
         </main>
+        </>
     );
 };
 

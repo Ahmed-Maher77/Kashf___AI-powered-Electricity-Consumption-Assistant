@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { AnimatePresence, motion } from "framer-motion";
 import AuthModeSwitch from "../../components/auth/AuthModeSwitch";
 import LoginForm from "../../components/auth/LoginForm";
@@ -18,7 +19,12 @@ const AuthPage = () => {
     const isLogin = mode === AUTH_MODES.LOGIN;
 
     return (
-        <main className="mx-auto max-w-lg px-6 py-12">
+        <>
+            <Helmet>
+                <title>{isLogin ? "تسجيل الدخول" : "إنشاء حساب"} — كشف</title>
+                <meta name="description" content={isLogin ? "تسجيل الدخول إلى حسابك في كشف لمراقبة استهلاك الكهرباء." : "إنشاء حساب جديد في كشف وابدأ في مراقبة استهلاك الكهرباء الذكي."} />
+            </Helmet>
+            <main className="mx-auto max-w-lg px-6 py-12">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={mode}
@@ -53,6 +59,7 @@ const AuthPage = () => {
                 </Link>
             </p>
         </main>
+        </>
     );
 };
 

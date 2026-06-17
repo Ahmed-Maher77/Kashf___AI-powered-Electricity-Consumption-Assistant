@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 import {
     Search,
     X,
@@ -69,7 +70,12 @@ const UsersManagementPage = () => {
     const pagination = data?.data?.pagination;
 
     return (
-        <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
+        <>
+            <Helmet>
+                <title>إدارة المستخدمين — كشف</title>
+                <meta name="description" content="إدارة المستخدمين — بحث، تصفية، تفعيل/تعطيل، وحذف حسابات المستخدمين." />
+            </Helmet>
+            <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <PageHeader
                 title={t("pages.usersManagement.title")}
                 subtitle={t("pages.usersManagement.description")}
@@ -231,6 +237,7 @@ const UsersManagementPage = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

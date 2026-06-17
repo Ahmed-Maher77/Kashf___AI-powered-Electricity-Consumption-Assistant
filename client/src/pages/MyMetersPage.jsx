@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from "react-helmet-async";
 import { fetchMeters, createMeterAsync, updateMeterAsync, deleteMeterAsync } from '../store/meters/metersSlice';
 import { Plus } from 'lucide-react';
 
@@ -72,7 +73,12 @@ const MyMetersPage = () => {
     };
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto pb-10">
+        <>
+            <Helmet>
+                <title>العدادات — كشف</title>
+                <meta name="description" content="إدارة عدادات الكهرباء الخاصة بك في كشف — أضف، عدل، واحذف العدادت وشاهد تحليلات الاستهلاك." />
+            </Helmet>
+            <div className="space-y-6 max-w-7xl mx-auto pb-10">
             {/* Header */}
             <PageHeader 
                 title={t('meters.title')} 
@@ -121,6 +127,7 @@ const MyMetersPage = () => {
                 onConfirm={confirmDelete} 
             />
         </div>
+        </>
     );
 };
 

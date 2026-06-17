@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { Helmet } from "react-helmet-async";
 import { 
     Bell, 
     AlertTriangle, 
@@ -61,7 +62,12 @@ const AlertsPage = () => {
     );
 
     return (
-        <div className="space-y-6 max-w-4xl mx-auto pb-10">
+        <>
+            <Helmet>
+                <title>التنبيهات — كشف</title>
+                <meta name="description" content="مركز التنبيهات في كشف — تتبع استهلاكك، تحذيرات الشريحة، وتوصيات التوفير." />
+            </Helmet>
+            <div className="space-y-6 max-w-4xl mx-auto pb-10">
             {/* Header */}
             <PageHeader 
                 title={t('alerts.title')} 
@@ -177,6 +183,7 @@ const AlertsPage = () => {
                 )}
             </div>
         </div>
+        </>
     );
 };
 

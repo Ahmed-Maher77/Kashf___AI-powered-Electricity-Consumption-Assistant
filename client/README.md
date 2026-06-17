@@ -25,6 +25,7 @@ Egyptian households' smart electricity assistant: connect smart nodes, track She
 - **i18next** — internationalization (EN/AR)
 - **Framer Motion** — complex scroll and spring animations
 - **Recharts** — interactive data visualization
+- **React Helmet Async** — dynamic document head management (titles, meta)
 - **Lucide React** — icon system
 - **ESLint** — linting
 
@@ -118,6 +119,10 @@ The project includes `netlify.toml` for zero-config deployment:
 
 Build command: `npm run build`
 Publish directory: `dist`
+
+## Document Head Management
+
+Each page sets its own `<title>` and `<meta name="description">` via `react-helmet-async`. The `HelmetProvider` wraps the app in `main.jsx`. Add `<Helmet>` to any new page to set its title and meta tags.
 
 ## Internationalization
 

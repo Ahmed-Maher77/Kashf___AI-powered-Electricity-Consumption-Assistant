@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 import {
     Search,
     X,
@@ -12,7 +13,7 @@ import {
     Clock,
     Settings,
     MapPin,
-} from "lucide-react";
+} from 'lucide-react';
 import PageHeader from "../../components/layout/PageHeader";
 import adminService from "../../services/adminService";
 
@@ -86,7 +87,12 @@ const ScanManagementPage = () => {
     const pagination = data?.data?.pagination;
 
     return (
-        <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
+        <>
+            <Helmet>
+                <title>إدارة الأجهزة — كشف</title>
+                <meta name="description" content="إدارة أجهزة كشف — مراقبة حالة الأجهزة، استهلاكها، وإعداداتها." />
+            </Helmet>
+            <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <PageHeader
                 title={t("pages.scanManagement.title")}
                 subtitle={t("pages.scanManagement.description")}
@@ -253,6 +259,7 @@ const ScanManagementPage = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

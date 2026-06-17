@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 import {
     Trash2,
     ChevronLeft,
@@ -11,7 +12,7 @@ import {
     AlertTriangle,
     Lightbulb,
     Info,
-} from "lucide-react";
+} from 'lucide-react';
 import PageHeader from "../../components/layout/PageHeader";
 import adminService from "../../services/adminService";
 
@@ -104,7 +105,12 @@ const NotificationsManagementPage = () => {
     };
 
     return (
-        <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
+        <>
+            <Helmet>
+                <title>إدارة الإشعارات — كشف</title>
+                <meta name="description" content="إدارة وإرسال الإشعارات للمستخدمين في كشف." />
+            </Helmet>
+            <div className="space-y-8 max-w-7xl mx-auto pb-12 px-6 pt-8">
             <div className="flex items-start justify-between gap-4 flex-wrap">
                 <PageHeader
                     title={t("pages.notificationsManagement.title")}
@@ -318,6 +324,7 @@ const NotificationsManagementPage = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

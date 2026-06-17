@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Helmet } from "react-helmet-async";
 import AddCircuitModal from '../components/simulations/AddCircuitModal';
 import AddDeviceModal from '../components/simulations/AddDeviceModal';
 import AIAdviceModal from '../components/simulations/AIAdviceModal';
@@ -120,7 +121,12 @@ const SimulationDashboardPage = () => {
     }, 0) || 0;
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto pb-10 rtl:leading-relaxed">
+        <>
+            <Helmet>
+                <title>محاكاة العداد — كشف</title>
+                <meta name="description" content="لوحة تحكم محاكاة استهلاك الكهرباء — أدر الدوائر والأجهزة وشاهد تأثيرها الفوري على الاستهلاك." />
+            </Helmet>
+            <div className="space-y-6 max-w-7xl mx-auto pb-10 rtl:leading-relaxed">
             {/* Header */}
             <div className="flex items-start gap-4 mb-2">
                 <button
@@ -210,6 +216,7 @@ const SimulationDashboardPage = () => {
                 simulationId={currentSimulation.id}
             />
         </div>
+        </>
     );
 };
 
