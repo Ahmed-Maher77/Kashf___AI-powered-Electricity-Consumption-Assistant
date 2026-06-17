@@ -11,6 +11,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="كشف" />
     <meta name="mobile-web-app-capable" content="yes" />
+    <script>
+        window.__deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window.__deferredPrompt = e;
+        });
+    </script>
     <title>كشف — مراقبة استهلاك الكهرباء الذكية</title>
   </head>
   <body>

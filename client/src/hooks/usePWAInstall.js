@@ -1,8 +1,18 @@
 import { useState, useEffect, useCallback } from "react";
 
+function getPrompt() {
+    if (window.__deferredPrompt) return window.__deferredPrompt;
+    return null;
+}
+
+function clearPrompt() {
+    window.__deferredPrompt = null;
+}
+
 export default function usePWAInstall() {
-    const [deferredPrompt, setDeferredPrompt] = useState(null);
+    const [ready, setReady] = useState(false);
     const [isInstalled, setIsInstalled] = useState(false);
+    const isInstallable = ready && !!getPrompt() && !isInstalled;
 
     useEffect(() => {
         const checkInstalled = () => {
@@ -15,34 +25,36 @@ export default function usePWAInstall() {
 
         checkInstalled();
 
-        const handler = (e) => {
-            e.preventDefault();
-            setDeferredPrompt(e);
-        };
+        if (getPrompt()) {
+            setReady(true);
+        }
 
-        window.addEventListener("beforeinstallprompt", handler);
+        const onPrompt = () => setReady(true);
+
+        window.addEventListener("beforeinstallprompt", onPrompt, { once: true });
 
         const mediaQuery = window.matchMedia("(display-mode: standalone)");
         const onChange = () => checkInstalled();
         mediaQuery.addEventListener("change", onChange);
 
         return () => {
-            window.removeEventListener("beforeinstallprompt", handler);
+            window.removeEventListener("beforeinstallprompt", onPrompt);
             mediaQuery.removeEventListener("change", onChange);
         };
     }, []);
 
     const install = useCallback(async () => {
-        if (!deferredPrompt) return;
+        const prompt = getPrompt();
+        if (!prompt) return;
 
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        setDeferredPrompt(null);
+        prompt.prompt();
+        const { outcome } = await prompt.userChoice;
+        clearPrompt();
 
         if (outcome === "accepted") {
             setIsInstalled(true);
         }
-    }, [deferredPrompt]);
+    }, []);
 
-    return { isInstallable: !!deferredPrompt && !isInstalled, isInstalled, install };
+    return { isInstallable, isInstalled, install };
 }
