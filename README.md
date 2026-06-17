@@ -109,6 +109,7 @@ Many households are unaware of their current consumption status and receive no w
 * MongoDB
 * Consumption History Storage
 * User Data Management
+* [Database Schema Diagrams](./docs/DATABASE_SCHEMA.md) — Full ERD and collection details
 
 ### AI Layer
 
@@ -116,6 +117,23 @@ Many households are unaware of their current consumption status and receive no w
 * Real-time Data Sync
 * Electricity Consumption Analysis
 * Personalized Recommendation Generation
+
+---
+
+## 📚 Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Database Schema Diagrams](./docs/DATABASE_SCHEMA.md) | ERD, collection details, indexes |
+| [Sitemap & Information Architecture](./docs/01-sitemap-and-information-architecture.md) | Full route map, page structure, navigation flow |
+| [Backend Services & Middlewares](./docs/02-backend-services-and-middlewares.md) | API architecture, middleware pipeline, service layer |
+| [Project Guidelines](./docs/03-project-guidelines.md) | Setup, coding standards, conventions |
+| [Simulation API](./docs/04-simulation-api.md) | Simulation engine endpoints and usage |
+| [AI Agents](./docs/05-ai-agents.md) | AI features, prompts, agent architecture |
+| [System Operations & User Flows](./docs/SYSTEM_OPERATIONS_AND_USER_FLOWS.md) | End-to-end user flows, error paths |
+| [Team Tasks](./docs/teamTasks.md) | Task ownership and progress across workstreams |
+| [Vercel Deployment](./docs/VERCEL_DEPLOYMENT.md) | Server deployment guide |
+| [Netlify Deployment](./docs/NETLIFY_DEPLOYMENT.md) | Frontend deployment guide |
 
 ---
 
