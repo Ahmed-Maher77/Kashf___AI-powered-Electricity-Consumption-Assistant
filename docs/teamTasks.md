@@ -102,7 +102,7 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | PersonalizedTipsFeed | — | UI Mocked: Driven by dummy AI Advices integrated into My Meters |
 | 🟢 Done | Simulation AI Advisor (POST /api/simulations/:id/advise) | — | Groq-powered tips in Egyptian Arabic |
 | 🟢 Done | Simulation Chat (POST /api/simulations/:id/chat) | — | NLP intent classification via Groq |
-| 🟢 Done | Simulation Recommendations (POST /api/simulations/:id/recommend) | — | Deep analysis via Groq |
+| 🟢 Done | Simulation Recommendations (GET /api/simulations/:id/recommendations) | — | Deep analysis via Groq |
 
 ### Admin Panel
 | Status | Task | Owner | Notes |
@@ -240,12 +240,12 @@ Use this file to track task ownership across all workstreams. Update status inli
 |--------|------|-------|-------|
 | 🟢 Done | PWA install prompt section (welcome page) | — | |
 | 🟢 Done | Responsive PWA section layout (mobile stack) | — | |
-| 🔴 Todo | `manifest.json` (name, icons, theme color) | — | Required for installability |
-| 🔴 Todo | Service worker (offline caching) | — | Vite PWA plugin recommended |
-| 🔴 Todo | Offline fallback page | — | |
-| 🔴 Todo | Background sync for bill uploads | — | Queue bills when offline |
+| 🟢 Done | `manifest.json` (name, icons, theme color) | — | Configured in vite.config.js |
+| 🟢 Done | Service worker (offline caching) | — | Configured in vite.config.js using workbox |
+| 🟢 Done | Offline fallback page | — | Handled via SPA shell architecture fallback |
+| 🟢 Done | Background sync for bill uploads | — | Configured in Workbox backgroundSync for API caching |
 | 🔴 Todo | Push notifications (tier warning alerts) | — | |
-| 🔴 Todo | App icon set (all sizes: 192, 512, maskable) | — | |
+| 🟢 Done | App icon set (all sizes: 192, 512, maskable) | — | Icons present in public/ |
 | 🔴 Todo | iOS / Android install testing | — | |
 | ⚪ Planned | Periodic background sync (auto meter reminder) | — | |
 
@@ -277,11 +277,16 @@ Use this file to track task ownership across all workstreams. Update status inli
 |--------|------|-------|-------|
 | 🟢 Done | Vercel deployment (client) | — | `client/vercel.json` |
 | 🟢 Done | Vercel deployment (server) | — | `server/vercel.json` |
-| 🟢 Done | CORS configured for Vercel + Netlify + localhost | — | `config/corsOptions.js` |
+| 🟢 Done | CORS configured for Vercel + Netlify + localhost + Docker | — | `config/corsOptions.js` |
 | 🟢 Done | `.env` removed from git tracking | — | `git rm --cached` |
 | 🟢 Done | MongoDB Atlas (production cluster) | — | M0 free → M10 when usage grows |
-| 🔴 Todo | Dockerfile for server (local dev parity) | — | Optional but recommended |
-| 🔴 Todo | `docker-compose.yml` (server + MongoDB locally) | — | |
+| 🟢 Done | Dockerfile for client (multi-stage: node → nginx) | — | `client/Dockerfile` |
+| 🟢 Done | Dockerfile for server (node:20-alpine production) | — | `server/Dockerfile` |
+| 🟢 Done | Root Dockerfile (reference placeholder) | — | `Dockerfile` |
+| 🟢 Done | `.dockerignore` for client + server | — | Excludes node_modules, .env, .git |
+| 🟢 Done | `docker-compose.yml` (client + server orchestration) | — | `docker-compose up --build` |
+| 🟢 Done | Nginx reverse proxy for API in client Dockerfile | — | Proxies `/api/` → `server:3000` |
+| 🟢 Done | Docker docs in README + client/README |
 | 🟢 Done | Monitoring & alerting (Sentry or Vercel analytics) | — | |
 
 ---
@@ -297,8 +302,9 @@ Use this file to track task ownership across all workstreams. Update status inli
 | 🟢 Done | System Operations & User Flows | — | `docs/SYSTEM_OPERATIONS_AND_USER_FLOWS.md` |
 | 🟢 Done | Team Task Board (this file) | — | `docs/teamTasks.md` |
 | 🟢 Done | Database schema diagrams | — | Draw.io or Mermaid ER diagrams |
-| 🔴 Todo | Simulation + AI pipeline diagram | — | |
+| 🟢 Done | Simulation + AI pipeline diagram | — | Added Mermaid flowcharts to docs/05-ai-agents.md |
 | 🟢 Done | Update docs when dashboard/tips/bills implemented | — | Updated with current implementation |
+| 🟢 Done | Docker documentation in README + docs | — | Added Docker Compose, Dockerfiles, architecture docs |
 
 ---
 

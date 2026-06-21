@@ -2,7 +2,7 @@
 
 Team reference for consistent backend and frontend development. Follow these conventions on every PR.
 
-**Related docs:** [Sitemap & IA](./01-sitemap-and-information-architecture.md) · [Backend services](./02-backend-services-and-middlewares.md) · [System Flows](./SYSTEM_OPERATIONS_AND_USER_FLOWS.md) · [Deployment](./VERCEL_DEPLOYMENT.md)
+**Related docs:** [Sitemap & IA](./01-sitemap-and-information-architecture.md) · [Backend services](./02-backend-services-and-middlewares.md) · [System Flows](./SYSTEM_OPERATIONS_AND_USER_FLOWS.md) · [Deployment (Vercel)](./VERCEL_DEPLOYMENT.md) · [Deployment (Netlify)](./NETLIFY_DEPLOYMENT.md) · [Docker Compose](../docker-compose.yml)
 
 ---
 
@@ -25,23 +25,43 @@ Team reference for consistent backend and frontend development. Follow these con
 
 ```
 Kashf/
-├── client/                 # React + Vite frontend
+├── docker-compose.yml      # Orchestrates client + server containers
+├── Dockerfile              # Reference only — see client/Dockerfile + server/Dockerfile
+├── client/                 # React 19 + Vite 8 frontend
+│   ├── Dockerfile          # Multi-stage: node:20-alpine build → nginx:alpine serve
+│   ├── .dockerignore
+│   ├── src/
+│   │   ├── auth/           # Auth bootstrap, route guards, token utils
+│   │   ├── components/     # Feature-based UI (about/, auth/, common/, welcome/, …)
+│   │   ├── hooks/          # useAuth, useActivity, usePWAInstall
+│   │   ├── i18n/           # EN/AR translations
+│   │   ├── layouts/        # UserLayout, AdminLayout, AppLayout
+│   │   ├── pages/          # Route pages (user/, admin/, top-level)
+│   │   ├── routes/         # router.jsx, lazyPages.js
+│   │   ├── schemas/        # Zod validation schemas
+│   │   ├── services/       # 13 API service modules
+│   │   ├── store/          # Redux slices (auth, meters, bills, alerts, simulations)
+│   │   └── utils/          # cn.js, animations.js
+│   ├── vercel.json
+│   └── netlify.toml
+├── server/                 # Express 5 API
+│   ├── Dockerfile          # Single-stage: node:20-alpine, npm ci --only=production
+│   ├── .dockerignore
+│   ├── config/             # corsOptions, startServerWithDB
+│   ├── database/
+│   │   ├── dbConnect.js
+│   │   ├── models/         # 10 Mongoose models
+│   │   └── seed/           # Tier + systemConfig seed scripts
+│   ├── public/views/       # Static HTML (home, 404)
+│   ├── scripts/            # seedAdmin.js
+│   ├── bruno/              # API testing collection
 │   └── src/
-│       ├── components/     # Reusable UI (common/, Loader/, …)
-│       ├── layouts/        # UserLayout, AdminLayout
-│       ├── pages/          # Route pages (user/, admin/)
-│       └── routes/         # router.jsx, lazyPages.js
-├── server/                 # Express API
-│   ├── config/             # cors, server startup
-│   ├── database/           # MongoDB connection
-│   └── src/
-│       ├── middlewares/
-│       ├── modules/        # routes + controllers per feature
-│       ├── validations/    # Joi schemas (use this for new features)
-│       ├── services/       # Business logic (add here)
-│       ├── models/         # Mongoose models (add here)
-│       └── utils/          # AppError, helpers
-└── docs/                   # Architecture & guidelines
+│       ├── config/         # auth.constants, activity.constants, cloudinary, groq, tier.constants
+│       ├── middlewares/    # asyncHandler, isAuthenticated, isAdmin, uploadProfilePicture, validateRequestBody
+│       ├── modules/        # routes + controllers per feature (8 modules)
+│       ├── services/       # 15 services (auth, token, coin, alert, email, simulation ×8, …)
+│       └── utils/          # AppError, totp, userLock, userMapper
+└── docs/                   # Architecture, guidelines, deployment
 ```
 
 **Naming**
@@ -79,8 +99,15 @@ CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
 
+# AI — Groq (for Consumption Advisor, NL Chat)
+GROQ_API_KEY=
+GROQ_MODEL=llama-3.3-70b-versatile
+
+# Stripe (payments — optional for development)
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+
 # CORS — comma-separated list of allowed client origins
-# In production, set on Vercel dashboard
 ALLOWED_ORIGIN=http://localhost:5173
 ```
 
@@ -88,22 +115,13 @@ ALLOWED_ORIGIN=http://localhost:5173
 
 ```env
 # Full URL including https://
+# When using Docker Compose, set to empty string (""; nginx proxy handles routing)
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
-### Planned (add when feature is implemented)
+### Docker-specific notes
 
-```env
-# AI — Groq
-GROQ_API_KEY=
-
-# Stripe (payments)
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-
-# Upload limits
-MAX_FILE_SIZE_MB=5
-```
+The `docker-compose.yml` uses the `server/.env` file directly. The client's `VITE_API_BASE_URL` is set to `""` (empty) via build args, so the Nginx reverse proxy handles all `/api/` requests internally to the `server` container.
 
 ### Rules
 
@@ -319,15 +337,21 @@ Do not register feature-specific middleware globally unless every route needs it
 3. Use `throw new AppError("...", 4xx)` for failures (correct argument order).
 4. Apply on routes that need it, not globally, unless required.
 
+### Implemented middleware
+
+| File | Purpose |
+|------|---------|
+| `asyncHandler.js` | Wrap async controllers → `next(err)` |
+| `isAuthenticated.js` | Verify JWT / session; attach `req.user` |
+| `isAdmin.js` | `req.user.role === "admin"` guard |
+| `uploadProfilePicture.js` | Multer + MIME/size checks (profile photos) |
+| `validateRequestBody.js` | Joi schema validation factory |
+
 ### Planned middleware (create when feature lands)
 
 | Middleware | Purpose |
 |------------|---------|
-| `authenticate` | Verify JWT / session; attach `req.user` |
-| `authorizeAdmin` | `req.user.role === "admin"` |
-| `uploadImage` | Multer + MIME/size checks |
 | `rateLimiter` | Brute-force protection on auth |
-| `asyncHandler` | Wrap async controllers → `next(err)` |
 
 ### Async handler (recommended)
 
@@ -354,7 +378,17 @@ Then controllers may `throw new AppError(...)` without try/catch.
 
 ### CORS
 
-Configured in `server/config/corsOptions.js`. The `allowedOrigins` array is the active whitelist (localhost + production Vercel/Netlify URLs). Add any new deployment URL to the array and redeploy.
+Configured in `server/config/corsOptions.js`. The `allowedOrigins` array is the active whitelist (localhost Vite dev + Vite preview + Docker nginx proxy + production Vercel/Netlify URLs). Add any new deployment URL to the array and redeploy.
+
+```javascript
+const allowedOrigins = [
+    "https://kashf-ai-electricity-assistant.vercel.app",  // Vercel production
+    "https://kashf-smart-electricity-assistant.netlify.app", // Netlify fallback
+    "http://localhost:5173",  // Vite dev
+    "http://localhost:4173",  // Vite preview
+    "http://localhost:8080",  // Docker Compose (nginx proxy)
+];
+```
 
 See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for full CORS and deployment guidance.
 
@@ -512,17 +546,37 @@ To implement custom code transforms during dependency pre-bundling (such as addi
 
 ### Run locally
 
+#### Option A — Docker Compose (full stack)
+
 ```bash
-# Terminal 1 — API
+# From project root — builds and starts both services
+docker-compose up --build
+
+# Client: http://localhost:8080
+# Server: http://localhost:3000
+```
+
+#### Option B — Manual (hot reload for development)
+
+```bash
+# Terminal 1 — API (port 3000)
 cd server
 npm install
-# create .env with MONGO_URI and PORT
+cp .env.example .env   # fill in values
 npm run dev
 
-# Terminal 2 — Client
+# Terminal 2 — Client (port 5173)
 cd client
 npm install
+# set VITE_API_BASE_URL=http://localhost:3000 in client/.env
 npm run dev
+```
+
+#### Option C — Seed admin user
+
+```bash
+cd server
+npm run seed:admin
 ```
 
 ---

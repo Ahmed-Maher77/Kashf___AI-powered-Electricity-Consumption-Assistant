@@ -8,63 +8,82 @@
 
 ## 1. Sitemap Diagram
 
-```
-/
-├── Welcome (/)                    [Public]
-├── Auth / Register (/register)    [Guest]
-├── Pricing (/pricing)             [Public]
-├── About (/about)                 [Public]
-├── User App (Protected)
-│   ├── Dashboard (/dashboard)
-│   ├── My Meters (/meters)
-│   ├── Consumption Analytics (/analytics)
-│   ├── Bills (/bills)
-│   ├── AI Advisor (/ai-advisor)
-│   ├── Alerts (/alerts)
-│   ├── Reports (/reports)
-│   ├── Billing (/billing)
-│   ├── Profile (/profile)
-│   ├── Scan Meter (/scan)
-│   ├── Processing (/processing)
-│   ├── History (/history)
-│   ├── Scan Details (/history/:id)
-│   ├── Tips & Recommendations (/tips)
-│   └── Meter Simulation (/meters/:id/simulation)
-├── Admin App (/admin)
-│   ├── Dashboard (/admin/dashboard)
-│   ├── Users Management (/admin/users)
-│   ├── Scan Management (/admin/scans)
-│   ├── Tier Management (/admin/tiers)
-│   ├── AI Logs (/admin/ai-logs)
-│   ├── Notifications (/admin/notifications)
-│   └── System Settings (/admin/settings)
-└── 404 (*)
+```mermaid
+graph TD
+    classDef default fill:#1e293b,stroke:#475569,stroke-width:1px,color:#f8fafc;
+    classDef public fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
+    classDef guest fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#f8fafc;
+    classDef user fill:#0f172a,stroke:#6366f1,stroke-width:2px,color:#f8fafc;
+    classDef admin fill:#0f172a,stroke:#ec4899,stroke-width:2px,color:#f8fafc;
+
+    Root["/ (Root)"]
+    
+    %% Public Routes
+    subgraph Pub ["Public Routes"]
+        R_Welcome["/ (Welcome Page)"]
+        R_About["/about (About Page)"]
+    end
+    class R_Welcome,R_About,Pub public;
+
+    %% Guest Routes
+    subgraph Gst ["Guest Routes"]
+        R_Register["/register (Auth/Register tabs)"]
+    end
+    class R_Register,Gst guest;
+
+    %% User Protected Routes
+    subgraph Usr ["User Protected Routes (User / Admin)"]
+        R_Dash["/dashboard (User Dashboard)"]
+        R_Meters["/meters (My Meters CRUD)"]
+        R_Simulation["/meters/:id/simulation (Meter Simulation Sandbox)"]
+        R_SimOverview["/simulation-overview/:id (Simulation Overview)"]
+        R_Analytics["/analytics (Consumption Analytics)"]
+        R_Bills["/bills (Bills tracking)"]
+        R_AiAdvisor["/ai-advisor (AI advisor view)"]
+        R_Alerts["/alerts (User alerts)"]
+        R_Billing["/billing (Subscription options)"]
+        R_Checkout["/checkout/:planId (Stripe checkout)"]
+        R_Profile["/profile (User settings tabs)"]
+    end
+    class Usr,R_Dash,R_Meters,R_Simulation,R_SimOverview,R_Analytics,R_Bills,R_AiAdvisor,R_Alerts,R_Billing,R_Checkout,R_Profile user;
+
+    %% Admin Routes
+    subgraph Adm ["Admin Routes"]
+        R_AdminDash["/admin/dashboard (Admin Dashboard)"]
+        R_AdminUsers["/admin/users (Users Management)"]
+        R_AdminScans["/admin/scans (Smart Node/Device Management)"]
+        R_AdminTiers["/admin/tiers (Tier/Sheriha rules)"]
+        R_AdminAiLogs["/admin/ai-logs (AI logs audit)"]
+        R_AdminNotif["/admin/notifications (System announcements)"]
+        R_AdminSettings["/admin/settings (System Settings)"]
+    end
+    class Adm,R_AdminDash,R_AdminUsers,R_AdminScans,R_AdminTiers,R_AdminAiLogs,R_AdminNotif,R_AdminSettings admin;
+
+    Root --> Pub
+    Root --> Gst
+    Root --> Usr
+    Root --> Adm
 ```
 
 | Route | Page | Access |
 |-------|------|--------|
 | `/` | Welcome | Public |
 | `/register` | Login / Register (tabs) | Guest |
-| `/pricing` | Pricing | Public |
 | `/about` | About | Public |
 | `/dashboard` | User Dashboard | User, Admin |
 | `/meters` | My Meters | User, Admin |
+| `/meters/:id/simulation` | Meter Simulation Sandbox | User, Admin |
+| `/simulation-overview/:id` | Simulation Overview | User, Admin |
 | `/analytics` | Consumption Analytics | User, Admin |
 | `/bills` | Bills | User, Admin |
 | `/ai-advisor` | AI Advisor | User, Admin |
 | `/alerts` | Alerts | User, Admin |
-| `/reports` | Reports | User, Admin |
 | `/billing` | Billing | User, Admin |
+| `/checkout/:planId` | Stripe Checkout | User, Admin |
 | `/profile` | Profile | User, Admin |
-| `/scan` | Scan Meter | User, Admin |
-| `/processing` | Processing | User, Admin |
-| `/history` | History | User, Admin |
-| `/history/:id` | Scan Details | User, Admin |
-| `/tips` | Tips & Recommendations | User, Admin |
-| `/meters/:id/simulation` | Meter Simulation | User, Admin |
 | `/admin/dashboard` | Admin Dashboard | Admin |
 | `/admin/users` | Users Management | Admin |
-| `/admin/scans` | Scan Management | Admin |
+| `/admin/scans` | Smart Node/Device Management | Admin |
 | `/admin/tiers` | Tier Management | Admin |
 | `/admin/ai-logs` | AI Logs | Admin |
 | `/admin/notifications` | Notifications Management | Admin |

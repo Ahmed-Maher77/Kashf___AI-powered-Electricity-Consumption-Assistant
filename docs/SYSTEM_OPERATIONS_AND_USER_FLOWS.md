@@ -37,60 +37,46 @@ This document describes every significant user-facing operation in Kashf — ste
 
 #### Step-by-step
 
-```
-USER fills form (username, email, password, repassword, optional picture)
-  │
-  ▼
-CLIENT validates form locally (React Hook Form + Zod)
-  │
-  ├── invalid → show field errors inline, stop
-  │
-  ▼
-CLIENT sends POST /api/auth/register (multipart/form-data)
-  │
-  ▼
-SERVER: uploadProfilePicture middleware
-  ├── no file → req.file = undefined (ok)
-  └── file → parsed to memory buffer; MIME checked (image/* only)
-      └── invalid MIME → 400 error
-  │
-  ▼
-SERVER: validateRequestBody(signupSchema) middleware
-  ├── body empty → 400
-  ├── Joi validation fails → 400 { message, details[] }
-  └── valid → next()
-  │
-  ▼
-SERVER: authService.register()
-  ├── User.findOne({ email | username }) → 409 if duplicate
-  │
-  ├── [if file] uploadToCloudinary(buffer)
-  │     └── Cloudinary error → throw (500)
-  │
-  ├── bcrypt.hash(password, 10)
-  │
-  ├── User.create({ username, email, hashedPassword, role: "user", picture })
-  │     └── DB error → deleteFromCloudinary(pictureUrl) then throw
-  │
-  ├── signAccessToken(payload)  ─┐
-  ├── signRefreshToken(payload)  ├── payload: { userId, role }
-  │                              │
-  ├── setAuthCookies(res, tokens)
-  │     └── sets HttpOnly, Secure, SameSite=None cookies:
-  │           - accessToken (short-lived)
-  │           - refreshToken (long-lived)
-  │
-  └── returns { user: toPublicUser(user), accessToken }
-  │
-  ▼
-SERVER responds 201:
-  { success: true, data: { user, accessToken } }
-  │
-  ▼
-CLIENT receives response
-  ├── stores accessToken in Redux state (in-memory only — not localStorage)
-  ├── stores user profile in Redux state
-  └── redirects to /dashboard
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant Cloudinary
+    participant DB
+
+    User->>Client: Fills form (username, email, password, repassword + optional picture)
+    Client->>Client: Local validation (React Hook Form + Zod)
+    alt Local validation fails
+        Client-->>User: Show inline field errors
+    else Local validation passes
+        Client->>Server: POST /api/auth/register (multipart/form-data)
+        Server->>Server: uploadProfilePicture (memory buffer & MIME type filter)
+        alt Invalid MIME type
+            Server-->>Client: 400 Bad Request
+        else Valid picture / No picture
+            Server->>Server: Joi validation (signupSchema)
+            alt Joi validation fails
+                Server-->>Client: 400 Bad Request
+            else Joi validation passes
+                Server->>DB: User.findOne({ email | username })
+                alt Duplicate exists
+                    Server-->>Client: 409 Conflict
+                else Unique credentials
+                    opt Profile Picture Upload
+                        Server->>Cloudinary: uploadToCloudinary(buffer)
+                    end
+                    Server->>Server: bcrypt.hash(password, 10)
+                    Server->>DB: User.create(...)
+                    Server->>Server: Sign Access + Refresh JWTs
+                    Server->>Client: setAuthCookies(res, tokens) (HttpOnly, Secure)
+                    Server-->>Client: 201 Created (User + Access Token)
+                    Client->>Client: Store token/profile in Redux
+                    Client-->>User: Redirect to /dashboard
+                end
+            end
+        end
+    end
 ```
 
 #### Error paths
@@ -111,40 +97,31 @@ CLIENT receives response
 
 #### Step-by-step
 
-```
-USER fills form (email, password)
-  │
-  ▼
-CLIENT local validation
-  │
-  ▼
-CLIENT sends POST /api/auth/login (application/json)
-  │
-  ▼
-SERVER: validateRequestBody(loginSchema) → 400 on failure
-  │
-  ▼
-SERVER: authService.login()
-  ├── User.findOne({ email }).select("+password")
-  │     └── not found → throw AppError(401)
-  │
-  ├── bcrypt.compare(password, user.password)
-  │     └── mismatch → throw AppError(401)
-  │
-  ├── signAccessToken + signRefreshToken
-  │
-  ├── setAuthCookies(res, tokens)
-  │
-  └── returns { user: toPublicUser(user), accessToken }
-  │
-  ▼
-SERVER responds 200:
-  { success: true, data: { user, accessToken } }
-  │
-  ▼
-CLIENT
-  ├── stores accessToken + user in Redux
-  └── redirects to /dashboard
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant DB
+
+    User->>Client: Fills form (email, password)
+    Client->>Client: Local validation
+    Client->>Server: POST /api/auth/login (application/json)
+    Server->>Server: Joi validation (loginSchema)
+    alt Joi validation fails
+        Server-->>Client: 400 Bad Request
+    else Joi validation passes
+        Server->>DB: User.findOne({ email }).select("+password")
+        alt User not found or password mismatch
+            Server-->>Client: 401 Unauthorized
+        else Valid credentials
+            Server->>Server: Sign Access + Refresh JWTs
+            Server->>Client: setAuthCookies(res, tokens)
+            Server-->>Client: 200 OK (User + Access Token)
+            Client->>Client: Store token/profile in Redux
+            Client-->>User: Redirect to /dashboard
+        end
+    end
 ```
 
 #### Error paths
@@ -162,26 +139,18 @@ CLIENT
 
 #### Step-by-step
 
-```
-USER clicks Logout
-  │
-  ▼
-CLIENT sends POST /api/auth/logout
-  │
-  ▼
-SERVER: authService.logout()
-  └── clearAuthCookies(res)
-        ├── sets accessToken cookie: maxAge=0 (delete)
-        └── sets refreshToken cookie: maxAge=0 (delete)
-  │
-  ▼
-SERVER responds 200:
-  { success: true, message: "Logged out successfully." }
-  │
-  ▼
-CLIENT
-  ├── clears Redux auth state
-  └── redirects to /login (or / welcome)
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+
+    User->>Client: Clicks Logout
+    Client->>Server: POST /api/auth/logout
+    Server->>Server: clearAuthCookies(res) (sets cookies maxAge = 0)
+    Server-->>Client: 200 OK (Logged out successfully)
+    Client->>Client: Clear Redux auth state
+    Client-->>User: Redirect to welcome/login page
 ```
 
 ---
@@ -192,36 +161,29 @@ CLIENT
 
 #### Step-by-step
 
-```
-CLIENT app mounts  (or receives 401 on any API call)
-  │
-  ▼
-refreshTokenService sends POST /api/auth/refresh-token
-  └── cookie: refreshToken is sent automatically (HttpOnly)
-  │
-  ▼
-SERVER: authService.refreshToken()
-  ├── reads req.cookies[AUTH_COOKIE_KEYS.REFRESH_TOKEN]
-  │     └── missing → throw AppError(401)
-  │
-  ├── verifyRefreshToken(value)
-  │     └── invalid / expired → throw AppError(401)
-  │
-  ├── User.findById(decoded.userId)
-  │     └── not found → throw AppError(401)
-  │
-  ├── buildTokens(user) → new access + refresh pair
-  ├── setAuthCookies(res, tokens)
-  └── returns { accessToken }
-  │
-  ▼
-SERVER responds 200:
-  { success: true, data: { accessToken } }
-  │
-  ▼
-CLIENT
-  ├── updates accessToken in Redux
-  └── retries the original failed API request (if triggered by 401 interceptor)
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant DB
+
+    Client->>Server: POST /api/auth/refresh-token (Sends HttpOnly refreshToken cookie)
+    Server->>Server: Read and verify JWT signature and expiry
+    alt Missing or expired refresh token
+        Server-->>Client: 401 Unauthorized
+        Client->>Client: Clear Redux auth state & redirect to /register (Auth)
+    else Valid refresh token
+        Server->>DB: User.findById(decoded.userId)
+        alt User not found
+            Server-->>Client: 401 Unauthorized
+        else User exists
+            Server->>Server: Sign new Access + Refresh JWTs
+            Server->>Client: setAuthCookies(res, tokens)
+            Server-->>Client: 200 OK (New Access Token)
+            Client->>Client: Update in-memory accessToken in Redux
+            Client->>Client: Retry original failed request (if triggered by 401 interceptor)
+        end
+    end
 ```
 
 #### Error paths
@@ -238,30 +200,25 @@ CLIENT
 
 #### Step-by-step
 
-```
-CLIENT sends GET /api/auth/me
-  └── header: Authorization: Bearer <accessToken>
-  │
-  ▼
-SERVER: isAuthenticated middleware
-  ├── extracts token from Authorization header or access-token cookie
-  ├── verifies with JWT_SECRET
-  │     └── invalid → 401
-  └── attaches req.user = { id, role }
-  │
-  ▼
-SERVER: authService.getMe({ userId: req.user.id })
-  ├── User.findById(userId)
-  │     └── not found → 404
-  └── returns toPublicUser(user)
-  │
-  ▼
-SERVER responds 200:
-  { success: true, data: { user } }
-  │
-  ▼
-CLIENT
-  └── stores user in Redux auth state
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant DB
+
+    Client->>Server: GET /api/auth/me (Authorization: Bearer <accessToken>)
+    Server->>Server: isAuthenticated middleware (JWT verification)
+    alt Invalid / Expired Token
+        Server-->>Client: 401 Unauthorized
+    else Valid Token
+        Server->>DB: User.findById(userId)
+        alt User not found
+            Server-->>Client: 404 Not Found
+        else User exists
+            Server-->>Client: 200 OK (User data)
+            Client->>Client: Store user profile in Redux
+        end
+    end
 ```
 
 ---
@@ -274,39 +231,36 @@ CLIENT
 
 #### Step-by-step
 
-```
-USER selects/drags an image
-  │
-  ▼
-CLIENT local validation (file type, size)
-  │
-  ▼
-CLIENT sends PATCH /api/auth/profile/picture (multipart/form-data)
-  └── header: Authorization: Bearer <accessToken>
-  │
-  ▼
-SERVER: isAuthenticated → req.user
-  │
-  ▼
-SERVER: uploadProfilePicture middleware
-  └── parses file to req.file.buffer
-  │
-  ▼
-SERVER: authService.updateProfilePicture({ userId, file })
-  ├── file missing → 400
-  ├── User.findById(userId) → 404 if not found
-  ├── uploadToCloudinary(file.buffer) → new pictureUrl
-  ├── user.picture = pictureUrl; user.save()
-  ├── [if previous picture] deleteFromCloudinary(previousUrl)
-  └── returns toPublicUser(user)
-  │
-  ▼
-SERVER responds 200:
-  { success: true, data: { user } }
-  │
-  ▼
-CLIENT
-  └── updates user.picture in Redux state → avatar re-renders
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant Cloudinary
+    participant DB
+
+    User->>Client: Selects / drags image
+    Client->>Client: Local file size & type validation
+    Client->>Server: PATCH /api/auth/profile/picture (multipart/form-data)
+    Server->>Server: isAuthenticated middleware
+    Server->>Server: uploadProfilePicture (Multer parses to memory buffer)
+    alt File missing
+        Server-->>Client: 400 Bad Request
+    else File present
+        Server->>DB: User.findById(userId)
+        alt User not found
+            Server-->>Client: 404 Not Found
+        else User exists
+            Server->>Cloudinary: uploadToCloudinary(buffer)
+            Server->>DB: Update user.picture = newUrl
+            opt Delete Previous Avatar
+                Server->>Cloudinary: deleteFromCloudinary(oldUrl)
+            end
+            Server-->>Client: 200 OK (Updated user profile)
+            Client->>Client: Update user.picture in Redux
+            Client-->>User: Re-renders profile avatar
+        end
+    end
 ```
 
 #### Error paths
@@ -322,26 +276,18 @@ CLIENT
 
 **Triggered on:** every page load / app mount (`AuthBootstrap.jsx`)
 
-```
-App mounts
-  │
-  ▼
-AuthBootstrap useEffect runs
-  │
-  ├── sessionCoordinator.initialize()
-  │     │
-  │     ├── POST /api/auth/refresh-token
-  │     │     ├── success → new accessToken in memory
-  │     │     │            └── GET /api/auth/me → populate Redux user
-  │     │     └── failure (401) → Redux auth = unauthenticated
-  │     │
-  │     └── listen for token expiry events → auto-refresh
-  │
-  ▼
-React Router renders:
-  ├── [authenticated] → route guard passes → requested page
-  └── [unauthenticated] → redirect to /login  (protected routes)
-                        → welcome page renders  (public routes)
+```mermaid
+flowchart TD
+    Mount["App Mounts"] --> Hook["AuthBootstrap useEffect runs"]
+    Hook --> Silent["POST /api/auth/refresh-token"]
+    Silent -- "Success (200)" --> GetMe["GET /api/auth/me"]
+    GetMe --> ReduxSuccess["Populate Redux user state<br/>Status: Authenticated"]
+    Silent -- "Failure (401)" --> ReduxFail["Clear Redux auth state<br/>Status: Unauthenticated"]
+    ReduxSuccess & ReduxFail --> Router["React Router resolves page route"]
+    Router --> Guard{"Page protected?"}
+    Guard -- "Yes & Authenticated" --> RenderPage["Render requested page"]
+    Guard -- "Yes & Unauthenticated" --> RedirectLogin["Redirect to /register"]
+    Guard -- "No" --> RenderPage
 ```
 
 ---
@@ -350,31 +296,16 @@ React Router renders:
 
 **Entry point:** `/` — public, no auth required
 
-```
-User visits /
-  │
-  ▼
-WelcomePage renders sections in order:
-  1. HeroSection         — headline, CTA, background animation
-  2. HowItWorksSection   — 3-step explainer
-  3. FeaturesSection     — feature cards
-  4. ComparisonSection   — before/after comparison
-  5. AIAssistantSection  — AI chat demo
-  6. PricingSection      — pricing plans
-  7. PWASection          — install prompt
-  8. TestimonialsSection — social proof
-  9. CTASection          — final call to action
-  │
-  ▼
-i18n: all strings loaded from locales/en.json or locales/ar.json
-  └── language determined by i18next (localStorage, browser, default)
-  │
-  ▼
-User actions:
-  ├── CTA "Get Started" → /register
-  ├── "Sign In" → /login
-  ├── Language toggle → switches locale, flips RTL direction
-  └── PWA install button → browser install prompt
+```mermaid
+flowchart TD
+    Visit["User visits /"] --> Welcome["WelcomePage renders marketing sections"]
+    Welcome --> Translate["i18next loads translations (EN/AR)"]
+    Translate --> Layout["Apply directionality (LTR/RTL) based on locale"]
+    Layout --> Actions{"User Actions"}
+    Actions -- "Click Get Started" --> Register["Redirect to /register"]
+    Actions -- "Click Sign In" --> Login["Redirect to /register (tabs)"]
+    Actions -- "Language Toggle" --> Toggle["Switch locale and flip layout"]
+    Actions -- "PWA Install Click" --> PWA["Trigger browser install prompt"]
 ```
 
 ---
@@ -383,29 +314,14 @@ User actions:
 
 **Entry point:** `/about` — public
 
-```
-User visits /about
-  │
-  ▼
-AboutPage composes:
-  1. AboutHero    — full-viewport hero with scroll indicator
-  2. AboutStory   — 2-col layout: story text + colored timeline
-  3. AboutValues  — 4-card values grid
-  4. AboutTeam    — team member cards (photo, name, title, LinkedIn)
-  5. AboutFAQ     — animated accordion (7 items)
-  6. AboutCTA     — "Get Started" + "Contact Us" buttons
-  │
-  ▼
-i18n: all strings from about.* namespace in locales/
-  ├── EN: about.hero.title, about.story.body1, etc.
-  └── AR: same keys, Arabic text, RTL layout auto-applied
-  │
-  ▼
-User actions:
-  ├── FAQ item click → accordion expand/collapse (CSS max-height transition)
-  ├── Scroll indicator → smooth scroll to #about-story
-  ├── "Get Started" → /register
-  └── LinkedIn cards → open linkedin.com in new tab
+```mermaid
+flowchart TD
+    Visit["User visits /about"] --> About["AboutPage renders values, story, team, FAQs"]
+    About --> Translate["i18next loads about.* namespace translations"]
+    Translate --> Actions{"User Actions"}
+    Actions -- "FAQ click" --> FAQ["Expand/collapse accordion item"]
+    Actions -- "LinkedIn card click" --> LinkedIn["Open LinkedIn profile in new tab"]
+    Actions -- "CTA click" --> CTA["Redirect to /register"]
 ```
 
 ---
@@ -418,69 +334,69 @@ Consumption data enters the system through manual bill entry linked to meters. T
 
 ### 6.1 Create a Meter
 
-```
-USER opens My Meters page → clicks "Add Meter"
-  │
-  ▼
-CLIENT shows create meter form (name, number, type, status)
-  │
-  ▼
-CLIENT sends POST /api/meters
-  │
-  ▼
-SERVER: isAuthenticated → req.user
-  │
-  ▼
-SERVER: meterController.createMeter()
-  ├── Validates name and number (required)
-  ├── Checks meter limit by plan (free=1, plus=2, family=5)
-  ├── Checks duplicate meter number for this user
-  ├── Meter.create({ user, name, number, type, status })
-  └── Returns created meter
-  │
-  ▼
-CLIENT adds meter to Redux store → list re-renders
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant DB
+
+    User->>Client: Clicks 'Add Meter' & fills form (name, number, type, status)
+    Client->>Server: POST /api/meters (name, number, type, status)
+    Server->>Server: isAuthenticated middleware
+    Server->>DB: Check user subscription plan limits (free=1, plus=2, family=5)
+    alt Plan limit reached
+        Server-->>Client: 400 Bad Request (Limit reached)
+    else Limit not reached
+        Server->>DB: Check duplicate meter number for this user
+        alt Duplicate meter number
+            Server-->>Client: 400 Bad Request (Meter number exists)
+        else Unique meter number
+            Server->>DB: Meter.create(...)
+            Server-->>Client: 201 Created (Meter object)
+            Client->>Client: Add meter to Redux store & re-render list
+        end
+    end
 ```
 
 ### 6.2 View Meters (with consumption)
 
-```
-CLIENT sends GET /api/meters
-  │
-  ▼
-SERVER: meterController.getMeters()
-  ├── Finds all meters for user
-  ├── For each meter:
-  │     ├── Query linked bills sorted by dueDate
-  │     ├── If bills exist → use latest bill.consumption + bill.tier
-  │     │                    and trend = all bill consumptions
-  │     └── If no bills  → generate synthetic 5-point trend
-  │                        based on meter type (residential/commercial/vacation)
-  │                        and derive tier from consumption
-  └── Returns formatted meters with consumption, tier, trend, lastReading
-  │
-  ▼
-CLIENT renders meter cards with gauge, trend chart, tier badge
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant DB
+
+    Client->>Server: GET /api/meters
+    Server->>Server: isAuthenticated middleware
+    Server->>DB: Find all meters for user
+    loop For each meter
+        Server->>DB: Query linked bills sorted by dueDate desc
+        alt Bills exist
+            Server->>Server: Use latest bill consumption, tier, & all bills for trend
+        else No bills exist
+            Server->>Server: Generate synthetic 5-point trend based on type (residential/commercial/vacation) & derive tier
+        end
+    end
+    Server-->>Client: 200 OK (Formatted meters list)
+    Client->>Client: Render meter cards (gauge, trend, tier badge)
 ```
 
 ### 6.3 Add a Bill (Manual Entry)
 
-```
-USER navigates to Bills page → clicks "Add Bill"
-  │
-  ▼
-CLIENT shows bill form (month, consumption kWh, tier, amount, status, dueDate, meter)
-  │
-  ▼
-CLIENT sends POST /api/bills
-  │
-  ▼
-SERVER: billController.addBill()
-  ├── Bill.create({ user, meter, month, consumption, tier, amount, status, dueDate })
-  └── Returns created bill
-  │
-  ▼
-CLIENT adds bill to list → consumption updates on meter cards
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant DB
+
+    User->>Client: Clicks 'Add Bill' & fills form
+    Client->>Server: POST /api/bills (month, consumption, tier, amount, meter, status)
+    Server->>Server: isAuthenticated middleware
+    Server->>DB: Bill.create(...)
+    Server-->>Client: 201 Created (Bill object)
+    Client->>Client: Add bill to list, update meter consumption & trends
 ```
 
 #### Error paths
@@ -497,30 +413,19 @@ CLIENT adds bill to list → consumption updates on meter cards
 
 **Entry point:** `/dashboard`
 
-```
-isAuthenticated guard → user must be logged in
-  │
-  ▼
-Dashboard UI shell loads with sidebar navigation
-  │
-  ▼
-User navigates through available modules:
-  ├── Overview (/dashboard): Summary cards, Consumption Gauge, Monthly Trends Chart, and Recent Activity.
-  ├── My Meters (/meters): Manage registered meters (CRUD using local React state) with dummy AI Advices.
-  ├── Analytics (/analytics): Recharts-based consumption data.
-  ├── Bills (/bills): Billing history and estimates.
-  ├── AI Advisor (/ai-advisor): Personalized recommendations mock layout.
-  ├── Alerts (/alerts): Notification center.
-  ├── Reports (/reports): Detailed PDF/Excel exports.
-  └── Profile (/profile): Manage settings and security.
-  │
-  ▼
-Frontend requests specific endpoint data based on active route
-  ├── NOTE: Core features (My Meters, Dashboard Stats, AI Advices) currently utilize local state and mock data arrays.
-  └── UI fully supports RTL and LTR directionality based on the selected language (`ar` / `en`).
-  │
-  ▼
-Data rendered visually using Recharts (Analytics), tables (Bills/History), etc.
+```mermaid
+flowchart TD
+    Visit["User visits /dashboard"] --> Guard["isAuthenticated guard check"]
+    Guard -- "Unauthenticated" --> Redirect["Redirect to /register"]
+    Guard -- "Authenticated" --> Load["Dashboard UI shell loads with sidebar"]
+    Load --> Nav{"Navigate Modules"}
+    Nav -- "Overview (/dashboard)" --> Overview["Render stat cards, gauge, trends, activity"]
+    Nav -- "My Meters (/meters)" --> Meters["Render meters list + CRUD controls"]
+    Nav -- "Analytics (/analytics)" --> Analytics["Render Recharts historical charts"]
+    Nav -- "Bills (/bills)" --> Bills["Render bill forecast and history table"]
+    Nav -- "AI Advisor (/ai-advisor)" --> Advisor["Render AI advisor tips widget"]
+    Nav -- "Alerts (/alerts)" --> Alerts["Render notification center & read/delete controls"]
+    Nav -- "Profile (/profile)" --> Profile["Render tabs: overview, preferences, security, plan"]
 ```
 
 ---
@@ -531,75 +436,92 @@ Data rendered visually using Recharts (Analytics), tables (Bills/History), etc.
 
 ### 8.1 Create & Configure Simulation
 
-```
-USER opens Simulations → clicks "New Simulation"
-  │
-  ▼
-CLIENT sends POST /api/simulations { name, autoGenerate }
-  │
-  ▼
-SERVER creates Simulation document with circuits & devices
-  ├── autoGenerate=true → pre-populated with 5 circuits (Kitchen, Living Room,
-  │                        Bedroom, Bathroom, Office) and default appliances
-  └── autoGenerate=false → empty circuits, user adds manually
-  │
-  ▼
-USER can add/remove circuits and devices
-  ├── POST /api/simulations/:id/circuits
-  ├── DELETE /api/simulations/:id/circuits/:cid
-  ├── POST /api/simulations/:id/devices
-  ├── PATCH /api/simulations/:id/devices/:did  (toggle isOn, set essential flag)
-  └── DELETE /api/simulations/:id/devices/:did
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant DB
+
+    User->>Client: Clicks 'New Simulation'
+    Client->>Server: POST /api/simulations { name, autoGenerate }
+    Server->>Server: isAuthenticated middleware
+    alt autoGenerate is true
+        Server->>DB: Create Simulation pre-populated with 5 circuits & default devices
+    else autoGenerate is false
+        Server->>DB: Create Simulation with empty circuits list
+    end
+    Server-->>Client: 201 Created (Simulation config)
+    loop Circuit & Device CRUD
+        User->>Client: Modify circuits/devices
+        Client->>Server: POST/PATCH/DELETE /api/simulations/:id/circuits or /devices
+        Server->>DB: Update simulation document & save
+        Server-->>Client: 200 OK (Updated config)
+    end
 ```
 
 ### 8.2 Run Simulation
 
-```
-USER clicks "Start"
-  │
-  ▼
-CLIENT sends POST /api/simulations/:id/start
-  │
-  ▼
-SERVER: Engine tick loop starts
-  ├── Every 1 second: totalKWh += totalWatts / 3600
-  ├── Tracks currentTier, estimatedBill based on active devices
-  ├── Runtime state kept in-memory (Map<simId, Runtime>)
-  └── SSE stream broadcasts state to subscribed clients
-  │
-  ▼
-CLIENT connects to GET /api/simulations/:id/stream (SSE)
-  └── Receives real-time: totalKWh, tier, bill, circuit loads, device states
-  │
-  ▼
-USER can pause (POST /pause), reset (POST /reset), or toggle devices live
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant Engine
+    participant SSE
+
+    User->>Client: Clicks 'Start' simulation
+    Client->>Server: POST /api/simulations/:id/start
+    Server->>Engine: startSimulation(simulationId)
+    Engine->>Engine: Start 1s interval tick loop
+    Server-->>Client: 200 OK (Simulation started)
+    Client->>SSE: Connect to GET /api/simulations/:id/stream
+    SSE-->>Client: Establish Server-Sent Events stream
+    loop Every 1 second (Tick)
+        Engine->>Engine: totalKWh += totalWatts / 3600
+        Engine->>Engine: Compute currentTier & estimatedBill
+        Engine->>SSE: Broadcast real-time state to client
+        SSE-->>Client: SSE message (kwh, tier, bill, active loads)
+        Client->>Client: Re-render gauge, charts, and device states
+    end
+    User->>Client: Pause / Reset / Toggle devices
+    Client->>Server: POST /pause, /reset or PATCH /devices
+    Server->>Engine: Sync changes/control runtime state
 ```
 
 ### 8.3 Tier Prediction
 
-```
-CLIENT sends GET /api/simulations/:id/prediction
-  │
-  ▼
-SERVER (pure math, no AI):
-  ├── Calculates remaining kWh before next tier threshold
-  ├── Hours until next tier at current consumption rate
-  └── Warning level: green / yellow / orange / red
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Predictor
+
+    Client->>Server: GET /api/simulations/:id/prediction
+    Server->>Predictor: getPrediction(runtimeState)
+    Predictor->>Predictor: Calc remaining kWh to next tier threshold
+    Predictor->>Predictor: Calc hours remaining at current consumption velocity
+    Predictor->>Predictor: Determine warning level (green, yellow, orange, red)
+    Server-->>Client: 200 OK (Prediction data)
 ```
 
 ### 8.4 What-If Analysis
 
-```
-USER requests what-if projection
-  │
-  ▼
-CLIENT sends POST /api/simulations/:id/what-if
-Body: { deviceId: "...", turnOff: true }
-  │
-  ▼
-SERVER clones current runtime, applies toggle,
-projects kWh/bill/tier differences
-  └── Returns comparison: current vs projected
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant WhatIf
+
+    User->>Client: Requests what-if scenario (e.g. turn off AC)
+    Client->>Server: POST /api/simulations/:id/what-if { toggleDevices }
+    Server->>WhatIf: getWhatIf(simulationId, changes)
+    WhatIf->>WhatIf: Clone current in-memory runtime
+    WhatIf->>WhatIf: Apply changes to clone & fast-forward tick
+    WhatIf-->>Server: Comparison (actual vs projected kWh, bill, tier)
+    Server-->>Client: 200 OK (Comparison details)
+    Client-->>User: Display comparative analytics
 ```
 
 ---
@@ -612,59 +534,76 @@ AI features are powered by **Groq** (Llama 3.3 70B) via an OpenAI-compatible cli
 
 **Entry point:** Simulation detail page → "Get Advice" button
 
-```
-CLIENT sends POST /api/simulations/:id/advise
-  │
-  ▼
-SERVER builds prompt from simulation state:
-  ├── totalKWh, currentTier, estimatedBill
-  ├── Circuits table with loadW per circuit
-  └── User consumption goals
-  │
-  ▼
-SERVER calls Groq API (groq.js → generateAdvice)
-  └── Returns 3 parsed tips: { device, advice, savings }
-  │
-  ▼
-CLIENT displays tips in Egyptian Arabic (Ammiya)
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant Advisor
+    participant Groq
+
+    User->>Client: Clicks 'Get Advice'
+    Client->>Server: POST /api/simulations/:id/advise
+    Server->>Advisor: getAdvice(simulationId)
+    Advisor->>Advisor: Gather state snapshot & consumption goals
+    Advisor->>Groq: Generate advice (prompt with Egyptian context)
+    Groq-->>Advisor: Parse 3 tips (device, advice, savings)
+    Advisor-->>Server: Return tips list
+    Server-->>Client: 200 OK (Personalized tips)
+    Client-->>User: Render tips in Egyptian Arabic
 ```
 
 ### 9.2 Smart Recommendations
 
-```
-CLIENT sends POST /api/simulations/:id/recommend
-  │
-  ▼
-SERVER performs deep analysis:
-  ├── Load distribution across circuits
-  ├── Device profile breakdown (high-load vs essential vs non-essential)
-  ├── Tier progression risk
-  └── Calls Groq with structured context
-  │
-  ▼
-Returns categorized findings + quick-wins + priority rating
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Recommender
+    participant Groq
+
+    Client->>Server: GET /api/simulations/:id/recommendations
+    Server->>Recommender: getRecommendations(simulationId)
+    Recommender->>Recommender: Fetch history & load profile
+    Recommender->>Groq: Deep analysis (identify anomalies, peak times)
+    Groq-->>Recommender: Return structured insights
+    Recommender-->>Server: Return recommendations list
+    Server-->>Client: 200 OK (Categorized findings)
 ```
 
 ### 9.3 Natural Language Chat
 
-```
-USER types a message (Arabic or English)
-  │
-  ▼
-CLIENT sends POST /api/simulations/:id/chat
-Body: { message: "شغل التكييف في غرفة النوم" }
-  │
-  ▼
-SERVER:
-  ├── Checks coin balance (1 coin per message)
-  ├── Calls Groq for intent classification
-  │     └── Detects intent: toggle_device | query_state | advise | what_if | unknown
-  ├── Executes action (toggle device, run what-if, fetch prediction, etc.)
-  ├── Deducts 1 coin
-  └── Returns response in Arabic
-  │
-  ▼
-CLIENT displays chat response
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant ChatService
+    participant Groq
+
+    User->>Client: Types message (e.g. 'شغل مروحة المكتب')
+    Client->>Server: POST /api/simulations/:id/chat { message, messageId }
+    Server->>Server: Check messageId cache (idempotency)
+    alt Duplicate messageId
+        Server-->>Client: 200 OK (Return cached response, no coin deducted)
+    else Unique messageId
+        Server->>Server: Pre-flight validation: check user coin balance >= 1
+        alt Insufficient coins
+            Server-->>Client: 400 Bad Request (Insufficient coins)
+        else Coins available
+            Server->>ChatService: chat(simulationId, message)
+            ChatService->>Groq: Classify intent & reply context
+            Groq-->>ChatService: JSON (intent, deviceName, reply, whatIfChanges)
+            alt intent is toggle_device
+                ChatService->>ChatService: Toggle device state in simulation
+            else intent is what_if
+                ChatService->>ChatService: Run What-If simulation
+            end
+            ChatService->>Server: Deduct 1 coin & Save message/history
+            Server-->>Client: 200 OK (Reply text, action result, coin balances)
+            Client-->>User: Render response in Egyptian Arabic
+        end
+    end
 ```
 
 #### Error paths
@@ -676,20 +615,28 @@ CLIENT displays chat response
 
 ### 9.4 Auto-Pilot
 
-```
-USER sets consumption goal and enables Auto-Pilot
-  │
-  ▼
-CLIENT sends POST /api/simulations/:id/auto-pilot/start
-Body: { monthlyKwhLimit, targetBillEgp }
-  │
-  ▼
-SERVER:
-  ├── Saves consumption goal on simulation
-  ├── Enables autoPilot flag
-  └── Engine tick loop checks:
-        If projected consumption exceeds goal →
-        turns off non-essential devices automatically
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant DB
+    participant Engine
+
+    User->>Client: Enables Auto-Pilot & sets monthly limit goal
+    Client->>Server: POST /api/simulations/:id/auto-pilot/start { monthlyKwhLimit }
+    Server->>DB: Save goal and enable autoPilot flag
+    Server->>Engine: startAutoPilot(simulationId)
+    Server-->>Client: 200 OK (Auto-pilot enabled)
+    loop Every Tick inside Engine
+        Engine->>Engine: Check projected monthly usage
+        alt projectedUsage > monthlyKwhLimit
+            Engine->>Engine: Rank non-essential devices by wattage
+            Engine->>DB: Turn OFF highest-wattage non-essential device & save
+            Engine->>DB: Log activity (auto-pilot intervention)
+            Engine->>Engine: Broadcast update via SSE
+        end
+    end
 ```
 
 ---
@@ -698,17 +645,17 @@ SERVER:
 
 **Entry point:** `/bills`
 
-```
-GET /api/bills?page=1&limit=10&status=all&year=2026
-  │
-  ▼
-SERVER: billController.getBills()
-  ├── Filters by user, optional status and year
-  ├── Paginated results sorted by dueDate desc
-  └── Returns bills with populated meter data
-  │
-  ▼
-CLIENT renders bill list with status badges, edit/delete actions
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant DB
+
+    Client->>Server: GET /api/bills?page=1&limit=10&status=all
+    Server->>DB: Query bills filtered by status/year, sorted by dueDate desc
+    DB-->>Server: Return paginated bills list with populated meter details
+    Server-->>Client: 200 OK (Bills + pagination data)
+    Client->>Client: Render bill list & history table
 ```
 
 ---
@@ -721,15 +668,13 @@ Same as user login, but `user.role === "admin"` → redirected to `/admin/dashbo
 
 ### Admin route guard
 
-```
-Request to /api/admin/* or /admin/* page
-  │
-  ▼
-isAuthenticated → req.user attached
-  │
-  ▼
-isAdmin → req.user.role === "admin"
-  └── not admin → 403 AppError
+```mermaid
+flowchart TD
+    Req["Request to /api/admin/* or /admin/* page"] --> Auth["isAuthenticated Middleware"]
+    Auth -- "Invalid Token" --> Err401["401 Unauthorized"]
+    Auth -- "Valid Token" --> AdminCheck["isAdmin Middleware"]
+    AdminCheck -- "role !== 'admin'" --> Err403["403 Forbidden"]
+    AdminCheck -- "role === 'admin'" --> Route["Forward to Admin Route / Render Admin Page"]
 ```
 
 ### Planned admin operations
@@ -760,23 +705,14 @@ isAdmin → req.user.role === "admin"
 
 ## Appendix: Auth State Machine (client)
 
-```
-INITIAL
-  │
-  ├──[app mount]──▶ LOADING
-  │                    │
-  │         ┌──────────┴──────────┐
-  │         │                     │
-  │    refresh ok           refresh fail (401)
-  │         │                     │
-  │         ▼                     ▼
-  │    AUTHENTICATED          UNAUTHENTICATED
-  │         │                     │
-  │   [logout / 401]        [login success]
-  │         │                     │
-  │         └──────────┬──────────┘
-  │                    │
-  └────────────────────┘
+```mermaid
+stateDiagram-v2
+    [*] --> INITIAL
+    INITIAL --> LOADING : App Mount
+    LOADING --> AUTHENTICATED : refresh success
+    LOADING --> UNAUTHENTICATED : refresh fail (401)
+    AUTHENTICATED --> UNAUTHENTICATED : logout / 401 error
+    UNAUTHENTICATED --> AUTHENTICATED : login success
 ```
 
 ---

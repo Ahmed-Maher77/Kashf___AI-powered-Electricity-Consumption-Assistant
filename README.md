@@ -65,11 +65,11 @@ The application allows users to connect Kashf Smart Nodes to their electricity m
 * Tariff configuration management.
 * System activity tracking.
 
-### 📱 Progressive Web App (PWA) - *Planned*
+### 📱 Progressive Web App (PWA)
 
-* Installable on Android and iOS devices.
-* Mobile app-like experience.
-* Fast loading and offline support.
+* Installable on Android, iOS, Windows, and macOS devices.
+* Mobile app-like experience with offline support.
+* Fast loading with asset caching via service worker.
 * No app store installation required.
 
 ---
@@ -94,40 +94,107 @@ Many households are unaware of their current consumption status and receive no w
 
 ## 🖥️ System Architecture
 
+```mermaid
+flowchart TD
+    %% Styling
+    classDef default fill:#1e293b,stroke:#475569,stroke-width:1px,color:#f8fafc;
+    classDef frontend fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
+    classDef proxy fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#f8fafc;
+    classDef backend fill:#0f172a,stroke:#6366f1,stroke-width:2px,color:#f8fafc;
+    classDef ai fill:#0f172a,stroke:#f59e0b,stroke-width:2px,color:#f8fafc;
+    classDef db fill:#0f172a,stroke:#ec4899,stroke-width:2px,color:#f8fafc;
+
+    subgraph FE ["Frontend Layer (React 19 + Vite 8)"]
+        direction TB
+        F1["Welcome & Auth Pages"]
+        F2["Interactive Dashboard"]
+        F3["AI Advisor Widget"]
+        F4["Chat Interface (NL UI)"]
+        F_Tech["Redux Toolkit | TanStack Query | React Router v7<br/>i18next (AR/EN) | Framer Motion | Recharts | PWA"]
+    end
+    class FE,F1,F2,F3,F4,F_Tech frontend;
+
+    Proxy["Nginx Reverse Proxy (Docker / Production)<br/>- /api/* ➜ proxy_pass http://server:3000<br/>- /* ➜ serve SPA index.html"]
+    class Proxy proxy;
+
+    subgraph BE ["Backend Layer (Express 5 + Node 20)"]
+        direction TB
+        B1["8 API Modules<br/>(auth, admin, meters, bills, alerts, simulations, payments, activity)"]
+        B2["15 Services<br/>(auth, token, coin, activity, alert, email, subscription, payment, simulations x8)"]
+        B3["Middleware Pipeline<br/>(JWT Auth, Admin Guard, Joi Validation, AsyncHandler, Multer, CORS, Cookie Parser)"]
+    end
+    class BE,B1,B2,B3 backend;
+
+    subgraph AI ["AI Layer (Groq API via OpenAI SDK)"]
+        direction TB
+        A1["Advisor Prompts"]
+        A2["Natural Language Chat (Intent Classifier)"]
+        A3["Simulation Agents<br/>(Predictor, What-If, Auto-Pilot, Recommender)"]
+    end
+    class AI,A1,A2,A3 ai;
+
+    subgraph Database ["Database Layer (MongoDB + Mongoose 9)"]
+        D1["10 Collections:<br/>user | meter | bill | simulation | tier | alert | activity | payment | session | systemConfig"]
+    end
+    class Database,D1 db;
+
+    %% Relationships
+    FE -- "HTTP / SSE" --> Proxy
+    Proxy --> BE
+    BE <--> AI
+    BE <--> Database
+```
+
 ### Frontend
 
-* React.js + React Compiler
-* Vite 8 + Rolldown (Optimized dependency pre-bundling)
-* Tailwind CSS v4
-* Redux Toolkit (State Management)
-* TanStack React Query
-* React Helmet Async (Dynamic Document Head)
-* i18n (Arabic & English) with Full RTL Support
-* React Router v7
-* Responsive Mobile-First Design
-* Dashboard & Analytics Interface
+* React 19 + React Compiler
+* Vite 8 + Rolldown (Rust-based bundler)
+* Tailwind CSS v4 — utility-first styling
+* Redux Toolkit + TanStack React Query (state management)
+* React Helmet Async (dynamic document head)
+* i18next (Arabic & English) with full RTL support
+* React Router v7 with lazy loading
+* Framer Motion — scroll and spring animations
+* Recharts — interactive data visualization
+* Lucide React — icon system
+* Mobile-first responsive design (PWA installable)
 
 ### Backend
 
-* Node.js
-* Express.js
-* RESTful APIs
-* Authentication & Authorization
-* File Upload Management
+* Node.js 20 + Express 5
+* RESTful API with 8 feature modules
+* JWT authentication with access/refresh token cookies
+* Role-based authorization (user / admin)
+* Stripe payment integration (subscriptions)
+* Groq AI integration (consumption advisor, NL chat)
+* Server-Sent Events (SSE) for real-time simulation streaming
+* Multer + Cloudinary for image uploads
+* Joi request validation
+* 2FA (TOTP) support
 
 ### Database
 
-* MongoDB
-* Consumption History Storage
-* User Data Management
+* MongoDB with Mongoose 9 ODM
+* 10 collections with indexes and TTL
+* Consumption history, user data, billing tiers
 * [Database Schema Diagrams](./docs/DATABASE_SCHEMA.md) — Full ERD and collection details
 
 ### AI Layer
 
-* Groq API
-* Real-time Data Sync
-* Electricity Consumption Analysis
-* Personalized Recommendation Generation
+* Groq API (OpenAI-compatible SDK)
+* AI Consumption Advisor (Egyptian Arabic tips)
+* Natural Language Chat Agent (intent classification)
+* Tier Prediction Agent
+* What-If Scenario Simulator
+* Auto-Pilot Consumption Manager
+* Smart Recommendations Engine
+
+### Containerization (Docker)
+
+* Docker Compose orchestrates client + server containers
+* Multi-stage client build → Nginx for static serving + API proxy
+* Server runs Node 20 Alpine (production-only dependencies)
+* Hot-reload development available without Docker
 
 ---
 
@@ -143,8 +210,9 @@ Many households are unaware of their current consumption status and receive no w
 | [AI Agents](./docs/05-ai-agents.md) | AI features, prompts, agent architecture |
 | [System Operations & User Flows](./docs/SYSTEM_OPERATIONS_AND_USER_FLOWS.md) | End-to-end user flows, error paths |
 | [Team Tasks](./docs/teamTasks.md) | Task ownership and progress across workstreams |
-| [Vercel Deployment](./docs/VERCEL_DEPLOYMENT.md) | Server deployment guide |
-| [Netlify Deployment](./docs/NETLIFY_DEPLOYMENT.md) | Frontend deployment guide |
+| [Vercel Deployment](./docs/VERCEL_DEPLOYMENT.md) | Vercel deployment guide (primary) |
+| [Netlify Deployment](./docs/NETLIFY_DEPLOYMENT.md) | Netlify deployment guide (fallback) |
+| [Docker Setup](./docker-compose.yml) | Docker Compose — run full stack locally |
 
 ---
 
@@ -189,6 +257,48 @@ Many households are unaware of their current consumption status and receive no w
 
 ---
 
+---
+
+## 🐳 Getting Started with Docker
+
+The fastest way to run the full Kashf stack locally:
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/Ahmed-Maher77/Kashf___AI-powered-Electricity-Consumption-Assistant.git
+cd Kashf___AI-powered-Electricity-Consumption-Assistant
+
+# 2. Configure server environment
+cp server/.env.example server/.env
+# Edit server/.env — set MONGO_URI (MongoDB required), JWT secrets, etc.
+
+# 3. Build and start all services
+docker-compose up --build
+```
+
+- **Client:** http://localhost:8080
+- **API Server:** http://localhost:3000
+
+> Requires Docker Desktop and a running MongoDB instance (local or Atlas).
+
+### Manual Development (without Docker)
+
+```bash
+# Terminal 1 — Server
+cd server
+cp .env.example .env
+npm install
+npm run dev
+
+# Terminal 2 — Client
+cd client
+cp .env.example .env    # set VITE_API_BASE_URL=http://localhost:3000
+npm install
+npm run dev
+```
+
+---
+
 ## 🔒 Security Features
 
 * Secure file uploads
@@ -201,10 +311,10 @@ Many households are unaware of their current consumption status and receive no w
 
 ## 🌟 Future Enhancements
 
-* Progressive Web App (PWA) - Installable on mobile/desktop with offline support
 * Smart home device integration
 * Monthly budget planning
 * Voice assistant support
+* Rate limiting and security hardening (helmet, express-rate-limit)
 
 ---
 

@@ -1,7 +1,7 @@
 # Backend Services & Middlewares Documentation
 
 **Project:** Kashf Server (`kashf-server`)  
-**Stack:** Node.js 20, Express 5, MongoDB (Mongoose), Joi, bcryptjs, JWT, Multer, Cloudinary, CORS, dotenv  
+**Stack:** Node.js 20, Express 5, MongoDB (Mongoose 9), Joi, bcryptjs, JWT, Multer, Cloudinary, Groq AI (OpenAI SDK), Stripe, CORS, dotenv, node-cron, nodemailer  
 **Source root:** `server/`  
 **Last updated:** June 2026
 
@@ -13,24 +13,33 @@
 
 ```
 server/
+├── Dockerfile                       # node:20-alpine production image
+├── .dockerignore
+├── .env.example                     # Required environment variables template
 ├── server.js                        # Entry point: app setup, route mounts, global middleware
 ├── vercel.json                      # Vercel deployment config (@vercel/node)
+├── netlify.toml                     # Netlify Functions config (fallback)
+├── bruno/                           # API testing collection
+│   └── Simulation API/
 ├── config/
 │   ├── corsOptions.js               # CORS origin whitelist (env-configurable)
-│   └── startServerWithDB.js         # DB connect + app.listen with retry
+│   └── startServerWithDB.js         # DB connect + app.listen with retry (max 5×5s)
 ├── database/
 │   ├── dbConnect.js                 # Mongoose connection helper
-│   └── models/                      # MongoDB models/schemas:
-│       ├── activity.model.js        # Audit logs with 90-day TTL
-│       ├── alert.model.js           # Multi-category user alerts with i18n
-│       ├── bill.model.js            # Monthly bills (consumption, tier, EGP)
-│       ├── meter.model.js           # Electric meters (derived trends)
-│       ├── payment.model.js         # Stripe Checkout metadata
-│       ├── session.model.js         # Active sessions with 7-day TTL
-│       ├── simulation.model.js      # Virtual appliances configuration
-│       ├── systemConfig.model.js    # Settings key-value store
-│       ├── tier.model.js            # Billing tier constants/rules
-│       └── user.model.js            # Accounts overview + goals
+│   ├── models/                      # 10 MongoDB models/schemas:
+│   │   ├── activity.model.js        # Audit logs with 90-day TTL
+│   │   ├── alert.model.js           # Multi-category user alerts with i18n
+│   │   ├── bill.model.js            # Monthly bills (consumption, tier, EGP)
+│   │   ├── meter.model.js           # Electric meters (derived trends)
+│   │   ├── payment.model.js         # Stripe Checkout metadata
+│   │   ├── session.model.js         # Active sessions with 7-day TTL
+│   │   ├── simulation.model.js      # Virtual appliances configuration
+│   │   ├── systemConfig.model.js    # Settings key-value store
+│   │   ├── tier.model.js            # Billing tier constants/rules
+│   │   └── user.model.js            # Accounts overview + goals
+│   └── seed/                        # Database seed scripts
+│       ├── systemConfig.seed.js
+│       └── tier.seed.js
 ├── public/
 │   └── views/
 │       ├── home.html                # GET / static page
@@ -41,7 +50,9 @@ server/
     ├── config/
     │   ├── auth.constants.js        # Auth tokens, roles, and plan limits
     │   ├── activity.constants.js    # Activity event types enum (13 types)
-    │   └── cloudinary.js            # Cloudinary media upload helpers
+    │   ├── cloudinary.js            # Cloudinary media upload helpers
+    │   ├── groq.js                  # OpenAI-compatible Groq client (advice generation)
+    │   └── tier.constants.js        # Egyptian Sheriha tier thresholds & bill computation
     ├── middlewares/
     │   ├── asyncHandler.js          # Wraps async controllers → next(err)
     │   ├── isAuthenticated.js       # JWT access-token guard → req.user
@@ -49,25 +60,46 @@ server/
     │   ├── uploadProfilePicture.js  # Multer memory-storage, image MIME filter
     │   └── validateRequestBody.js   # Joi body validation factory
     ├── modules/                     # Controllers, routes, and validation schemas:
-    │   ├── activity.routes.js       # GET /api/activity
-    │   ├── admin.routes.js          # /api/admin endpoints (dashboard stats, moderation, tiers)
-    │   ├── alert.routes.js          # /api/alerts (mark read, delete)
-    │   ├── bill.routes.js           # /api/bills CRUD
-    │   ├── meter.routes.js          # /api/meters CRUD
-    │   ├── payment.routes.js        # /api/payments (pay, cancel, history)
-    │   ├── simulation.routes.js     # /api/simulations (what-if, chat, advisor)
-    │   └── user.routes.js           # /api/auth (login, profile, security settings, 2FA)
-    ├── services/
+    │   ├── activity.controller.js   # GET /api/activity
+    │   ├── activity.routes.js
+    │   ├── admin.controller.js      # /api/admin (dashboard stats, users, tiers, settings)
+    │   ├── admin.routes.js
+    │   ├── alert.controller.js      # /api/alerts (mark read, delete)
+    │   ├── alert.routes.js
+    │   ├── bill.controller.js       # /api/bills CRUD
+    │   ├── bill.routes.js
+    │   ├── meter.controller.js      # /api/meters CRUD
+    │   ├── meter.routes.js
+    │   ├── payment.controller.js    # /api/payments (checkout, webhook, history)
+    │   ├── payment.routes.js
+    │   ├── simulation.controller.js # /api/simulations (CRUD + engine + AI agents)
+    │   ├── simulation.routes.js
+    │   ├── simulation.validation.js # Joi schemas for simulation endpoints
+    │   ├── user.controller.js       # /api/auth (login, register, profile, 2FA, security)
+    │   ├── user.routes.js
+    │   └── user.validation.js       # Joi schemas for auth endpoints
+    ├── services/                    # 15 business logic services:
     │   ├── auth.service.js          # Hashing, token issuance, profile updates
     │   ├── activity.service.js      # Log action to DB
-    │   ├── coin.service.js          # Coin validation, rollover, reset
+    │   ├── alert.service.js         # Notification creation, dismissal
+    │   ├── coin.service.js          # Coin validation, rollover, monthly reset
+    │   ├── email.service.js         # Nodemailer email sending
+    │   ├── payment.service.js       # Stripe billing session, verification, refund
+    │   ├── subscription.service.js  # Plan management and renewal logic
     │   ├── token.service.js         # JWT generation, verification, cookies
-    │   ├── simulation.engine.js     # In-memory virtual meter runtime
+    │   ├── simulation.engine.js     # In-memory virtual meter runtime (1s tick loop)
     │   ├── simulation.broadcaster.js # Server-Sent Events SSE registry
-    │   └── payment.service.js       # Stripe billing session, verification, refund
+    │   ├── simulation.advisor.js    # AI consumption advisor (Groq prompts)
+    │   ├── simulation.autopilot.js  # Autonomous device management agent
+    │   ├── simulation.chat.js       # Natural language chat agent (intent classification)
+    │   ├── simulation.predictor.js  # Tier prediction & remaining time calculations
+    │   ├── simulation.recommender.js # Passive recommendations engine
+    │   └── simulation.whatif.js     # What-if scenario fast-forward engine
     └── utils/
         ├── AppError.js              # Custom HTTP error class
-        └── userMapper.js            # Sanitizes user responses
+        ├── totp.js                  # TOTP 2FA secret generation & verification
+        ├── userLock.js              # In-memory lock for serializing requests per user
+        └── userMapper.js            # Sanitizes user responses (removes sensitive fields)
 ```
 
 ### Route organization
@@ -410,10 +442,13 @@ const allowedOrigins = [
     "https://kashf-smart-electricity-assistant.netlify.app",
     "http://localhost:5173",
     "http://localhost:4173",
+    "http://localhost:8080",   // Docker Compose (nginx proxy)
 ];
 ```
 
 `credentials: true` — cookies and Authorization headers allowed.
+
+> When running via Docker Compose, the client at `localhost:8080` makes API calls through the nginx reverse proxy. The `http://localhost:8080` origin must be in the whitelist.
 
 ---
 
@@ -529,7 +564,11 @@ Returns `400` directly (not via global handler):
 | `CLOUDINARY_CLOUD_NAME` | `src/config/cloudinary.js` | ✅ |
 | `CLOUDINARY_API_KEY` | `src/config/cloudinary.js` | ✅ |
 | `CLOUDINARY_API_SECRET` | `src/config/cloudinary.js` | ✅ |
-| `ALLOWED_ORIGIN` | (future env-driven CORS) | Optional |
+| `GROQ_API_KEY` | `src/config/groq.js` | For AI features |
+| `GROQ_MODEL` | `src/config/groq.js` | Default: `llama-3.3-70b-versatile` |
+| `STRIPE_SECRET_KEY` | `payment.service.js` | For payments |
+| `STRIPE_WEBHOOK_SECRET` | `payment.controller.js` | For payments |
+| `ALLOWED_ORIGIN` | `config/corsOptions.js` | Optional — env override |
 
 ---
 
@@ -539,10 +578,21 @@ Returns `400` directly (not via global handler):
 server.js
  ├── load dotenv
  ├── create express app
+ ├── Stripe webhook raw body middleware (BEFORE express.json)
+ │    └── POST /api/payments/webhook → express.raw({ type: "application/json" })
  ├── register global middleware (express.json, cookieParser, cors)
- ├── mount routes (GET /, /api/auth, /api/admin)
- ├── 404 handler
- ├── global error handler
+ ├── mount static route (GET / → home.html)
+ ├── mount API routes:
+ │    ├── /api/auth        (user routes — login, register, profile, 2FA, security)
+ │    ├── /api/admin       (admin dashboard, users, tiers, settings, notifications)
+ │    ├── /api/activity    (activity logs)
+ │    ├── /api/meters      (meter CRUD)
+ │    ├── /api/bills       (bill CRUD)
+ │    ├── /api/simulations (simulation CRUD, engine control, AI agents, SSE)
+ │    ├── /api/payments    (checkout, history, webhook)
+ │    └── /api/alerts      (notification alerts)
+ ├── 404 handler (→ 404.html)
+ ├── global error handler → { error: message }
  └── startServerWithDB(app, PORT)
        └── dbConnect() → mongoose.connect(MONGO_URI)
              ├── success → app.listen(PORT)
@@ -555,8 +605,6 @@ server.js
 
 | Feature | Status | Description |
 |---------|--------|-------------|
-| Progressive Web App (PWA) manifest | Planned | Complete installability config |
-| Service worker | Planned | Asset caching and offline pages |
 | Rate limiting (`express-rate-limit`) | Planned | Protect API endpoints from DDoS |
 | `helmet` security headers | Planned | Enable HTTP security headers |
 | Structured logging | Planned | Integrate Winston/Morgan logging |
