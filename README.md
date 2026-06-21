@@ -170,7 +170,6 @@ flowchart TD
 * Server-Sent Events (SSE) for real-time simulation streaming
 * Multer + Cloudinary for image uploads
 * Joi request validation
-* 2FA (TOTP) support
 
 ### Database
 
