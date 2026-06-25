@@ -268,11 +268,7 @@ The fastest way to run the full Kashf stack locally:
 git clone https://github.com/Ahmed-Maher77/Kashf___AI-powered-Electricity-Consumption-Assistant.git
 cd Kashf___AI-powered-Electricity-Consumption-Assistant
 
-# 2. Configure server environment
-cp server/.env.example server/.env
-# Edit server/.env — set MONGO_URI (MongoDB required), JWT secrets, etc.
-
-# 3. Build and start all services
+# 2. Build and start all services
 docker-compose up --build
 ```
 
@@ -280,6 +276,13 @@ docker-compose up --build
 - **API Server:** http://localhost:3000
 
 > Requires Docker Desktop and a running MongoDB instance (local or Atlas).
+
+The server comes with dummy defaults for all environment variables. For full functionality, create a `server/.env` from the example file — its values will override the defaults at runtime without being baked into the image:
+
+```bash
+cp server/.env.example server/.env
+# Edit server/.env — set MONGO_URI (MongoDB required), JWT secrets, etc.
+```
 
 ### Manual Development (without Docker)
 
