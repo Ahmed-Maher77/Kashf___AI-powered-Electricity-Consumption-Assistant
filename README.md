@@ -268,8 +268,8 @@ The fastest way to run the full Kashf stack locally:
 git clone https://github.com/Ahmed-Maher77/Kashf___AI-powered-Electricity-Consumption-Assistant.git
 cd Kashf___AI-powered-Electricity-Consumption-Assistant
 
-# 2. Build and start all services
-docker-compose up --build
+# 2. Start all services (pulls images from Docker Hub)
+docker-compose up
 ```
 
 - **Client:** http://localhost:8080
